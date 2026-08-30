@@ -1,0 +1,108 @@
+{
+  "project": "tilik_klaim",
+  "version": "0.1.0",
+  "note": "Diturunkan dari sprint/00-app-spec.md. Mockup HTML belum ada - menunggu tim desain.",
+  "screens": [
+    {
+      "id": "antrean-review",
+      "route": "/",
+      "title": "Antrean Review",
+      "persona": "Petugas casemix / anti-fraud",
+      "widgets": 11,
+      "brief": "03_ANTREAN_REVIEW",
+      "priority": "P0",
+      "mockup": null
+    },
+    {
+      "id": "detail-kasus",
+      "route": "/cases/:id",
+      "title": "Detail Kasus & Disposisi",
+      "persona": "Petugas casemix / anti-fraud",
+      "widgets": 27,
+      "brief": "04_DETAIL_KASUS_DISPOSISI",
+      "priority": "P0",
+      "mockup": null
+    },
+    {
+      "id": "ingest-demo",
+      "route": "/ingest",
+      "title": "Ingest / Demo",
+      "persona": "Petugas casemix + tim demo",
+      "widgets": 11,
+      "brief": "01_INGEST_VALIDASI",
+      "priority": "P1",
+      "mockup": null
+    },
+    {
+      "id": "audit-evaluasi",
+      "route": "/evaluation",
+      "title": "Audit & Evaluasi",
+      "persona": "Peninjau senior + tim proposal",
+      "widgets": 9,
+      "brief": "05_AUDIT_EVALUASI",
+      "priority": "P1",
+      "mockup": null
+    }
+  ],
+  "transitions": [
+    {
+      "from": "antrean-review",
+      "action": "klik baris tabel",
+      "to": "detail-kasus",
+      "context": "pengenal kasus, kode alasan terkuat"
+    },
+    {
+      "from": "antrean-review",
+      "action": "klik tombol masukkan bundel",
+      "to": "ingest-demo",
+      "context": "kosong"
+    },
+    {
+      "from": "antrean-review",
+      "action": "klik penanda versi",
+      "to": "audit-evaluasi",
+      "context": "versi mesin & data"
+    },
+    {
+      "from": "detail-kasus",
+      "action": "simpan disposisi",
+      "to": "antrean-review",
+      "context": "saringan & urutan dipertahankan"
+    },
+    {
+      "from": "detail-kasus",
+      "action": "simpan minta bukti tambahan",
+      "to": "ingest-demo",
+      "context": "pengenal kasus + daftar bukti diminta"
+    },
+    {
+      "from": "ingest-demo",
+      "action": "klik saring klaim",
+      "to": "detail-kasus",
+      "context": "pengenal pemasukan, pengenal kasus"
+    },
+    {
+      "from": "ingest-demo",
+      "action": "klik kembali ke antrean",
+      "to": "antrean-review",
+      "context": "kosong"
+    },
+    {
+      "from": "ingest-demo",
+      "action": "klik tautan berkas identik",
+      "to": "detail-kasus",
+      "context": "pengenal kasus yang sudah ada"
+    },
+    {
+      "from": "audit-evaluasi",
+      "action": "klik entri riwayat",
+      "to": "detail-kasus",
+      "context": "pengenal kasus"
+    }
+  ],
+  "pending": [
+    "design/tokens.css",
+    "design/pages/*.html",
+    "anotasi bidang -> respons antarmuka"
+  ]
+}

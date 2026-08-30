@@ -1,0 +1,22 @@
+# Local-first demo stack. docs/canonical/03_architecture.md requires every demo route to
+# work without an external network, so nothing here reaches outside the host.
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: tilik_klaim_db
+    environment:
+      POSTGRES_USER: tilik
+      POSTGRES_PASSWORD: tilik
+      POSTGRES_DB: tilik_klaim
+    ports:
+      - "5432:5432"
+    volumes:
+      - tilik_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tilik -d tilik_klaim"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  tilik_pgdata:

@@ -1,1 +1,26 @@
+# Custom
 .claude
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+
+# Environment
+.env
+.env.local
+
+# Generated data and evaluation artifacts — reproducible from seed, never committed.
+data/generated/
+evaluation/artifacts/*/
+!evaluation/artifacts/.gitkeep
+
+# OS
+.DS_Store
