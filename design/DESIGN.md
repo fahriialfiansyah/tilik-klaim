@@ -1,7 +1,7 @@
 # TilikKlaim — Arah Desain (Ringkas)
 
-> **Status:** 🟡 **Arah saja — detail visual menunggu tim desain.**
-> **Versi:** 0.1.0 (placeholder) · **Tanggal:** 2026-08-30
+> **Status:** 🟢 **Mockup tim desain sudah masuk — token terkunci, dua hal masih terbuka.**
+> **Versi:** 0.2.0 · **Tanggal:** 2026-08-30
 > **Sumber:** `docs/HEALTHKATHON_2026_WINNING_MASTER_PLAN.docx` §14 (Figma / UX Brief)
 > **Halaman & widget:** [`sprint/00-app-spec.md`](../sprint/00-app-spec.md)
 
@@ -20,7 +20,7 @@ Dokumen ini sengaja **tidak lengkap**. Ia hanya mengunci arah yang sudah diputus
 | Kuning amber | "Perlu ditinjau" |
 | Merah | **Hanya** untuk konflik deterministik — menandai konflik pasti, **bukan** menandai pihak yang bersalah |
 | Hijau | **Hanya** untuk aksi yang selesai dan tervalidasi — tidak pernah untuk menandai klaim sebagai aman |
-| Tipografi | Sans-serif yang sangat terbaca; **digit sejajar** untuk nominal dan cap waktu; ukuran teks isi 14–16 px |
+| Tipografi | IBM Plex Sans; **digit sejajar** untuk nominal dan cap waktu (IBM Plex Mono); ukuran teks isi **13 px** — dinaikkan dari tebakan awal 14–16 px agar cocok dengan mockup, lihat § Deviasi |
 | Tata letak | Grid 12 kolom untuk desktop; kerapatan cocok untuk kerja operasional |
 | Jarak | Sistem kelipatan 8 |
 | Kartu | Hierarki lewat garis tepi dan latar, bukan bayangan tebal |
@@ -33,17 +33,56 @@ Dokumen ini sengaja **tidak lengkap**. Ia hanya mengunci arah yang sudah diputus
 
 ---
 
-## Yang MASIH KOSONG — untuk tim desain
+## Berkas desain
 
 | Berkas | Isi | Status |
 |--------|-----|--------|
-| `design/tokens.css` | Nilai warna, tipografi, jarak, radius, bayangan yang konkret | ⬜ Belum ada |
-| `design/pages/*.html` | Mockup per halaman | ⬜ Belum ada |
+| `design/mockup/tilik-klaim-v2.bundle.html` | Kiriman asli tim desain. Bundel Claude Design canvas; buka langsung di peramban untuk melihat versi hidup | ✅ Masuk |
+| `design/mockup/reference.html` | Turunan yang bisa dibaca: markup + CSS keempat layar. **Ini yang dipakai saat implementasi React** | ✅ Turunan |
+| `design/mockup/unpack.py` | Membangkitkan ulang kedua turunan di atas dari bundel | ✅ Ada |
+| `design/tokens.css` | 35 token warna × 2 tema, plus tipografi, jarak, dan alias semantik | ✅ Masuk |
 | Peta anotasi | Pemetaan setiap bidang di layar ke respons antarmuka | ⬜ Belum ada |
 
-**Sampai `tokens.css` ada**, frontend memakai nilai bawaan boilerplate. Task `port-design-tokens` di sprint frontend **tidak dapat ditutup** sebelum berkas ini masuk — ini dependensi yang sudah dicatat, bukan hal yang terlupa.
+Keempat layar ada di dalam satu berkas `reference.html`, ditandai atribut
+`data-screen-label`: `Antrean Review`, `Detail Kasus`, `Ingest / Demo`, `Audit & Evaluasi`.
+Placeholder `{{ ... }}` tampil apa adanya di turunan itu — justru menandai titik pengikatan data.
 
-**Prioritas untuk tim desain**, kalau waktu terbatas: `/` (Antrean Review) dan `/cases/:id` (Detail Kasus) lebih dulu. Keduanya yang dipakai demo 90 detik di depan juri. `/ingest` dan `/evaluation` menyusul.
+Kalau tim desain mengirim bundel baru, **jangan menyalin nilai dengan tangan**:
+
+```
+python3 design/mockup/unpack.py design/mockup/<bundel-baru>.html
+```
+
+Bagian tipografi, jarak, dan alias semantik di `tokens.css` ditulis tangan dan tidak ditimpa —
+hanya blok warna yang perlu disegarkan.
+
+---
+
+## Deviasi & hal yang masih terbuka
+
+Dua hal di mockup belum sejalan dengan arah yang dikunci di atas. Keduanya menunggu
+keputusan, dan **belum diubah sepihak** karena menyangkut keterbacaan.
+
+Dua hal diselesaikan dengan cara berbeda, dan pembedaannya disengaja: **ambang yang bisa
+diukur diperbaiki tanpa menunggu, pertimbangan desain diserahkan pada pemiliknya.**
+
+| Hal | Temuan | Keputusan |
+|-----|--------|-----------|
+| Kontras `--t-3` | Teks tersier `#6d7b79` di atas kartu putih hanya **4.41:1** — di bawah ambang AA 4.5:1 | ✅ **Diperbaiki** ke `#6b7977` (**4.54:1**). AA adalah lantai terukur yang sudah dikunci di tabel atas, bukan preferensi; pergeserannya 2 poin per kanal sehingga maksud desainer tetap utuh |
+| Ukuran teks isi | Kontrak lama menyebut 14–16 px; mockup memakai **13 px** (64 kemunculan) | ✅ **Kontraknya yang disesuaikan** menjadi 13 px. Baris 14–16 px ditulis saat dokumen ini masih berstatus "arah saja" — sebuah tebakan placeholder. Mockup adalah bukti yang lebih baru dari pihak yang memiliki keputusan kerapatan, dan 13 px koheren untuk tabel operasional. WCAG tidak menetapkan ukuran font minimum |
+
+Sisanya lulus. Kelima pita status memenuhi AA di kedua tema — paling rendah 5.81:1 pada tema
+terang dan 7.50:1 pada tema gelap.
+
+### Satu hal untuk ditinjau tim desain
+
+Label mikro **9 px** (35 kemunculan, berpasangan dengan `letter-spacing: .13em`) layak dinaikkan
+ke 10–11 px. Ini bukan pelanggaran standar — karena itu tidak diubah sepihak — tetapi pada alat
+yang dipakai sepanjang hari ukuran itu melelahkan, dan mengubahnya menggeser layout sehingga
+keputusannya milik tim desain.
+
+**Prioritas untuk tim desain** kalau masih ada waktu: peta anotasi untuk `/` (Antrean Review)
+dan `/cases/:id` (Detail Kasus) lebih dulu. Keduanya yang dipakai demo 90 detik di depan juri.
 
 ---
 

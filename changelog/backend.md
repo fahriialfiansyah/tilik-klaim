@@ -37,3 +37,36 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 > (2 tasks, incl. foundation `00-api-contract`); WS-003 → sprint 03 (2); WS-005 backend →
 > sprint 04 (2); WS-004 → sprint 05 (1); WS-006 → sprint 06 (1); § 22 → sprint 07 (1).
 > Each task carries its WS Acceptance as `## Done when` and its Tests plus Edge cases as TODOs.
+
+### 2026-08-30 · [Sprint 03 — evidence-rules](../sprint/backlog/03-evidence-rules/sprint.md) · Task: [Evidence graph](../sprint/backlog/03-evidence-rules/backend/01-evidence-graph.md) · ✅ Done
+
+**Event:** Task completed
+**Files:** `apps/backend/app/service/evidence_graph.py`, `apps/backend/app/store/edges.py`, `packages/domain/src/tilik_domain/canonical.py`
+> All ten canonical edge types derive over the five gold fixtures, every edge carrying its
+> derivation rule and ruleset version; the two inferred cross-claim edges carry a confidence
+> and the stated ones do not. Incomplete bundles degrade into recorded `EvidenceGap`s instead
+> of raising, so a missing record never reads as a missing service. Output ordering is stable
+> under input reordering, so re-screening the same bundle diffs to nothing. Episode grouping
+> merges claims sharing an episode unless a follow-up document explains the return visit.
+> Edge persistence is keyed by `(bundle_id, ruleset_version)`: re-screening replaces its slice,
+> a version bump preserves the old one so prior audit events keep resolving.
+> Added `ResourceType.PRACTITIONER` — `AUTHORED_BY` was required by the architecture doc but
+> not constructible — plus `ResourceType.is_stored_resource` to separate referenced-only
+> identities from dangling refs. Verified: `uv run pytest` → 115 passed (was 64); domain
+> → 21 passed; ruff clean on the new files.
+
+### 2026-08-30 · [Sprint 03 — evidence-rules](../sprint/backlog/03-evidence-rules/sprint.md) · Task: [Rule engine](../sprint/backlog/03-evidence-rules/backend/02-rule-engine.md) · ✅ Done
+
+**Event:** Task completed — Sprint 03 closed, Gate G4 met
+**Files:** `apps/backend/app/service/rules/`, `apps/backend/app/service/screening.py`
+> All five gold fixtures screen to exactly their expected reason codes and nothing more. Four
+> risk modes work, not the three the gate required — the clone baseline was delivered rather
+> than deferred. Every reason carries resolvable evidence, counter-evidence returned alongside
+> rather than as a second lookup, its component scores, and its rule version.
+> The three model-card caps are enforced and tested: text similarity alone tops out at
+> `NEEDS_CONTEXT`; an incomplete bundle steps the band down and routes to `REQUEST_EVIDENCE`
+> instead of toward confirm-anomaly; an exact duplicate is top band and still decides nothing.
+> `NO_OBSERVED_RISK` never renders as clean or safe, and a test asserts no reason text contains
+> fraud/curang/palsu/tolak/sanksi. Screening the same input hash at the same version is
+> byte-identical. Verified: `uv run pytest` → 162 passed (was 115); domain → 21 passed;
+> ruff clean on all new files.

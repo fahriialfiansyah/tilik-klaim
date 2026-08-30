@@ -2,11 +2,15 @@
 
 **Stack:** backend
 **Sprint:** [`../sprint.md`](../sprint.md)
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Foundation:** no
 **Autonomous:** yes
 **Depends on:**
-- [`../../02-ingest-validation/backend/01-bundle-ingestion.md`](../../02-ingest-validation/backend/01-bundle-ingestion.md) — operates on validated canonical bundles
+- [`../../02-ingest-validation/backend/01-bundle-ingestion.md`](../../02-ingest-validation/backend/01-bundle-ingestion.md) — for its *storage* layer only. Derivation itself needs no
+  ingestion service: the five gold fixtures are already validated `CanonicalBundle`s, so the
+  graph was built and tested against those. `app/store/edges.py` therefore defines the
+  repository contract plus an in-memory implementation; the SQLAlchemy binding lands with
+  ingestion, which owns the engine, session, and migrations.
 
 ## Goal
 
@@ -26,13 +30,13 @@ line?" always has an answer that resolves to source resources.
 
 ## TODOs
 
-- [ ] Derive all nine canonical edges
-- [ ] Every edge stores source resource IDs, derivation rule, version, and confidence when inferred
-- [ ] Persist normalized edges; keep the working graph in memory
-- [ ] Episode grouping: claims linked into one episode unless a documented follow-up exists
-- [ ] **Test:** every edge on a gold fixture resolves to real source resources
-- [ ] **Test:** derivation is deterministic for the same bundle and version
-- [ ] **Edge case — incomplete bundle:** graph builds with gaps recorded, rather than failing
+- [x] Derive all nine canonical edges — all ten `EdgeType` members; the architecture doc's nine bullets cover ten types because one bullet carries both `AUTHORED_BY` and `PART_OF_ENCOUNTER`
+- [x] Every edge stores source resource IDs, derivation rule, version, and confidence when inferred
+- [x] Persist normalized edges; keep the working graph in memory
+- [x] Episode grouping: claims linked into one episode unless a documented follow-up exists
+- [x] **Test:** every edge on a gold fixture resolves to real source resources
+- [x] **Test:** derivation is deterministic for the same bundle and version
+- [x] **Edge case — incomplete bundle:** graph builds with gaps recorded, rather than failing
 
 ## Done when
 
@@ -41,7 +45,20 @@ resources, and derivation is deterministic for a given bundle and version.
 
 ## Closing checklist
 
-- [ ] All `## TODOs` items above are `[x]`
-- [ ] Done-when assertion verified
-- [ ] Top-of-file header literally reads `**Status:** ✅ Done`
-- [ ] Changelog entry appended to `changelog/backend.md`
+- [x] All `## TODOs` items above are `[x]`
+- [x] Done-when assertion verified
+- [x] Top-of-file header literally reads `**Status:** ✅ Done`
+- [x] Changelog entry appended to `changelog/backend.md`
+
+## Notes
+
+`ResourceType` had no `PRACTITIONER` member, so `Document AUTHORED_BY Practitioner` — required
+by `docs/canonical/03_architecture.md` — could not be constructed at all, even though the clone
+fixtures already carry `author_id="PRACT-02"`. Added it to `packages/domain`, along with
+`ResourceType.is_stored_resource`: episodes and practitioners are referenced by identity but
+never stored in a bundle, and reference resolution has to tell that apart from a dangling ref.
+This corrects the domain package to match the canonical architecture; no canonical doc changed.
+
+Two similarity floors (`SIMILARITY_CANDIDATE_FLOOR`, `DUPLICATE_CANDIDATE_FLOOR`) decide only
+whether an edge is *drawn*. They are candidate-generation floors, not risk thresholds — bands
+and their calibration stay in the rule engine, per `docs/canonical/05_model_card.md`.

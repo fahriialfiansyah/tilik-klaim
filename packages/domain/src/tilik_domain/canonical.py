@@ -47,6 +47,23 @@ class ResourceType(StrEnum):
     CHARGE_ITEM = "ChargeItem"
     INVOICE = "Invoice"
     EPISODE = "Episode"
+    PRACTITIONER = "Practitioner"
+
+    @property
+    def is_stored_resource(self) -> bool:
+        """Whether a bundle carries this type as a resource of its own.
+
+        Episodes and practitioners are referenced by identity but never stored in the bundle:
+        an episode is a grouping key, and a practitioner is a person the claim points at.
+        Reference resolution has to know the difference, otherwise every `AUTHORED_BY` and
+        `PART_OF_EPISODE` edge would read as dangling.
+        """
+        return self not in _UNSTORED_RESOURCE_TYPES
+
+
+_UNSTORED_RESOURCE_TYPES: frozenset[ResourceType] = frozenset(
+    {ResourceType.EPISODE, ResourceType.PRACTITIONER}
+)
 
 
 class ResourceRef(Frozen):

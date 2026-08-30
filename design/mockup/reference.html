@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<!-- TURUNAN - JANGAN DIEDIT LANGSUNG.
+     Dibongkar dari tilik-klaim-v2.bundle.html lewat design/mockup/unpack.py.
+     Interaksi JS sengaja dilepas, jadi placeholder {{ ... }} tampil apa adanya -
+     itu justru menandai titik pengikatan data. -->
+
+<html lang="id" data-theme="light"><head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics=""><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""><style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style><style>
+html,body{margin:0;padding:0}
+body{background:#f4f5f4;color:#14211f;font-family:"IBM Plex Sans","Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+button{font-family:inherit;font-size:inherit;cursor:pointer;color:inherit}
+input,select,textarea{font-family:inherit;font-size:inherit}
+*:focus-visible{outline:none;box-shadow:0 0 0 2px var(--s-card),0 0 0 4px var(--a-1)}
+[data-theme]{
+--s-page:#f1f3f2;--s-card:#ffffff;--s-sunk:#f8faf9;--s-head:#0b2530;--s-rail:#ffffff;
+--b-1:#dde1e0;--b-2:#c3cac8;
+--t-1:#14211f;--t-2:#4f5d5b;--t-3:#6d7b79;--t-inv:#eef3f3;--t-inv-2:#a8bcc2;
+--a-1:#0d6675;--a-1h:#12808f;--a-1-soft:#e8f2f3;--a-1-bd:#b9d6da;--a-1-on:#ffffff;
+--red-f:#97231f;--red-b:#fbecea;--red-d:#e7bab5;
+--amb-f:#8a5200;--amb-b:#fdf3e2;--amb-d:#e8cd9c;
+--sof-f:#6f5a1f;--sof-b:#faf7e8;--sof-d:#e3dcbc;
+--neu-f:#4f5d5b;--neu-b:#eceeed;--neu-d:#d3d9d8;
+--grn-f:#1c6244;--grn-b:#e8f2ec;--grn-d:#b6d4c4;
+--logo-amb:#e8a33d;--scrim:rgba(11,37,48,.34);--shadow:0 1px 2px rgba(11,37,48,.05);
+}
+[data-theme="dark"]{
+--s-page:#0b1618;--s-card:#122126;--s-sunk:#0e1d21;--s-head:#081114;--s-rail:#0f1d21;
+--b-1:#24373c;--b-2:#375056;
+--t-1:#e7efef;--t-2:#a9bcbd;--t-3:#85999b;--t-inv:#e7efef;--t-inv-2:#8fa8ac;
+--a-1:#4fb3c0;--a-1h:#6ec8d3;--a-1-soft:#10333a;--a-1-bd:#20606c;--a-1-on:#04191d;
+--red-f:#f09b93;--red-b:#2c1a18;--red-d:#5a302b;
+--amb-f:#e9b769;--amb-b:#2a2115;--amb-d:#5a4629;
+--sof-f:#d5cd9c;--sof-b:#23231a;--sof-d:#494533;
+--neu-f:#a9bcbd;--neu-b:#1a2a2e;--neu-d:#2f4348;
+--grn-f:#7fd0a5;--grn-b:#122a20;--grn-d:#2b5641;
+--logo-amb:#f0b45c;--scrim:rgba(2,10,12,.6);--shadow:0 1px 2px rgba(0,0,0,.3);
+}
+@keyframes tkpulse{0%{opacity:.4}50%{opacity:.85}100%{opacity:.4}}
+@keyframes tkslide{from{transform:translateX(24px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tkrise{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+</style></helmet>
+
+
+
+<div data-theme="{{ theme }}" style="display:flex;flex-direction:column;height:100vh;overflow:hidden;background:var(--s-page);color:var(--t-1)">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:20px;height:56px;flex:none;padding:0 16px 0 14px;background:var(--s-head);color:var(--t-inv)">
+    <div style="display:flex;align-items:center;gap:14px;min-width:0">
+      <button type="button" sc-camel-on-click="{{ toggleRail }}" title="{{ railTitle }}" style="display:flex;flex-direction:column;justify-content:center;gap:3px;width:32px;height:32px;padding:0 8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px" style-hover="background:rgba(255,255,255,.14)">
+        <span style="display:block;height:2px;border-radius:1px;background:var(--t-inv);width:{{ bar1 }}"></span>
+        <span style="display:block;height:2px;border-radius:1px;background:var(--logo-amb);width:{{ bar2 }}"></span>
+        <span style="display:block;height:2px;border-radius:1px;background:var(--t-inv);opacity:.5;width:{{ bar3 }}"></span>
+      </button>
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJUaWxpa0tsYWltICh2ZXJzaSBsYXRhciBnZWxhcCkiPgogIDxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CiAgICA8cGF0aCBkPSJNNjQgMTIgQTUyIDUyIDAgMCAxIDY0IDExNiIgc3Ryb2tlPSIjZWVmM2YzIiBzdHJva2Utd2lkdGg9IjYiPjwvcGF0aD4KICAgIDxwYXRoIGQ9Ik02NCAxMTYgQTUyIDUyIDAgMCAxIDEyIDY0IiBzdHJva2U9IiNlOGEzM2QiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWRhc2hhcnJheT0iOSAxMSI+PC9wYXRoPgogIDwvZz4KICA8Y2lyY2xlIGN4PSI2NCIgY3k9IjEyIiByPSIxMCIgZmlsbD0iI2VlZjNmMyI+PC9jaXJjbGU+CiAgPGNpcmNsZSBjeD0iMTE2IiBjeT0iNjQiIHI9IjEwIiBmaWxsPSIjZWVmM2YzIj48L2NpcmNsZT4KICA8Y2lyY2xlIGN4PSI2NCIgY3k9IjExNiIgcj0iMTAiIGZpbGw9IiNlZWYzZjMiPjwvY2lyY2xlPgogIDxjaXJjbGUgY3g9IjEyIiBjeT0iNjQiIHI9IjkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2U4YTMzZCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtZGFzaGFycmF5PSI0LjcxIDQuNzEiPjwvY2lyY2xlPgogIDxnPgogICAgPHJlY3QgeD0iNDciIHk9IjQ2IiB3aWR0aD0iMzQiIGhlaWdodD0iOCIgcng9IjQiIGZpbGw9IiNlZWYzZjMiIG9wYWNpdHk9IjAuNCI+PC9yZWN0PgogICAgPHJlY3QgeD0iMzkiIHk9IjYwIiB3aWR0aD0iNTAiIGhlaWdodD0iOCIgcng9IjQiIGZpbGw9IiNlOGEzM2QiPjwvcmVjdD4KICAgIDxyZWN0IHg9IjUxIiB5PSI3NCIgd2lkdGg9IjI2IiBoZWlnaHQ9IjgiIHJ4PSI0IiBmaWxsPSIjZWVmM2YzIiBvcGFjaXR5PSIwLjQiPjwvcmVjdD4KICA8L2c+Cjwvc3ZnPg==" alt="" style="width:30px;height:30px;flex:none;display:block">
+      <span style="font-size:16px;font-weight:600;letter-spacing:.11em">TILIKKLAIM</span>
+      <span style="width:1px;height:20px;background:rgba(255,255,255,.16)"></span>
+      <span style="display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t-inv-2)">PERAN<span style="padding:2px 8px;background:rgba(255,255,255,.08);border-radius:999px;color:var(--t-inv);font-weight:500">analis casemix</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button type="button" sc-camel-on-click="{{ copyVersion }}" title="Salin penanda versi" style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t-inv);font-variant-numeric:tabular-nums" style-hover="background:rgba(255,255,255,.14)">r1.4.2 · m0.9.1 · ds-2026-08-c<span style="opacity:.6">salin</span></button>
+      <button type="button" sc-camel-on-click="{{ toggleTheme }}" title="Ganti tema" style="display:flex;align-items:center;gap:7px;padding:6px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;font-size:11px;font-weight:500;color:var(--t-inv)" style-hover="background:rgba(255,255,255,.14)">
+        <span style="position:relative;display:block;width:28px;height:16px;border-radius:999px;background:{{ knobTrack }}"><span style="position:absolute;top:2px;left:{{ knobLeft }};width:12px;height:12px;border-radius:50%;background:{{ knobFill }};transition:left .18s ease"></span></span>{{ themeLabel }}
+      </button>
+      <span style="padding:6px 10px;background:var(--amb-b);border:1px solid var(--amb-d);border-radius:6px;color:var(--amb-f);font-size:11px;font-weight:700;letter-spacing:.07em">DATA SINTETIK</span>
+    </div>
+  </header>
+
+  <div style="display:flex;flex:1;min-height:0">
+
+    <nav style="display:flex;flex-direction:column;gap:3px;flex:none;padding:14px 8px;background:var(--s-rail);border-right:1px solid var(--b-1);overflow:hidden;transition:width .18s ease;width:{{ navW }}">
+      <p style="margin:0 8px 8px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.14em;color:var(--t-3);display:{{ labelShow }}">MENU</p>
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3">
+        <button type="button" sc-camel-on-click="{{ n.onGo }}" title="{{ n.label }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;background:{{ n.bg }};border:1px solid {{ n.bd }};border-radius:9px;text-align:left;font-weight:500;color:{{ n.fg }};white-space:nowrap" style-hover="background:var(--a-1-soft)">
+          <span style="display:flex;flex-direction:column;justify-content:center;gap:2.5px;width:16px;flex:none">
+            <span style="display:block;height:2px;border-radius:1px;background:{{ n.g1c }};width:{{ n.g1 }}"></span>
+            <span style="display:block;height:2px;border-radius:1px;background:{{ n.g2c }};width:{{ n.g2 }}"></span>
+            <span style="display:block;height:2px;border-radius:1px;background:{{ n.g3c }};width:{{ n.g3 }}"></span>
+          </span>
+          <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;display:{{ labelShow }}">{{ n.label }}</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-variant-numeric:tabular-nums;color:var(--t-3);display:{{ labelShow }}">{{ n.count }}</span>
+        </button>
+      </sc-for>
+      <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--b-1)">
+        <p style="margin:0 8px 7px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.14em;color:var(--t-3);display:{{ labelShow }}">KASUS TERBUKA</p>
+        <button type="button" sc-camel-on-click="{{ goCase }}" title="KSS-2026-0418" style="display:flex;align-items:center;gap:11px;width:100%;padding:9px 10px;background:{{ caseNavBg }};border:1px solid {{ caseNavBd }};border-radius:9px;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:12px;color:{{ caseNavFg }};white-space:nowrap">
+          <span style="width:16px;flex:none;display:flex;justify-content:center"><span style="width:8px;height:8px;border-radius:2px;background:var(--red-f)"></span></span>
+          <span style="display:{{ labelShow }}">KSS-2026-0418</span>
+        </button>
+      </div>
+      <div style="margin-top:auto;padding:12px 8px 0;font-size:11px;line-height:1.45;color:var(--t-3);display:{{ labelShow }}">Tidak ada halaman login. Peran disimulasikan untuk demo.</div>
+    </nav>
+
+    <main style="flex:1;min-width:0;overflow-y:auto">
+
+      <sc-if value="{{ isQueue }}" hint-placeholder-val="{{ true }}">
+      <section data-screen-label="Antrean Review" style="padding:26px 30px 72px;max-width:1560px">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px">
+          <div>
+            <p style="margin:0 0 5px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.16em;color:var(--t-3)">DAFTAR KERJA · TERURUT PITA PRIORITAS</p>
+            <h1 style="margin:0;font-size:30px;font-weight:600;letter-spacing:-0.028em;line-height:1.1">Antrean Review</h1>
+            <p style="margin:6px 0 0;max-width:640px;color:var(--t-2);text-wrap:pretty">Setiap baris dibuka dengan kalimat alasannya. Skor, pita, dan nominal berada di kanannya — bukan sebaliknya.</p>
+          </div>
+          <button type="button" sc-camel-on-click="{{ goIngest }}" style="flex:none;display:flex;align-items:center;gap:9px;padding:11px 18px;background:var(--a-1);border:none;border-radius:10px;color:var(--a-1-on);font-weight:600" style-hover="background:var(--a-1h)">Masukkan bundel baru<span style="font-family:'IBM Plex Mono',monospace;font-size:11px;opacity:.7">↵</span></button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(186px,1fr));gap:12px;margin-bottom:14px">
+          <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
+            <button type="button" sc-camel-on-click="{{ m.onClick }}" title="Terapkan saringan ini" style="position:relative;display:flex;flex-direction:column;gap:2px;padding:15px 16px 14px;background:var(--s-card);border:1px solid {{ m.bd }};border-radius:12px;text-align:left;box-shadow:var(--shadow);overflow:hidden" style-hover="border-color:var(--b-2)">
+              <span style="position:absolute;left:0;top:0;bottom:0;width:3px;background:{{ m.accent }}"></span>
+              <span style="font-size:12px;color:var(--t-2);line-height:1.3;min-height:31px">{{ m.label }}</span>
+              <span style="display:flex;align-items:baseline;gap:6px"><span style="font-size:32px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-0.035em;line-height:1">{{ m.value }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--t-3)">{{ m.unit }}</span></span>
+              <span style="margin-top:3px;font-size:11px;color:{{ m.hintFg }}">{{ m.hint }}</span>
+            </button>
+          </sc-for>
+          <div style="display:flex;flex-direction:column;gap:8px;padding:15px 16px;background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow)">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.12em;color:var(--t-3)">VERSI MESIN &amp; DATA</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.55;font-variant-numeric:tabular-nums">aturan v1.4.2<br>model v0.9.1<br>data ds-2026-08-c</span>
+            <div style="display:flex;gap:6px;margin-top:auto">
+              <button type="button" sc-camel-on-click="{{ copyVersion }}" style="flex:1;padding:6px;background:transparent;border:1px solid var(--b-1);border-radius:7px;font-size:11px;font-weight:500" style-hover="border-color:var(--a-1);color:var(--a-1)">Salin</button>
+              <button type="button" sc-camel-on-click="{{ goEval }}" style="flex:1;padding:6px;background:transparent;border:1px solid var(--b-1);border-radius:7px;font-size:11px;font-weight:500" style-hover="border-color:var(--a-1);color:var(--a-1)">Evaluasi</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow);overflow:hidden">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--b-1)">
+            <sc-raw-select value="{{ fStatus }}" sc-camel-on-change="{{ onStatus }}" style="padding:7px 9px;background:var(--s-card);border:1px solid var(--b-1);border-radius:8px;font-size:13px;color:var(--t-1)">
+              <option value="">Status — semua</option>
+              <sc-for list="{{ statusOptions }}" as="o" hint-placeholder-count="4"><option value="{{ o.v }}">{{ o.v }}</option></sc-for>
+            </sc-raw-select>
+            <sc-raw-select value="{{ fMode }}" sc-camel-on-change="{{ onMode }}" style="padding:7px 9px;background:var(--s-card);border:1px solid var(--b-1);border-radius:8px;font-size:13px;color:var(--t-1)">
+              <option value="">Mode risiko — semua</option>
+              <sc-for list="{{ modeOptions }}" as="o" hint-placeholder-count="4"><option value="{{ o.v }}">{{ o.v }}</option></sc-for>
+            </sc-raw-select>
+            <sc-raw-select value="{{ fBand }}" sc-camel-on-change="{{ onBand }}" style="padding:7px 9px;background:var(--s-card);border:1px solid var(--b-1);border-radius:8px;font-size:13px;color:var(--t-1)">
+              <option value="">Pita prioritas — semua</option>
+              <sc-for list="{{ bandOptions }}" as="o" hint-placeholder-count="4"><option value="{{ o.v }}">{{ o.v }}</option></sc-for>
+            </sc-raw-select>
+            <button type="button" sc-camel-on-click="{{ toggleRange }}" style="padding:7px 9px;background:{{ rangeBg }};border:1px solid {{ rangeBd }};border-radius:8px;font-size:13px;color:{{ rangeFg }};font-variant-numeric:tabular-nums">{{ rangeLabel }}</button>
+            <input type="search" value="{{ q }}" sc-camel-on-change="{{ onSearch }}" placeholder="Cari pengenal kasus pseudonim" style="flex:1;min-width:210px;padding:7px 11px;background:var(--s-card);border:1px solid var(--b-1);border-radius:8px;font-size:13px;color:var(--t-1)">
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--b-1);background:var(--s-sunk)">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.14em;color:var(--t-3)">SARINGAN AKTIF</span>
+            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
+              <button type="button" sc-camel-on-click="{{ c.onRemove }}" style="display:flex;align-items:center;gap:7px;padding:3px 6px 3px 10px;background:var(--a-1-soft);border:1px solid var(--a-1-bd);border-radius:999px;font-size:12px;color:var(--t-1)" style-hover="border-color:var(--a-1)">{{ c.text }}<span style="display:flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--s-card);font-size:11px;line-height:1;color:var(--t-2)">×</span></button>
+            </sc-for>
+            <sc-if value="{{ noChips }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:var(--t-3)">tidak ada — seluruh antrean tampil</span></sc-if>
+            <sc-if value="{{ hasChips }}" hint-placeholder-val="{{ true }}"><button type="button" sc-camel-on-click="{{ clearChips }}" style="padding:3px 8px;background:transparent;border:none;font-size:12px;color:var(--a-1);text-decoration:underline">Bersihkan semua</button></sc-if>
+            <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t-2);font-variant-numeric:tabular-nums">{{ countLabel }}</span>
+          </div>
+
+          <sc-if value="{{ showRows }}" hint-placeholder-val="{{ true }}">
+          <div style="overflow-x:auto">
+          <sc-raw-table style="width:100%;min-width:1240px;border-collapse:collapse;table-layout:fixed">
+            <sc-raw-thead>
+              <sc-raw-tr style="background:var(--s-sunk)">
+                <sc-raw-th style="padding:9px 12px 9px 16px;border-bottom:1px solid var(--b-1);text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">KALIMAT ALASAN</sc-raw-th>
+                <sc-raw-th style="width:168px;padding:9px 12px;border-bottom:1px solid var(--b-1);text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">MODE RISIKO</sc-raw-th>
+                <sc-raw-th style="width:126px;padding:9px 12px;border-bottom:1px solid var(--b-1);text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">PENGENAL</sc-raw-th>
+                <sc-raw-th style="width:116px;padding:9px 12px;border-bottom:1px solid var(--b-1);text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">BUKTI</sc-raw-th>
+                <sc-raw-th style="width:126px;padding:0;border-bottom:1px solid var(--b-1)"><button type="button" sc-camel-on-click="{{ sortAmount }}" style="display:flex;justify-content:flex-end;gap:5px;width:100%;padding:9px 12px;background:transparent;border:none;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:{{ sortAmountFg }}">NOMINAL<span>{{ sortAmountArrow }}</span></button></sc-raw-th>
+                <sc-raw-th style="width:86px;padding:0;border-bottom:1px solid var(--b-1)"><button type="button" sc-camel-on-click="{{ sortAge }}" style="display:flex;justify-content:flex-end;gap:5px;width:100%;padding:9px 12px;background:transparent;border:none;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:{{ sortAgeFg }}">UMUR<span>{{ sortAgeArrow }}</span></button></sc-raw-th>
+                <sc-raw-th style="width:176px;padding:0;border-bottom:1px solid var(--b-1)"><button type="button" sc-camel-on-click="{{ sortBand }}" style="display:flex;gap:5px;width:100%;padding:9px 12px;background:transparent;border:none;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:{{ sortBandFg }}">PITA PRIORITAS<span>{{ sortBandArrow }}</span></button></sc-raw-th>
+                <sc-raw-th style="width:150px;padding:9px 12px;border-bottom:1px solid var(--b-1);text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">STATUS</sc-raw-th>
+              </sc-raw-tr>
+            </sc-raw-thead>
+            <sc-raw-tbody>
+              <sc-for list="{{ rows }}" as="c" hint-placeholder-count="6">
+                <sc-raw-tr sc-camel-on-click="{{ c.onOpen }}" sc-camel-tab-index="0" sc-camel-on-key-down="{{ c.onKey }}" style="cursor:pointer;border-bottom:1px solid var(--b-1)" style-hover="background:var(--s-sunk)">
+                  <sc-raw-td style="padding:0;position:relative">
+                    <div style="display:flex;align-items:flex-start;gap:11px;padding:13px 12px 13px 16px">
+                      <span style="flex:none;width:3px;align-self:stretch;min-height:34px;border-radius:2px;background:{{ c.bandFg }}"></span>
+                      <div style="min-width:0">
+                        <p style="margin:0;font-size:14.5px;font-weight:500;line-height:1.35;text-wrap:pretty">{{ c.reason }}</p>
+                        <p style="margin:3px 0 0;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--t-3)">{{ c.codes }}</p>
+                      </div>
+                    </div>
+                  </sc-raw-td>
+                  <sc-raw-td style="padding:13px 12px;vertical-align:top"><span style="display:inline-block;padding:2px 9px;background:var(--neu-b);border:1px solid var(--neu-d);border-radius:999px;font-size:11px;color:var(--neu-f)">{{ c.mode }}</span><span style="display:block;margin-top:4px;font-size:11px;color:var(--t-3)">{{ c.modeExtra }}</span></sc-raw-td>
+                  <sc-raw-td style="padding:13px 12px;vertical-align:top;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t-2);font-variant-numeric:tabular-nums">{{ c.id }}</sc-raw-td>
+                  <sc-raw-td style="padding:13px 12px;vertical-align:top"><span style="display:flex;align-items:center;gap:7px;font-size:12px;color:{{ c.evFg }}"><span style="display:flex;gap:2px"><span style="width:4px;height:11px;border-radius:1px;background:{{ c.ev1 }}"></span><span style="width:4px;height:11px;border-radius:1px;background:{{ c.ev2 }}"></span><span style="width:4px;height:11px;border-radius:1px;background:{{ c.ev3 }}"></span></span>{{ c.evidence }}</span></sc-raw-td>
+                  <sc-raw-td style="padding:13px 12px;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;font-size:14px;font-weight:500">{{ c.amount }}</sc-raw-td>
+                  <sc-raw-td style="padding:13px 12px;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;font-size:13px;color:var(--t-2)">{{ c.age }}</sc-raw-td>
+                  <sc-raw-td style="padding:13px 12px;vertical-align:top"><span title="{{ c.bandWhy }}" style="display:inline-block;padding:3px 10px;border-radius:7px;font-size:12px;font-weight:600;background:{{ c.bandBg }};border:1px solid {{ c.bandBd }};color:{{ c.bandFg }}">{{ c.band }}</span></sc-raw-td>
+                  <sc-raw-td style="padding:13px 12px;vertical-align:top;font-size:13px;color:var(--t-2)">{{ c.status }}</sc-raw-td>
+                </sc-raw-tr>
+              </sc-for>
+            </sc-raw-tbody>
+          </sc-raw-table>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 14px;background:var(--s-sunk)">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t-3);font-variant-numeric:tabular-nums">{{ pageLabel }}</span>
+            <div style="display:flex;gap:8px">
+              <button type="button" sc-camel-on-click="{{ prevPage }}" disabled="{{ atFirst }}" style="padding:6px 13px;background:var(--s-card);border:1px solid var(--b-1);border-radius:8px;font-size:13px;color:{{ prevFg }};cursor:{{ prevCursor }}">Sebelumnya</button>
+              <button type="button" sc-camel-on-click="{{ nextPage }}" disabled="{{ atLast }}" style="padding:6px 13px;background:var(--s-card);border:1px solid var(--b-1);border-radius:8px;font-size:13px;color:{{ nextFg }};cursor:{{ nextCursor }}">Berikutnya</button>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ showEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:54px 32px;text-align:center">
+            <div style="display:flex;justify-content:center;gap:4px;margin-bottom:18px"><span style="width:34px;height:5px;border-radius:3px;background:var(--b-1)"></span><span style="width:52px;height:5px;border-radius:3px;background:var(--b-2)"></span><span style="width:26px;height:5px;border-radius:3px;background:var(--b-1)"></span></div>
+            <p style="margin:0 0 8px;font-size:17px;font-weight:600">Tidak ada kasus yang cocok dengan saringan ini</p>
+            <p style="margin:0 auto 20px;max-width:520px;color:var(--t-2);font-size:14px">{{ emptyDetail }} Data tetap ada — hanya tidak ada yang lolos saringan yang sedang aktif.</p>
+            <button type="button" sc-camel-on-click="{{ clearChips }}" style="padding:9px 18px;background:var(--a-1);border:none;border-radius:9px;color:var(--a-1-on);font-weight:600">Bersihkan saringan</button>
+          </div>
+          </sc-if>
+        </div>
+
+        <p style="margin:16px 0 0;font-size:12px;color:var(--t-3);max-width:760px">Halaman ini sengaja tidak memuat grafik agregat, peringkat fasilitas, atau angka rupiah "diselamatkan". Kasus tanpa sinyal tidak pernah dilabeli bersih — hanya "tidak ada risiko teramati".</p>
+      </section>
+      </sc-if>
+
+      <sc-if value="{{ isCase }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Detail Kasus" style="padding:20px 30px 72px">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px;font-size:12px;color:var(--t-3)">
+          <button type="button" sc-camel-on-click="{{ goQueue }}" style="padding:0;background:none;border:none;color:var(--a-1);text-decoration:underline">Antrean Review</button>
+          <span>/</span><span style="font-family:'IBM Plex Mono',monospace">KSS-2026-0418</span>
+        </div>
+
+        <sc-if value="{{ mismatch }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;padding:14px 16px;background:var(--amb-b);border:1px solid var(--amb-d);border-radius:11px;animation:tkrise .2s ease">
+          <div style="flex:1"><p style="margin:0 0 3px;font-weight:600;color:var(--amb-f)">Versi kasus tidak cocok — kasus ini berubah sejak Anda membukanya</p><p style="margin:0;font-size:13px;color:var(--t-2)">Bukti tambahan masuk 09:02 oleh <strong>Peninjau senior (simulasi)</strong>; alasan R-118 disaring ulang ke aturan v1.4.2. Isian disposisi Anda tetap dipertahankan.</p></div>
+          <button type="button" sc-camel-on-click="{{ reloadCase }}" style="flex:none;padding:7px 13px;background:var(--s-card);border:1px solid var(--amb-d);border-radius:8px;color:var(--amb-f);font-weight:600;font-size:13px">Muat ulang</button>
+        </div>
+        </sc-if>
+
+        <div style="position:relative;padding:20px 22px;margin-bottom:14px;background:var(--s-card);border:1px solid var(--b-1);border-radius:14px;box-shadow:var(--shadow);overflow:hidden">
+          <span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--red-f)"></span>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:26px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--b-1)">
+            <sc-for list="{{ caseFacts }}" as="f" hint-placeholder-count="4">
+              <div><p style="margin:0 0 2px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">{{ f.label }}</p><p style="margin:0;font-size:16px;font-weight:{{ f.weight }};font-family:{{ f.family }};font-variant-numeric:tabular-nums">{{ f.value }}</p></div>
+            </sc-for>
+            <div><p style="margin:0 0 2px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">STATUS</p><span style="display:inline-flex;align-items:center;gap:7px;padding:3px 10px;background:var(--amb-b);border:1px solid var(--amb-d);border-radius:7px;font-size:13px;font-weight:600;color:var(--amb-f)"><span style="width:7px;height:7px;border-radius:2px;background:var(--amb-f)"></span>{{ caseStatus }}</span></div>
+            <div style="margin-left:auto;display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ headActions }}" as="a" hint-placeholder-count="4">
+                <button type="button" sc-camel-on-click="{{ a.onPick }}" style="padding:9px 15px;background:{{ a.bg }};border:1px solid {{ a.bd }};border-radius:9px;font-weight:600;font-size:13.5px;color:{{ a.fg }}" style-hover="border-color:var(--a-1)">{{ a.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <p style="margin:0 0 6px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">ALASAN UTAMA</p>
+          <p style="margin:0 0 14px;max-width:1000px;font-size:22px;font-weight:600;line-height:1.3;letter-spacing:-0.02em;text-wrap:pretty">Baris tindakan fisioterapi ditagihkan tiga kali tanpa catatan tindakan yang selesai, sementara berkas pendukungnya lengkap.</p>
+          <button type="button" sc-camel-on-click="{{ toggleBasis }}" style="display:inline-flex;align-items:center;gap:8px;padding:6px 12px;background:var(--s-sunk);border:1px solid var(--b-1);border-radius:8px;font-size:13px;font-weight:500;color:var(--a-1)" style-hover="border-color:var(--a-1)">{{ basisLabel }}<span style="font-family:'IBM Plex Mono',monospace;font-size:11px">{{ basisCaret }}</span></button>
+          <sc-if value="{{ basis }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:14px;padding:16px 18px;background:var(--s-sunk);border:1px solid var(--b-1);border-radius:11px;max-width:1000px;animation:tkrise .2s ease">
+            <p style="margin:0 0 12px;font-size:13.5px;line-height:1.55;color:var(--t-2)">Pita <strong style="color:var(--red-f)">Konflik deterministik</strong> dipilih karena aturan integritas IR-014 v1.4.2 dilanggar secara pasti: ada baris tagihan tindakan tanpa catatan tindakan selesai yang cocok, dan laporan kelengkapan berkas menyatakan seluruh sumber daya pendukung sudah dikirim. Pita ini menaikkan prioritas tinjauan — <strong>bukan</strong> menolak klaim dan bukan menyatakan fraud.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ scoreParts }}" as="p" hint-placeholder-count="4">
+                <span style="display:flex;flex-direction:column;gap:4px;padding:9px 12px;background:var(--s-card);border:1px solid var(--b-1);border-radius:9px;min-width:132px">
+                  <span style="font-size:11px;color:var(--t-3)">{{ p.label }}</span>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums">{{ p.value }}</span>
+                  <span style="height:4px;border-radius:2px;background:var(--neu-b);overflow:hidden"><span style="display:block;height:100%;width:{{ p.w }};background:{{ p.c }}"></span></span>
+                </span>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;gap:6px;margin-bottom:14px;padding:4px;background:var(--s-sunk);border:1px solid var(--b-1);border-radius:10px;width:fit-content">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
+            <button type="button" sc-camel-on-click="{{ t.onPick }}" style="padding:8px 16px;background:{{ t.bg }};border:1px solid {{ t.bd }};border-radius:7px;font-weight:600;font-size:13.5px;color:{{ t.fg }}">{{ t.label }}</button>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ onBukti }}" hint-placeholder-val="{{ true }}">
+        <div style="overflow-x:auto;padding-bottom:4px">
+        <div style="display:grid;grid-template-columns:296px minmax(440px,1fr) 348px;gap:14px;align-items:start;min-width:1140px">
+
+          <div style="background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow);overflow:hidden">
+            <div style="padding:13px 15px;border-bottom:1px solid var(--b-1)"><p style="margin:0;font-size:13px;font-weight:600">Baris tagihan</p><p style="margin:2px 0 0;font-size:11px;color:var(--t-3)">Klik baris untuk memuat jejak buktinya</p></div>
+            <sc-for list="{{ billLines }}" as="b" hint-placeholder-count="5">
+              <button type="button" sc-camel-on-click="{{ b.onClick }}" style="display:block;width:100%;padding:12px 15px;background:{{ b.bg }};border:none;border-bottom:1px solid var(--b-1);border-left:3px solid {{ b.rail }};text-align:left" style-hover="background:var(--s-sunk)">
+                <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:3px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t-2)">{{ b.code }}</span><span style="font-size:13px;font-variant-numeric:tabular-nums;font-weight:500">{{ b.amount }}</span></div>
+                <div style="margin-bottom:6px;font-size:13px;line-height:1.35">{{ b.name }} <span style="color:var(--t-3)">· {{ b.qty }}</span></div>
+                <span style="display:inline-flex;align-items:center;gap:6px;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:500;background:{{ b.supBg }};border:1px solid {{ b.supBd }};color:{{ b.supFg }}">{{ b.support }}</span>
+              </button>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+            <sc-for list="{{ reasons }}" as="r" hint-placeholder-count="3">
+              <div style="background:var(--s-card);border:1px solid {{ r.cardBd }};border-radius:12px;box-shadow:var(--shadow);overflow:hidden">
+                <button type="button" sc-camel-on-click="{{ r.onToggle }}" style="display:flex;align-items:flex-start;gap:14px;width:100%;padding:15px 16px;background:transparent;border:none;border-left:3px solid {{ r.accent }};text-align:left" style-hover="background:var(--s-sunk)">
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-bottom:7px">
+                      <span style="padding:2px 9px;border-radius:999px;font-size:11px;font-weight:500;background:{{ r.chipBg }};border:1px solid {{ r.chipBd }};color:{{ r.chipFg }}">{{ r.mode }}</span>
+                      <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--t-3)">{{ r.code }} · {{ r.rule }}</span>
+                      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t-2)">kekuatan<span style="display:flex;gap:2px"><span style="width:12px;height:4px;border-radius:2px;background:{{ r.s1 }}"></span><span style="width:12px;height:4px;border-radius:2px;background:{{ r.s2 }}"></span><span style="width:12px;height:4px;border-radius:2px;background:{{ r.s3 }}"></span></span>{{ r.strength }}</span>
+                    </div>
+                    <p style="margin:0;font-size:15.5px;font-weight:500;line-height:1.4;text-wrap:pretty">{{ r.sentence }}</p>
+                  </div>
+                  <span style="flex:none;display:flex;align-items:center;justify-content:center;width:24px;height:24px;border:1px solid var(--b-1);border-radius:7px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t-2)">{{ r.caret }}</span>
+                </button>
+                <sc-if value="{{ r.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:2px 16px 16px;animation:tkrise .18s ease">
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:14px">
+                    <div>
+                      <p style="margin:0 0 7px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">BUKTI YANG DIHARAPKAN</p>
+                      <sc-for list="{{ r.expected }}" as="e" hint-placeholder-count="2"><div style="padding:7px 0;border-top:1px solid var(--b-1);font-size:13px;color:var(--t-2)">{{ e.text }}</div></sc-for>
+                    </div>
+                    <div>
+                      <p style="margin:0 0 7px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">BUKTI YANG DITEMUKAN</p>
+                      <sc-for list="{{ r.found }}" as="f" hint-placeholder-count="2"><div style="padding:7px 0;border-top:1px solid var(--b-1);font-size:13px"><button type="button" sc-camel-on-click="{{ f.onOpen }}" style="padding:0;background:none;border:none;color:var(--a-1);text-decoration:underline;text-align:left">{{ f.text }}</button></div></sc-for>
+                    </div>
+                  </div>
+                  <sc-if value="{{ r.hasCounter }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:relative;padding:13px 15px;background:var(--s-sunk);border:1px dashed var(--b-2);border-radius:10px">
+                    <p style="margin:0 0 5px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-2)">BUKTI TANDINGAN — MELEMAHKAN ALASAN INI</p>
+                    <p style="margin:0;font-size:13px;line-height:1.5">{{ r.counter }}</p>
+                  </div>
+                  </sc-if>
+                  <sc-if value="{{ r.hasCompare }}" hint-placeholder-val="{{ false }}">
+                  <button type="button" sc-camel-on-click="{{ openCompare }}" style="margin-top:12px;padding:8px 15px;background:var(--s-card);border:1px solid var(--b-2);border-radius:9px;font-size:13px;font-weight:600" style-hover="border-color:var(--a-1);color:var(--a-1)">Bandingkan pasangan kandidat</button>
+                  </sc-if>
+                </div>
+                </sc-if>
+              </div>
+            </sc-for>
+
+            <div style="padding:18px;background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow)">
+              <p style="margin:0 0 14px;font-size:13px;font-weight:600">Jalur bukti — baris {{ activeLine }}</p>
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0">
+                <sc-for list="{{ chain }}" as="n" hint-placeholder-count="4">
+                  <span style="display:flex;align-items:center">
+                    <span style="padding:9px 13px;background:{{ n.bg }};border:1px solid {{ n.bd }};border-radius:9px;font-size:12px;color:{{ n.fg }};font-weight:{{ n.weight }}">{{ n.text }}</span>
+                    <span style="width:22px;height:1px;background:var(--b-2);position:relative;display:{{ n.arrow }}"><span style="position:absolute;right:0;top:-3px;width:0;height:0;border-left:5px solid var(--b-2);border-top:3.5px solid transparent;border-bottom:3.5px solid transparent"></span></span>
+                  </span>
+                </sc-for>
+              </div>
+              <p style="margin:14px 0 0;font-size:12px;color:var(--t-3)">Satu jalur, bukan jaring hubungan. Rantai berhenti di simpul yang tidak punya sumber daya pendukung.</p>
+            </div>
+
+            <div style="padding:18px;background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow)">
+              <p style="margin:0 0 14px;font-size:13px;font-weight:600">Linimasa episode</p>
+              <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="5">
+                <div style="display:flex;gap:14px;padding-bottom:16px">
+                  <div style="flex:none;width:80px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t-3);font-variant-numeric:tabular-nums;padding-top:2px">{{ t.when }}</div>
+                  <div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:50%;border:2px solid {{ t.dot }};background:var(--s-card);margin-top:5px"></span><span style="flex:1;width:1px;background:var(--b-1)"></span></div>
+                  <div style="flex:1;min-width:0"><p style="margin:0;font-size:13.5px;line-height:1.4">{{ t.text }}</p><p style="margin:3px 0 0;font-size:11px;color:var(--t-3)">{{ t.meta }}</p></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="position:sticky;top:0;background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow);overflow:hidden">
+            <div style="padding:14px 16px;background:var(--s-sunk);border-bottom:1px solid var(--b-1)">
+              <p style="margin:0;font-size:13px;font-weight:600">Disposisi</p>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:7px">
+                <span style="flex:1;height:4px;border-radius:2px;background:{{ step1 }}"></span>
+                <span style="flex:1;height:4px;border-radius:2px;background:{{ step2 }}"></span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--t-3)">{{ stepLabel }}</span>
+              </div>
+            </div>
+            <div style="padding:16px">
+              <p style="margin:0 0 9px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">TINDAKAN</p>
+              <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:18px">
+                <sc-for list="{{ actions }}" as="a" hint-placeholder-count="4">
+                  <button type="button" sc-camel-on-click="{{ a.onPick }}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:{{ a.bg }};border:1px solid {{ a.bd }};border-radius:9px;text-align:left;font-size:13.5px;font-weight:600;color:{{ a.fg }}" style-hover="border-color:var(--a-1)">
+                    <span style="display:flex;align-items:center;justify-content:center;width:15px;height:15px;flex:none;border-radius:50%;border:1.5px solid {{ a.ringBd }}"><span style="width:7px;height:7px;border-radius:50%;background:{{ a.dot }}"></span></span>{{ a.label }}
+                  </button>
+                </sc-for>
+              </div>
+              <p style="margin:0 0 9px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">ALASAN TERSTRUKTUR</p>
+              <sc-raw-select value="{{ reasonPick }}" sc-camel-on-change="{{ onReasonPick }}" disabled="{{ noAction }}" style="width:100%;padding:9px 10px;margin-bottom:6px;background:var(--s-card);border:1px solid var(--b-1);border-radius:8px;font-size:13px;color:var(--t-1)">
+                <option value="">{{ reasonPlaceholder }}</option>
+                <sc-for list="{{ reasonOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+              </sc-raw-select>
+              <p style="margin:0 0 16px;font-size:11px;color:var(--t-3)">{{ reasonHint }}</p>
+              <sc-if value="{{ needEvidence }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-bottom:18px;padding:12px 13px;background:var(--s-sunk);border:1px solid var(--b-1);border-radius:9px;animation:tkrise .18s ease">
+                <p style="margin:0 0 8px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">BUKTI YANG DIMINTA</p>
+                <sc-for list="{{ requested }}" as="q" hint-placeholder-count="3">
+                  <button type="button" sc-camel-on-click="{{ q.onToggle }}" style="display:flex;align-items:flex-start;gap:9px;width:100%;padding:5px 0;background:none;border:none;text-align:left;font-size:13px;line-height:1.35">
+                    <span style="display:flex;align-items:center;justify-content:center;margin-top:2px;width:15px;height:15px;flex:none;border-radius:4px;border:1.5px solid {{ q.boxBd }};background:{{ q.boxBg }};color:{{ q.tickFg }};font-size:10px;font-weight:700">{{ q.tick }}</span>{{ q.label }}
+                  </button>
+                </sc-for>
+                <p style="margin:8px 0 0;font-size:11px;color:var(--t-3)">Tercentang otomatis dari sumber daya yang kurang; boleh diubah.</p>
+              </div>
+              </sc-if>
+              <p style="margin:0 0 9px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">CATATAN BEBAS</p>
+              <textarea rows="4" value="{{ note }}" sc-camel-on-change="{{ onNote }}" placeholder="Penjelasan tambahan untuk jejak audit" style="width:100%;padding:10px;margin-bottom:14px;background:var(--s-card);border:1px solid var(--b-1);border-radius:8px;font-size:13px;color:var(--t-1);resize:vertical"></textarea>
+              <p style="margin:0 0 14px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--t-3);font-variant-numeric:tabular-nums">versi kasus 3 · aturan v1.4.2 · model v0.9.1</p>
+              <button type="button" sc-camel-on-click="{{ onSave }}" disabled="{{ saveDisabled }}" style="width:100%;padding:12px;background:{{ saveBg }};border:none;border-radius:10px;color:{{ saveFg }};font-weight:700;cursor:{{ saveCursor }}">Simpan disposisi</button>
+              <p style="margin:9px 0 0;font-size:11px;line-height:1.45;color:var(--t-3)">{{ saveHint }}</p>
+            </div>
+          </div>
+        </div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ onAudit }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:900px;padding:22px;background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow)">
+          <p style="margin:0 0 4px;font-size:16px;font-weight:600">Riwayat audit kasus KSS-2026-0418</p>
+          <p style="margin:0 0 22px;font-size:13px;color:var(--t-2)">Setiap kejadian mencatat pelaku, tindakan, alasan, waktu, bukti yang dirujuk, dan versi mesin. Entri tidak pernah dihapus atau ditimpa.</p>
+          <sc-for list="{{ audit }}" as="a" hint-placeholder-count="5">
+            <div style="display:flex;gap:16px">
+              <div style="flex:none;width:110px;padding-top:2px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t-3);font-variant-numeric:tabular-nums">{{ a.when }}</div>
+              <div style="flex:none;display:flex;flex-direction:column;align-items:center"><span style="width:10px;height:10px;margin-top:6px;border-radius:50%;border:2px solid {{ a.dot }};background:var(--s-card)"></span><span style="flex:1;width:1px;background:var(--b-1)"></span></div>
+              <div style="flex:1;min-width:0;padding-bottom:22px">
+                <p style="margin:0;font-size:14px;font-weight:600">{{ a.action }}</p>
+                <p style="margin:3px 0 0;font-size:13px;color:var(--t-2);line-height:1.5">{{ a.detail }}</p>
+                <p style="margin:5px 0 0;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--t-3)">{{ a.meta }}</p>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+      </section>
+      </sc-if>
+
+      <sc-if value="{{ isIngest }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Ingest / Demo" style="padding:26px 30px 72px;max-width:1240px">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:20px">
+          <div>
+            <p style="margin:0 0 5px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.16em;color:var(--t-3)">SATU BUNDEL · SATU LAPORAN VALIDASI</p>
+            <h1 style="margin:0;font-size:30px;font-weight:600;letter-spacing:-0.028em;line-height:1.1">Ingest / Demo</h1>
+            <p style="margin:6px 0 0;max-width:620px;color:var(--t-2)">Tidak ada wisaya konfigurasi. Setelah validasi berhasil, tersedia satu tombol: saring klaim.</p>
+          </div>
+          <button type="button" sc-camel-on-click="{{ goQueue }}" style="flex:none;padding:11px 18px;background:var(--s-card);border:1px solid var(--b-2);border-radius:10px;font-weight:600" style-hover="border-color:var(--a-1);color:var(--a-1)">Kembali ke antrean</button>
+        </div>
+
+        <sc-if value="{{ dupNotice }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;padding:14px 16px;background:var(--a-1-soft);border:1px solid var(--a-1-bd);border-radius:11px;animation:tkrise .2s ease">
+          <div style="flex:1"><p style="margin:0 0 3px;font-weight:600">Bundel dengan sidik digital identik pernah dimasukkan</p><p style="margin:0;font-size:13px;color:var(--t-2)">Sidik <span style="font-family:'IBM Plex Mono',monospace">sha256:4f9c…a17b</span> sudah pernah disaring pada 28 Agu 2026 dan menghasilkan kasus yang sudah ada.</p></div>
+          <button type="button" sc-camel-on-click="{{ goCase }}" style="flex:none;padding:7px 13px;background:var(--s-card);border:1px solid var(--a-1-bd);border-radius:8px;color:var(--a-1);font-weight:600;font-size:13px">Buka kasus KSS-2026-0418</button>
+        </div>
+        </sc-if>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:14px;align-items:start;margin-bottom:14px">
+          <div style="padding:20px;background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow)">
+            <button type="button" sc-camel-on-click="{{ pickFile }}" style="display:block;width:100%;padding:34px 24px;text-align:center;background:var(--s-sunk);border:1.5px dashed var(--b-2);border-radius:11px" style-hover="border-color:var(--a-1);background:var(--a-1-soft)">
+              <span style="display:flex;justify-content:center;gap:4px;margin-bottom:14px"><span style="width:26px;height:5px;border-radius:3px;background:var(--b-2)"></span><span style="width:40px;height:5px;border-radius:3px;background:var(--a-1)"></span><span style="width:18px;height:5px;border-radius:3px;background:var(--b-2)"></span></span>
+              <span style="display:block;margin-bottom:4px;font-size:15px;font-weight:600">Seret berkas bundel ke sini</span>
+              <span style="display:block;margin-bottom:14px;font-size:13px;color:var(--t-2)">Satu berkas data terstruktur per pemasukan</span>
+              <span style="display:inline-block;padding:9px 17px;background:var(--a-1);border-radius:9px;color:var(--a-1-on);font-weight:600;font-size:13px">Pilih berkas</span>
+            </button>
+            <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;font-size:12px;color:var(--t-3)"><span>Ukuran maksimum <strong style="color:var(--t-1);font-variant-numeric:tabular-nums">20 MB</strong></span><span>Tipe <strong style="color:var(--t-1)">bundel klaim (.json)</strong></span><span>Kedalaman <strong style="color:var(--t-1);font-variant-numeric:tabular-nums">6</strong></span></div>
+            <p style="margin:18px 0 8px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">ATAU PAKAI KASUS CONTOH</p>
+            <sc-for list="{{ samples }}" as="s" hint-placeholder-count="5">
+              <button type="button" sc-camel-on-click="{{ s.onPick }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:10px 12px;background:{{ s.bg }};border:1px solid {{ s.bd }};border-radius:9px;margin-bottom:6px;text-align:left" style-hover="border-color:var(--a-1)">
+                <span style="display:flex;align-items:center;gap:10px"><span style="width:8px;height:8px;border-radius:2px;background:{{ s.dot }}"></span><span style="font-size:13px;font-weight:600">{{ s.name }}</span></span>
+                <span style="display:flex;align-items:center;gap:12px"><span style="font-size:12px;color:var(--t-3)">{{ s.note }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t-3)">{{ s.id }}</span></span>
+              </button>
+            </sc-for>
+          </div>
+
+          <div style="background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow);overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--b-1)">
+              <p style="margin:0;font-size:13px;font-weight:600">Status validasi</p>
+              <span style="display:inline-flex;align-items:center;gap:7px;padding:3px 11px;border-radius:7px;font-size:12px;font-weight:600;background:{{ vBg }};border:1px solid {{ vBd }};color:{{ vFg }}"><span style="width:7px;height:7px;border-radius:2px;background:{{ vFg }}"></span>{{ vLabel }}</span>
+            </div>
+            <sc-if value="{{ noBundle }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:52px 26px;text-align:center">
+              <p style="margin:0 0 6px;font-size:15px;font-weight:600">Belum ada berkas</p>
+              <p style="margin:0;font-size:13px;color:var(--t-2)">Pilih berkas atau salah satu kasus contoh di sebelah kiri. Laporan validasi akan terisi di sini.</p>
+            </div>
+            </sc-if>
+            <sc-if value="{{ hasBundle }}" hint-placeholder-val="{{ false }}">
+            <div style="animation:tkrise .2s ease">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--b-1)">
+                <sc-for list="{{ counts }}" as="c" hint-placeholder-count="6">
+                  <div style="padding:13px 15px;background:var(--s-card)"><p style="margin:0;font-size:11px;color:var(--t-3)">{{ c.label }}</p><p style="margin:2px 0 0;font-size:19px;font-weight:600;font-variant-numeric:tabular-nums">{{ c.value }}</p></div>
+                </sc-for>
+              </div>
+              <div style="padding:14px 16px;border-top:1px solid var(--b-1);display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+                <div style="min-width:0"><p style="margin:0 0 3px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">SIDIK DIGITAL BERKAS</p><p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:12px;word-break:break-all">sha256:4f9c1d20b8e37a5591cc0e6d4b8f7231a17b</p></div>
+                <button type="button" sc-camel-on-click="{{ copyHash }}" style="flex:none;padding:6px 12px;background:transparent;border:1px solid var(--b-1);border-radius:7px;font-size:12px;font-weight:500" style-hover="border-color:var(--a-1);color:var(--a-1)">Salin</button>
+              </div>
+              <div style="padding:14px 16px;border-top:1px solid var(--b-1);background:var(--s-sunk)">
+                <button type="button" sc-camel-on-click="{{ runScreen }}" disabled="{{ screenDisabled }}" style="width:100%;padding:12px;background:{{ screenBg }};border:none;border-radius:10px;color:{{ screenFg }};font-weight:700;cursor:{{ screenCursor }}">Saring klaim</button>
+                <p style="margin:9px 0 0;font-size:11px;color:var(--t-3)">{{ screenHint }}</p>
+              </div>
+            </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <sc-if value="{{ hasBundle }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="margin-bottom:14px;padding:14px 16px;background:var(--amb-b);border:1px solid var(--amb-d);border-radius:11px"><p style="margin:0;font-size:13px;color:var(--t-2)"><strong style="color:var(--amb-f)">Catatan kelengkapan berkas.</strong> Dua jenis sumber daya pendukung tidak hadir: <strong>catatan tindakan</strong> dan <strong>laporan diagnostik</strong>. Ketiadaannya menurunkan keyakinan dan mengarah ke "minta bukti tambahan" — bukan menaikkan sinyal risiko.</p></div>
+          <div style="background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow);overflow:hidden">
+            <div style="padding:14px 16px;border-bottom:1px solid var(--b-1)"><p style="margin:0;font-size:13px;font-weight:600">Galat dan peringatan</p></div>
+            <sc-raw-table style="width:100%;border-collapse:collapse">
+              <sc-raw-thead><sc-raw-tr style="background:var(--s-sunk)">
+                <sc-raw-th style="width:126px;padding:9px 15px;border-bottom:1px solid var(--b-1);text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">KODE</sc-raw-th>
+                <sc-raw-th style="width:176px;padding:9px 15px;border-bottom:1px solid var(--b-1);text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">JENIS SUMBER DAYA</sc-raw-th>
+                <sc-raw-th style="width:156px;padding:9px 15px;border-bottom:1px solid var(--b-1);text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">PENGENAL</sc-raw-th>
+                <sc-raw-th style="padding:9px 15px;border-bottom:1px solid var(--b-1);text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">PENJELASAN</sc-raw-th>
+              </sc-raw-tr></sc-raw-thead>
+              <sc-raw-tbody>
+                <sc-for list="{{ ingestErrors }}" as="e" hint-placeholder-count="3">
+                  <sc-raw-tr style="border-bottom:1px solid var(--b-1)">
+                    <sc-raw-td style="padding:11px 15px"><span style="padding:2px 8px;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;background:{{ e.bg }};border:1px solid {{ e.bd }};color:{{ e.fg }}">{{ e.code }}</span></sc-raw-td>
+                    <sc-raw-td style="padding:11px 15px;font-size:13px">{{ e.kind }}</sc-raw-td>
+                    <sc-raw-td style="padding:11px 15px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t-2)">{{ e.ref }}</sc-raw-td>
+                    <sc-raw-td style="padding:11px 15px;font-size:13px;color:var(--t-2);line-height:1.45">{{ e.text }}</sc-raw-td>
+                  </sc-raw-tr>
+                </sc-for>
+              </sc-raw-tbody>
+            </sc-raw-table>
+          </div>
+        </div>
+        </sc-if>
+      </section>
+      </sc-if>
+
+      <sc-if value="{{ isEval }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Audit &amp; Evaluasi" style="padding:26px 30px 72px;max-width:1240px">
+        <p style="margin:0 0 5px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.16em;color:var(--t-3)">HANYA MENAMPILKAN · TANPA KENDALI EKSPERIMEN</p>
+        <h1 style="margin:0 0 6px;font-size:30px;font-weight:600;letter-spacing:-0.028em;line-height:1.1">Audit &amp; Evaluasi</h1>
+        <p style="margin:0 0 18px;max-width:660px;color:var(--t-2)">Nilai grafik selalu sama dengan nilai tabel — keduanya membaca artefak evaluasi yang sama.</p>
+
+        <div style="display:flex;align-items:center;gap:16px;padding:18px 22px;margin-bottom:14px;background:var(--amb-b);border:1px solid var(--amb-d);border-radius:12px">
+          <span style="flex:none;padding:8px 14px;background:var(--amb-f);border-radius:8px;color:var(--amb-b);font-size:15px;font-weight:700;letter-spacing:.09em">DATA SINTETIK</span>
+          <p style="margin:0;font-size:13px;color:var(--t-2)">Seluruh angka di halaman ini dihitung dari kumpulan data sintetik yang dibangkitkan sendiri. Tidak ada data peserta nyata, dan angka ini tidak berlaku sebagai klaim kinerja di lingkungan produksi.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px;margin-bottom:14px">
+          <sc-for list="{{ versions }}" as="v" hint-placeholder-count="4">
+            <div style="padding:14px 16px;background:var(--s-card);border:1px solid var(--b-1);border-radius:11px;box-shadow:var(--shadow)"><p style="margin:0 0 5px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">{{ v.label }}</p><p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:14px;font-variant-numeric:tabular-nums">{{ v.value }}</p></div>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px;margin-bottom:14px">
+          <div style="background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow);overflow:hidden">
+            <div style="padding:14px 16px;border-bottom:1px solid var(--b-1)"><p style="margin:0;font-size:13px;font-weight:600">Perbandingan baseline</p><p style="margin:2px 0 0;font-size:11px;color:var(--t-3)">Empat pendekatan pada kumpulan uji yang sama</p></div>
+            <sc-raw-table style="width:100%;border-collapse:collapse">
+              <sc-raw-thead><sc-raw-tr style="background:var(--s-sunk)">
+                <sc-raw-th style="padding:9px 15px;border-bottom:1px solid var(--b-1);text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">PENDEKATAN</sc-raw-th>
+                <sc-raw-th style="padding:9px 15px;border-bottom:1px solid var(--b-1);text-align:right;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">KETEPATAN</sc-raw-th>
+                <sc-raw-th style="padding:9px 15px;border-bottom:1px solid var(--b-1);text-align:right;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">KETERPANGGILAN</sc-raw-th>
+                <sc-raw-th style="padding:9px 15px;border-bottom:1px solid var(--b-1);text-align:right;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">F1</sc-raw-th>
+              </sc-raw-tr></sc-raw-thead>
+              <sc-raw-tbody>
+                <sc-for list="{{ baselines }}" as="b" hint-placeholder-count="4">
+                  <sc-raw-tr style="border-bottom:1px solid var(--b-1);background:{{ b.rowBg }}">
+                    <sc-raw-td style="padding:11px 15px;font-size:13px;font-weight:{{ b.weight }}">{{ b.name }}</sc-raw-td>
+                    <sc-raw-td style="padding:11px 15px;text-align:right;font-size:13px;font-variant-numeric:tabular-nums">{{ b.precision }}</sc-raw-td>
+                    <sc-raw-td style="padding:11px 15px;text-align:right;font-size:13px;font-variant-numeric:tabular-nums">{{ b.recall }}</sc-raw-td>
+                    <sc-raw-td style="padding:11px 15px;text-align:right;font-size:13px;font-variant-numeric:tabular-nums;font-weight:{{ b.weight }}">{{ b.f1 }}</sc-raw-td>
+                  </sc-raw-tr>
+                </sc-for>
+              </sc-raw-tbody>
+            </sc-raw-table>
+          </div>
+
+          <div style="background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow);overflow:hidden">
+            <div style="padding:14px 16px;border-bottom:1px solid var(--b-1)"><p style="margin:0;font-size:13px;font-weight:600">Metrik per mode risiko</p><p style="margin:2px 0 0;font-size:11px;color:var(--t-3)">Klik baris untuk rincian mode</p></div>
+            <sc-for list="{{ modeMetrics }}" as="m" hint-placeholder-count="4">
+              <div style="border-bottom:1px solid var(--b-1)">
+                <button type="button" sc-camel-on-click="{{ m.onToggle }}" style="display:flex;align-items:center;gap:12px;width:100%;padding:11px 15px;background:{{ m.bg }};border:none;text-align:left" style-hover="background:var(--s-sunk)">
+                  <span style="flex:1;min-width:0;font-size:13px;font-weight:500">{{ m.name }}</span>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-variant-numeric:tabular-nums;color:var(--t-2)">{{ m.summary }}</span>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t-3)">{{ m.caret }}</span>
+                </button>
+                <sc-if value="{{ m.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 15px 14px;animation:tkrise .18s ease">
+                  <sc-for list="{{ m.bars }}" as="d" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:12px;padding:5px 0">
+                      <span style="flex:none;width:112px;font-size:12px;color:var(--t-2)">{{ d.label }}</span>
+                      <span style="flex:1;height:7px;border-radius:4px;background:var(--neu-b);overflow:hidden"><span style="display:block;height:100%;width:{{ d.w }};background:var(--a-1)"></span></span>
+                      <span style="flex:none;width:38px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;font-variant-numeric:tabular-nums">{{ d.v }}</span>
+                    </div>
+                  </sc-for>
+                  <p style="margin:8px 0 0;font-size:12px;color:var(--t-3);line-height:1.45">{{ m.note }}</p>
+                </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:14px;margin-bottom:14px">
+          <div style="padding:18px;background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow)">
+            <p style="margin:0 0 3px;font-size:13px;font-weight:600">Positif palsu per 100 klaim bersih</p>
+            <p style="margin:0 0 16px;font-size:11px;color:var(--t-3)">Nilai batang = nilai tabel baseline</p>
+            <sc-for list="{{ fpBars }}" as="f" hint-placeholder-count="4">
+              <div style="margin-bottom:12px">
+                <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px;font-size:12px"><span style="color:var(--t-2)">{{ f.name }}</span><span style="font-variant-numeric:tabular-nums;font-weight:600">{{ f.value }}</span></div>
+                <div style="height:10px;background:var(--neu-b);border-radius:5px;overflow:hidden"><div style="height:100%;width:{{ f.width }};background:{{ f.color }};border-radius:5px"></div></div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="padding:18px;background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow)">
+            <p style="margin:0 0 3px;font-size:13px;font-weight:600">Ketepatan pada kapasitas review</p>
+            <p style="margin:0 0 12px;font-size:11px;color:var(--t-3)">Sumbu X: kasus per hari yang mampu ditinjau</p>
+            <svg sc-camel-view-box="0 0 300 130" style="width:100%;height:auto;display:block" data-om-raster="true">
+              <line x1="34" y1="10" x2="34" y2="104" stroke="var(--b-1)"></line>
+              <line x1="34" y1="104" x2="292" y2="104" stroke="var(--b-1)"></line>
+              <line x1="34" y1="57" x2="292" y2="57" stroke="var(--b-1)" stroke-dasharray="3 4"></line>
+              <polyline points="34,26 98,34 162,52 226,72 290,88" fill="none" stroke="var(--a-1)" stroke-width="2.5" stroke-linejoin="round"></polyline>
+              <circle cx="34" cy="26" r="3.5" fill="var(--a-1)"></circle><circle cx="98" cy="34" r="3.5" fill="var(--a-1)"></circle><circle cx="162" cy="52" r="3.5" fill="var(--a-1)"></circle><circle cx="226" cy="72" r="3.5" fill="var(--a-1)"></circle><circle cx="290" cy="88" r="3.5" fill="var(--a-1)"></circle>
+              <text x="28" y="30" text-anchor="end" font-size="9" fill="var(--t-3)">0,8</text>
+              <text x="28" y="61" text-anchor="end" font-size="9" fill="var(--t-3)">0,5</text>
+              <text x="28" y="107" text-anchor="end" font-size="9" fill="var(--t-3)">0,2</text>
+              <text x="34" y="120" font-size="9" fill="var(--t-3)">10</text>
+              <text x="158" y="120" font-size="9" fill="var(--t-3)">50</text>
+              <text x="278" y="120" font-size="9" fill="var(--t-3)">100</text>
+            </svg>
+          </div>
+
+          <div style="padding:18px;background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow)">
+            <p style="margin:0 0 14px;font-size:13px;font-weight:600">Waktu pemrosesan</p>
+            <p style="margin:0;font-size:11px;color:var(--t-3)">Waktu tengah penyaringan</p>
+            <p style="margin:0 0 14px;font-size:30px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-0.035em">3,4 s</p>
+            <p style="margin:0;font-size:11px;color:var(--t-3)">Persentil ke-95</p>
+            <p style="margin:0;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums">7,1 s</p>
+          </div>
+        </div>
+
+        <div style="padding:22px;background:var(--s-sunk);border:1px solid var(--b-2);border-radius:12px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px">
+            <p style="margin:0;font-size:16px;font-weight:600">Keterbatasan — yang dibuktikan dan yang tidak</p>
+            <button type="button" sc-camel-on-click="{{ copyLimits }}" style="padding:7px 14px;background:var(--s-card);border:1px solid var(--b-2);border-radius:8px;font-size:12px;font-weight:600" style-hover="border-color:var(--a-1);color:var(--a-1)">Salin teks</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px">
+            <div>
+              <p style="margin:0 0 7px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--grn-f)">YANG DIBUKTIKAN</p>
+              <sc-for list="{{ proven }}" as="p" hint-placeholder-count="3"><p style="margin:0;padding:8px 0;border-top:1px solid var(--b-1);font-size:13px;line-height:1.5">{{ p.text }}</p></sc-for>
+            </div>
+            <div>
+              <p style="margin:0 0 7px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--red-f)">YANG TIDAK DIBUKTIKAN</p>
+              <sc-for list="{{ unproven }}" as="p" hint-placeholder-count="3"><p style="margin:0;padding:8px 0;border-top:1px solid var(--b-1);font-size:13px;line-height:1.5">{{ p.text }}</p></sc-for>
+            </div>
+          </div>
+          <p style="margin:16px 0 0;padding-top:14px;border-top:1px solid var(--b-1);font-size:13px;font-weight:500;line-height:1.55">Seluruh angka pada halaman ini dihitung dari data sintetik. Angka ini menunjukkan kelayakan pendekatan, bukan kinerja pada klaim nyata, dan tidak boleh dibaca sebagai ukuran fraud yang terjadi.</p>
+        </div>
+
+        <div style="margin-top:14px;padding:18px 20px;background:var(--s-card);border:1px solid var(--b-1);border-radius:12px;box-shadow:var(--shadow)">
+          <p style="margin:0 0 12px;font-size:13px;font-weight:600">Riwayat kejadian terbaru</p>
+          <sc-for list="{{ evalHistory }}" as="h" hint-placeholder-count="3">
+            <button type="button" sc-camel-on-click="{{ goCase }}" style="display:flex;align-items:center;gap:16px;width:100%;padding:10px 6px;background:transparent;border:none;border-top:1px solid var(--b-1);border-radius:7px;text-align:left" style-hover="background:var(--s-sunk)">
+              <span style="flex:none;width:108px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t-3);font-variant-numeric:tabular-nums">{{ h.when }}</span>
+              <span style="flex:none;width:134px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--a-1)">{{ h.case }}</span>
+              <span style="flex:1;font-size:13px">{{ h.text }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t-3)">buka →</span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+      </sc-if>
+
+    </main>
+  </div>
+
+  <sc-if value="{{ compareOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;background:var(--scrim);display:flex;justify-content:flex-end;z-index:40">
+    <div style="width:780px;max-width:100%;height:100%;overflow-y:auto;background:var(--s-card);border-left:1px solid var(--b-1);animation:tkslide .2s ease">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px 22px;border-bottom:1px solid var(--b-1)">
+        <div><p style="margin:0;font-size:16px;font-weight:600">Laci perbandingan — pasangan kandidat</p><p style="margin:2px 0 0;font-size:12px;color:var(--t-3)">Esc menutup laci dan kembali ke posisi baca semula</p></div>
+        <button type="button" sc-camel-on-click="{{ closeCompare }}" style="padding:7px 13px;background:var(--s-card);border:1px solid var(--b-2);border-radius:8px;font-size:13px;font-weight:500">Tutup</button>
+      </div>
+      <div style="padding:18px 22px 8px"><div style="padding:13px 15px;background:var(--sof-b);border:1px solid var(--sof-d);border-radius:10px;font-size:13px;line-height:1.5;color:var(--t-2)"><strong style="color:var(--sof-f)">Peringatan templat.</strong> Dokumentasi berbasis templat yang sah dapat menghasilkan kemiripan tinggi. Kemiripan teks saja tidak pernah cukup untuk mencapai pita tertinggi.</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:14px 22px 0;background:var(--b-1);border:1px solid var(--b-1);border-radius:11px;overflow:hidden">
+        <sc-for list="{{ comparePanels }}" as="p" hint-placeholder-count="2">
+          <div style="padding:15px 17px;background:var(--s-card)">
+            <p style="margin:0 0 11px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">{{ p.id }}</p>
+            <sc-for list="{{ p.fields }}" as="f" hint-placeholder-count="5">
+              <div style="padding:8px 0;border-top:1px solid var(--b-1)"><p style="margin:0;font-size:11px;color:var(--t-3)">{{ f.label }}</p><p style="margin:1px 0 0;font-size:13px;font-variant-numeric:tabular-nums;color:{{ f.color }};font-weight:{{ f.weight }}">{{ f.value }}</p></div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:18px 22px 36px">
+        <p style="margin:0 0 9px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.13em;color:var(--t-3)">KOMPONEN KEMIRIPAN</p>
+        <sc-for list="{{ simParts }}" as="s" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:14px;padding:8px 0;border-top:1px solid var(--b-1)">
+            <span style="flex:none;width:210px;font-size:13px;color:var(--t-2)">{{ s.label }}</span>
+            <span style="flex:1;height:8px;background:var(--neu-b);border-radius:4px;overflow:hidden"><span style="display:block;height:100%;width:{{ s.width }};background:{{ s.color }};border-radius:4px"></span></span>
+            <span style="flex:none;width:44px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:13px;font-variant-numeric:tabular-nums">{{ s.value }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ sourceOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;background:var(--scrim);display:flex;justify-content:flex-end;z-index:40">
+    <div style="width:540px;max-width:100%;height:100%;overflow-y:auto;background:var(--s-card);border-left:1px solid var(--b-1);animation:tkslide .2s ease">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px 22px;border-bottom:1px solid var(--b-1)">
+        <div><p style="margin:0;font-size:16px;font-weight:600">Sumber asli</p><p style="margin:2px 0 0;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t-3)">Encounter/RJ-88231</p></div>
+        <button type="button" sc-camel-on-click="{{ closeSource }}" style="padding:7px 13px;background:var(--s-card);border:1px solid var(--b-2);border-radius:8px;font-size:13px;font-weight:500">Tutup</button>
+      </div>
+      <div style="padding:18px 22px">
+        <p style="margin:0 0 12px;font-size:12px;color:var(--t-3)">Isi sumber daya apa adanya, tanpa penulisan ulang. Dibaca dengan aturan v1.4.2 dan model v0.9.1.</p>
+        <pre style="margin:0;padding:16px;background:var(--s-sunk);border:1px solid var(--b-1);border-radius:10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.65;white-space:pre-wrap;word-break:break-word">{
+  "resourceType": "Encounter",
+  "id": "RJ-88231",
+  "status": "finished",
+  "class": "rawat jalan",
+  "period": { "start": "2026-08-12T08:14:00+07:00",
+              "end":   "2026-08-12T09:02:00+07:00" },
+  "subject": { "reference": "Patient/PSN-7741" },
+  "reasonCode": [ "M54.5 nyeri punggung bawah" ],
+  "procedure": []
+}</pre>
+        <p style="margin:14px 0 0;font-size:12.5px;color:var(--t-2);line-height:1.55"><strong>procedure</strong> kosong pada kunjungan ini. Inilah dasar alasan R-201: tidak ada catatan tindakan selesai yang dapat dipasangkan dengan baris tagihan 97110.</p>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;background:var(--scrim);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50">
+    <div style="width:580px;max-width:100%;background:var(--s-card);border:1px solid var(--b-1);border-radius:14px;overflow:hidden;animation:tkrise .2s ease">
+      <div style="padding:22px 26px;border-bottom:1px solid var(--b-1)"><p style="margin:0;font-size:18px;font-weight:600;letter-spacing:-0.015em">Penegasan sebelum menyimpan "Konfirmasi anomali"</p></div>
+      <div style="padding:22px 26px">
+        <p style="margin:0 0 14px;font-size:14px;line-height:1.6">Menyimpan tindakan ini berarti Anda menyatakan bahwa <strong>ada anomali yang teramati pada bukti</strong> kasus KSS-2026-0418.</p>
+        <div style="padding:15px 17px;background:var(--red-b);border:1px solid var(--red-d);border-radius:10px"><p style="margin:0;font-size:14px;line-height:1.6;color:var(--red-f)"><strong>Ini bukan temuan fraud.</strong> Sistem tidak menyatakan seseorang atau fasilitas melakukan kecurangan, tidak menolak klaim, dan tidak menghentikan pembayaran. Keputusan berikutnya tetap milik proses manusia.</p></div>
+        <p style="margin:14px 0 0;font-size:13px;color:var(--t-2)">Kejadian ini tercatat permanen di riwayat audit beserta nama peran, alasan terstruktur, dan versi mesin yang berlaku.</p>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:9px;padding:17px 26px;background:var(--s-sunk);border-top:1px solid var(--b-1)">
+        <button type="button" sc-camel-on-click="{{ closeModal }}" style="padding:10px 17px;background:var(--s-card);border:1px solid var(--b-2);border-radius:9px;font-weight:600">Batal</button>
+        <button type="button" sc-camel-on-click="{{ confirmModal }}" style="padding:10px 17px;background:var(--s-head);border:none;border-radius:9px;color:var(--t-inv);font-weight:700">Saya paham — simpan</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ toastOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;left:50%;bottom:30px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:13px 20px;background:var(--grn-b);border:1px solid var(--grn-d);border-radius:10px;z-index:60;animation:tkrise .18s ease">
+    <span style="width:8px;height:8px;border-radius:2px;background:var(--grn-f)"></span>
+    <p style="margin:0;font-size:13px;color:var(--grn-f);font-weight:500">{{ toastText }}</p>
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+
+
+
+</body></html>

@@ -2,14 +2,20 @@
 
 **Stack:** frontend
 **Sprint:** [`../sprint.md`](../sprint.md)
-**Status:** ⏸ Blocked — waiting on the design team
+**Status:** 📋 Planned — design blocker cleared, awaiting go-ahead on the toolchain
 **Foundation:** no
 **Autonomous:** no — one-time styling setup.
 
-> **Blocked, by design.** `design/tokens.css` does not exist yet; per
-> [`design/DESIGN.md`](../../../../design/DESIGN.md) the visual detail is owned by the design
-> team. This task cannot close until that file lands. The direction is already fixed, so
-> nothing else in this sprint waits on it — the other tasks build structure and behaviour.
+> **Unblocked on 30 Aug.** The design team delivered
+> [`design/mockup/tilik-klaim-v2.bundle.html`](../../../../design/mockup/tilik-klaim-v2.bundle.html);
+> [`design/tokens.css`](../../../../design/tokens.css) now holds 35 colour tokens across a light
+> and a dark theme, plus type scale, spacing, radius, and semantic band aliases. Contrast was
+> measured: all five status bands clear AA in both themes.
+>
+> What remains is the toolchain step — installing Tailwind and shadcn/ui and binding them to
+> those tokens. That is a dependency change, so it waits on an explicit go-ahead rather than
+> being taken autonomously. Two design questions are still open; see
+> [`design/DESIGN.md`](../../../../design/DESIGN.md) § Deviasi.
 
 ## Goal
 
@@ -30,14 +36,14 @@ language instead of browser defaults.
 
 ## TODOs
 
-- [ ] **Blocked:** obtain `design/tokens.css` from the design team
+- [x] Obtain the design tokens — delivered as `design/tokens.css`, extracted from the team's mockup
 - [ ] Install and configure Tailwind
-- [ ] Port tokens into `src/styles/tokens.css`
+- [ ] Port tokens into `src/styles/tokens.css` — copy from `design/tokens.css`, do not retype
 - [ ] Bind the Tailwind theme to the tokens
 - [ ] Install shadcn/ui and wire its CSS variables to the same tokens
 - [ ] Red reserved for deterministic conflict; green only for completed and validated actions
 - [ ] Tabular numerals for amounts and timestamps
-- [ ] Verify contrast reaches AA on every status indicator
+- [x] Verify contrast reaches AA on every status indicator — measured; only `--t-3` falls short (4.41:1), tracked in `design/DESIGN.md`
 - [ ] Use `PerfectScrollArea` for bounded scroll regions per the architecture rules
 
 ## Done when

@@ -1,7 +1,7 @@
 {
   "project": "tilik_klaim",
   "version": "0.1.0",
-  "note": "Diturunkan dari sprint/00-app-spec.md. Screen id identik dengan APP_MENU id di apps/web/src/config/menu/app-menu.ts. Mockup HTML belum ada - menunggu tim desain.",
+  "note": "Diturunkan dari sprint/00-app-spec.md. Screen id identik dengan APP_MENU id di apps/web/src/config/menu/app-menu.ts. Mockup dari tim desain sudah masuk: sumbernya design/mockup/tilik-klaim-v2.bundle.html, versi terbacanya design/mockup/reference.html (satu berkas memuat keempat layar, ditandai atribut data-screen-label).",
   "screens": [
     {
       "id": "queue",
@@ -11,7 +11,8 @@
       "widgets": 11,
       "brief": "03_ANTREAN_REVIEW",
       "priority": "P0",
-      "mockup": null
+      "mockup": "design/mockup/reference.html",
+      "mockup_selector": "[data-screen-label=\"Antrean Review\"]"
     },
     {
       "id": "case-detail",
@@ -21,7 +22,8 @@
       "widgets": 27,
       "brief": "04_DETAIL_KASUS_DISPOSISI",
       "priority": "P0",
-      "mockup": null
+      "mockup": "design/mockup/reference.html",
+      "mockup_selector": "[data-screen-label=\"Detail Kasus\"]"
     },
     {
       "id": "ingest",
@@ -31,7 +33,8 @@
       "widgets": 11,
       "brief": "01_INGEST_VALIDASI",
       "priority": "P1",
-      "mockup": null
+      "mockup": "design/mockup/reference.html",
+      "mockup_selector": "[data-screen-label=\"Ingest / Demo\"]"
     },
     {
       "id": "evaluation",
@@ -41,7 +44,8 @@
       "widgets": 9,
       "brief": "05_AUDIT_EVALUASI",
       "priority": "P1",
-      "mockup": null
+      "mockup": "design/mockup/reference.html",
+      "mockup_selector": "[data-screen-label=\"Audit & Evaluasi\"]"
     }
   ],
   "transitions": [
@@ -101,8 +105,8 @@
     }
   ],
   "pending": [
-    "design/tokens.css",
-    "design/pages/*.html",
-    "anotasi bidang -> respons antarmuka"
+    "anotasi bidang -> respons antarmuka",
+    "keputusan ukuran teks isi (mockup 13px vs DESIGN.md 14-16px)",
+    "perbaikan kontras --t-3 pada tema terang (4.41:1, di bawah AA)"
   ]
 }
