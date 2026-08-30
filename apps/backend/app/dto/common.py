@@ -12,7 +12,6 @@ from __future__ import annotations
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
-
 from tilik_domain.canonical import ResourceType
 from tilik_domain.reasons import PriorityBand, ReasonCode, RiskMode
 

@@ -11,6 +11,7 @@ import pathlib
 
 import pytest
 from fastapi.testclient import TestClient
+from tilik_domain.reasons import REASON_CATALOG, DispositionAction
 
 from app.dto.bundles import IngestBundleResponse, ScreenResponse
 from app.dto.cases import CaseDetailResponse, CaseQueueResponse, CaseSummary, QueueMetrics
@@ -23,7 +24,6 @@ from app.dto.dispositions import (
 from app.dto.evaluations import EvaluationResponse
 from app.errors import STATUS_FOR_CODE, ErrorCode, ErrorResponse
 from app.main import app
-from tilik_domain.reasons import REASON_CATALOG, DispositionAction
 
 FIXTURE_DIR = pathlib.Path(__file__).parent / "fixtures" / "api"
 

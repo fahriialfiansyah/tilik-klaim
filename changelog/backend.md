@@ -70,3 +70,28 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 > fraud/curang/palsu/tolak/sanksi. Screening the same input hash at the same version is
 > byte-identical. Verified: `uv run pytest` → 162 passed (was 115); domain → 21 passed;
 > ruff clean on all new files.
+
+### 2026-08-31 · [Sprint 02 — ingest-validation](../sprint/backlog/02-ingest-validation/sprint.md) · Task: [Bundle ingestion](../sprint/backlog/02-ingest-validation/backend/01-bundle-ingestion.md) · 🚧 In Progress
+
+**Event:** Endpoint and validation delivered; database binding outstanding
+**Files:** `apps/backend/app/router/bundles.py`, `app/service/{validation,hashing}.py`, `app/store/bundles.py`
+> `POST /v1/bundles` is live and the frozen 501 placeholder was removed from `router/contract.py`.
+> Content-type, size, and depth guards run before the payload is parsed, and depth is measured
+> iteratively so hostile nesting is refused rather than blowing the stack. Every rejection
+> carries its own stable code: unknown top-level key, dangling reference naming the missing
+> resource, duplicate id, circular reference, malformed JSON, schema violation. Schema issues
+> report the field path only — pydantic echoes offending values, and here those can be clinical
+> text. Hashing normalises every timestamp to UTC and treats a naive one as UTC, so the same
+> claim exported from two zones hashes identically; the idempotency key folds in engine and
+> ruleset versions, so a version bump re-screens rather than serving a stale verdict.
+> **Correction that shaped the design:** the first pass counted a billed line with no supporting
+> reference as a completeness note, which made all five gold fixtures `VALID_WITH_NOTES` against
+> their declared `expected_evidence_complete: true`. That would have lowered certainty and routed
+> the phantom case to request-evidence — defusing the detector the system exists for. An
+> unevidenced line is a finding; notes now cover only whole missing categories. A test locks it.
+> **Not done:** no `migrations/` and no database round-trip — Docker's daemon is down and the
+> Postgres on 5432 rejects the project credentials, so `InMemoryBundleStore` implements the
+> `BundleStore` protocol as `app/store/edges.py` does. Completeness notes are returned but not
+> yet carried onto a case; that waits on the screen endpoint.
+> Verified: `uv run pytest` → 204 passed (was 162); domain → 21 passed; ruff clean across
+> `app` and `tests` (the fix also reordered imports in 11 pre-existing files).

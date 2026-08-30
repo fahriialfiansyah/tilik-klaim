@@ -14,6 +14,10 @@ import pathlib
 from datetime import UTC, datetime
 from decimal import Decimal
 
+from tilik_domain.canonical import ResourceType
+from tilik_domain.reasons import CaseState, DispositionAction, PriorityBand, ReasonCode, RiskMode
+from tilik_domain.versioning import ENGINE_VERSION, RULESET_VERSION, SCHEMA_VERSION
+
 from app.dto.bundles import (
     IngestBundleResponse,
     ResourceCount,
@@ -41,9 +45,6 @@ from app.dto.evaluations import (
     RunManifest,
 )
 from app.errors import ErrorCode, ErrorResponse, ValidationIssue
-from tilik_domain.canonical import ResourceType
-from tilik_domain.reasons import CaseState, DispositionAction, PriorityBand, ReasonCode, RiskMode
-from tilik_domain.versioning import ENGINE_VERSION, RULESET_VERSION, SCHEMA_VERSION
 
 OUT = pathlib.Path(__file__).parent / "api"
 T0 = datetime(2026, 7, 2, 9, 0, tzinfo=UTC)
@@ -171,7 +172,7 @@ def main() -> None:
                     participant_token="PSN-1002",
                     provider_token="PRV-01",
                     evidence_completeness=COMPLETENESS,
-                    total_amount=Decimal("630000"),
+                    total_amount=Decimal(630000),
                     currency="IDR",
                     created_at=T0,
                     band=PriorityBand.DETERMINISTIC_CONFLICT,
@@ -190,7 +191,7 @@ def main() -> None:
                         missing_reference_count=0,
                         bundle_complete=True,
                     ),
-                    total_amount=Decimal("150000"),
+                    total_amount=Decimal(150000),
                     currency="IDR",
                     created_at=T0,
                     band=PriorityBand.NEEDS_CONTEXT,
@@ -210,7 +211,7 @@ def main() -> None:
             state=CaseState.SCREENED,
             participant_token="PSN-1002",
             provider_token="PRV-01",
-            total_amount=Decimal("630000"),
+            total_amount=Decimal(630000),
             currency="IDR",
             encounter_start=datetime(2026, 7, 1, 8, 0, tzinfo=UTC),
             encounter_end=datetime(2026, 7, 1, 11, 0, tzinfo=UTC),
@@ -226,8 +227,8 @@ def main() -> None:
                     line_id="LN-P1",
                     code="89.7",
                     description="Layanan 89.7",
-                    quantity=Decimal("1"),
-                    line_amount=Decimal("150000"),
+                    quantity=Decimal(1),
+                    line_amount=Decimal(150000),
                     service_at=datetime(2026, 7, 1, 9, 0, tzinfo=UTC),
                     support_state="SUPPORTED",
                 ),
@@ -235,8 +236,8 @@ def main() -> None:
                     line_id="LN-P2",
                     code="88.71",
                     description="Layanan 88.71",
-                    quantity=Decimal("1"),
-                    line_amount=Decimal("480000"),
+                    quantity=Decimal(1),
+                    line_amount=Decimal(480000),
                     service_at=datetime(2026, 7, 1, 10, 0, tzinfo=UTC),
                     support_state="UNSUPPORTED",
                 ),
@@ -288,7 +289,7 @@ def main() -> None:
             state=CaseState.SCREENED,
             participant_token="PSN-1005",
             provider_token="PRV-02",
-            total_amount=Decimal("150000"),
+            total_amount=Decimal(150000),
             currency="IDR",
             encounter_start=datetime(2026, 7, 2, 14, 0, tzinfo=UTC),
             encounter_end=datetime(2026, 7, 2, 17, 0, tzinfo=UTC),
@@ -329,8 +330,8 @@ def main() -> None:
                     line_id="LN-CL2",
                     code="89.7",
                     description="Layanan 89.7",
-                    quantity=Decimal("1"),
-                    line_amount=Decimal("150000"),
+                    quantity=Decimal(1),
+                    line_amount=Decimal(150000),
                     service_at=datetime(2026, 7, 2, 15, 0, tzinfo=UTC),
                     support_state="SUPPORTED",
                 ),

@@ -4,10 +4,10 @@ from __future__ import annotations
 from datetime import datetime
 
 from pydantic import Field, field_validator
-
-from app.dto.common import Dto, EvidenceRefDto, VersionStamp
 from tilik_domain.canonical import ResourceType
 from tilik_domain.reasons import CaseState, DispositionAction
+
+from app.dto.common import Dto, EvidenceRefDto, VersionStamp
 
 
 class DispositionRequest(Dto):

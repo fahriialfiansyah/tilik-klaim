@@ -5,9 +5,9 @@ from datetime import datetime
 from decimal import Decimal
 
 from pydantic import Field
+from tilik_domain.reasons import CaseState, PriorityBand, RiskMode
 
 from app.dto.common import BandExplanation, Dto, EvidenceRefDto, PageInfo, ReasonDto, VersionStamp
-from tilik_domain.reasons import CaseState, PriorityBand, RiskMode
 
 
 class EvidenceCompleteness(Dto):

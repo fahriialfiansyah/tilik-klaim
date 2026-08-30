@@ -10,9 +10,9 @@ import json
 
 import pytest
 from pydantic import ValidationError
+from tilik_domain.canonical import CanonicalBundle
 
 from tests.fixtures import GOLD_DIR, SCENARIOS, load, load_all
-from tilik_domain.canonical import CanonicalBundle
 
 LEAKY_TERMS = ("scenario", "label", "expected", "injection", "injector", "difficulty")
 

@@ -30,7 +30,6 @@ from tilik_domain.canonical import (
     Condition,
     DemoMetadata,
     DiagnosticEvent,
-    DiagnosticKind,
     DocumentRef,
     Encounter,
     EncounterStatus,
@@ -99,7 +98,7 @@ def _charge(ci_id: str, code: str, enc_id: str, amount: str, offset_h: int) -> C
         account_id="ACC-01",
         code_system=SYS_PROC,
         code=code,
-        quantity=Decimal("1"),
+        quantity=Decimal(1),
         unit_price=Decimal(amount),
         total_amount=Decimal(amount),
         occurred_at=BASE + timedelta(hours=offset_h),
@@ -122,7 +121,7 @@ def _line(
         code_system=SYS_PROC,
         code=code,
         description=f"Layanan {code}",
-        quantity=Decimal("1"),
+        quantity=Decimal(1),
         unit_price=Decimal(amount),
         line_amount=Decimal(amount),
         service_at=BASE + timedelta(hours=enc_offset_h),
@@ -153,7 +152,7 @@ def _assemble(
     diagnostics: tuple[DiagnosticEvent, ...] = (),
     submitted_offset_h: int = 24,
 ) -> CanonicalBundle:
-    total = sum((line.line_amount for line in lines), Decimal("0"))
+    total = sum((line.line_amount for line in lines), Decimal(0))
     claim = ClaimHeader(
         claim_id=claim_id,
         participant_id=participant,

@@ -8,10 +8,10 @@ from __future__ import annotations
 from decimal import Decimal
 
 import pytest
-
-from tests.fixtures import SCENARIOS, load, load_all
 from tilik_domain.canonical import CanonicalBundle
 from tilik_domain.reasons import REASON_CATALOG
+
+from tests.fixtures import SCENARIOS, load, load_all
 
 ROUNDING_TOLERANCE = Decimal("0.01")
 """Claim totals may differ from the sum of lines by at most this much.
@@ -40,7 +40,7 @@ def test_every_reference_resolves(scenario: str) -> None:
 def test_claim_total_reconciles_with_lines(scenario: str) -> None:
     fixture = load(scenario)
     for bundle in (*fixture.history, fixture.bundle):
-        line_sum = sum((line.line_amount for line in bundle.lines), Decimal("0"))
+        line_sum = sum((line.line_amount for line in bundle.lines), Decimal(0))
         delta = abs(bundle.claim.total_amount - line_sum)
         assert delta <= ROUNDING_TOLERANCE, f"{bundle.bundle_id} off by {delta}"
 

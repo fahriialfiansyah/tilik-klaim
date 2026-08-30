@@ -4,9 +4,9 @@ from __future__ import annotations
 from datetime import datetime
 
 from pydantic import Field
+from tilik_domain.reasons import RiskMode
 
 from app.dto.common import Dto, VersionStamp
-from tilik_domain.reasons import RiskMode
 
 
 class BaselineMetrics(Dto):

@@ -5,7 +5,6 @@ import json
 import pathlib
 
 from pydantic import BaseModel, ConfigDict
-
 from tilik_domain.canonical import CanonicalBundle, DemoMetadata
 from tilik_domain.reasons import ReasonCode
 

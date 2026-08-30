@@ -8,13 +8,13 @@ unambiguous answer if it calls too early.
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, Query, status
+from tilik_domain.reasons import CaseState, PriorityBand, RiskMode
 
-from app.dto.bundles import IngestBundleResponse, ScreenRequest, ScreenResponse
+from app.dto.bundles import ScreenRequest, ScreenResponse
 from app.dto.cases import CaseDetailResponse, CaseQueueResponse
 from app.dto.dispositions import AuditResponse, DispositionRequest, DispositionResponse
 from app.dto.evaluations import EvaluationResponse
 from app.errors import ErrorResponse
-from tilik_domain.reasons import CaseState, PriorityBand, RiskMode
 
 router = APIRouter(prefix="/v1")
 
@@ -35,18 +35,8 @@ def _pending(task: str) -> HTTPException:
     )
 
 
-@router.post(
-    "/bundles",
-    response_model=IngestBundleResponse,
-    responses=ERROR_RESPONSES,
-    summary="Submit one synthetic bundle for validation",
-)
-def ingest_bundle() -> IngestBundleResponse:
-    """Validate a bundle and return counts, issues, and a deterministic input hash.
-
-    The optional demo scenario label never enters detector features.
-    """
-    raise _pending("sprint 02 / 01-bundle-ingestion")
+# `POST /bundles` is implemented in `app.router.bundles`; its placeholder was removed when
+# sprint 02 / 01-bundle-ingestion landed. The remaining handlers below are still pending.
 
 
 @router.post(
