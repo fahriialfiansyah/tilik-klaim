@@ -51,10 +51,13 @@ Source: `docs/HEALTHKATHON_2026_WINNING_MASTER_PLAN.docx` § 20 *Important const
 
 ## Notes
 
-The office scaffold-service at `an internal office host` is unreachable outside the office LAN
-(verified 2026-08-30: connection timeout). This sprint's apps were scaffolded by hand with
-standard tooling instead. **Do not run `.claude/skills/bootstrap-project/scripts/init_boilerplate.sh`
-later** — it unzips with `-o` and would overwrite `apps/` without warning.
+The scaffold service referenced by `.claude/skills/bootstrap-project` sits on an internal
+office network and is unreachable from this machine (verified 2026-08-30: connection
+timeout). This is a personal project, so it will stay unreachable. The apps here were
+scaffolded by hand with standard tooling instead.
+
+**Do not run `.claude/skills/bootstrap-project/scripts/init_boilerplate.sh` later**, even
+from inside that network — it unzips with `-o` and would overwrite `apps/` without warning.
 
 ## Outcome
 

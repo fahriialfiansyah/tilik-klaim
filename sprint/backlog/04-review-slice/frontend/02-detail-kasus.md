@@ -15,7 +15,7 @@ One screen where an operator understands a single reason and records a defensibl
 
 ## Files to touch
 
-- `apps/web/src/pages/detail-kasus/DetailKasusPage.tsx`
+- `apps/web/src/pages/case-detail/CaseDetailPage.tsx`
 - `apps/web/src/features/review/case-detail/components/` — header, claim lines, reason cards, evidence trace, timeline, comparison drawer, disposition panel, audit tab
 - `apps/web/src/features/review/case-detail/store.ts`
 

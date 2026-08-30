@@ -15,7 +15,7 @@ anything.
 
 ## Files to touch
 
-- `apps/web/src/pages/evaluasi/EvaluasiPage.tsx`
+- `apps/web/src/pages/evaluation/EvaluationPage.tsx`
 - `apps/web/src/features/review/evaluation/components/`
 
 ## Skills to consult

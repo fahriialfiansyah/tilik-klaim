@@ -1,19 +1,19 @@
 import { Route, Routes } from 'react-router-dom'
 
 import { AppShell } from '@/components/layouts/AppShell'
-import { AntreanReviewPage } from '@/pages/antrean/AntreanReviewPage'
-import { DetailKasusPage } from '@/pages/detail-kasus/DetailKasusPage'
-import { EvaluasiPage } from '@/pages/evaluasi/EvaluasiPage'
+import { CaseDetailPage } from '@/pages/case-detail/CaseDetailPage'
+import { EvaluationPage } from '@/pages/evaluation/EvaluationPage'
 import { IngestPage } from '@/pages/ingest/IngestPage'
+import { QueuePage } from '@/pages/queue/QueuePage'
 
 export function App() {
   return (
     <Routes>
       <Route element={<AppShell />}>
-        <Route index element={<AntreanReviewPage />} />
-        <Route path="cases/:id" element={<DetailKasusPage />} />
+        <Route index element={<QueuePage />} />
+        <Route path="cases/:id" element={<CaseDetailPage />} />
         <Route path="ingest" element={<IngestPage />} />
-        <Route path="evaluation" element={<EvaluasiPage />} />
+        <Route path="evaluation" element={<EvaluationPage />} />
       </Route>
     </Routes>
   )

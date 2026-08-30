@@ -15,7 +15,7 @@ column is a readable reason sentence.
 
 ## Files to touch
 
-- `apps/web/src/pages/antrean/AntreanReviewPage.tsx`
+- `apps/web/src/pages/queue/QueuePage.tsx`
 - `apps/web/src/features/review/queue/components/` — metric cards, filter bar, queue table
 - `apps/web/src/features/review/queue/store.ts` — Zustand store for filters and sort
 - `apps/web/src/features/review/queue/api.ts`
