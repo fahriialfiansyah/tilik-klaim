@@ -1,8 +1,8 @@
 # Sprint 01 — Synthetic Data
 
-**Status:** 📋 Planned
+**Status:** 🚧 In Progress
 **Created At:** 2026-08-30
-**Started At:** -
+**Started At:** 2026-08-30
 **Completed At:** -
 **Gate:** **G3 — Data feasible**
 **Deadline:** **2 September 2026, 18:00** — kill-criteria deadline, not a soft target
@@ -84,3 +84,7 @@ Source: `docs/HEALTHKATHON_2026_WINNING_MASTER_PLAN.docx` § 20 *Important const
 ## Outcome
 
 (Filled in when the sprint moves to `archive/`.)
+
+## Progress — 2026-08-30
+
+Foundation task `00-canonical-schema` is `[x]`. Sprints 02, 03, 04, and 06 are unblocked. Three tasks remain, all gated on Java + Synthea being installed.

@@ -1,6 +1,6 @@
 # Sprint 02 — Ingest & Validation
 
-**Status:** 📋 Planned
+**Status:** 🚧 In Progress
 **Created At:** 2026-08-30
 **Gate:** G4 — Core engine · **Deadline:** 5 September 2026
 **Owner:** M1 — Technical & AI
@@ -51,3 +51,7 @@ Source: `docs/HEALTHKATHON_2026_WINNING_MASTER_PLAN.docx` § 20 *Important const
 ## Outcome
 
 (Filled in when the sprint moves to `archive/`.)
+
+## Progress — 2026-08-30
+
+Foundation task `00-api-contract` is `[x]`. The contract is frozen and fixtures are committed, so Sprint 04's frontend can start in parallel. One task remains.

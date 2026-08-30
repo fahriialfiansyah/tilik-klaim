@@ -1,0 +1,28 @@
+{
+  "completeness_notes": [],
+  "existing_case_id": null,
+  "ingestion_id": "ING-0001",
+  "input_hash": "9f2c1b7e4a000000000000000000000000000000000000000000000000000000",
+  "is_screenable": true,
+  "issues": [],
+  "resource_counts": [
+    {
+      "count": 1,
+      "resource_type": "Claim"
+    },
+    {
+      "count": 2,
+      "resource_type": "ClaimLine"
+    },
+    {
+      "count": 1,
+      "resource_type": "Encounter"
+    },
+    {
+      "count": 1,
+      "resource_type": "Procedure"
+    }
+  ],
+  "schema_version": "0.1.0",
+  "status": "VALID"
+}

@@ -1,0 +1,126 @@
+{
+  "band": {
+    "band": "NEEDS_CONTEXT",
+    "basis": "Kemiripan dokumentasi tinggi, tanpa penguat dari keluarga bukti lain.",
+    "caps_applied": [
+      "Kemiripan teks saja tidak pernah cukup untuk mencapai pita tertinggi."
+    ]
+  },
+  "case_id": "CASE-0002",
+  "case_version": 1,
+  "comparisons": [
+    {
+      "candidate_case_id": null,
+      "candidate_claim_id": "CLM-CL-A",
+      "fields": [
+        {
+          "field_name": "participant_token",
+          "left_value": "PSN-1005",
+          "matches": false,
+          "right_value": "PSN-1004"
+        },
+        {
+          "field_name": "provider_token",
+          "left_value": "PRV-02",
+          "matches": true,
+          "right_value": "PRV-02"
+        },
+        {
+          "field_name": "note_opening",
+          "left_value": "Pasien datang dengan keluhan nyeri tenggorokan sejak empat hari.",
+          "matches": false,
+          "right_value": "Pasien datang dengan keluhan nyeri tenggorokan sejak tiga hari."
+        }
+      ],
+      "overlap_end": null,
+      "overlap_start": null,
+      "similarity_components": {
+        "char_ngram": 0.94,
+        "token_overlap": 0.91
+      },
+      "template_caveat": "Dokumentasi berbasis templat yang sah dapat menghasilkan kemiripan setinggi ini. Periksa penguat dari bukti lain sebelum memutuskan."
+    }
+  ],
+  "currency": "IDR",
+  "encounter_end": "2026-07-02T17:00:00Z",
+  "encounter_start": "2026-07-02T14:00:00Z",
+  "evidence_completeness": {
+    "bundle_complete": true,
+    "missing_reference_count": 0,
+    "supported_lines": 1,
+    "total_lines": 1
+  },
+  "lines": [
+    {
+      "code": "89.7",
+      "description": "Layanan 89.7",
+      "line_amount": "150000",
+      "line_id": "LN-CL2",
+      "quantity": "1",
+      "service_at": "2026-07-02T15:00:00Z",
+      "support_state": "SUPPORTED"
+    }
+  ],
+  "participant_token": "PSN-1005",
+  "primary_reason": {
+    "code": "NEAR_DUPLICATE_DOCUMENTATION",
+    "component_scores": {
+      "char_ngram_similarity": 0.94
+    },
+    "counter_evidence": [
+      {
+        "label": "Kunjungan pada peserta berbeda, 30 jam setelahnya",
+        "resource_id": "ENC-CL-2",
+        "resource_type": "Encounter"
+      }
+    ],
+    "deterministic": false,
+    "evidence": [
+      {
+        "label": "Catatan klinis kunjungan ini",
+        "resource_id": "DOC-CL-2",
+        "resource_type": "Document"
+      }
+    ],
+    "mode": "CLONED_DOCUMENTATION",
+    "ruleset_version": "0.1.0",
+    "sentence": "Dokumentasi kunjungan ini sangat mirip dengan kunjungan lain."
+  },
+  "provider_token": "PRV-02",
+  "reasons": [
+    {
+      "code": "NEAR_DUPLICATE_DOCUMENTATION",
+      "component_scores": {
+        "char_ngram_similarity": 0.94
+      },
+      "counter_evidence": [
+        {
+          "label": "Kunjungan pada peserta berbeda, 30 jam setelahnya",
+          "resource_id": "ENC-CL-2",
+          "resource_type": "Encounter"
+        }
+      ],
+      "deterministic": false,
+      "evidence": [
+        {
+          "label": "Catatan klinis kunjungan ini",
+          "resource_id": "DOC-CL-2",
+          "resource_type": "Document"
+        }
+      ],
+      "mode": "CLONED_DOCUMENTATION",
+      "ruleset_version": "0.1.0",
+      "sentence": "Dokumentasi kunjungan ini sangat mirip dengan kunjungan lain."
+    }
+  ],
+  "state": "SCREENED",
+  "suggested_action": null,
+  "timeline": [],
+  "total_amount": "150000",
+  "versions": {
+    "dataset_version": "gold-0.1.0",
+    "engine_version": "0.1.0",
+    "ruleset_version": "0.1.0",
+    "schema_version": "0.1.0"
+  }
+}

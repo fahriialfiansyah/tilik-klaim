@@ -1,0 +1,5 @@
+{
+  "code": "CASE_VERSION_CONFLICT",
+  "detail": "Kasus sudah berubah sejak layar dibuka (versi 1 \u2192 2). Muat ulang lalu kirim ulang; isian Anda tidak hilang.",
+  "issues": []
+}

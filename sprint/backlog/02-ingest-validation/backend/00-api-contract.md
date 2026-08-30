@@ -2,7 +2,7 @@
 
 **Stack:** backend
 **Sprint:** [`../sprint.md`](../sprint.md)
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Foundation:** yes
 **Autonomous:** yes
 **Depends on:**
@@ -34,9 +34,11 @@ Plus a **stable error-code catalog** — the same failure returns the same code 
 
 ## Files to touch
 
-- `apps/backend/app/dto/` — request and response models for all seven endpoints
+- `apps/backend/app/dto/{common,bundles,cases,dispositions,evaluations}.py` — 29 wire models
+- `apps/backend/app/router/contract.py` — the seven route declarations
 - `apps/backend/app/errors.py` — stable error-code catalog
-- `apps/backend/tests/fixtures/api/*.json` — one committed example response per endpoint
+- `apps/backend/tests/fixtures/api/*.json` — 10 committed example responses
+- `apps/backend/tests/fixtures/build_api.py` — deterministic fixture builder
 - `docs/api/openapi.json` — exported schema
 
 ## Skills to consult
@@ -45,13 +47,13 @@ Plus a **stable error-code catalog** — the same failure returns the same code 
 
 ## TODOs
 
-- [ ] Request and response models for all seven endpoints
-- [ ] Stable error-code catalog with one code per distinct failure mode
-- [ ] `GET /v1/cases` returns pseudonymous fields only — no raw medical text
-- [ ] Committed example response per endpoint, usable as a frontend fixture
-- [ ] Exported OpenAPI schema
-- [ ] Test: every example fixture validates against its response model
-- [ ] Announce the freeze in `changelog/backend.md` so M2 knows the contract is safe to build on
+- [x] Request and response models for all seven endpoints
+- [x] Stable error-code catalog with one code per distinct failure mode
+- [x] `GET /v1/cases` returns pseudonymous fields only — no raw medical text
+- [x] Committed example response per endpoint, usable as a frontend fixture
+- [x] Exported OpenAPI schema
+- [x] Test: every example fixture validates against its response model
+- [x] Announce the freeze in `changelog/backend.md` so M2 knows the contract is safe to build on
 
 ## Done when
 
@@ -61,7 +63,33 @@ path in the ingestion task.
 
 ## Closing checklist
 
-- [ ] All `## TODOs` items above are `[x]`
-- [ ] Done-when assertion verified
-- [ ] Top-of-file header literally reads `**Status:** ✅ Done`
-- [ ] Changelog entry appended to `changelog/backend.md`
+- [x] All `## TODOs` items above are `[x]`
+- [x] Done-when assertion verified
+- [x] Top-of-file header literally reads `**Status:** ✅ Done`
+- [x] Changelog entry appended to `changelog/backend.md`
+
+## Outcome — 2026-08-30
+
+Contract frozen and published. **Sprint 04's frontend is unblocked** — it can build against
+`tests/fixtures/api/*.json` without a running backend.
+
+| Artifact | Result |
+|----------|--------|
+| Endpoints | 7 published in `docs/api/openapi.json` (plus `/healthz`) |
+| Wire models | 29 across five DTO modules, all frozen |
+| Error catalog | 18 stable codes, every one mapped to an HTTP status |
+| Fixtures | 10 committed, including an invalid-bundle and a version-conflict case |
+| Tests | 64 passing in `apps/backend` |
+
+**Routes answer `501` until implemented**, naming the sprint task that fills each one in. The
+contract is live and generatable today; a caller that arrives early gets an unambiguous
+answer instead of a misleading empty success.
+
+Contract guarantees now locked by tests, not convention:
+
+- `GET /v1/cases` carries **no raw medical text** — asserted against clinical vocabulary.
+- Queue rows lead with `reason_sentence`; field order puts it ahead of band and amount.
+- Exactly **five** queue metrics, and none may contain "fraud", "saved", or "ranking".
+- Reason sentences come from the catalog, so queue and detail cannot disagree.
+- A clone reason is band-capped and must carry the template caveat.
+- A disposition requires a non-blank reason **and** an `expected_case_version`.

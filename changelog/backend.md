@@ -4,6 +4,23 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 
 ---
 
+### 2026-08-30 · [Sprint 02 — ingest-validation](../sprint/backlog/02-ingest-validation/sprint.md) · Task: [API contract](../sprint/backlog/02-ingest-validation/backend/00-api-contract.md) · ✅ Done
+
+**Event:** Task completed — **API CONTRACT FROZEN**
+**Files:** `apps/backend/app/dto/`, `apps/backend/app/router/contract.py`, `apps/backend/app/errors.py`, `apps/backend/tests/fixtures/api/`, `docs/api/openapi.json`
+> Seven endpoints published with 29 wire models and 18 stable error codes. Ten example
+> responses committed. **Sprint 04 frontend may now start in parallel** — build against
+> `apps/backend/tests/fixtures/api/*.json`, no running backend needed. Routes answer 501
+> naming their implementing task until behaviour lands. Verified: 64 tests passing.
+
+### 2026-08-30 · [Sprint 01 — synthetic-data](../sprint/backlog/01-synthetic-data/sprint.md) · Task: [Canonical schema](../sprint/backlog/01-synthetic-data/backend/00-canonical-schema.md) · ✅ Done
+
+**Event:** Task completed — **FOUNDATION, unblocks Sprints 02/03/04/06**
+**Files:** `packages/domain/`, `apps/backend/tests/fixtures/gold/`
+> Canonical model over 11 schema domains, 7-entry reason catalog covering all 4 risk modes,
+> 10 evidence edge types, and 5 committed gold fixtures. Demo scenario label is structurally
+> unreachable from detector features. Verified: 62 tests passing.
+
 ### 2026-08-30 · [Sprint 00 — foundation](../sprint/backlog/00-foundation/sprint.md) · Task: [API skeleton](../sprint/backlog/00-foundation/backend/01-api-skeleton.md) · ✅ Done
 
 **Event:** Task completed

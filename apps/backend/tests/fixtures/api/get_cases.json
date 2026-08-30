@@ -1,0 +1,64 @@
+{
+  "items": [
+    {
+      "band": "DETERMINISTIC_CONFLICT",
+      "case_id": "CASE-0001",
+      "case_version": 1,
+      "created_at": "2026-07-02T09:00:00Z",
+      "currency": "IDR",
+      "evidence_completeness": {
+        "bundle_complete": true,
+        "missing_reference_count": 1,
+        "supported_lines": 1,
+        "total_lines": 2
+      },
+      "modes": [
+        "PHANTOM_OR_NO_PROCEDURE_EVIDENCE"
+      ],
+      "participant_token": "PSN-1002",
+      "provider_token": "PRV-01",
+      "reason_sentence": "Baris tindakan ini tidak punya catatan tindakan yang selesai.",
+      "state": "SCREENED",
+      "total_amount": "630000"
+    },
+    {
+      "band": "NEEDS_CONTEXT",
+      "case_id": "CASE-0002",
+      "case_version": 1,
+      "created_at": "2026-07-02T09:00:00Z",
+      "currency": "IDR",
+      "evidence_completeness": {
+        "bundle_complete": true,
+        "missing_reference_count": 0,
+        "supported_lines": 1,
+        "total_lines": 1
+      },
+      "modes": [
+        "CLONED_DOCUMENTATION"
+      ],
+      "participant_token": "PSN-1005",
+      "provider_token": "PRV-02",
+      "reason_sentence": "Dokumentasi kunjungan ini sangat mirip dengan kunjungan lain.",
+      "state": "SCREENED",
+      "total_amount": "150000"
+    }
+  ],
+  "metrics": {
+    "awaiting_review": 12,
+    "deterministic_conflicts": 3,
+    "evidence_requested": 2,
+    "median_time_in_queue_hours": 6.5,
+    "versions": {
+      "dataset_version": "gold-0.1.0",
+      "engine_version": "0.1.0",
+      "ruleset_version": "0.1.0",
+      "schema_version": "0.1.0"
+    }
+  },
+  "page": {
+    "page": 1,
+    "page_size": 25,
+    "total_items": 2,
+    "total_pages": 1
+  }
+}

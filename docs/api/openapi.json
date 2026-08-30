@@ -1,0 +1,2223 @@
+{
+  "components": {
+    "schemas": {
+      "AuditEvent": {
+        "additionalProperties": false,
+        "description": "One entry in the case history. Append-only; never edited in place.",
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DispositionAction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "actor_role": {
+            "title": "Actor Role",
+            "type": "string"
+          },
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "event_id": {
+            "title": "Event Id",
+            "type": "string"
+          },
+          "event_kind": {
+            "description": "CREATED | SCREENED | DISPOSITION | RESCREENED | SUPERSEDE",
+            "title": "Event Kind",
+            "type": "string"
+          },
+          "evidence": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRefDto"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "state_after": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CaseState"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state_before": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CaseState"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "structured_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Structured Reason"
+          },
+          "supersedes_event_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Set on a correction. The superseded event stays visible; history is appended to, never rewritten.",
+            "title": "Supersedes Event Id"
+          },
+          "versions": {
+            "$ref": "#/components/schemas/VersionStamp"
+          }
+        },
+        "required": [
+          "event_id",
+          "case_id",
+          "event_kind",
+          "actor_role",
+          "versions",
+          "occurred_at"
+        ],
+        "title": "AuditEvent",
+        "type": "object"
+      },
+      "AuditResponse": {
+        "additionalProperties": false,
+        "description": "Ordered history for one case. Readable only by an authorized role.",
+        "properties": {
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/AuditEvent"
+            },
+            "title": "Events",
+            "type": "array"
+          }
+        },
+        "required": [
+          "case_id",
+          "events"
+        ],
+        "title": "AuditResponse",
+        "type": "object"
+      },
+      "BandExplanation": {
+        "additionalProperties": false,
+        "description": "Answers 'why this band?' for the queue tooltip and the case header.",
+        "properties": {
+          "band": {
+            "$ref": "#/components/schemas/PriorityBand"
+          },
+          "basis": {
+            "description": "How the band was reached, in working language.",
+            "title": "Basis",
+            "type": "string"
+          },
+          "caps_applied": {
+            "default": [],
+            "description": "Guards that limited the band, e.g. text similarity alone cannot reach the top band, or an incomplete bundle lowered certainty.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Caps Applied",
+            "type": "array"
+          }
+        },
+        "required": [
+          "band",
+          "basis"
+        ],
+        "title": "BandExplanation",
+        "type": "object"
+      },
+      "BaselineMetrics": {
+        "additionalProperties": false,
+        "description": "One row of the baseline comparison table.",
+        "properties": {
+          "baseline": {
+            "description": "B0_RANDOM | B1_RULES_ONLY | B2_STATISTICAL_ONLY | HYBRID",
+            "title": "Baseline",
+            "type": "string"
+          },
+          "false_positives_per_100_clean": {
+            "title": "False Positives Per 100 Clean",
+            "type": "number"
+          },
+          "macro_f1": {
+            "title": "Macro F1",
+            "type": "number"
+          },
+          "pr_auc": {
+            "title": "Pr Auc",
+            "type": "number"
+          },
+          "precision_at_k": {
+            "title": "Precision At K",
+            "type": "number"
+          },
+          "recall_at_k": {
+            "title": "Recall At K",
+            "type": "number"
+          }
+        },
+        "required": [
+          "baseline",
+          "macro_f1",
+          "pr_auc",
+          "precision_at_k",
+          "recall_at_k",
+          "false_positives_per_100_clean"
+        ],
+        "title": "BaselineMetrics",
+        "type": "object"
+      },
+      "CaseDetailResponse": {
+        "additionalProperties": false,
+        "description": "Everything needed to understand and disposition one case.",
+        "properties": {
+          "band": {
+            "$ref": "#/components/schemas/BandExplanation"
+          },
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "case_version": {
+            "minimum": 1.0,
+            "title": "Case Version",
+            "type": "integer"
+          },
+          "comparisons": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ComparisonCandidate"
+            },
+            "title": "Comparisons",
+            "type": "array"
+          },
+          "currency": {
+            "title": "Currency",
+            "type": "string"
+          },
+          "encounter_end": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounter End"
+          },
+          "encounter_start": {
+            "format": "date-time",
+            "title": "Encounter Start",
+            "type": "string"
+          },
+          "evidence_completeness": {
+            "$ref": "#/components/schemas/EvidenceCompleteness"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimLineView"
+            },
+            "title": "Lines",
+            "type": "array"
+          },
+          "participant_token": {
+            "title": "Participant Token",
+            "type": "string"
+          },
+          "primary_reason": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReasonDto"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "provider_token": {
+            "title": "Provider Token",
+            "type": "string"
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/ReasonDto"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "state": {
+            "$ref": "#/components/schemas/CaseState"
+          },
+          "suggested_action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "What the system would suggest, e.g. REQUEST_EVIDENCE when the bundle is thin. A suggestion only \u2014 the reviewer chooses, and must still supply a reason.",
+            "title": "Suggested Action"
+          },
+          "timeline": {
+            "items": {
+              "$ref": "#/components/schemas/TimelineEvent"
+            },
+            "title": "Timeline",
+            "type": "array"
+          },
+          "total_amount": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total Amount",
+            "type": "string"
+          },
+          "versions": {
+            "$ref": "#/components/schemas/VersionStamp"
+          }
+        },
+        "required": [
+          "case_id",
+          "case_version",
+          "state",
+          "participant_token",
+          "provider_token",
+          "total_amount",
+          "currency",
+          "encounter_start",
+          "encounter_end",
+          "primary_reason",
+          "reasons",
+          "band",
+          "lines",
+          "timeline",
+          "evidence_completeness",
+          "versions"
+        ],
+        "title": "CaseDetailResponse",
+        "type": "object"
+      },
+      "CaseQueueResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CaseSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/QueueMetrics"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        },
+        "required": [
+          "metrics",
+          "items",
+          "page"
+        ],
+        "title": "CaseQueueResponse",
+        "type": "object"
+      },
+      "CaseState": {
+        "description": "Functional state model from the master plan \u00a7 10.",
+        "enum": [
+          "NEW",
+          "SCREENED",
+          "IN_REVIEW",
+          "EVIDENCE_REQUESTED",
+          "DISMISSED",
+          "CONFIRMED_ANOMALY",
+          "ESCALATED",
+          "INVALID_INPUT"
+        ],
+        "title": "CaseState",
+        "type": "string"
+      },
+      "CaseSummary": {
+        "additionalProperties": false,
+        "description": "One queue row.\n\n**Pseudonymous fields only, and no raw medical text** \u2014 that is a hard constraint from\n`docs/canonical/03_architecture.md`, asserted by `test_queue_response_carries_no_medical_text`.\nNarrative text appears only in the detail response, and then only the fragment a reason\ndepends on.\n\nField order mirrors the mandated column order: the sentence comes first.",
+        "properties": {
+          "band": {
+            "$ref": "#/components/schemas/PriorityBand"
+          },
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "case_version": {
+            "minimum": 1.0,
+            "title": "Case Version",
+            "type": "integer"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "currency": {
+            "title": "Currency",
+            "type": "string"
+          },
+          "evidence_completeness": {
+            "$ref": "#/components/schemas/EvidenceCompleteness"
+          },
+          "modes": {
+            "items": {
+              "$ref": "#/components/schemas/RiskMode"
+            },
+            "title": "Modes",
+            "type": "array"
+          },
+          "participant_token": {
+            "description": "Pseudonymous. Never a real identifier.",
+            "title": "Participant Token",
+            "type": "string"
+          },
+          "provider_token": {
+            "title": "Provider Token",
+            "type": "string"
+          },
+          "reason_sentence": {
+            "description": "Working language. The queue's first column.",
+            "title": "Reason Sentence",
+            "type": "string"
+          },
+          "state": {
+            "$ref": "#/components/schemas/CaseState"
+          },
+          "total_amount": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total Amount",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason_sentence",
+          "modes",
+          "case_id",
+          "participant_token",
+          "provider_token",
+          "evidence_completeness",
+          "total_amount",
+          "currency",
+          "created_at",
+          "band",
+          "state",
+          "case_version"
+        ],
+        "title": "CaseSummary",
+        "type": "object"
+      },
+      "ClaimLineView": {
+        "additionalProperties": false,
+        "description": "One billed line with its support state.\n\n`NOT_ASSESSABLE` is distinct from `UNSUPPORTED`: the first means the record was too thin\nto judge, the second means the evidence is genuinely absent. Conflating them is the\ndifference between requesting a document and alleging a service never happened.",
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "line_amount": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Line Amount",
+            "type": "string"
+          },
+          "line_id": {
+            "title": "Line Id",
+            "type": "string"
+          },
+          "quantity": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Quantity",
+            "type": "string"
+          },
+          "service_at": {
+            "format": "date-time",
+            "title": "Service At",
+            "type": "string"
+          },
+          "support_state": {
+            "description": "SUPPORTED | PARTIALLY_SUPPORTED | UNSUPPORTED | NOT_ASSESSABLE",
+            "title": "Support State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "line_id",
+          "code",
+          "description",
+          "quantity",
+          "line_amount",
+          "service_at",
+          "support_state"
+        ],
+        "title": "ClaimLineView",
+        "type": "object"
+      },
+      "ComparisonCandidate": {
+        "additionalProperties": false,
+        "description": "Side-by-side pair for repeat-billing and cloned-documentation reasons.",
+        "properties": {
+          "candidate_case_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate Case Id"
+          },
+          "candidate_claim_id": {
+            "title": "Candidate Claim Id",
+            "type": "string"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/ComparisonField"
+            },
+            "title": "Fields",
+            "type": "array"
+          },
+          "overlap_end": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overlap End"
+          },
+          "overlap_start": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overlap Start"
+          },
+          "similarity_components": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Similarity Components",
+            "type": "object"
+          },
+          "template_caveat": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Present on clone reasons. Legitimate template-based documentation produces high similarity too, and the reviewer must read that before acting.",
+            "title": "Template Caveat"
+          }
+        },
+        "required": [
+          "candidate_claim_id",
+          "fields"
+        ],
+        "title": "ComparisonCandidate",
+        "type": "object"
+      },
+      "ComparisonField": {
+        "additionalProperties": false,
+        "properties": {
+          "field_name": {
+            "title": "Field Name",
+            "type": "string"
+          },
+          "left_value": {
+            "title": "Left Value",
+            "type": "string"
+          },
+          "matches": {
+            "title": "Matches",
+            "type": "boolean"
+          },
+          "right_value": {
+            "title": "Right Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field_name",
+          "left_value",
+          "right_value",
+          "matches"
+        ],
+        "title": "ComparisonField",
+        "type": "object"
+      },
+      "DispositionAction": {
+        "description": "The four actions a human reviewer may take.\n\nNone of them is a verdict. `CONFIRM_ANOMALY` means the reviewer agrees an inconsistency\nexists \u2014 it is not a finding of fraud, and the UI must say so before accepting it.",
+        "enum": [
+          "REJECT_SIGNAL",
+          "REQUEST_EVIDENCE",
+          "CONFIRM_ANOMALY",
+          "ESCALATE"
+        ],
+        "title": "DispositionAction",
+        "type": "string"
+      },
+      "DispositionRequest": {
+        "additionalProperties": false,
+        "description": "A human decision. Never accepted without a reason.\n\n`expected_case_version` is the optimistic lock. Overwriting a colleague's recorded\ndecision without knowing is an accountability failure, not a concurrency inconvenience \u2014\nso the version is required, not optional.",
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/DispositionAction"
+          },
+          "expected_case_version": {
+            "minimum": 1.0,
+            "title": "Expected Case Version",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional free-text elaboration.",
+            "title": "Note"
+          },
+          "requested_evidence": {
+            "default": [],
+            "description": "For REQUEST_EVIDENCE: resource types being asked for. Editable by the reviewer.",
+            "items": {
+              "$ref": "#/components/schemas/ResourceType"
+            },
+            "title": "Requested Evidence",
+            "type": "array"
+          },
+          "structured_reason": {
+            "description": "Chosen from the action's reason list.",
+            "minLength": 1,
+            "title": "Structured Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "action",
+          "structured_reason",
+          "expected_case_version"
+        ],
+        "title": "DispositionRequest",
+        "type": "object"
+      },
+      "DispositionResponse": {
+        "additionalProperties": false,
+        "description": "The immutable event that was written, and the case's new state.",
+        "properties": {
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "event_id": {
+            "title": "Event Id",
+            "type": "string"
+          },
+          "new_case_version": {
+            "minimum": 1.0,
+            "title": "New Case Version",
+            "type": "integer"
+          },
+          "new_state": {
+            "$ref": "#/components/schemas/CaseState"
+          },
+          "recorded_at": {
+            "format": "date-time",
+            "title": "Recorded At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "event_id",
+          "case_id",
+          "new_state",
+          "new_case_version",
+          "recorded_at"
+        ],
+        "title": "DispositionResponse",
+        "type": "object"
+      },
+      "ErrorCode": {
+        "description": "Stable identifiers. Append new members; never repurpose an existing one.",
+        "enum": [
+          "BUNDLE_TOO_LARGE",
+          "BUNDLE_UNSUPPORTED_CONTENT_TYPE",
+          "BUNDLE_DEPTH_EXCEEDED",
+          "BUNDLE_MALFORMED_JSON",
+          "BUNDLE_SCHEMA_INVALID",
+          "BUNDLE_UNKNOWN_RESOURCE_TYPE",
+          "BUNDLE_DANGLING_REFERENCE",
+          "BUNDLE_CIRCULAR_REFERENCE",
+          "BUNDLE_DUPLICATE_RESOURCE_ID",
+          "BUNDLE_TOTAL_MISMATCH",
+          "INGESTION_NOT_FOUND",
+          "CASE_NOT_FOUND",
+          "EVALUATION_RUN_NOT_FOUND",
+          "BUNDLE_NOT_SCREENABLE",
+          "DISPOSITION_REASON_REQUIRED",
+          "CASE_VERSION_CONFLICT",
+          "DISPOSITION_INVALID_TRANSITION",
+          "AUDIT_FORBIDDEN"
+        ],
+        "title": "ErrorCode",
+        "type": "string"
+      },
+      "ErrorResponse": {
+        "additionalProperties": false,
+        "description": "The single error envelope for every endpoint.",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/ErrorCode"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "issues": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ValidationIssue"
+            },
+            "title": "Issues",
+            "type": "array"
+          }
+        },
+        "required": [
+          "code",
+          "detail"
+        ],
+        "title": "ErrorResponse",
+        "type": "object"
+      },
+      "EvaluationResponse": {
+        "additionalProperties": false,
+        "description": "Read-only. The page renders artifacts; it never computes a metric itself.",
+        "properties": {
+          "baselines": {
+            "items": {
+              "$ref": "#/components/schemas/BaselineMetrics"
+            },
+            "title": "Baselines",
+            "type": "array"
+          },
+          "completed_at": {
+            "format": "date-time",
+            "title": "Completed At",
+            "type": "string"
+          },
+          "data_class": {
+            "default": "synthetic",
+            "description": "Rendered prominently by the UI.",
+            "title": "Data Class",
+            "type": "string"
+          },
+          "latency_p50_ms": {
+            "minimum": 0.0,
+            "title": "Latency P50 Ms",
+            "type": "integer"
+          },
+          "latency_p95_ms": {
+            "minimum": 0.0,
+            "title": "Latency P95 Ms",
+            "type": "integer"
+          },
+          "limitations": {
+            "$ref": "#/components/schemas/LimitationsCard"
+          },
+          "manifest": {
+            "$ref": "#/components/schemas/RunManifest"
+          },
+          "per_mode": {
+            "items": {
+              "$ref": "#/components/schemas/ModeMetrics"
+            },
+            "title": "Per Mode",
+            "type": "array"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "versions": {
+            "$ref": "#/components/schemas/VersionStamp"
+          }
+        },
+        "required": [
+          "run_id",
+          "completed_at",
+          "baselines",
+          "per_mode",
+          "latency_p50_ms",
+          "latency_p95_ms",
+          "manifest",
+          "limitations",
+          "versions"
+        ],
+        "title": "EvaluationResponse",
+        "type": "object"
+      },
+      "EvidenceCompleteness": {
+        "additionalProperties": false,
+        "description": "How much of the expected supporting evidence was actually present.\n\nSurfaced in the queue so a reviewer can tell a thin record from a suspicious one before\nopening the case.",
+        "properties": {
+          "bundle_complete": {
+            "title": "Bundle Complete",
+            "type": "boolean"
+          },
+          "missing_reference_count": {
+            "minimum": 0.0,
+            "title": "Missing Reference Count",
+            "type": "integer"
+          },
+          "supported_lines": {
+            "minimum": 0.0,
+            "title": "Supported Lines",
+            "type": "integer"
+          },
+          "total_lines": {
+            "minimum": 0.0,
+            "title": "Total Lines",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "supported_lines",
+          "total_lines",
+          "missing_reference_count",
+          "bundle_complete"
+        ],
+        "title": "EvidenceCompleteness",
+        "type": "object"
+      },
+      "EvidenceRefDto": {
+        "additionalProperties": false,
+        "description": "A pointer the UI must be able to open.\n\nA reference that does not resolve is a defect, not an empty panel \u2014 see\n`docs/canonical/06_evaluation_plan.md` \u00a7 Evidence-reference validity.",
+        "properties": {
+          "label": {
+            "description": "Short working-language description of the resource.",
+            "title": "Label",
+            "type": "string"
+          },
+          "resource_id": {
+            "title": "Resource Id",
+            "type": "string"
+          },
+          "resource_type": {
+            "$ref": "#/components/schemas/ResourceType"
+          }
+        },
+        "required": [
+          "resource_type",
+          "resource_id",
+          "label"
+        ],
+        "title": "EvidenceRefDto",
+        "type": "object"
+      },
+      "IngestBundleResponse": {
+        "additionalProperties": false,
+        "description": "Result of submitting one bundle.",
+        "properties": {
+          "completeness_notes": {
+            "default": [],
+            "description": "Supporting resources absent from the submission. Travels with the case and lowers certainty downstream rather than raising a signal.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Completeness Notes",
+            "type": "array"
+          },
+          "existing_case_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Set when this exact payload and engine version were already screened.",
+            "title": "Existing Case Id"
+          },
+          "ingestion_id": {
+            "title": "Ingestion Id",
+            "type": "string"
+          },
+          "input_hash": {
+            "description": "SHA-256 of the canonical payload. Drives idempotency.",
+            "title": "Input Hash",
+            "type": "string"
+          },
+          "is_screenable": {
+            "description": "False when status is INVALID; the UI disables the button.",
+            "title": "Is Screenable",
+            "type": "boolean"
+          },
+          "issues": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ValidationIssue"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "resource_counts": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceCount"
+            },
+            "title": "Resource Counts",
+            "type": "array"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ValidationStatus"
+          }
+        },
+        "required": [
+          "ingestion_id",
+          "status",
+          "input_hash",
+          "resource_counts",
+          "is_screenable",
+          "schema_version"
+        ],
+        "title": "IngestBundleResponse",
+        "type": "object"
+      },
+      "LimitationsCard": {
+        "additionalProperties": false,
+        "description": "What the numbers show, and what they do not.\n\nCopy-ready by design so it can go into the deck verbatim. It is the first thing dropped\nunder deadline pressure and the last thing that should be.",
+        "properties": {
+          "demonstrates": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Demonstrates",
+            "type": "array"
+          },
+          "does_not_demonstrate": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Does Not Demonstrate",
+            "type": "array"
+          },
+          "mandatory_statement": {
+            "default": "This dataset is synthetic and does not represent JKN prevalence or real provider behavior.",
+            "title": "Mandatory Statement",
+            "type": "string"
+          }
+        },
+        "required": [
+          "demonstrates",
+          "does_not_demonstrate"
+        ],
+        "title": "LimitationsCard",
+        "type": "object"
+      },
+      "ModeMetrics": {
+        "additionalProperties": false,
+        "properties": {
+          "f1": {
+            "title": "F1",
+            "type": "number"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/RiskMode"
+          },
+          "precision": {
+            "title": "Precision",
+            "type": "number"
+          },
+          "recall": {
+            "title": "Recall",
+            "type": "number"
+          },
+          "support": {
+            "minimum": 0.0,
+            "title": "Support",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "mode",
+          "precision",
+          "recall",
+          "f1",
+          "support"
+        ],
+        "title": "ModeMetrics",
+        "type": "object"
+      },
+      "PageInfo": {
+        "additionalProperties": false,
+        "description": "Queue pagination. The full queue is never returned in one response.",
+        "properties": {
+          "page": {
+            "minimum": 1.0,
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total_items": {
+            "minimum": 0.0,
+            "title": "Total Items",
+            "type": "integer"
+          },
+          "total_pages": {
+            "minimum": 0.0,
+            "title": "Total Pages",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "page",
+          "page_size",
+          "total_items",
+          "total_pages"
+        ],
+        "title": "PageInfo",
+        "type": "object"
+      },
+      "PriorityBand": {
+        "description": "Queue ordering bands.\n\n`NO_OBSERVED_RISK` means no selected detector fired at this engine version. It must never\nbe rendered as \"clean\" or \"safe\" \u2014 the system is not entitled to that claim.",
+        "enum": [
+          "DETERMINISTIC_CONFLICT",
+          "HIGH_PRIORITY_SIGNAL",
+          "NEEDS_CONTEXT",
+          "NO_OBSERVED_RISK"
+        ],
+        "title": "PriorityBand",
+        "type": "string"
+      },
+      "QueueMetrics": {
+        "additionalProperties": false,
+        "description": "The five operational metrics above the queue. Exactly five.\n\nAnything that does not change what a reviewer does next is excluded by\n`docs/canonical/01_product_decision.md` \u00a7 Main dashboard principles \u2014 no \"fraud saved\",\nno provider league tables, no national projections.",
+        "properties": {
+          "awaiting_review": {
+            "minimum": 0.0,
+            "title": "Awaiting Review",
+            "type": "integer"
+          },
+          "deterministic_conflicts": {
+            "minimum": 0.0,
+            "title": "Deterministic Conflicts",
+            "type": "integer"
+          },
+          "evidence_requested": {
+            "minimum": 0.0,
+            "title": "Evidence Requested",
+            "type": "integer"
+          },
+          "median_time_in_queue_hours": {
+            "minimum": 0.0,
+            "title": "Median Time In Queue Hours",
+            "type": "number"
+          },
+          "versions": {
+            "$ref": "#/components/schemas/VersionStamp"
+          }
+        },
+        "required": [
+          "awaiting_review",
+          "deterministic_conflicts",
+          "evidence_requested",
+          "median_time_in_queue_hours",
+          "versions"
+        ],
+        "title": "QueueMetrics",
+        "type": "object"
+      },
+      "ReasonCode": {
+        "description": "Stable identifiers used by the UI and by tests. Never renumbered.",
+        "enum": [
+          "LINE_WITHOUT_COMPLETED_PROCEDURE",
+          "LINE_WITHOUT_MEDICATION_DISPENSE",
+          "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR",
+          "OVERLAPPING_CLAIM_SAME_EPISODE",
+          "DUPLICATE_CLAIM_FINGERPRINT",
+          "NEAR_DUPLICATE_DOCUMENTATION",
+          "EPISODE_SPLIT_ACROSS_CLAIMS"
+        ],
+        "title": "ReasonCode",
+        "type": "string"
+      },
+      "ReasonDto": {
+        "additionalProperties": false,
+        "description": "One reason, with its evidence and whatever argues against it.\n\n`counter_evidence` is a first-class field rather than a separate lookup: the reviewer must\nsee what weakens a signal on the same screen as the signal itself.",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/ReasonCode"
+          },
+          "component_scores": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "description": "Per-component scores, kept alongside the reason rather than collapsed.",
+            "title": "Component Scores",
+            "type": "object"
+          },
+          "counter_evidence": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRefDto"
+            },
+            "title": "Counter Evidence",
+            "type": "array"
+          },
+          "deterministic": {
+            "title": "Deterministic",
+            "type": "boolean"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRefDto"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/RiskMode"
+          },
+          "ruleset_version": {
+            "title": "Ruleset Version",
+            "type": "string"
+          },
+          "sentence": {
+            "description": "From the reason catalog. Clients never compose their own.",
+            "title": "Sentence",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "mode",
+          "sentence",
+          "deterministic",
+          "evidence",
+          "ruleset_version"
+        ],
+        "title": "ReasonDto",
+        "type": "object"
+      },
+      "ResourceCount": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "minimum": 0.0,
+            "title": "Count",
+            "type": "integer"
+          },
+          "resource_type": {
+            "title": "Resource Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "resource_type",
+          "count"
+        ],
+        "title": "ResourceCount",
+        "type": "object"
+      },
+      "ResourceType": {
+        "enum": [
+          "Claim",
+          "ClaimLine",
+          "Encounter",
+          "Condition",
+          "Procedure",
+          "Medication",
+          "Diagnostic",
+          "Document",
+          "Account",
+          "ChargeItem",
+          "Invoice",
+          "Episode"
+        ],
+        "title": "ResourceType",
+        "type": "string"
+      },
+      "RiskMode": {
+        "description": "The four officially listed facility risk modes this prototype addresses.",
+        "enum": [
+          "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+          "REPEAT_BILLING",
+          "CLONED_DOCUMENTATION",
+          "UNBUNDLING_FRAGMENTATION"
+        ],
+        "title": "RiskMode",
+        "type": "string"
+      },
+      "RunManifest": {
+        "additionalProperties": false,
+        "description": "What makes a run reproducible.\n\nEvery field here is needed to rebuild the result from a clean environment and compare\nhashes. A metric without its manifest cannot be defended when a judge asks how it was\nproduced.",
+        "properties": {
+          "artifact_hashes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Artifact Hashes",
+            "type": "object"
+          },
+          "code_commit": {
+            "title": "Code Commit",
+            "type": "string"
+          },
+          "dataset_hash": {
+            "title": "Dataset Hash",
+            "type": "string"
+          },
+          "environment_hash": {
+            "title": "Environment Hash",
+            "type": "string"
+          },
+          "feature_version": {
+            "title": "Feature Version",
+            "type": "string"
+          },
+          "generator_version": {
+            "title": "Generator Version",
+            "type": "string"
+          },
+          "model_version": {
+            "title": "Model Version",
+            "type": "string"
+          },
+          "ruleset_version": {
+            "title": "Ruleset Version",
+            "type": "string"
+          },
+          "split_manifest_hash": {
+            "title": "Split Manifest Hash",
+            "type": "string"
+          },
+          "threshold_logic": {
+            "title": "Threshold Logic",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dataset_hash",
+          "generator_version",
+          "split_manifest_hash",
+          "feature_version",
+          "ruleset_version",
+          "model_version",
+          "threshold_logic",
+          "code_commit",
+          "environment_hash",
+          "artifact_hashes"
+        ],
+        "title": "RunManifest",
+        "type": "object"
+      },
+      "ScreenRequest": {
+        "additionalProperties": false,
+        "description": "Screening carries no options.\n\nThere is deliberately no detector, threshold, or mode selection \u2014 the ingest screen offers\none button, and a configuration wizard would let a presenter tune their way to a result.",
+        "properties": {
+          "engine_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Pin a version for reproducibility. Defaults to current.",
+            "title": "Engine Version"
+          }
+        },
+        "title": "ScreenRequest",
+        "type": "object"
+      },
+      "ScreenResponse": {
+        "additionalProperties": false,
+        "description": "Result of screening one ingested bundle.",
+        "properties": {
+          "band": {
+            "$ref": "#/components/schemas/BandExplanation"
+          },
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "case_version": {
+            "description": "Required by the disposition endpoint.",
+            "minimum": 1.0,
+            "title": "Case Version",
+            "type": "integer"
+          },
+          "latency_ms": {
+            "minimum": 0.0,
+            "title": "Latency Ms",
+            "type": "integer"
+          },
+          "primary_reason": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReasonDto"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Strongest reason, opened first by the case detail screen."
+          },
+          "reasons": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ReasonDto"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          },
+          "versions": {
+            "$ref": "#/components/schemas/VersionStamp"
+          }
+        },
+        "required": [
+          "case_id",
+          "case_version",
+          "state",
+          "band",
+          "versions",
+          "latency_ms"
+        ],
+        "title": "ScreenResponse",
+        "type": "object"
+      },
+      "TimelineEvent": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "resource": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EvidenceRefDto"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "occurred_at",
+          "kind",
+          "label"
+        ],
+        "title": "TimelineEvent",
+        "type": "object"
+      },
+      "ValidationIssue": {
+        "additionalProperties": false,
+        "description": "One problem found in a submitted bundle, pointed at a specific resource.\n\n`resource_type` and `resource_id` are what make the ingest screen's error list\nactionable \u2014 the operator learns *which* resource to fix, not merely that something is\nwrong somewhere.",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/ErrorCode"
+          },
+          "detail": {
+            "description": "Human-readable explanation. Never contains medical text.",
+            "title": "Detail",
+            "type": "string"
+          },
+          "resource_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resource Id"
+          },
+          "resource_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resource Type"
+          }
+        },
+        "required": [
+          "code",
+          "detail"
+        ],
+        "title": "ValidationIssue",
+        "type": "object"
+      },
+      "ValidationStatus": {
+        "description": "Three outcomes, not two.\n\n`VALID_WITH_NOTES` exists because an incomplete record and a billed-but-unevidenced\nservice look identical at the schema level. Collapsing them into \"valid\" or \"invalid\" is\nhow this system would produce false accusations, so the distinction is in the type.",
+        "enum": [
+          "VALID",
+          "VALID_WITH_NOTES",
+          "INVALID"
+        ],
+        "title": "ValidationStatus",
+        "type": "string"
+      },
+      "VersionStamp": {
+        "additionalProperties": false,
+        "description": "Engine identity carried on every screening result and audit event.",
+        "properties": {
+          "dataset_version": {
+            "title": "Dataset Version",
+            "type": "string"
+          },
+          "engine_version": {
+            "title": "Engine Version",
+            "type": "string"
+          },
+          "ruleset_version": {
+            "title": "Ruleset Version",
+            "type": "string"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "ruleset_version",
+          "engine_version",
+          "dataset_version"
+        ],
+        "title": "VersionStamp",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Claim evidence integrity screening. Synthetic data only.",
+    "title": "TilikKlaim API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/healthz": {
+      "get": {
+        "description": "Liveness probe. Also surfaces the engine identity used by the demo runbook.",
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Healthz Healthz Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Healthz",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/v1/bundles": {
+      "post": {
+        "description": "Validate a bundle and return counts, issues, and a deterministic input hash.\n\nThe optional demo scenario label never enters detector features.",
+        "operationId": "ingest_bundle_v1_bundles_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngestBundleResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Submit one synthetic bundle for validation"
+      }
+    },
+    "/v1/bundles/{ingestion_id}/screen": {
+      "post": {
+        "description": "Idempotent for the same input hash and engine version.",
+        "operationId": "screen_bundle_v1_bundles__ingestion_id__screen_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ingestion_id",
+            "required": true,
+            "schema": {
+              "title": "Ingestion Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScreenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScreenResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Screen an ingested bundle"
+      }
+    },
+    "/v1/cases": {
+      "get": {
+        "description": "Pseudonymous fields only. Never returns raw medical text.",
+        "operationId": "list_cases_v1_cases_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "state",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/CaseState"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          },
+          {
+            "in": "query",
+            "name": "mode",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RiskMode"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Mode"
+            }
+          },
+          {
+            "in": "query",
+            "name": "band",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/PriorityBand"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Band"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseQueueResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Paginated review queue"
+      }
+    },
+    "/v1/cases/{case_id}": {
+      "get": {
+        "operationId": "get_case_v1_cases__case_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "case_id",
+            "required": true,
+            "schema": {
+              "title": "Case Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseDetailResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "One case with evidence, counter-evidence, and timeline"
+      }
+    },
+    "/v1/cases/{case_id}/audit": {
+      "get": {
+        "description": "Authorized role only. Corrections append a superseding event; nothing is overwritten.",
+        "operationId": "get_audit_v1_cases__case_id__audit_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "case_id",
+            "required": true,
+            "schema": {
+              "title": "Case Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Append-only case history"
+      }
+    },
+    "/v1/cases/{case_id}/dispositions": {
+      "post": {
+        "description": "Optimistic locking on `expected_case_version`; a reason is required.\n\nNo disposition triggers claim rejection, payment action, sanction, or code change.",
+        "operationId": "create_disposition_v1_cases__case_id__dispositions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "case_id",
+            "required": true,
+            "schema": {
+              "title": "Case Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DispositionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DispositionResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Record a human disposition"
+      }
+    },
+    "/v1/evaluations/{run_id}": {
+      "get": {
+        "description": "Reads generated artifacts. The synthetic label is displayed prominently.",
+        "operationId": "get_evaluation_v1_evaluations__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Reproducible evaluation artifacts"
+      }
+    }
+  }
+}

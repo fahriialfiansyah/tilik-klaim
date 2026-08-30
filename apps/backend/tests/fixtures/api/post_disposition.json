@@ -1,0 +1,7 @@
+{
+  "case_id": "CASE-0001",
+  "event_id": "EVT-0003",
+  "new_case_version": 2,
+  "new_state": "CONFIRMED_ANOMALY",
+  "recorded_at": "2026-07-02T10:15:00Z"
+}

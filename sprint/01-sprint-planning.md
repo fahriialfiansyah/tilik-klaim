@@ -17,9 +17,9 @@ Internal upload target is **18 September**; 19 September is emergency recovery o
 
 | Sprint | Goal | Status | Gate | Deadline | Owner | Depends On | Brief | References | Created At | Started At | Completed At |
 |--------|------|--------|------|----------|-------|------------|-------|------------|------------|------------|--------------|
-| Sprint 00 — foundation | Repo, tooling, local stack, and canonical docs wired so every later sprint has a place to land | 📋 Planned | — | 31 Agu | M1 | - | [../brief/00_OVERVIEW.md](../brief/00_OVERVIEW.md) | [./backlog/00-foundation/](./backlog/00-foundation/) | 2026-08-30 | - | - |
-| Sprint 01 — synthetic-data | Reproducible generator producing ≥1.000 linked claims and ≥200 labelled injections | 📋 Planned | **G3** | **2 Sep** | M1 | 00 | [../brief/06_DATA_SINTETIK.md](../brief/06_DATA_SINTETIK.md) | [./backlog/01-synthetic-data/](./backlog/01-synthetic-data/) | 2026-08-30 | - | - |
-| Sprint 02 — ingest-validation | One documented bundle subset accepted, validated, hashed, and stored | 📋 Planned | G4 | 5 Sep | M1 | 01 | [../brief/01_INGEST_VALIDASI.md](../brief/01_INGEST_VALIDASI.md) | [./backlog/02-ingest-validation/](./backlog/02-ingest-validation/) | 2026-08-30 | - | - |
+| Sprint 00 — foundation | Repo, tooling, local stack, and canonical docs wired so every later sprint has a place to land | ✅ Done | — | 31 Agu | M1 | - | [../brief/00_OVERVIEW.md](../brief/00_OVERVIEW.md) | [./backlog/00-foundation/](./backlog/00-foundation/) | 2026-08-30 | - | - |
+| Sprint 01 — synthetic-data | Reproducible generator producing ≥1.000 linked claims and ≥200 labelled injections | 🚧 In Progress | **G3** | **2 Sep** | M1 | 00 | [../brief/06_DATA_SINTETIK.md](../brief/06_DATA_SINTETIK.md) | [./backlog/01-synthetic-data/](./backlog/01-synthetic-data/) | 2026-08-30 | - | - |
+| Sprint 02 — ingest-validation | One documented bundle subset accepted, validated, hashed, and stored | 🚧 In Progress | G4 | 5 Sep | M1 | 01 | [../brief/01_INGEST_VALIDASI.md](../brief/01_INGEST_VALIDASI.md) | [./backlog/02-ingest-validation/](./backlog/02-ingest-validation/) | 2026-08-30 | - | - |
 | Sprint 03 — evidence-rules | Versioned reasons plus resolvable evidence for three risk modes | 📋 Planned | G4 | 5 Sep | M1 | 02 | [../brief/02_MESIN_BUKTI_DETEKSI.md](../brief/02_MESIN_BUKTI_DETEKSI.md) | [./backlog/03-evidence-rules/](./backlog/03-evidence-rules/) | 2026-08-30 | - | - |
 | Sprint 04 — review-slice | Queue → detail → human disposition → audit event, no dead ends | 📋 Planned | G5 | 9 Sep | M2 | 03 | [../brief/03_ANTREAN_REVIEW.md](../brief/03_ANTREAN_REVIEW.md) · [04](../brief/04_DETAIL_KASUS_DISPOSISI.md) | [./backlog/04-review-slice/](./backlog/04-review-slice/) | 2026-08-30 | - | - |
 | Sprint 05 — ranking-models | Similarity and anomaly ranking that earns its place over rules-only, or is removed | 📋 Planned | G6 | 12 Sep | M1 | 04 | [../brief/02_MESIN_BUKTI_DETEKSI.md](../brief/02_MESIN_BUKTI_DETEKSI.md) | [./backlog/05-ranking-models/](./backlog/05-ranking-models/) | 2026-08-30 | - | - |
@@ -42,8 +42,8 @@ Two tasks produce contracts other stacks consume. Both must be `[x]` before thei
 
 | Foundation task | Delivers | Consumed by |
 |-----------------|----------|-------------|
-| [`01-synthetic-data/backend/00-canonical-schema.md`](./backlog/01-synthetic-data/backend/00-canonical-schema.md) | Canonical model, reason-code catalog, 5 gold fixtures | Sprints 02, 03, 04, 06 |
-| [`02-ingest-validation/backend/00-api-contract.md`](./backlog/02-ingest-validation/backend/00-api-contract.md) | OpenAPI for 7 endpoints, stable error codes, input hashing | Sprint 04 frontend (runs in parallel once fixtures land) |
+| [`01-synthetic-data/backend/00-canonical-schema.md`](./backlog/01-synthetic-data/backend/00-canonical-schema.md) ✅ | Canonical model, reason-code catalog, 5 gold fixtures | Sprints 02, 03, 04, 06 — **unblocked** |
+| [`02-ingest-validation/backend/00-api-contract.md`](./backlog/02-ingest-validation/backend/00-api-contract.md) ✅ | OpenAPI for 7 endpoints, stable error codes | Sprint 04 frontend — **unblocked**, fixtures committed |
 
 ## Workforce
 

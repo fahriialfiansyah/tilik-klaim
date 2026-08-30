@@ -9,7 +9,7 @@ See docs/canonical/01_product_decision.md and decisions/ADR-0002-no-llm-in-risk-
 from fastapi import FastAPI
 
 from app.config import get_settings
-from app.router import health
+from app.router import contract, health
 
 settings = get_settings()
 
@@ -20,3 +20,4 @@ app = FastAPI(
 )
 
 app.include_router(health.router)
+app.include_router(contract.router)

@@ -1,0 +1,71 @@
+{
+  "case_id": "CASE-0001",
+  "events": [
+    {
+      "action": null,
+      "actor_role": "system",
+      "case_id": "CASE-0001",
+      "event_id": "EVT-0001",
+      "event_kind": "CREATED",
+      "evidence": [],
+      "note": null,
+      "occurred_at": "2026-07-02T09:00:00Z",
+      "state_after": "NEW",
+      "state_before": null,
+      "structured_reason": null,
+      "supersedes_event_id": null,
+      "versions": {
+        "dataset_version": "gold-0.1.0",
+        "engine_version": "0.1.0",
+        "ruleset_version": "0.1.0",
+        "schema_version": "0.1.0"
+      }
+    },
+    {
+      "action": null,
+      "actor_role": "system",
+      "case_id": "CASE-0001",
+      "event_id": "EVT-0002",
+      "event_kind": "SCREENED",
+      "evidence": [],
+      "note": null,
+      "occurred_at": "2026-07-02T09:00:01Z",
+      "state_after": "SCREENED",
+      "state_before": "NEW",
+      "structured_reason": null,
+      "supersedes_event_id": null,
+      "versions": {
+        "dataset_version": "gold-0.1.0",
+        "engine_version": "0.1.0",
+        "ruleset_version": "0.1.0",
+        "schema_version": "0.1.0"
+      }
+    },
+    {
+      "action": "CONFIRM_ANOMALY",
+      "actor_role": "analyst",
+      "case_id": "CASE-0001",
+      "event_id": "EVT-0003",
+      "event_kind": "DISPOSITION",
+      "evidence": [
+        {
+          "label": "Baris tagihan 88.71",
+          "resource_id": "LN-P2",
+          "resource_type": "ClaimLine"
+        }
+      ],
+      "note": "Sudah dicek ulang di rekam kunjungan, tidak ada catatan tindakan.",
+      "occurred_at": "2026-07-02T10:15:00Z",
+      "state_after": "CONFIRMED_ANOMALY",
+      "state_before": "IN_REVIEW",
+      "structured_reason": "Baris tagihan tidak didukung bukti, berkas lengkap.",
+      "supersedes_event_id": null,
+      "versions": {
+        "dataset_version": "gold-0.1.0",
+        "engine_version": "0.1.0",
+        "ruleset_version": "0.1.0",
+        "schema_version": "0.1.0"
+      }
+    }
+  ]
+}

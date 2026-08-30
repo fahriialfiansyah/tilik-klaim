@@ -1,0 +1,106 @@
+{
+  "baselines": [
+    {
+      "baseline": "B0_RANDOM",
+      "false_positives_per_100_clean": 48.0,
+      "macro_f1": 0.11,
+      "pr_auc": 0.09,
+      "precision_at_k": 0.1,
+      "recall_at_k": 0.1
+    },
+    {
+      "baseline": "B1_RULES_ONLY",
+      "false_positives_per_100_clean": 4.2,
+      "macro_f1": 0.72,
+      "pr_auc": 0.68,
+      "precision_at_k": 0.81,
+      "recall_at_k": 0.55
+    },
+    {
+      "baseline": "B2_STATISTICAL_ONLY",
+      "false_positives_per_100_clean": 11.7,
+      "macro_f1": 0.44,
+      "pr_auc": 0.41,
+      "precision_at_k": 0.52,
+      "recall_at_k": 0.39
+    },
+    {
+      "baseline": "HYBRID",
+      "false_positives_per_100_clean": 3.6,
+      "macro_f1": 0.78,
+      "pr_auc": 0.75,
+      "precision_at_k": 0.88,
+      "recall_at_k": 0.63
+    }
+  ],
+  "completed_at": "2026-09-12T08:00:00Z",
+  "data_class": "synthetic",
+  "latency_p50_ms": 118,
+  "latency_p95_ms": 310,
+  "limitations": {
+    "demonstrates": [
+      "Perangkat lunak membaca subset skema yang dipilih dengan benar.",
+      "Detektor menemukan kembali pola yang sengaja disuntikkan.",
+      "Rujukan bukti dan kejadian audit dapat dibangun ulang."
+    ],
+    "does_not_demonstrate": [
+      "Kesesuaian dengan sistem BPJS, E-Klaim, atau SATUSEHAT di lingkungan nyata.",
+      "Ketepatan atau prevalensi fraud JKN di dunia nyata.",
+      "Penghematan nasional atau dampak sebab-akibat.",
+      "Validitas klinis atau temuan hukum."
+    ],
+    "mandatory_statement": "This dataset is synthetic and does not represent JKN prevalence or real provider behavior."
+  },
+  "manifest": {
+    "artifact_hashes": {
+      "metrics.json": "1a2b3c0000000000000000000000000000000000000000000000000000000000",
+      "per_mode.csv": "4d5e6f0000000000000000000000000000000000000000000000000000000000"
+    },
+    "code_commit": "0000000000000000000000000000000000000000",
+    "dataset_hash": "d41f8c0000000000000000000000000000000000000000000000000000000000",
+    "environment_hash": "e5c3a10000000000000000000000000000000000000000000000000000000000",
+    "feature_version": "0.1.0",
+    "generator_version": "0.1.0",
+    "model_version": "0.1.0",
+    "ruleset_version": "0.1.0",
+    "split_manifest_hash": "7a2b9e0000000000000000000000000000000000000000000000000000000000",
+    "threshold_logic": "calibrated on validation split, frozen before test evaluation"
+  },
+  "per_mode": [
+    {
+      "f1": 0.82,
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "precision": 0.91,
+      "recall": 0.74,
+      "support": 300
+    },
+    {
+      "f1": 0.79,
+      "mode": "REPEAT_BILLING",
+      "precision": 0.88,
+      "recall": 0.71,
+      "support": 300
+    },
+    {
+      "f1": 0.58,
+      "mode": "CLONED_DOCUMENTATION",
+      "precision": 0.66,
+      "recall": 0.52,
+      "support": 300
+    },
+    {
+      "f1": 0.69,
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "precision": 0.79,
+      "recall": 0.61,
+      "support": 300
+    }
+  ],
+  "run_id": "RUN-0001",
+  "versions": {
+    "dataset_version": "gold-0.1.0",
+    "engine_version": "0.1.0",
+    "ruleset_version": "0.1.0",
+    "schema_version": "0.1.0"
+  }
+}

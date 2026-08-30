@@ -1,0 +1,23 @@
+{
+  "completeness_notes": [],
+  "existing_case_id": null,
+  "ingestion_id": "ING-0002",
+  "input_hash": "3b8d0a5c19000000000000000000000000000000000000000000000000000000",
+  "is_screenable": false,
+  "issues": [
+    {
+      "code": "BUNDLE_DANGLING_REFERENCE",
+      "detail": "Rujukan ke Procedure PROC-MISSING tidak ditemukan dalam bundel.",
+      "resource_id": "LN-X1",
+      "resource_type": "ClaimLine"
+    }
+  ],
+  "resource_counts": [
+    {
+      "count": 1,
+      "resource_type": "Claim"
+    }
+  ],
+  "schema_version": "0.1.0",
+  "status": "INVALID"
+}

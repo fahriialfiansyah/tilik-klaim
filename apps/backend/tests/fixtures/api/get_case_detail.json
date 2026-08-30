@@ -1,0 +1,130 @@
+{
+  "band": {
+    "band": "DETERMINISTIC_CONFLICT",
+    "basis": "Sebuah aturan integritas berversi dilanggar secara pasti.",
+    "caps_applied": []
+  },
+  "case_id": "CASE-0001",
+  "case_version": 1,
+  "comparisons": [],
+  "currency": "IDR",
+  "encounter_end": "2026-07-01T11:00:00Z",
+  "encounter_start": "2026-07-01T08:00:00Z",
+  "evidence_completeness": {
+    "bundle_complete": true,
+    "missing_reference_count": 1,
+    "supported_lines": 1,
+    "total_lines": 2
+  },
+  "lines": [
+    {
+      "code": "89.7",
+      "description": "Layanan 89.7",
+      "line_amount": "150000",
+      "line_id": "LN-P1",
+      "quantity": "1",
+      "service_at": "2026-07-01T09:00:00Z",
+      "support_state": "SUPPORTED"
+    },
+    {
+      "code": "88.71",
+      "description": "Layanan 88.71",
+      "line_amount": "480000",
+      "line_id": "LN-P2",
+      "quantity": "1",
+      "service_at": "2026-07-01T10:00:00Z",
+      "support_state": "UNSUPPORTED"
+    }
+  ],
+  "participant_token": "PSN-1002",
+  "primary_reason": {
+    "code": "LINE_WITHOUT_COMPLETED_PROCEDURE",
+    "component_scores": {
+      "evidence_completeness": 0.5
+    },
+    "counter_evidence": [],
+    "deterministic": true,
+    "evidence": [
+      {
+        "label": "Baris tagihan 88.71 \u2014 Rp480.000",
+        "resource_id": "LN-P2",
+        "resource_type": "ClaimLine"
+      },
+      {
+        "label": "Kunjungan rawat jalan 1 Juli 2026",
+        "resource_id": "ENC-PH-1",
+        "resource_type": "Encounter"
+      }
+    ],
+    "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+    "ruleset_version": "0.1.0",
+    "sentence": "Baris tindakan ini tidak punya catatan tindakan yang selesai."
+  },
+  "provider_token": "PRV-01",
+  "reasons": [
+    {
+      "code": "LINE_WITHOUT_COMPLETED_PROCEDURE",
+      "component_scores": {
+        "evidence_completeness": 0.5
+      },
+      "counter_evidence": [],
+      "deterministic": true,
+      "evidence": [
+        {
+          "label": "Baris tagihan 88.71 \u2014 Rp480.000",
+          "resource_id": "LN-P2",
+          "resource_type": "ClaimLine"
+        },
+        {
+          "label": "Kunjungan rawat jalan 1 Juli 2026",
+          "resource_id": "ENC-PH-1",
+          "resource_type": "Encounter"
+        }
+      ],
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "ruleset_version": "0.1.0",
+      "sentence": "Baris tindakan ini tidak punya catatan tindakan yang selesai."
+    }
+  ],
+  "state": "SCREENED",
+  "suggested_action": null,
+  "timeline": [
+    {
+      "kind": "ENCOUNTER_START",
+      "label": "Kunjungan dimulai",
+      "occurred_at": "2026-07-01T08:00:00Z",
+      "resource": {
+        "label": "Kunjungan rawat jalan",
+        "resource_id": "ENC-PH-1",
+        "resource_type": "Encounter"
+      }
+    },
+    {
+      "kind": "PROCEDURE",
+      "label": "Tindakan 89.7 selesai",
+      "occurred_at": "2026-07-01T09:00:00Z",
+      "resource": {
+        "label": "Tindakan 89.7",
+        "resource_id": "PROC-P1",
+        "resource_type": "Procedure"
+      }
+    },
+    {
+      "kind": "BILLED_WITHOUT_EVIDENCE",
+      "label": "Baris 88.71 ditagihkan tanpa catatan tindakan",
+      "occurred_at": "2026-07-01T10:00:00Z",
+      "resource": {
+        "label": "Baris tagihan 88.71",
+        "resource_id": "LN-P2",
+        "resource_type": "ClaimLine"
+      }
+    }
+  ],
+  "total_amount": "630000",
+  "versions": {
+    "dataset_version": "gold-0.1.0",
+    "engine_version": "0.1.0",
+    "ruleset_version": "0.1.0",
+    "schema_version": "0.1.0"
+  }
+}

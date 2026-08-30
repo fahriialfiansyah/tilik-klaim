@@ -2,7 +2,7 @@
 
 **Stack:** backend
 **Sprint:** [`../sprint.md`](../sprint.md)
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Foundation:** yes
 **Autonomous:** no — one-time schema definition consumed by every later task.
 
@@ -41,11 +41,13 @@ and **excluded from all metric computation**.
 
 ## Files to touch
 
-- `packages/domain/src/canonical.py` — canonical entity types
-- `packages/domain/src/reasons.py` — reason-code catalog
-- `packages/domain/src/edges.py` — evidence edge types and derivation metadata
-- `packages/domain/src/versioning.py` — ruleset/engine version helpers
+- `packages/domain/src/tilik_domain/canonical.py` — canonical entity types
+- `packages/domain/src/tilik_domain/reasons.py` — reason-code catalog
+- `packages/domain/src/tilik_domain/edges.py` — evidence edge types and derivation metadata
+- `packages/domain/src/tilik_domain/versioning.py` — ruleset/engine version helpers
 - `apps/backend/tests/fixtures/gold/*.json` — five curated fixtures
+- `apps/backend/tests/fixtures/build_gold.py` — deterministic fixture builder
+- `packages/domain/tests/` — reason-catalog and edge-contract tests
 - `docs/canonical/04_data_card.md` — cross-check only; **do not edit** (canonical, read-only)
 
 ## Skills to consult
@@ -56,18 +58,18 @@ and **excluded from all metric computation**.
 
 ## TODOs
 
-- [ ] Canonical types for all eleven schema domains, with an explicit mapping note per domain
-- [ ] Reason-code catalog with a working-language sentence per code
-- [ ] Nine evidence edge types with source IDs, derivation rule, version, confidence
-- [ ] Version helpers so every case and audit event records ruleset and engine version
-- [ ] Gold fixture: clean — every billed line supported, totals reconcile, chronology sound
-- [ ] Gold fixture: phantom — one billed procedure line with no completed Procedure
-- [ ] Gold fixture: repeat — two claims, same participant/provider/episode, overlapping lines
-- [ ] Gold fixture: clone — narrative copied across different encounters
-- [ ] Gold fixture: unbundled — one coherent episode split across adjacent claims
-- [ ] Structural separation so the demo scenario label cannot reach detector features
-- [ ] Test: every gold fixture parses into canonical types with all references resolving
-- [ ] Test: the clean fixture produces **no** injected reason
+- [x] Canonical types for all eleven schema domains, with an explicit mapping note per domain
+- [x] Reason-code catalog with a working-language sentence per code
+- [x] Ten evidence edge types with source IDs, derivation rule, version, confidence
+- [x] Version helpers so every case and audit event records ruleset and engine version
+- [x] Gold fixture: clean — every billed line supported, totals reconcile, chronology sound
+- [x] Gold fixture: phantom — one billed procedure line with no completed Procedure
+- [x] Gold fixture: repeat — two claims, same participant/provider/episode, overlapping lines
+- [x] Gold fixture: clone — narrative copied across different encounters
+- [x] Gold fixture: unbundled — one coherent episode split across adjacent claims
+- [x] Structural separation so the demo scenario label cannot reach detector features
+- [x] Test: every gold fixture parses into canonical types with all references resolving
+- [x] Test: the clean fixture produces **no** injected reason
 
 ## Done when
 
@@ -77,11 +79,37 @@ scenario label is structurally unreachable from feature tables.
 
 ## Closing checklist
 
-- [ ] All `## TODOs` items above are `[x]`
-- [ ] Done-when assertion verified
-- [ ] Top-of-file header literally reads `**Status:** ✅ Done`
-- [ ] Changelog entry appended to `changelog/backend.md`
+- [x] All `## TODOs` items above are `[x]`
+- [x] Done-when assertion verified
+- [x] Top-of-file header literally reads `**Status:** ✅ Done`
+- [x] Changelog entry appended to `changelog/backend.md`
 
 ## Notes
 
 (Append-only.)
+
+## Outcome — 2026-08-30
+
+Delivered and verified. `packages/domain` is installable and imported by `apps/backend`.
+
+| Artifact | Result |
+|----------|--------|
+| Canonical model | 11 domains, all frozen (`extra="forbid"`), pseudonymous only |
+| Reason catalog | 7 codes across all 4 risk modes, each with a working-language sentence |
+| Evidence edges | **10** types — see note below |
+| Gold fixtures | 5 committed, references resolve, totals reconcile, chronology sound |
+| Tests | 62 passing (41 in `apps/backend`, 21 in `packages/domain`) |
+
+**Ten edge types, not nine.** The canonical doc lists nine bullets, but one of them —
+*"Document AUTHORED_BY Practitioner and Document PART_OF Encounter"* — describes two distinct
+relations with different targets. They are modelled separately as `AUTHORED_BY` and
+`PART_OF_ENCOUNTER`. Same coverage, one more type.
+
+**Confidence contract.** `POSSIBLE_DUPLICATE_OF` and `SIMILAR_TO` are inferred and *must*
+carry a confidence; every other edge is stated in the source and must *not*. Both directions
+raise at construction time, so an inferred edge can never present a guess as a fact.
+
+**Leakage separation is structural.** `DemoMetadata` is a sibling of `CanonicalBundle`, never
+a field on it, and `extra="forbid"` blocks smuggling one in at runtime.
+`test_leakage_separation.py` asserts the field names, the serialized payload, and the runtime
+rejection — three angles, because a filter someone has to remember is not a guarantee.
