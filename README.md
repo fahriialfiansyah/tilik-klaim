@@ -25,40 +25,65 @@ Healthkathon 2026 · kategori *Efisiensi Risiko pada Fasilitas Kesehatan* · bat
 
 ## Menjalankan
 
-Dua layanan berjalan berdampingan: **API** di `http://localhost:8000` dan **Web** di
-`http://localhost:3000`. Panduan di bawah menjalankan keduanya di dalam satu sesi
-[tmux](https://github.com/tmux/tmux) bernama `tilik-klaim`, satu window per layanan,
-sehingga proses tetap hidup setelah terminal ditutup.
+Dua layanan berjalan berdampingan:
+
+| Layanan | Folder | Alamat |
+|---------|--------|--------|
+| API (FastAPI) | `apps/backend/` | http://localhost:8000 |
+| Web (React + Rsbuild) | `apps/web/` | http://localhost:3000 |
+
+Semua langkah di bawah berjalan di **macOS, Linux, dan Windows**. Perintah dasarnya sama;
+bila ada perbedaan antar sistem operasi, perbedaannya ditulis eksplisit.
 
 ### 0. Prasyarat
 
-| Alat | Versi diuji | Pemasangan (macOS) |
-|------|-------------|--------------------|
-| Node.js | 20.x | `brew install node` atau `fnm install 20` |
-| [uv](https://docs.astral.sh/uv/) | 0.11+ | `brew install uv` |
-| tmux | 3.x | `brew install tmux` |
-| Docker | 29.x — **opsional**, lihat catatan Basis Data | Docker Desktop |
+| Alat | Versi minimum | macOS / Linux | Windows |
+|------|---------------|---------------|---------|
+| Node.js | 20.x | `brew install node` · `nvm install 20` | `winget install OpenJS.NodeJS.LTS` · [nodejs.org](https://nodejs.org) |
+| [uv](https://docs.astral.sh/uv/) | 0.11+ | `curl -LsSf https://astral.sh/uv/install.sh \| sh` · `brew install uv` | `winget install astral-sh.uv` · `powershell -c "irm https://astral.sh/uv/install.ps1 \| iex"` |
+| Docker | opsional — lihat langkah 3 | Docker Desktop / Docker Engine | Docker Desktop |
 
-Verifikasi: `node -v && uv --version && tmux -V`.
+Python tidak perlu dipasang manual: `uv` yang mengunduh dan mengelola Python 3.11.
+
+Verifikasi prasyarat:
+
+```
+node -v
+npm -v
+uv --version
+```
 
 ### 1. Siapkan variabel lingkungan
 
-```bash
-cd <root-repo>
-cp apps/backend/.env.example apps/backend/.env
-```
+Dari root repo:
 
-Nilai bawaan sudah cukup untuk berjalan lokal; `.env` tidak pernah di-commit.
+| Shell | Perintah |
+|-------|----------|
+| bash / zsh (macOS, Linux) | `cp apps/backend/.env.example apps/backend/.env` |
+| PowerShell (Windows) | `Copy-Item apps\backend\.env.example apps\backend\.env` |
+| Command Prompt (Windows) | `copy apps\backend\.env.example apps\backend\.env` |
+
+Nilai bawaannya sudah cukup untuk berjalan lokal. `.env` tidak pernah di-commit.
 
 ### 2. Pasang dependensi (sekali saja)
 
-```bash
-# API — membuat apps/backend/.venv dan memasang dependensi + tooling dev
-cd apps/backend && uv venv --python 3.11 && uv pip install -e ".[dev]" && cd -
+**API** — dari root repo:
 
-# Web
-cd apps/web && npm install && cd -
 ```
+cd apps/backend
+uv venv --python 3.11
+uv pip install -e ".[dev]"
+```
+
+**Web** — dari root repo:
+
+```
+cd apps/web
+npm install
+```
+
+> Di Windows gunakan `cd apps\backend` dan `cd apps\web`.
+> Virtual environment tidak perlu diaktifkan manual — `uv run` sudah menanganinya.
 
 ### 3. Basis data (opsional pada tahap ini)
 
@@ -66,34 +91,75 @@ Sprint saat ini belum memakai Postgres — `apps/backend/app/store/` masih koson
 berjalan tanpa koneksi basis data. Jalankan langkah ini hanya jika sedang mengerjakan
 lapisan persistensi:
 
-```bash
+```
 docker compose up -d db          # Postgres 16 di localhost:5432
 docker compose ps                # tunggu status "healthy"
 ```
 
-### 4. Buat sesi tmux dan jalankan kedua layanan
+### 4. Jalankan kedua layanan
 
-Salin blok berikut apa adanya dari root repo:
+Pilih salah satu cara. **Cara A** adalah cara baku dan berjalan di semua sistem operasi.
+
+#### Cara A — dua terminal (semua OS, tanpa alat tambahan)
+
+Buka dua jendela/tab terminal. Keduanya dimulai dari root repo.
+
+Terminal 1 — API:
+
+```
+cd apps/backend
+uv run uvicorn app.main:app --reload --port 8000
+```
+
+Terminal 2 — Web:
+
+```
+cd apps/web
+npm run dev
+```
+
+Biarkan kedua terminal terbuka selama pengembangan. Log tampil langsung di masing-masing
+terminal, dan hot reload aktif di kedua layanan.
+
+#### Cara B — satu sesi tmux (opsional; macOS, Linux, atau Windows via WSL)
+
+Berguna bila ingin kedua proses tetap hidup setelah terminal ditutup. Membutuhkan
+`tmux` (`brew install tmux` / `apt install tmux`).
 
 ```bash
 ROOT=$(pwd)
 
-# Sesi baru (detached), window pertama = API
 tmux new-session -d -s tilik-klaim -n api -c "$ROOT/apps/backend"
 tmux send-keys -t tilik-klaim:api 'uv run uvicorn app.main:app --reload --port 8000' C-m
 
-# Window kedua = Web
 tmux new-window -t tilik-klaim -n web -c "$ROOT/apps/web"
 tmux send-keys -t tilik-klaim:web 'npm run dev' C-m
 ```
 
-> Jika sesi bernama sama sudah ada, hapus dulu: `tmux kill-session -t tilik-klaim`.
+Mengoperasikan sesi:
+
+```bash
+tmux attach -t tilik-klaim                # masuk ke sesi
+tmux capture-pane -p -t tilik-klaim:api   # baca log tanpa attach
+tmux kill-session -t tilik-klaim          # hentikan kedua layanan
+```
+
+Di dalam sesi, prefix bawaan `Ctrl-b`: `0`/`1` pindah window, `d` detach,
+`[` mode scroll log (`q` untuk keluar).
 
 ### 5. Verifikasi
 
-```bash
-curl -s http://localhost:8000/healthz     # {"status":"ok", ... ,"data_class":"synthetic"}
-curl -sI http://localhost:3000            # HTTP/1.1 200 OK
+Buka http://localhost:3000 dan http://localhost:8000/docs di peramban, atau dari terminal:
+
+| Shell | Perintah |
+|-------|----------|
+| bash / zsh / PowerShell 6+ | `curl http://localhost:8000/healthz` |
+| Windows PowerShell 5.1 | `Invoke-RestMethod http://localhost:8000/healthz` |
+
+Balasan yang diharapkan:
+
+```json
+{"status":"ok","engine_version":"0.1.0","ruleset_version":"0.1.0","dataset_version":"unset","data_class":"synthetic"}
 ```
 
 | Alamat | Isi |
@@ -104,48 +170,39 @@ curl -sI http://localhost:3000            # HTTP/1.1 200 OK
 
 Catatan: pada sprint ini web belum memanggil API — keduanya masih berjalan mandiri.
 
-### 6. Mengoperasikan sesi tmux
+### 6. Menghentikan
 
-```bash
-tmux attach -t tilik-klaim                # masuk ke sesi
-tmux ls                                   # daftar sesi
-tmux list-windows -t tilik-klaim          # daftar window
-tmux capture-pane -p -t tilik-klaim:api   # baca log API tanpa attach
-tmux capture-pane -p -t tilik-klaim:web   # baca log Web tanpa attach
-```
-
-Di dalam sesi (prefix bawaan `Ctrl-b`):
-
-| Tombol | Aksi |
-|--------|------|
-| `Ctrl-b` lalu `0` / `1` | Pindah ke window `api` / `web` |
-| `Ctrl-b` lalu `n` / `p` | Window berikutnya / sebelumnya |
-| `Ctrl-b` lalu `d` | Detach — proses tetap berjalan |
-| `Ctrl-b` lalu `[` | Mode scroll log (`q` untuk keluar) |
-
-### 7. Menghentikan
-
-```bash
-tmux kill-session -t tilik-klaim   # hentikan API + Web
-docker compose down                # jika basis data dinyalakan
-```
+| Cara | Perintah |
+|------|----------|
+| Dua terminal | `Ctrl-C` di masing-masing terminal |
+| tmux | `tmux kill-session -t tilik-klaim` |
+| Basis data (jika dinyalakan) | `docker compose down` |
 
 ## Pengujian
 
-```bash
-cd apps/backend && uv run pytest        # unit + integrasi
-cd apps/web && npm run typecheck        # pemeriksaan tipe
+Dari root repo:
+
+```
+cd apps/backend
+uv run pytest        # unit + integrasi
+```
+
+```
+cd apps/web
+npm run typecheck    # pemeriksaan tipe
 ```
 
 ## Pemecahan masalah
 
 | Gejala | Penyebab & solusi |
 |--------|-------------------|
-| `error connecting to /private/tmp/tmux-*/default` | Belum ada server tmux — normal; perintah `tmux new-session` akan menyalakannya |
-| `Address already in use` di port 8000/3000 | Proses lama masih hidup: `lsof -ti:8000 \| xargs kill` (ganti 8000 → 3000 sesuai kebutuhan) |
-| Window tmux langsung tertutup | Dependensi belum terpasang — ulangi langkah 2, lalu cek log dengan `tmux capture-pane -p -t tilik-klaim:api` |
-| `uv: command not found` di dalam tmux | tmux memuat shell login yang berbeda; jalankan dengan path penuh, mis. `/opt/homebrew/bin/uv` |
-| `docker compose up` gagal | Docker Desktop belum berjalan — nyalakan, atau lewati karena basis data masih opsional |
+| `Address already in use` / `EADDRINUSE` di port 8000 atau 3000 | Proses lama masih hidup. macOS/Linux: `lsof -ti:8000 \| xargs kill`. Windows: `netstat -ano \| findstr :8000` lalu `taskkill /PID <pid> /F` |
+| `uv: command not found` / `npm: command not found` | Terminal dibuka sebelum alat terpasang — tutup dan buka ulang terminal agar PATH termuat |
+| `uv run` gagal dengan error impor | Dependensi belum terpasang atau terminal berada di folder yang salah — ulangi langkah 2 dari `apps/backend` |
+| Peramban menampilkan halaman kosong di :3000 | Proses web belum selesai build — tunggu baris `ready built in ...` muncul di terminal |
+| `docker compose up` gagal | Docker belum berjalan — nyalakan Docker Desktop, atau lewati karena basis data masih opsional |
+| PowerShell menolak menjalankan skrip pemasangan | Jalankan sekali: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` |
+| `error connecting to /tmp/tmux-*/default` | Hanya muncul pada Cara B saat belum ada server tmux — normal, `tmux new-session` akan menyalakannya |
 
 ## Mulai dari mana
 
