@@ -4,8 +4,10 @@ State snapshot for picking this up in a fresh session.
 Pair with [`sprint/01-sprint-planning.md`](../sprint/01-sprint-planning.md), `changelog/{backend,web}.md`, and `docs/canonical/`.
 
 - Repo: `/Users/fahrialfiansyah121gmail.com/Documents/HEALTHKATHON-2026/tilik-klaim`
-- Branch: `development` · 13 commits, HEAD `b0c2f2c`, **in sync with a PUBLIC GitHub remote**
-  (`github.com/fahriialfiansyah/tilik-klaim`) — do not push without asking
+- Branch: `development` · 15 commits, HEAD `7d0fc47`, clean tree, **in sync with a PUBLIC
+  GitHub remote** (`github.com/fahriialfiansyah/tilik-klaim`) — do not push without asking
+- Companion: [`CONTINUE-PROMPT.md`](./CONTINUE-PROMPT.md) boots a fresh session into the next
+  task; [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md) is what the owner checks by eye
 - Goal: a claim-evidence integrity layer that screens synthetic SATUSEHAT-shaped JKN claim
   bundles for four facility risk patterns and requires a logged human disposition. Healthkathon
   2026 entry, category *Efisiensi Risiko pada Fasilitas Kesehatan*; proposal due **19 September
@@ -57,7 +59,7 @@ English. Never restate a fact across layers.
 | 01 — synthetic-data | G3 · 2 Sep | ✅ **Done, gate met early** | 1,120 bundles · 240 injections · leakage margin +0.0009 |
 | 02 — ingest-validation | G4 · 5 Sep | ✅ Done | `POST /v1/bundles` + screen endpoint live on Postgres |
 | 03 — evidence-rules | G4 · 5 Sep | ✅ **Done, gate met early** | 10 edge types, 4 risk modes, all caps enforced |
-| 04 — review-slice | G5 · 9 Sep | 🚧 backend ✅ / frontend 2 of 4 | queue screen live on real API; detail + ingest remain |
+| 04 — review-slice | G5 · 9 Sep | 🚧 backend ✅ / frontend 2 of 4 | `/` live on the real API; `/cases/:id` + `/ingest` remain |
 | 05 — ranking-models | G6 · 12 Sep | 📋 Planned | — |
 | 06 — evaluation-report | G6 · 12 Sep | 📋 Planned | one endpoint still 501 |
 | 07 — demo-hardening | G8 · 17 Sep | 📋 Planned | — |
@@ -89,6 +91,29 @@ is CSS-first, so there is no `tailwind.config.ts` — the theme is a `@theme inl
 `bg-red-500` no longer exists: red-only-for-conflict and green-only-for-completed-actions are now
 enforced by the build instead of by review. Fonts are self-hosted (`@fontsource`, latin subsets
 only) because the demo runs offline.
+
+**Sprint 04 frontend, tasks 00 and 01 are done.** `/` (Antrean Review) renders from the live
+seeded API: five operational metrics that each apply their own filter, server-side filters for
+status/mode/band/date-range/search, four server-side sort keys, and a queue whose first column is
+the working-language reason sentence. All four empty-and-error states are visually distinct and
+were each confirmed in the browser, not only by test.
+
+**Four defects were found by looking at the running page rather than by the compiler**, and all
+four are the kind that pass review:
+
+| Defect | Why it was invisible |
+|---|---|
+| Queue and case detail disagreed about evidence completeness on **every** case | `evidence_completeness()` fell back to the count of *unsupported* lines, so `supported_lines` was 0 by construction. The queue said "Tidak ada baris tertagih" about fully supported claims — a plausible-looking sentence that was simply false. Fixed by recording `billed_line_count` at screening (migration `d1a7c3e50f42`) |
+| **Every** Button lost its text colour | `tailwind-merge` only knows Tailwind's stock type scale, so it read `text-body-lg` as a *colour*, judged it to conflict with `text-brand-on`, and kept the last. Primary buttons rendered near-black on dark teal at **2.5:1**. `cn()` now declares the project's scale |
+| `--t-3` failed AA on two of three surfaces | August's correction measured it only against `--s-card`. The app also paints it on `--s-sunk` (4.33:1) and `--s-page` (4.07:1). Corrected to `#63706e` |
+| `sort=age&order=desc` returned the **newest** case | Age displays as `now - screened_at`, which moves opposite to the timestamp being sorted — so "descending" meant "largest" on Amount and "smallest" on Age, from the same control |
+
+The lesson generalises: **measure the rendered page, not the token file.** Contrast was
+"verified" in August from token values alone and three of those checks were wrong.
+
+**Manual QA lives in [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md)** with screenshots of all five queue
+states in `qa/2026-09-01-antrean-review/`. Every session that adds a screen appends a section
+there — the owner verifies wording and colour meaning by eye, which no test does.
 
 ## 3. Environment
 
@@ -169,8 +194,13 @@ governs). Do not fill `sqlalchemy.url` in `alembic.ini` — `migrations/env.py` 
    9 September. `00-port-design-tokens` and `01-antrean-review` are **done**. Build against the
    live seeded API as the queue did — `GET /v1/cases/{id}`, `POST /v1/cases/{id}/dispositions`,
    `GET /v1/cases/{id}/audit` all work. Reusable pieces already exist: `src/lib/http.ts`,
-   `src/features/review/shared/{types,labels,format}.ts`, `BandBadge`, `EvidenceMeter`, and the
-   Vitest setup (`npm test`).
+   `src/features/review/shared/{types,labels,format}.ts`, `BandBadge`, `EvidenceMeter`,
+   `PerfectScrollArea`, `components/ui/button.tsx`, and the Vitest setup (`npm test`).
+
+   **Playwright is pre-authorised but not yet installed.** Tasks 02, 03 and sprint 07 all
+   specify E2E specs, and sprint 07's gate — the full demo path under 90 seconds, offline —
+   has no other mechanical proof. Install `@playwright/test` + Chromium, specs in
+   `apps/web/tests/e2e/`.
 2. **Sprint 05 — ranking models** (G6, 12 Sep). Note the kill criterion: if the hybrid adds no
    measurable value over rules-only, ML is *removed*, and that is an anticipated outcome rather
    than a failure. See item 3 in blockers before acting on it.
@@ -184,7 +214,9 @@ governs). Do not fill `sqlalchemy.url` in `alembic.ini` — `migrations/env.py` 
    is `docs/canonical/09_proposal_evidence_map.md`.
 
 **Owed cleanups**, none blocking: a separate test database so `pytest` stops wiping dev data;
-`app/service/evidence_graph.py` is 516 lines (above the 200–400 typical, within the 800 maximum).
+`app/service/evidence_graph.py` is 516 lines (above the 200–400 typical, within the 800 maximum);
+`billed_line_count` back-fills as 0 on cases screened before migration `d1a7c3e50f42` — re-seeding
+or re-screening fixes them, and the seeded demo data is regenerated anyway.
 
 ## 7. Blockers / decisions for the user
 
