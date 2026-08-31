@@ -10,7 +10,6 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Query, status
 from tilik_domain.reasons import CaseState, PriorityBand, RiskMode
 
-from app.dto.bundles import ScreenRequest, ScreenResponse
 from app.dto.cases import CaseDetailResponse, CaseQueueResponse
 from app.dto.dispositions import AuditResponse, DispositionRequest, DispositionResponse
 from app.dto.evaluations import EvaluationResponse
@@ -37,17 +36,6 @@ def _pending(task: str) -> HTTPException:
 
 # `POST /bundles` is implemented in `app.router.bundles`; its placeholder was removed when
 # sprint 02 / 01-bundle-ingestion landed. The remaining handlers below are still pending.
-
-
-@router.post(
-    "/bundles/{ingestion_id}/screen",
-    response_model=ScreenResponse,
-    responses=ERROR_RESPONSES,
-    summary="Screen an ingested bundle",
-)
-def screen_bundle(ingestion_id: str, request: ScreenRequest) -> ScreenResponse:
-    """Idempotent for the same input hash and engine version."""
-    raise _pending("sprint 03 / 02-rule-engine")
 
 
 @router.get(

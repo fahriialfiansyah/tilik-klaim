@@ -16,19 +16,21 @@ from app.config import get_settings
 from app.dto.bundles import ValidationStatus
 from app.errors import ErrorCode
 from app.main import app
-from app.router.bundles import STORE
 from app.service.hashing import canonical_json, idempotency_key, input_hash
 from app.service.validation import completeness_notes
+from app.store.registry import get_bundle_store
 from tests.fixtures import SCENARIOS, load
 
 JSON = {"content-type": "application/json"}
 
 
 @pytest.fixture(autouse=True)
-def _clean_store():
-    STORE.clear()
-    yield
-    STORE.clear()
+def store():
+    """A clean store around every test, whichever backend the app selected."""
+    backing = get_bundle_store()
+    backing.clear()
+    yield backing
+    backing.clear()
 
 
 @pytest.fixture
@@ -341,12 +343,12 @@ def test_a_changed_bundle_creates_a_new_ingestion(client) -> None:
 # --------------------------------------------------------------------------------------
 
 
-def test_raw_payload_and_canonical_rows_both_persist(client) -> None:
+def test_raw_payload_and_canonical_rows_both_persist(client, store) -> None:
     """The raw form keeps a result re-derivable; the canonical form is what others read."""
     payload = payload_for("phantom")
     ingestion_id = post(client, payload).json()["ingestion_id"]
 
-    record = STORE.get(ingestion_id)
+    record = store.get(ingestion_id)
 
     assert record is not None
     assert json.loads(record.raw_payload) == payload, "raw payload stored verbatim"
@@ -355,14 +357,14 @@ def test_raw_payload_and_canonical_rows_both_persist(client) -> None:
     assert record.engine_version and record.ruleset_version
 
 
-def test_invalid_submissions_keep_the_raw_payload_but_no_canonical_bundle(client) -> None:
+def test_invalid_submissions_keep_the_raw_payload_but_no_canonical_bundle(client, store) -> None:
     payload = payload_for("clean")
     payload["lines"][0]["supporting_refs"] = [
         {"resource_type": "Procedure", "resource_id": "PROC-GONE"}
     ]
     ingestion_id = post(client, payload).json()["ingestion_id"]
 
-    record = STORE.get(ingestion_id)
+    record = store.get(ingestion_id)
     assert record is not None
     assert record.raw_payload
     assert record.bundle is None
@@ -403,3 +405,161 @@ def test_endpoint_is_published_in_the_openapi_schema() -> None:
     schema = app.openapi()
     assert "/v1/bundles" in schema["paths"]
     assert "post" in schema["paths"]["/v1/bundles"]
+
+
+# --------------------------------------------------------------------------------------
+# Store selection — the demo and the frontend team both run without a database
+# --------------------------------------------------------------------------------------
+
+
+def test_falls_back_to_the_in_memory_store_when_no_database_answers(monkeypatch) -> None:
+    """An unreachable database must degrade to in-memory, not break the service.
+
+    `docs/canonical/08_demo_runbook.md` requires the demo to run with no external network, and
+    the frontend team runs this suite with no Docker at all.
+    """
+    from app.store.bundles import InMemoryBundleStore
+    from app.store.registry import get_bundle_store as select_store
+    from app.store.registry import reset_stores, use_database
+
+    monkeypatch.setattr("app.store.registry.is_database_available", lambda: False)
+    reset_stores()
+    try:
+        assert use_database() is False
+        assert isinstance(select_store(), InMemoryBundleStore)
+    finally:
+        reset_stores()
+
+
+def test_the_selected_store_satisfies_the_protocol() -> None:
+    """Whichever backend was chosen, ingestion only ever calls these four methods."""
+    store = get_bundle_store()
+    for method in ("find_by_idempotency_key", "save", "get", "attach_case"):
+        assert callable(getattr(store, method)), f"store is missing {method}"
+
+
+# --------------------------------------------------------------------------------------
+# The vertical slice: ingest -> screen -> case
+# --------------------------------------------------------------------------------------
+
+
+@pytest.fixture(autouse=True)
+def _clean_cases():
+    from app.router.bundles import CASES
+
+    CASES.clear()
+    yield
+    CASES.clear()
+
+
+def screen(client: TestClient, ingestion_id: str):
+    return client.post(f"/v1/bundles/{ingestion_id}/screen", json={})
+
+
+def test_phantom_bundle_screens_to_its_expected_reason(client) -> None:
+    ingestion_id = post(client, payload_for("phantom")).json()["ingestion_id"]
+
+    body = screen(client, ingestion_id).json()
+
+    assert body["case_id"].startswith("case_")
+    assert body["case_version"] == 1
+    assert body["state"] == "SCREENED"
+    codes = {reason["code"] for reason in body["reasons"]}
+    assert codes == {"LINE_WITHOUT_COMPLETED_PROCEDURE"}
+    assert body["primary_reason"]["sentence"], "the UI reads this, it must not be empty"
+    assert body["band"]["band"] == "DETERMINISTIC_CONFLICT"
+    assert body["versions"]["ruleset_version"]
+
+
+def test_clean_bundle_screens_to_no_observed_risk(client) -> None:
+    ingestion_id = post(client, payload_for("clean")).json()["ingestion_id"]
+
+    body = screen(client, ingestion_id).json()
+
+    assert body["reasons"] == []
+    assert body["primary_reason"] is None
+    assert body["band"]["band"] == "NO_OBSERVED_RISK"
+    assert "tidak ada sinyal" in body["band"]["basis"].lower()
+
+
+def test_repeat_billing_is_found_across_two_ingestions(client) -> None:
+    """History comes from earlier ingestions, so the prior claim must be submitted first."""
+    fixture = load("repeat")
+    post(client, fixture.history[0].model_dump(mode="json"))
+    ingestion_id = post(client, payload_for("repeat")).json()["ingestion_id"]
+
+    body = screen(client, ingestion_id).json()
+
+    codes = {reason["code"] for reason in body["reasons"]}
+    assert "OVERLAPPING_CLAIM_SAME_EPISODE" in codes
+
+
+def test_every_reason_arrives_with_its_counter_evidence(client) -> None:
+    fixture = load("repeat")
+    post(client, fixture.history[0].model_dump(mode="json"))
+    ingestion_id = post(client, payload_for("repeat")).json()["ingestion_id"]
+
+    body = screen(client, ingestion_id).json()
+
+    for reason in body["reasons"]:
+        assert reason["component_scores"], "component scores travel with the reason"
+
+
+def test_completeness_notes_are_carried_onto_the_case(client) -> None:
+    """The ingestion's notes must reach the reviewer, or the caveat is lost between screens."""
+    from app.router.bundles import CASES
+
+    bundle = load("clean").bundle
+    bare = tuple(line.model_copy(update={"supporting_refs": ()}) for line in bundle.lines)
+    thin = bundle.model_copy(
+        update={"lines": bare, "procedures": (), "medications": (), "provenance": ()}
+    )
+    ingested = post(client, thin.model_dump(mode="json")).json()
+    assert ingested["completeness_notes"], "precondition: this bundle is thin"
+
+    body = screen(client, ingested["ingestion_id"]).json()
+
+    case = CASES.get(body["case_id"])
+    assert case is not None
+    assert case.completeness_notes == tuple(ingested["completeness_notes"])
+    assert any("catatan kelengkapan" in cap for cap in body["band"]["caps_applied"])
+
+
+def test_rescreening_reuses_the_case_and_bumps_its_version(client) -> None:
+    """One claim, one case — re-screening must not fork a reviewer's queue."""
+    ingestion_id = post(client, payload_for("phantom")).json()["ingestion_id"]
+
+    first = screen(client, ingestion_id).json()
+    second = screen(client, ingestion_id).json()
+
+    assert first["case_id"] == second["case_id"]
+    assert second["case_version"] == first["case_version"] + 1
+
+
+def test_screening_links_the_case_back_to_the_ingestion(client, store) -> None:
+    ingestion_id = post(client, payload_for("phantom")).json()["ingestion_id"]
+    case_id = screen(client, ingestion_id).json()["case_id"]
+
+    assert store.get(ingestion_id).case_id == case_id
+
+    resubmitted = post(client, payload_for("phantom")).json()
+    assert resubmitted["existing_case_id"] == case_id
+
+
+def test_an_invalid_bundle_cannot_be_screened(client) -> None:
+    payload = payload_for("clean")
+    payload["lines"][0]["supporting_refs"] = [
+        {"resource_type": "Procedure", "resource_id": "PROC-GONE"}
+    ]
+    ingestion_id = post(client, payload).json()["ingestion_id"]
+
+    response = screen(client, ingestion_id)
+
+    assert response.status_code == 409
+    assert response.json()["code"] == ErrorCode.BUNDLE_NOT_SCREENABLE
+
+
+def test_screening_an_unknown_ingestion_returns_not_found(client) -> None:
+    response = screen(client, "ing_does_not_exist")
+    assert response.status_code == 404
+    assert response.json()["code"] == ErrorCode.INGESTION_NOT_FOUND

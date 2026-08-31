@@ -71,9 +71,9 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 > byte-identical. Verified: `uv run pytest` → 162 passed (was 115); domain → 21 passed;
 > ruff clean on all new files.
 
-### 2026-08-31 · [Sprint 02 — ingest-validation](../sprint/backlog/02-ingest-validation/sprint.md) · Task: [Bundle ingestion](../sprint/backlog/02-ingest-validation/backend/01-bundle-ingestion.md) · 🚧 In Progress
+### 2026-08-31 · [Sprint 02 — ingest-validation](../sprint/backlog/02-ingest-validation/sprint.md) · Task: [Bundle ingestion](../sprint/backlog/02-ingest-validation/backend/01-bundle-ingestion.md) · ✅ Done
 
-**Event:** Endpoint and validation delivered; database binding outstanding
+**Event:** Task completed — Sprint 02 closed
 **Files:** `apps/backend/app/router/bundles.py`, `app/service/{validation,hashing}.py`, `app/store/bundles.py`
 > `POST /v1/bundles` is live and the frozen 501 placeholder was removed from `router/contract.py`.
 > Content-type, size, and depth guards run before the payload is parsed, and depth is measured
@@ -89,9 +89,26 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 > their declared `expected_evidence_complete: true`. That would have lowered certainty and routed
 > the phantom case to request-evidence — defusing the detector the system exists for. An
 > unevidenced line is a finding; notes now cover only whole missing categories. A test locks it.
-> **Not done:** no `migrations/` and no database round-trip — Docker's daemon is down and the
-> Postgres on 5432 rejects the project credentials, so `InMemoryBundleStore` implements the
-> `BundleStore` protocol as `app/store/edges.py` does. Completeness notes are returned but not
-> yet carried onto a case; that waits on the screen endpoint.
-> Verified: `uv run pytest` → 204 passed (was 162); domain → 21 passed; ruff clean across
-> `app` and `tests` (the fix also reordered imports in 11 pre-existing files).
+> Verified: `uv run pytest` → 204 passed (was 162); ruff clean across `app` and `tests` (the fix
+> also reordered imports in 11 pre-existing files).
+
+### 2026-08-31 · [Sprint 02 — ingest-validation](../sprint/backlog/02-ingest-validation/sprint.md) · Task: [Bundle ingestion](../sprint/backlog/02-ingest-validation/backend/01-bundle-ingestion.md) · ✅ Done
+
+**Event:** Database layer bound, screen endpoint wired, Sprint 02 closed
+**Files:** `apps/backend/migrations/`, `app/store/{tables,engine,registry,cases}.py`, `app/router/bundles.py`
+> Postgres is live via Docker Compose and Alembic revision `3cf7d9b9fb28` created `ingestions`
+> and `evidence_edges`. `migrations/env.py` reads the URL from `app.config` rather than
+> `alembic.ini`, so the service and its migrations cannot point at different databases.
+> `raw_payload` is TEXT, not JSONB: JSONB reorders keys and drops whitespace, destroying the
+> exact form a re-derivation depends on. A test asserts the byte-for-byte round trip.
+> `SqlBundleStore` and `SqlEdgeStore` join the in-memory pair behind the same protocols;
+> `store/registry.py` picks once per process and falls back to in-memory when no database
+> answers — the demo runbook needs an offline run and the frontend team has no Docker.
+> Postgres check constraints refuse an out-of-enum status and a confidence outside 0..1, so the
+> database backs up the types rather than trusting them.
+> `POST /bundles/{id}/screen` was implemented here too, because the completeness notes had
+> nowhere to travel without it: it screens against history drawn from earlier ingestions for the
+> same participant and provider, creates a case, carries the notes onto it, and links the case
+> back so a resubmission returns `existing_case_id`. Re-screening bumps the case version instead
+> of forking a second case. The queue, dispositions, and audit trail stay with `04-review-slice`.
+> Verified: 227 passed with Postgres · 215 passed and 12 skipped without it · ruff clean.

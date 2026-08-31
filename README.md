@@ -85,16 +85,38 @@ npm install
 > Di Windows gunakan `cd apps\backend` dan `cd apps\web`.
 > Virtual environment tidak perlu diaktifkan manual — `uv run` sudah menanganinya.
 
-### 3. Basis data (opsional pada tahap ini)
+### 3. Basis data (opsional — API tetap jalan tanpanya)
 
-Sprint saat ini belum memakai Postgres — `apps/backend/app/store/` masih kosong dan API
-berjalan tanpa koneksi basis data. Jalankan langkah ini hanya jika sedang mengerjakan
-lapisan persistensi:
+Backend memakai Postgres bila tersedia, dan **otomatis jatuh ke penyimpanan in-memory bila
+tidak**. Fallback ini disengaja: demo harus bisa berjalan tanpa jaringan luar, dan tim frontend
+bekerja tanpa Docker sama sekali. Tanpa basis data, 12 test integrasi akan `skip` — bukan gagal.
+
+Nyalakan bila sedang mengerjakan lapisan persistensi, atau ingin menjalankan test integrasi:
 
 ```
 docker compose up -d db          # Postgres 16 di localhost:5432
 docker compose ps                # tunggu status "healthy"
+
+cd apps/backend
+uv run alembic upgrade head      # buat tabel ingestions & evidence_edges
 ```
+
+> Port 5432 sering sudah dipakai instance Postgres lokal lain. Kalau `docker compose ps`
+> menunjukkan container sehat tetapi koneksi ditolak dengan *password authentication failed*,
+> yang menjawab adalah instance lain — hentikan instance itu, atau ubah pemetaan port di
+> `docker-compose.yml` beserta `DATABASE_URL`.
+
+Perintah Alembic yang sering dipakai, semuanya dari `apps/backend`:
+
+| Keperluan | Perintah |
+|-----------|----------|
+| Terapkan semua migrasi | `uv run alembic upgrade head` |
+| Lihat revisi terpasang | `uv run alembic current` |
+| Buat migrasi dari perubahan tabel | `uv run alembic revision --autogenerate -m "pesan"` |
+| Mundur satu revisi | `uv run alembic downgrade -1` |
+
+URL basis data dibaca dari `app.config`, bukan dari `alembic.ini` — jadi layanan dan migrasinya
+tidak mungkin menunjuk basis data yang berbeda. Jangan mengisi `sqlalchemy.url` di `alembic.ini`.
 
 ### 4. Jalankan kedua layanan
 
@@ -200,7 +222,9 @@ npm run typecheck    # pemeriksaan tipe
 | `uv: command not found` / `npm: command not found` | Terminal dibuka sebelum alat terpasang — tutup dan buka ulang terminal agar PATH termuat |
 | `uv run` gagal dengan error impor | Dependensi belum terpasang atau terminal berada di folder yang salah — ulangi langkah 2 dari `apps/backend` |
 | Peramban menampilkan halaman kosong di :3000 | Proses web belum selesai build — tunggu baris `ready built in ...` muncul di terminal |
-| `docker compose up` gagal | Docker belum berjalan — nyalakan Docker Desktop, atau lewati karena basis data masih opsional |
+| `docker compose up` gagal | Docker belum berjalan — nyalakan Docker Desktop (`open -a Docker`), atau lewati: API tetap jalan dengan penyimpanan in-memory |
+| Test integrasi ter-`skip` | Tidak ada Postgres yang terjangkau. Jalankan `docker compose up -d db` lalu `uv run alembic upgrade head` |
+| `password authentication failed for user "tilik"` | Ada Postgres lain di port 5432. Hentikan instance itu, atau ubah pemetaan port di `docker-compose.yml` dan `DATABASE_URL` |
 | PowerShell menolak menjalankan skrip pemasangan | Jalankan sekali: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` |
 | `error connecting to /tmp/tmux-*/default` | Hanya muncul pada Cara B saat belum ada server tmux — normal, `tmux new-session` akan menyalakannya |
 

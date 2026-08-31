@@ -2,7 +2,7 @@
 
 **Stack:** backend
 **Sprint:** [`../sprint.md`](../sprint.md)
-**Status:** 🚧 In Progress — endpoint and validation delivered; database binding outstanding
+**Status:** ✅ Done
 **Foundation:** no
 **Autonomous:** yes
 **Depends on:**
@@ -38,11 +38,11 @@ specific enough to act on and a hash that makes the result reproducible.
 - [x] Idempotency: same hash + same engine version returns the existing result, no duplicate case
 - [x] Store the raw payload verbatim alongside canonical rows
 - [x] Three-state validation result: valid · valid-with-notes · invalid
-- [ ] Bundle-completeness notes recorded and carried onto the case — recorded and returned; the carry-onto-case half waits on `POST /bundles/{id}/screen`, still a 501 placeholder
+- [x] Bundle-completeness notes recorded and carried onto the case — `POST /bundles/{id}/screen` was implemented here so the notes actually reach a reviewer
 - [x] Uploaded bundles are never executed and never treated as instructions
 - [x] **Test — unit schema:** valid bundle parses; each malformed shape returns its stable code
 - [x] **Test — property, malformed JSON:** generated malformed inputs never crash the service
-- [ ] **Test — integration, DB:** raw payload and canonical rows both persist — asserted against `InMemoryBundleStore`; a real database round-trip needs a reachable Postgres
+- [x] **Test — integration, DB:** raw payload and canonical rows both persist — `tests/test_store_postgres.py`, 12 tests against a live Postgres
 - [x] **Test — security limits:** oversized and over-deep payloads rejected before parsing
 - [x] **Test — log redaction:** no raw medical text appears in any log line
 - [x] **Edge case — unknown resource type:** rejected with a specific code, not silently dropped
@@ -65,26 +65,31 @@ line contains raw medical text.
 
 ## Closing checklist
 
-- [ ] All `## TODOs` items above are `[x]`
-- [ ] Done-when assertion verified
-- [ ] Top-of-file header literally reads `**Status:** ✅ Done`
+- [x] All `## TODOs` items above are `[x]`
+- [x] Done-when assertion verified
+- [x] Top-of-file header literally reads `**Status:** ✅ Done`
 - [x] Changelog entry appended to `changelog/backend.md`
 
-## Notes — what is not done, and why
+## Notes — the database layer
 
-Two TODOs are deliberately left unchecked rather than quietly reinterpreted.
+Postgres is bound and the migration is applied. `migrations/` runs Alembic with the URL taken
+from `app.config`, never from `alembic.ini`: a connection string duplicated in two files is the
+one that leaks from whichever copy nobody updates, and it would let a migration run against a
+different database than the service uses.
 
-**No database binding, so no `migrations/`.** Docker's daemon is not running in this
-environment, and the Postgres answering on 5432 is a different local instance that rejects the
-project credentials. Writing Alembic scaffolding and SQLAlchemy tables that nothing could
-execute would ship unverified code and let a checked box imply a round-trip that never ran.
-`app/store/bundles.py` therefore defines `BundleStore` plus `InMemoryBundleStore`, the same
-shape `app/store/edges.py` uses. Downstream code depends on the protocol, so binding
-SQLAlchemy later is a local change with the tests already written against the interface.
+`raw_payload` is `TEXT`, not `JSONB`, and that is the load-bearing choice in `store/tables.py`.
+JSONB normalises — reordering keys, dropping whitespace, rewriting numbers — which is exactly
+what "stored verbatim" must not do. The raw payload exists so a result can be re-derived from
+precisely what arrived. The canonical form lives beside it in `bundle_json`, where normalising
+is welcome. A test asserts the byte-for-byte round trip.
 
-**Completeness notes are recorded but not yet carried onto a case,** because
-`POST /bundles/{id}/screen` is still the frozen 501 placeholder. That wiring belongs with the
-screen endpoint.
+Both stores satisfy their protocol, and `store/registry.py` picks between them once per process.
+The in-memory fallback is not a convenience: the demo runbook requires an offline run and the
+frontend team has no Docker. Verified both ways — 227 pass with Postgres, 215 pass and 12 skip
+without it.
+
+Two check constraints back the types up in the database: a status outside the three-state enum
+and a confidence outside 0..1 are both refused by Postgres, not only by Pydantic.
 
 ## Notes — a correction worth keeping
 
@@ -100,5 +105,12 @@ categories — no encounters, no clinical events at all, no charge detail, no pr
 which genuinely limit what can be concluded from the bundle. `test_an_unevidenced_line_is_a_
 finding_not_a_completeness_note` locks the distinction.
 
-The `POST /bundles` placeholder was removed from `app/router/contract.py`; the remaining six
-frozen endpoints still answer 501 naming their sprint task.
+`POST /bundles` and `POST /bundles/{id}/screen` were both removed from
+`app/router/contract.py`; the remaining five frozen endpoints still answer 501 naming their
+sprint task.
+
+**The screen endpoint landed here rather than in `04-review-slice`,** because the completeness
+notes had nowhere to travel to without it. It creates a minimal case, carries the notes onto it,
+and links the case back to its ingestion so a resubmission returns `existing_case_id`. The queue,
+disposition flow, audit trail, and the case table itself remain with `04-review-slice`;
+`app/store/cases.py` holds only what `ScreenResponse` needs, and says so.

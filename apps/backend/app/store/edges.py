@@ -10,18 +10,21 @@ same version replaces that slice wholesale rather than appending, so a repeated 
 never silently double a reviewer's evidence list. Deriving it at a *new* version leaves the
 old slice intact, because an audit event that cited the old edges must keep resolving.
 
-The SQLAlchemy implementation lands with `02-ingest-validation/backend/01-bundle-ingestion`,
-which owns the engine, the session, and the migrations. Until then this module defines the
-contract and an in-memory implementation, so the rule engine can be built and tested against
-the same interface it will use in production.
+Two implementations satisfy the protocol. `SqlEdgeStore` runs against Postgres;
+`InMemoryEdgeStore` keeps the tests and the offline demo working without one.
 """
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import TYPE_CHECKING, Protocol
 
 from pydantic import BaseModel, ConfigDict
+from sqlalchemy import delete, insert, or_, select
 from tilik_domain.canonical import ResourceRef, ResourceType
 from tilik_domain.edges import EdgeType, EvidenceEdge
+
+from app.store.engine import session_scope
+from app.store.tables import evidence_edges
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -134,3 +137,108 @@ class InMemoryEdgeStore:
         return tuple(
             version for stored_id, version in self._slices if stored_id == bundle_id
         )
+
+
+class SqlEdgeStore:
+    """Postgres-backed implementation of `EdgeStore`.
+
+    A slice is `(bundle_id, ruleset_version)`, and `replace` deletes then inserts inside one
+    transaction. That is what keeps a re-screen from doubling a reviewer's evidence list while
+    still leaving every earlier version's slice untouched.
+    """
+
+    def replace(
+        self, bundle_id: str, ruleset_version: str, edges: Iterable[EvidenceEdge]
+    ) -> int:
+        rows = tuple(StoredEdge.from_edge(bundle_id, edge) for edge in edges)
+        mismatched = [row for row in rows if row.ruleset_version != ruleset_version]
+        if mismatched:
+            raise ValueError(
+                f"{len(mismatched)} edge(s) carry a ruleset version other than "
+                f"{ruleset_version}; storing them together would make the slice unauditable"
+            )
+        with session_scope() as session:
+            session.execute(
+                delete(evidence_edges).where(
+                    evidence_edges.c.bundle_id == bundle_id,
+                    evidence_edges.c.ruleset_version == ruleset_version,
+                )
+            )
+            if rows:
+                session.execute(
+                    insert(evidence_edges),
+                    [_to_row(row) for row in rows],
+                )
+        return len(rows)
+
+    def edges_for(self, bundle_id: str, ruleset_version: str) -> tuple[EvidenceEdge, ...]:
+        with session_scope() as session:
+            result = session.execute(
+                select(evidence_edges)
+                .where(
+                    evidence_edges.c.bundle_id == bundle_id,
+                    evidence_edges.c.ruleset_version == ruleset_version,
+                )
+                .order_by(evidence_edges.c.id)
+            ).mappings().all()
+        return tuple(_from_row(row).to_edge() for row in result)
+
+    def touching(
+        self, bundle_id: str, ruleset_version: str, resource_id: str
+    ) -> tuple[EvidenceEdge, ...]:
+        with session_scope() as session:
+            result = session.execute(
+                select(evidence_edges)
+                .where(
+                    evidence_edges.c.bundle_id == bundle_id,
+                    evidence_edges.c.ruleset_version == ruleset_version,
+                    or_(
+                        evidence_edges.c.source_id == resource_id,
+                        evidence_edges.c.target_id == resource_id,
+                    ),
+                )
+                .order_by(evidence_edges.c.id)
+            ).mappings().all()
+        return tuple(_from_row(row).to_edge() for row in result)
+
+    def versions_for(self, bundle_id: str) -> tuple[str, ...]:
+        with session_scope() as session:
+            result = session.execute(
+                select(evidence_edges.c.ruleset_version)
+                .where(evidence_edges.c.bundle_id == bundle_id)
+                .distinct()
+                .order_by(evidence_edges.c.ruleset_version)
+            ).scalars().all()
+        return tuple(result)
+
+    def clear(self) -> None:
+        with session_scope() as session:
+            session.execute(delete(evidence_edges))
+
+
+def _to_row(row: StoredEdge) -> dict:
+    return {
+        "bundle_id": row.bundle_id,
+        "ruleset_version": row.ruleset_version,
+        "edge_type": str(row.edge_type),
+        "source_type": str(row.source_type),
+        "source_id": row.source_id,
+        "target_type": str(row.target_type),
+        "target_id": row.target_id,
+        "derivation_rule": row.derivation_rule,
+        "confidence": row.confidence,
+    }
+
+
+def _from_row(row: Mapping) -> StoredEdge:
+    return StoredEdge(
+        bundle_id=row["bundle_id"],
+        edge_type=EdgeType(row["edge_type"]),
+        source_type=ResourceType(row["source_type"]),
+        source_id=row["source_id"],
+        target_type=ResourceType(row["target_type"]),
+        target_id=row["target_id"],
+        derivation_rule=row["derivation_rule"],
+        ruleset_version=row["ruleset_version"],
+        confidence=row["confidence"],
+    )

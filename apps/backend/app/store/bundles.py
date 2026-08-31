@@ -10,21 +10,26 @@ engine and ruleset versions. That is what "already screened" means here: the sam
 the same rules returns the record that exists rather than creating a second case for one claim,
 while a version bump deliberately produces a new one.
 
-As with `app.store.edges`, the SQLAlchemy implementation is deferred: no project database is
-reachable in this environment, and the demo runs offline. The protocol is what downstream code
-depends on, so swapping the implementation is a local change.
+Two implementations satisfy the protocol. `SqlBundleStore` is what runs when a database is
+reachable; `InMemoryBundleStore` keeps the API's tests and the offline demo working without
+one. Downstream code depends on the protocol, never on either implementation.
 """
 from __future__ import annotations
 
+from collections.abc import Mapping
 from datetime import UTC, datetime
 from typing import Protocol
 from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict
+from sqlalchemy import delete, select, update
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from tilik_domain.canonical import CanonicalBundle
 
 from app.dto.bundles import ResourceCount, ValidationStatus
 from app.errors import ValidationIssue
+from app.store.engine import session_scope
+from app.store.tables import ingestions
 
 
 class IngestionRecord(BaseModel):
@@ -67,6 +72,18 @@ class BundleStore(Protocol):
         """Record which case a screening produced, so a resubmission can point at it."""
         ...
 
+    def history_for(
+        self, participant_id: str, provider_id: str, *, exclude_bundle_id: str
+    ) -> tuple[CanonicalBundle, ...]:
+        """Earlier valid bundles for the same participant at the same provider.
+
+        Repeat billing and unbundling are only visible across claims, so screening needs the
+        prior ones. Scoped to a single participant and provider deliberately: a wider net would
+        pull unrelated people's records into one screening for no detection benefit, which
+        `docs/canonical/07_privacy_threat_model.md` calls out as unnecessary exposure.
+        """
+        ...
+
 
 class InMemoryBundleStore:
     """Reference implementation, used by tests and the offline demo."""
@@ -98,6 +115,20 @@ class InMemoryBundleStore:
         self._by_id[ingestion_id] = updated
         return updated
 
+    def history_for(
+        self, participant_id: str, provider_id: str, *, exclude_bundle_id: str
+    ) -> tuple[CanonicalBundle, ...]:
+        matches = [
+            record
+            for record in self._by_id.values()
+            if record.bundle is not None
+            and record.bundle.bundle_id != exclude_bundle_id
+            and record.bundle.claim.participant_id == participant_id
+            and record.bundle.claim.provider_id == provider_id
+        ]
+        matches.sort(key=lambda record: record.received_at)
+        return tuple(record.bundle for record in matches if record.bundle)
+
     def clear(self) -> None:
         """Reset between tests and for the demo-reset route."""
         self._by_id.clear()
@@ -111,3 +142,116 @@ def new_ingestion_id() -> str:
 
 def received_now() -> datetime:
     return datetime.now(UTC)
+
+
+class SqlBundleStore:
+    """Postgres-backed implementation of `BundleStore`.
+
+    Writes go through `session_scope`, so a failure part-way rolls the whole record back rather
+    than leaving a raw payload with no canonical rows beside it.
+    """
+
+    def find_by_idempotency_key(self, key: str) -> IngestionRecord | None:
+        with session_scope() as session:
+            row = session.execute(
+                select(ingestions).where(ingestions.c.idempotency_key == key)
+            ).mappings().one_or_none()
+        return _to_record(row) if row else None
+
+    def save(self, record: IngestionRecord) -> IngestionRecord:
+        """Insert, or replace the row already holding this idempotency key.
+
+        Conflict is resolved on `idempotency_key` rather than the primary key: the same content
+        at the same version is the same ingestion, whatever id a retry happened to generate.
+        """
+        values = _to_row(record)
+        statement = pg_insert(ingestions).values(**values)
+        statement = statement.on_conflict_do_update(
+            index_elements=[ingestions.c.idempotency_key],
+            set_={
+                column: values[column]
+                for column in values
+                if column not in {"ingestion_id", "idempotency_key"}
+            },
+        ).returning(ingestions)
+        with session_scope() as session:
+            row = session.execute(statement).mappings().one()
+        return _to_record(row)
+
+    def get(self, ingestion_id: str) -> IngestionRecord | None:
+        with session_scope() as session:
+            row = session.execute(
+                select(ingestions).where(ingestions.c.ingestion_id == ingestion_id)
+            ).mappings().one_or_none()
+        return _to_record(row) if row else None
+
+    def attach_case(self, ingestion_id: str, case_id: str) -> IngestionRecord | None:
+        with session_scope() as session:
+            row = session.execute(
+                update(ingestions)
+                .where(ingestions.c.ingestion_id == ingestion_id)
+                .values(case_id=case_id)
+                .returning(ingestions)
+            ).mappings().one_or_none()
+        return _to_record(row) if row else None
+
+    def history_for(
+        self, participant_id: str, provider_id: str, *, exclude_bundle_id: str
+    ) -> tuple[CanonicalBundle, ...]:
+        with session_scope() as session:
+            rows = session.execute(
+                select(ingestions.c.bundle_json)
+                .where(
+                    ingestions.c.bundle_json.is_not(None),
+                    ingestions.c.bundle_json["claim"]["participant_id"].astext
+                    == participant_id,
+                    ingestions.c.bundle_json["claim"]["provider_id"].astext == provider_id,
+                    ingestions.c.bundle_json["bundle_id"].astext != exclude_bundle_id,
+                )
+                .order_by(ingestions.c.received_at)
+            ).scalars().all()
+        return tuple(CanonicalBundle.model_validate(row) for row in rows)
+
+    def clear(self) -> None:
+        """Wipe every ingestion. Used by tests and the demo-reset route, never in a request."""
+        with session_scope() as session:
+            session.execute(delete(ingestions))
+
+
+def _to_row(record: IngestionRecord) -> dict:
+    return {
+        "ingestion_id": record.ingestion_id,
+        "input_hash": record.input_hash,
+        "idempotency_key": record.idempotency_key,
+        "status": str(record.status),
+        "raw_payload": record.raw_payload,
+        "bundle_json": record.bundle.model_dump(mode="json") if record.bundle else None,
+        "issues": [issue.model_dump(mode="json") for issue in record.issues],
+        "completeness_notes": list(record.completeness_notes),
+        "resource_counts": [count.model_dump(mode="json") for count in record.resource_counts],
+        "engine_version": record.engine_version,
+        "ruleset_version": record.ruleset_version,
+        "received_at": record.received_at,
+        "case_id": record.case_id,
+    }
+
+
+def _to_record(row: Mapping) -> IngestionRecord:
+    bundle_json = row["bundle_json"]
+    return IngestionRecord(
+        ingestion_id=row["ingestion_id"],
+        input_hash=row["input_hash"],
+        idempotency_key=row["idempotency_key"],
+        status=ValidationStatus(row["status"]),
+        raw_payload=row["raw_payload"],
+        bundle=CanonicalBundle.model_validate(bundle_json) if bundle_json else None,
+        issues=tuple(ValidationIssue.model_validate(item) for item in row["issues"]),
+        completeness_notes=tuple(row["completeness_notes"]),
+        resource_counts=tuple(
+            ResourceCount.model_validate(item) for item in row["resource_counts"]
+        ),
+        engine_version=row["engine_version"],
+        ruleset_version=row["ruleset_version"],
+        received_at=row["received_at"],
+        case_id=row["case_id"],
+    )
