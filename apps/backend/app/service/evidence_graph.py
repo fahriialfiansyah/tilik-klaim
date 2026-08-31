@@ -138,13 +138,21 @@ class EvidenceGraph(BaseModel):
 def build_evidence_graph(
     bundle: CanonicalBundle,
     history: Iterable[CanonicalBundle] = (),
+    peer_documents: Iterable[DocumentRef] = (),
 ) -> EvidenceGraph:
-    """Derive every canonical edge over `bundle`, using `history` for cross-claim relations.
+    """Derive every canonical edge over `bundle`.
+
+    `history` carries prior claims for the same participant at the same provider, which is what
+    repeat billing and unbundling compare against. `peer_documents` carries notes from *other*
+    participants at the same provider, because cloned documentation is a per-provider pattern —
+    without them the clone detector cannot see anything. Only documents cross that wider
+    boundary; whole bundles never do.
 
     Output ordering is stable regardless of how the input resources were ordered, so two runs
     of the same bundle diff to nothing.
     """
     prior = tuple(history)
+    peers = tuple(peer_documents)
     edges: list[EvidenceEdge] = []
     gaps: list[EvidenceGap] = []
 
@@ -154,7 +162,7 @@ def build_evidence_graph(
 
     _derive_episode_grouping(bundle, prior, edges)
     _derive_possible_duplicates(bundle, prior, edges)
-    _derive_similar_documents(bundle, prior, edges)
+    _derive_similar_documents(bundle, prior, peers, edges)
 
     return EvidenceGraph(
         bundle_id=bundle.bundle_id,
@@ -406,25 +414,44 @@ def _derive_possible_duplicates(
 def _derive_similar_documents(
     bundle: CanonicalBundle,
     history: tuple[CanonicalBundle, ...],
+    peer_documents: tuple[DocumentRef, ...],
     edges: list[EvidenceEdge],
 ) -> None:
-    """Link notes that read alike, so a reviewer can judge templating against copying."""
+    """Link notes that read alike, so a reviewer can judge templating against copying.
+
+    Candidates come from two places: this participant's own prior claims, and other
+    participants' notes at the same provider. The second source is the one that matters —
+    copying a narrative between patients is the pattern, and comparing a patient only against
+    themselves would never reveal it.
+    """
+    own_ids = {document.document_id for document in bundle.documents}
+    candidates: list[DocumentRef] = [
+        candidate for past in history for candidate in past.documents
+    ]
+    candidates.extend(
+        candidate for candidate in peer_documents if candidate.document_id not in own_ids
+    )
+
+    seen: set[tuple[str, str]] = set()
     for document in bundle.documents:
         source = _ref(ResourceType.DOCUMENT, document.document_id)
-        for past in history:
-            for candidate in past.documents:
-                score = _document_similarity(document, candidate)
-                if score < SIMILARITY_CANDIDATE_FLOOR:
-                    continue
-                edges.append(
-                    _inferred(
-                        EdgeType.SIMILAR_TO,
-                        source,
-                        _ref(ResourceType.DOCUMENT, candidate.document_id),
-                        f"document-char-{SHINGLE_SIZE}gram-jaccard/v1",
-                        score,
-                    )
+        for candidate in candidates:
+            pair = (document.document_id, candidate.document_id)
+            if pair in seen or candidate.document_id == document.document_id:
+                continue
+            seen.add(pair)
+            score = _document_similarity(document, candidate)
+            if score < SIMILARITY_CANDIDATE_FLOOR:
+                continue
+            edges.append(
+                _inferred(
+                    EdgeType.SIMILAR_TO,
+                    source,
+                    _ref(ResourceType.DOCUMENT, candidate.document_id),
+                    f"document-char-{SHINGLE_SIZE}gram-jaccard/v1",
+                    score,
                 )
+            )
 
 
 def _document_similarity(left: DocumentRef, right: DocumentRef) -> float:

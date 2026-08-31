@@ -7,11 +7,8 @@ unambiguous answer if it calls too early.
 """
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, Query, status
-from tilik_domain.reasons import CaseState, PriorityBand, RiskMode
+from fastapi import APIRouter, HTTPException, status
 
-from app.dto.cases import CaseDetailResponse, CaseQueueResponse
-from app.dto.dispositions import AuditResponse, DispositionRequest, DispositionResponse
 from app.dto.evaluations import EvaluationResponse
 from app.errors import ErrorResponse
 
@@ -36,59 +33,6 @@ def _pending(task: str) -> HTTPException:
 
 # `POST /bundles` is implemented in `app.router.bundles`; its placeholder was removed when
 # sprint 02 / 01-bundle-ingestion landed. The remaining handlers below are still pending.
-
-
-@router.get(
-    "/cases",
-    response_model=CaseQueueResponse,
-    responses=ERROR_RESPONSES,
-    summary="Paginated review queue",
-)
-def list_cases(
-    state: CaseState | None = None,
-    mode: RiskMode | None = None,
-    band: PriorityBand | None = None,
-    page: int = Query(default=1, ge=1),
-    page_size: int = Query(default=25, ge=1, le=200),
-) -> CaseQueueResponse:
-    """Pseudonymous fields only. Never returns raw medical text."""
-    raise _pending("sprint 04 / 01-case-endpoints")
-
-
-@router.get(
-    "/cases/{case_id}",
-    response_model=CaseDetailResponse,
-    responses=ERROR_RESPONSES,
-    summary="One case with evidence, counter-evidence, and timeline",
-)
-def get_case(case_id: str) -> CaseDetailResponse:
-    raise _pending("sprint 04 / 01-case-endpoints")
-
-
-@router.post(
-    "/cases/{case_id}/dispositions",
-    response_model=DispositionResponse,
-    responses=ERROR_RESPONSES,
-    status_code=status.HTTP_201_CREATED,
-    summary="Record a human disposition",
-)
-def create_disposition(case_id: str, request: DispositionRequest) -> DispositionResponse:
-    """Optimistic locking on `expected_case_version`; a reason is required.
-
-    No disposition triggers claim rejection, payment action, sanction, or code change.
-    """
-    raise _pending("sprint 04 / 02-disposition-audit")
-
-
-@router.get(
-    "/cases/{case_id}/audit",
-    response_model=AuditResponse,
-    responses=ERROR_RESPONSES,
-    summary="Append-only case history",
-)
-def get_audit(case_id: str) -> AuditResponse:
-    """Authorized role only. Corrections append a superseding event; nothing is overwritten."""
-    raise _pending("sprint 04 / 02-disposition-audit")
 
 
 @router.get(

@@ -1,0 +1,6846 @@
+{
+  "labels": [
+    {
+      "injection_id": "INJ-00000",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00540",
+      "target_bundle_ids": [
+        "BND-00540"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00540-2"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00001",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00430",
+      "target_bundle_ids": [
+        "BND-00430"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00430-2"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00002",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00912",
+      "target_bundle_ids": [
+        "BND-00912"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00912-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00003",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00460",
+      "target_bundle_ids": [
+        "BND-00460"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00460-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00004",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00534",
+      "target_bundle_ids": [
+        "BND-00534"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00534-2"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00005",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00781",
+      "target_bundle_ids": [
+        "BND-00781"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00781-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00006",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00918"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00918-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00007",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00560",
+      "target_bundle_ids": [
+        "BND-00560"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00560-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00008",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00108",
+      "target_bundle_ids": [
+        "BND-00108"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00108-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00009",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00219",
+      "target_bundle_ids": [
+        "BND-00219"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00219-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00010",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00460",
+      "target_bundle_ids": [
+        "BND-00460"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00460-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00011",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00385",
+      "target_bundle_ids": [
+        "BND-00385"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00385-3"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00012",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00048",
+      "target_bundle_ids": [
+        "BND-00048"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00048-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00013",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00602",
+      "target_bundle_ids": [
+        "BND-00602"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00602-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00014",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00163",
+      "target_bundle_ids": [
+        "BND-00163"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00163-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00015",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00895",
+      "target_bundle_ids": [
+        "BND-00895"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00895-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00016",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00884",
+      "target_bundle_ids": [
+        "BND-00884"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00884-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00017",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00482",
+      "target_bundle_ids": [
+        "BND-00482"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00482-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00018",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00262",
+      "target_bundle_ids": [
+        "BND-00262"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00262-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00019",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00079",
+      "target_bundle_ids": [
+        "BND-00079"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00079-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00020",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00720",
+      "target_bundle_ids": [
+        "BND-00720"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00720-2"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00021",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00489",
+      "target_bundle_ids": [
+        "BND-00489"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00489-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00022",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00174",
+      "target_bundle_ids": [
+        "BND-00174"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00174-3"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00023",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00126",
+      "target_bundle_ids": [
+        "BND-00126"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00126-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00024",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00224",
+      "target_bundle_ids": [
+        "BND-00224"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00224-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00025",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00987",
+      "target_bundle_ids": [
+        "BND-00987"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00987-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00026",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00480",
+      "target_bundle_ids": [
+        "BND-00480"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00480-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00027",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00526",
+      "target_bundle_ids": [
+        "BND-00526"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00526-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00028",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00843",
+      "target_bundle_ids": [
+        "BND-00843"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00843-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00029",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00407",
+      "target_bundle_ids": [
+        "BND-00407"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00407-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00030",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00210",
+      "target_bundle_ids": [
+        "BND-00210"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00210-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00031",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00571",
+      "target_bundle_ids": [
+        "BND-00571"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00571-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00032",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00109",
+      "target_bundle_ids": [
+        "BND-00109"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00109-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00033",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00437",
+      "target_bundle_ids": [
+        "BND-00437"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00437-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00034",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00385",
+      "target_bundle_ids": [
+        "BND-00385"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00385-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00035",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00595",
+      "target_bundle_ids": [
+        "BND-00595"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00595-3"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00036",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00172",
+      "target_bundle_ids": [
+        "BND-00172"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00172-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00037",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00249",
+      "target_bundle_ids": [
+        "BND-00249"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00249-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00038",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00631",
+      "target_bundle_ids": [
+        "BND-00631"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00631-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00039",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00075",
+      "target_bundle_ids": [
+        "BND-00075"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00075-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00040",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00062",
+      "target_bundle_ids": [
+        "BND-00062"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00062-2"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00041",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00259",
+      "target_bundle_ids": [
+        "BND-00259"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00259-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00042",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00809",
+      "target_bundle_ids": [
+        "BND-00809"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00809-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00043",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00037",
+      "target_bundle_ids": [
+        "BND-00037"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00037-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00044",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00507",
+      "target_bundle_ids": [
+        "BND-00507"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00507-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00045",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00622",
+      "target_bundle_ids": [
+        "BND-00622"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00622-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00046",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00612",
+      "target_bundle_ids": [
+        "BND-00612"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00612-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00047",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00341",
+      "target_bundle_ids": [
+        "BND-00341"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00341-2"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00048",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00625",
+      "target_bundle_ids": [
+        "BND-00625"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00625-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00049",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00605",
+      "target_bundle_ids": [
+        "BND-00605"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00605-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00050",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00639",
+      "target_bundle_ids": [
+        "BND-00639"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_COMPLETED_PROCEDURE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00639-2"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00051",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00688",
+      "target_bundle_ids": [
+        "BND-00688"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00688-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00052",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00610",
+      "target_bundle_ids": [
+        "BND-00610"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00610-2"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00053",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00221",
+      "target_bundle_ids": [
+        "BND-00221"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00221-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00054",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00808",
+      "target_bundle_ids": [
+        "BND-00808"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00808-3"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00055",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00864",
+      "target_bundle_ids": [
+        "BND-00864"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00864-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00056",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00325",
+      "target_bundle_ids": [
+        "BND-00325"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00325-1"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00057",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00794",
+      "target_bundle_ids": [
+        "BND-00794"
+      ],
+      "expected_reason_codes": [
+        "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00794-2"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis berstatus selesai."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00058",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00682",
+      "target_bundle_ids": [
+        "BND-00682"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00682-2"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00059",
+      "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00558",
+      "target_bundle_ids": [
+        "BND-00558"
+      ],
+      "expected_reason_codes": [
+        "LINE_WITHOUT_MEDICATION_DISPENSE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "ClaimLine",
+          "resource_id": "LN-00558-0"
+        }
+      ],
+      "violated_invariants": [
+        "Setiap baris tagihan punya satu peristiwa klinis pendukung."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00060",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00338",
+      "target_bundle_ids": [
+        "BND-00338",
+        "BND-00338-R378"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00338"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00338-R378"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00061",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00878",
+      "target_bundle_ids": [
+        "BND-00878",
+        "BND-00878-R463"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00878"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00878-R463"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00062",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00367",
+      "target_bundle_ids": [
+        "BND-00367",
+        "BND-00367-R205"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00367"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00367-R205"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00063",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00859",
+      "target_bundle_ids": [
+        "BND-00859",
+        "BND-00859-R390"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00859"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00859-R390"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00064",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00034",
+      "target_bundle_ids": [
+        "BND-00034",
+        "BND-00034-R587"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00034"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00034-R587"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00065",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00143",
+      "target_bundle_ids": [
+        "BND-00143",
+        "BND-00143-R640"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00143"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00143-R640"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00066",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00863",
+      "target_bundle_ids": [
+        "BND-00863",
+        "BND-00863-R269"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00863"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00863-R269"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00067",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00185",
+      "target_bundle_ids": [
+        "BND-00185",
+        "BND-00185-R093"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00185"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00185-R093"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00068",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00544",
+      "target_bundle_ids": [
+        "BND-00544",
+        "BND-00544-R421"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00544"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00544-R421"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00069",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00900",
+      "target_bundle_ids": [
+        "BND-00900",
+        "BND-00900-R229"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00900"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00900-R229"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00070",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00469",
+      "target_bundle_ids": [
+        "BND-00469",
+        "BND-00469-R836"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00469"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00469-R836"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00071",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00609",
+      "target_bundle_ids": [
+        "BND-00609",
+        "BND-00609-R613"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00609"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00609-R613"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00072",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00591",
+      "target_bundle_ids": [
+        "BND-00591",
+        "BND-00591-R029"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00591"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00591-R029"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00073",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00800",
+      "target_bundle_ids": [
+        "BND-00800",
+        "BND-00800-R969"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00800"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00800-R969"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00074",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00802",
+      "target_bundle_ids": [
+        "BND-00802",
+        "BND-00802-R088"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00802"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00802-R088"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00075",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00289",
+      "target_bundle_ids": [
+        "BND-00289",
+        "BND-00289-R781"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00289"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00289-R781"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00076",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00452",
+      "target_bundle_ids": [
+        "BND-00452",
+        "BND-00452-R355"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00452"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00452-R355"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00077",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00705",
+      "target_bundle_ids": [
+        "BND-00705",
+        "BND-00705-R662"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00705"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00705-R662"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00078",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00503",
+      "target_bundle_ids": [
+        "BND-00503",
+        "BND-00503-R843"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00503"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00503-R843"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00079",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00049",
+      "target_bundle_ids": [
+        "BND-00049",
+        "BND-00049-R588"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00049"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00049-R588"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00080",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00369",
+      "target_bundle_ids": [
+        "BND-00369",
+        "BND-00369-R210"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00369"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00369-R210"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00081",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00419",
+      "target_bundle_ids": [
+        "BND-00419",
+        "BND-00419-R133"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00419"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00419-R133"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00082",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00786",
+      "target_bundle_ids": [
+        "BND-00786",
+        "BND-00786-R266"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00786"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00786-R266"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00083",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00716",
+      "target_bundle_ids": [
+        "BND-00716",
+        "BND-00716-R540"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00716"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00716-R540"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00084",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00753",
+      "target_bundle_ids": [
+        "BND-00753",
+        "BND-00753-R801"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00753"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00753-R801"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00085",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00485",
+      "target_bundle_ids": [
+        "BND-00485",
+        "BND-00485-R197"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00485"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00485-R197"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00086",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00016",
+      "target_bundle_ids": [
+        "BND-00016",
+        "BND-00016-R141"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00016"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00016-R141"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00087",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00815",
+      "target_bundle_ids": [
+        "BND-00815",
+        "BND-00815-R779"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00815"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00815-R779"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00088",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00078",
+      "target_bundle_ids": [
+        "BND-00078",
+        "BND-00078-R882"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00078"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00078-R882"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00089",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00684",
+      "target_bundle_ids": [
+        "BND-00684",
+        "BND-00684-R368"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00684"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00684-R368"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00090",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00154",
+      "target_bundle_ids": [
+        "BND-00154",
+        "BND-00154-R439"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00154"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00154-R439"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00091",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00799",
+      "target_bundle_ids": [
+        "BND-00799",
+        "BND-00799-R934"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00799"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00799-R934"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00092",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00613",
+      "target_bundle_ids": [
+        "BND-00613",
+        "BND-00613-R021"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00613"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00613-R021"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00093",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00974",
+      "target_bundle_ids": [
+        "BND-00974",
+        "BND-00974-R484"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00974"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00974-R484"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00094",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00744",
+      "target_bundle_ids": [
+        "BND-00744",
+        "BND-00744-R652"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00744"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00744-R652"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00095",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00862",
+      "target_bundle_ids": [
+        "BND-00862",
+        "BND-00862-R192"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00862"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00862-R192"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00096",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00547",
+      "target_bundle_ids": [
+        "BND-00547",
+        "BND-00547-R335"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00547"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00547-R335"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00097",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00404",
+      "target_bundle_ids": [
+        "BND-00404",
+        "BND-00404-R266"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00404"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00404-R266"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00098",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00871",
+      "target_bundle_ids": [
+        "BND-00871",
+        "BND-00871-R187"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00871"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00871-R187"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00099",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00272",
+      "target_bundle_ids": [
+        "BND-00272",
+        "BND-00272-R312"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00272"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00272-R312"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00100",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00415",
+      "target_bundle_ids": [
+        "BND-00415",
+        "BND-00415-R622"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00415"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00415-R622"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00101",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00882",
+      "target_bundle_ids": [
+        "BND-00882",
+        "BND-00882-R552"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00882"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00882-R552"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00102",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00434",
+      "target_bundle_ids": [
+        "BND-00434",
+        "BND-00434-R047"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00434"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00434-R047"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00103",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00404",
+      "target_bundle_ids": [
+        "BND-00404",
+        "BND-00404-R453"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00404"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00404-R453"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00104",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00127",
+      "target_bundle_ids": [
+        "BND-00127",
+        "BND-00127-R259"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00127"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00127-R259"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00105",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00543",
+      "target_bundle_ids": [
+        "BND-00543",
+        "BND-00543-R214"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00543"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00543-R214"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00106",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00518",
+      "target_bundle_ids": [
+        "BND-00518",
+        "BND-00518-R239"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00518"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00518-R239"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00107",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00351",
+      "target_bundle_ids": [
+        "BND-00351",
+        "BND-00351-R405"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00351"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00351-R405"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00108",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00897",
+      "target_bundle_ids": [
+        "BND-00897",
+        "BND-00897-R021"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00897"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00897-R021"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00109",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00192",
+      "target_bundle_ids": [
+        "BND-00192",
+        "BND-00192-R025"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00192"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00192-R025"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00110",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00954",
+      "target_bundle_ids": [
+        "BND-00954",
+        "BND-00954-R784"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00954"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00954-R784"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00111",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00168",
+      "target_bundle_ids": [
+        "BND-00168",
+        "BND-00168-R827"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00168"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00168-R827"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00112",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00019",
+      "target_bundle_ids": [
+        "BND-00019",
+        "BND-00019-R239"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00019"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00019-R239"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00113",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00170",
+      "target_bundle_ids": [
+        "BND-00170",
+        "BND-00170-R281"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00170"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00170-R281"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00114",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00081",
+      "target_bundle_ids": [
+        "BND-00081",
+        "BND-00081-R398"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00081"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00081-R398"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00115",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00627",
+      "target_bundle_ids": [
+        "BND-00627",
+        "BND-00627-R615"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00627"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00627-R615"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00116",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00195",
+      "target_bundle_ids": [
+        "BND-00195",
+        "BND-00195-R069"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00195"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00195-R069"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00117",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00707",
+      "target_bundle_ids": [
+        "BND-00707",
+        "BND-00707-R828"
+      ],
+      "expected_reason_codes": [
+        "DUPLICATE_CLAIM_FINGERPRINT"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00707"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00707-R828"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00118",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00470",
+      "target_bundle_ids": [
+        "BND-00470",
+        "BND-00470-R465"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00470"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00470-R465"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00119",
+      "mode": "REPEAT_BILLING",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00239",
+      "target_bundle_ids": [
+        "BND-00239",
+        "BND-00239-R050"
+      ],
+      "expected_reason_codes": [
+        "OVERLAPPING_CLAIM_SAME_EPISODE"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00239"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00239-R050"
+        }
+      ],
+      "violated_invariants": [
+        "Satu layanan pada satu episode ditagihkan tepat satu kali."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00120",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00540",
+      "target_bundle_ids": [
+        "BND-00515"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00515"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00540"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00121",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00460",
+      "target_bundle_ids": [
+        "BND-00286"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00286"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00460"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00122",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00631",
+      "target_bundle_ids": [
+        "BND-00281"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00281"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00631"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00123",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00460",
+      "target_bundle_ids": [
+        "BND-00028"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00028"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00460"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00124",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00593"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00593"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00918"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00125",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00219",
+      "target_bundle_ids": [
+        "BND-00365"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00365"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00219"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00126",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00108",
+      "target_bundle_ids": [
+        "BND-00791"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00791"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00108"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00127",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00621"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00621"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00918"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00128",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00631",
+      "target_bundle_ids": [
+        "BND-00094"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00094"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00631"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00129",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00108",
+      "target_bundle_ids": [
+        "BND-00232"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00232"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00108"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00130",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00219",
+      "target_bundle_ids": [
+        "BND-00275"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00275"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00219"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00131",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00540",
+      "target_bundle_ids": [
+        "BND-00679"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00679"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00540"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00132",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00219",
+      "target_bundle_ids": [
+        "BND-00157"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00157"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00219"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00133",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00108",
+      "target_bundle_ids": [
+        "BND-00244"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00244"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00108"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00134",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00602",
+      "target_bundle_ids": [
+        "BND-00211"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00211"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00602"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00135",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00602",
+      "target_bundle_ids": [
+        "BND-00179"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00179"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00602"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00136",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00316"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00316"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00918"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00137",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00602",
+      "target_bundle_ids": [
+        "BND-00521"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00521"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00602"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00138",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00460",
+      "target_bundle_ids": [
+        "BND-00379"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00379"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00460"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00139",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00602",
+      "target_bundle_ids": [
+        "BND-00915"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00915"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00602"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00140",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00430",
+      "target_bundle_ids": [
+        "BND-00334"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00334"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00430"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00141",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00460",
+      "target_bundle_ids": [
+        "BND-00293"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00293"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00460"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00142",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00430",
+      "target_bundle_ids": [
+        "BND-00592"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00592"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00430"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00143",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00460",
+      "target_bundle_ids": [
+        "BND-00022"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00022"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00460"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00144",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00540",
+      "target_bundle_ids": [
+        "BND-00017"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00017"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00540"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00145",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00069"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00069"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00918"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00146",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00930"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00930"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00918"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00147",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00460",
+      "target_bundle_ids": [
+        "BND-00603"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00603"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00460"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00148",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00341"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00341"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00918"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00149",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00540",
+      "target_bundle_ids": [
+        "BND-00450"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00450"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00540"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00150",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00219",
+      "target_bundle_ids": [
+        "BND-00742"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00742"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00219"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00151",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00602",
+      "target_bundle_ids": [
+        "BND-00888"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00888"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00602"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00152",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00602",
+      "target_bundle_ids": [
+        "BND-00604"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00604"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00602"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00153",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00540",
+      "target_bundle_ids": [
+        "BND-00938"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00938"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00540"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00154",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00540",
+      "target_bundle_ids": [
+        "BND-00817"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00817"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00540"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00155",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00430",
+      "target_bundle_ids": [
+        "BND-00176"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00176"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00430"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00156",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00631",
+      "target_bundle_ids": [
+        "BND-00213"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00213"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00631"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00157",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00567"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00567"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00918"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00158",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00430",
+      "target_bundle_ids": [
+        "BND-00842"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00842"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00430"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00159",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00219",
+      "target_bundle_ids": [
+        "BND-00020"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00020"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00219"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00160",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00540",
+      "target_bundle_ids": [
+        "BND-00955"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00955"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00540"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00161",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00631",
+      "target_bundle_ids": [
+        "BND-00633"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00633"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00631"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00162",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00108",
+      "target_bundle_ids": [
+        "BND-00215"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00215"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00108"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00163",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00460",
+      "target_bundle_ids": [
+        "BND-00957"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00957"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00460"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00164",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00532"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00532"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00918"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00165",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00474"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00474"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00918"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00166",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00460",
+      "target_bundle_ids": [
+        "BND-00926"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00926"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00460"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00167",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00108",
+      "target_bundle_ids": [
+        "BND-00944"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00944"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00108"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00168",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00602",
+      "target_bundle_ids": [
+        "BND-00145"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00145"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00602"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00169",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00260"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00260"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00918"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00170",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00918",
+      "target_bundle_ids": [
+        "BND-00149"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00149"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00918"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00171",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00108",
+      "target_bundle_ids": [
+        "BND-00998"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00998"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00108"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00172",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00540",
+      "target_bundle_ids": [
+        "BND-00756"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00756"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00540"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00173",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00602",
+      "target_bundle_ids": [
+        "BND-00687"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00687"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00602"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00174",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00108",
+      "target_bundle_ids": [
+        "BND-00104"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00104"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00108"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00175",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00460",
+      "target_bundle_ids": [
+        "BND-00006"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00006"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00460"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00176",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00430",
+      "target_bundle_ids": [
+        "BND-00761"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00761"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00430"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00177",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00430",
+      "target_bundle_ids": [
+        "BND-00618"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00618"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00430"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00178",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00631",
+      "target_bundle_ids": [
+        "BND-00243"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00243"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00631"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00179",
+      "mode": "CLONED_DOCUMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00540",
+      "target_bundle_ids": [
+        "BND-00146"
+      ],
+      "expected_reason_codes": [
+        "NEAR_DUPLICATE_DOCUMENTATION"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00146"
+        },
+        {
+          "resource_type": "Document",
+          "resource_id": "DOC-00540"
+        }
+      ],
+      "violated_invariants": [
+        "Catatan dan urutan layanan bervariasi antar kunjungan."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00180",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00474",
+      "target_bundle_ids": [
+        "BND-00474",
+        "BND-00474-U476"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00474"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00474-U476"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00181",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00161",
+      "target_bundle_ids": [
+        "BND-00161",
+        "BND-00161-U829"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00161"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00161-U829"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00182",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00792",
+      "target_bundle_ids": [
+        "BND-00792",
+        "BND-00792-U585"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00792"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00792-U585"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00183",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00173",
+      "target_bundle_ids": [
+        "BND-00173",
+        "BND-00173-U129"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00173"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00173-U129"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00184",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00829",
+      "target_bundle_ids": [
+        "BND-00829",
+        "BND-00829-U378"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00829"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00829-U378"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00185",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00667",
+      "target_bundle_ids": [
+        "BND-00667",
+        "BND-00667-U071"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00667"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00667-U071"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00186",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00733",
+      "target_bundle_ids": [
+        "BND-00733",
+        "BND-00733-U938"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00733"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00733-U938"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00187",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00721",
+      "target_bundle_ids": [
+        "BND-00721",
+        "BND-00721-U932"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00721"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00721-U932"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00188",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00241",
+      "target_bundle_ids": [
+        "BND-00241",
+        "BND-00241-U242"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00241"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00241-U242"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00189",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00494",
+      "target_bundle_ids": [
+        "BND-00494",
+        "BND-00494-U774"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00494"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00494-U774"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00190",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00208",
+      "target_bundle_ids": [
+        "BND-00208",
+        "BND-00208-U220"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00208"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00208-U220"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00191",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00718",
+      "target_bundle_ids": [
+        "BND-00718",
+        "BND-00718-U916"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00718"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00718-U916"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00192",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00167",
+      "target_bundle_ids": [
+        "BND-00167",
+        "BND-00167-U128"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00167"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00167-U128"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00193",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00909",
+      "target_bundle_ids": [
+        "BND-00909",
+        "BND-00909-U218"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00909"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00909-U218"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00194",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00965",
+      "target_bundle_ids": [
+        "BND-00965",
+        "BND-00965-U020"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00965"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00965-U020"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00195",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00261",
+      "target_bundle_ids": [
+        "BND-00261",
+        "BND-00261-U978"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00261"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00261-U978"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00196",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00819",
+      "target_bundle_ids": [
+        "BND-00819",
+        "BND-00819-U418"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00819"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00819-U418"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00197",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00553",
+      "target_bundle_ids": [
+        "BND-00553",
+        "BND-00553-U260"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00553"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00553-U260"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00198",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00759",
+      "target_bundle_ids": [
+        "BND-00759",
+        "BND-00759-U637"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00759"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00759-U637"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00199",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00698",
+      "target_bundle_ids": [
+        "BND-00698",
+        "BND-00698-U548"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00698"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00698-U548"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00200",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00527",
+      "target_bundle_ids": [
+        "BND-00527",
+        "BND-00527-U210"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00527"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00527-U210"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00201",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00008",
+      "target_bundle_ids": [
+        "BND-00008",
+        "BND-00008-U798"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00008"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00008-U798"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00202",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00661",
+      "target_bundle_ids": [
+        "BND-00661",
+        "BND-00661-U784"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00661"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00661-U784"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00203",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00599",
+      "target_bundle_ids": [
+        "BND-00599",
+        "BND-00599-U582"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00599"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00599-U582"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00204",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00680",
+      "target_bundle_ids": [
+        "BND-00680",
+        "BND-00680-U773"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00680"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00680-U773"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00205",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00024",
+      "target_bundle_ids": [
+        "BND-00024",
+        "BND-00024-U029"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00024"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00024-U029"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00206",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00059",
+      "target_bundle_ids": [
+        "BND-00059",
+        "BND-00059-U148"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00059"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00059-U148"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00207",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00183",
+      "target_bundle_ids": [
+        "BND-00183",
+        "BND-00183-U690"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00183"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00183-U690"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00208",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00203",
+      "target_bundle_ids": [
+        "BND-00203",
+        "BND-00203-U337"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00203"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00203-U337"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00209",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00966",
+      "target_bundle_ids": [
+        "BND-00966",
+        "BND-00966-U953"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00966"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00966-U953"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00210",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00964",
+      "target_bundle_ids": [
+        "BND-00964",
+        "BND-00964-U435"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00964"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00964-U435"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00211",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00776",
+      "target_bundle_ids": [
+        "BND-00776",
+        "BND-00776-U006"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00776"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00776-U006"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00212",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00673",
+      "target_bundle_ids": [
+        "BND-00673",
+        "BND-00673-U286"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00673"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00673-U286"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00213",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00236",
+      "target_bundle_ids": [
+        "BND-00236",
+        "BND-00236-U134"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00236"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00236-U134"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00214",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00624",
+      "target_bundle_ids": [
+        "BND-00624",
+        "BND-00624-U195"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00624"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00624-U195"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00215",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00493",
+      "target_bundle_ids": [
+        "BND-00493",
+        "BND-00493-U039"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00493"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00493-U039"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00216",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00672",
+      "target_bundle_ids": [
+        "BND-00672",
+        "BND-00672-U014"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00672"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00672-U014"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00217",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00139",
+      "target_bundle_ids": [
+        "BND-00139",
+        "BND-00139-U686"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00139"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00139-U686"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00218",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00105",
+      "target_bundle_ids": [
+        "BND-00105",
+        "BND-00105-U279"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00105"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00105-U279"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00219",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00372",
+      "target_bundle_ids": [
+        "BND-00372",
+        "BND-00372-U286"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00372"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00372-U286"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00220",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00625",
+      "target_bundle_ids": [
+        "BND-00625",
+        "BND-00625-U723"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00625"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00625-U723"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00221",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00839",
+      "target_bundle_ids": [
+        "BND-00839",
+        "BND-00839-U566"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00839"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00839-U566"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00222",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00585",
+      "target_bundle_ids": [
+        "BND-00585",
+        "BND-00585-U035"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00585"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00585-U035"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00223",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00556",
+      "target_bundle_ids": [
+        "BND-00556",
+        "BND-00556-U966"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00556"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00556-U966"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00224",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00307",
+      "target_bundle_ids": [
+        "BND-00307",
+        "BND-00307-U999"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00307"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00307-U999"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00225",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00527",
+      "target_bundle_ids": [
+        "BND-00527",
+        "BND-00527-U801"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00527"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00527-U801"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00226",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00992",
+      "target_bundle_ids": [
+        "BND-00992",
+        "BND-00992-U557"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00992"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00992-U557"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00227",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00641",
+      "target_bundle_ids": [
+        "BND-00641",
+        "BND-00641-U314"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00641"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00641-U314"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00228",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00528",
+      "target_bundle_ids": [
+        "BND-00528",
+        "BND-00528-U105"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00528"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00528-U105"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00229",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00754",
+      "target_bundle_ids": [
+        "BND-00754",
+        "BND-00754-U500"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00754"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00754-U500"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00230",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00418",
+      "target_bundle_ids": [
+        "BND-00418",
+        "BND-00418-U784"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00418"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00418-U784"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00231",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00766",
+      "target_bundle_ids": [
+        "BND-00766",
+        "BND-00766-U708"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00766"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00766-U708"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00232",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00953",
+      "target_bundle_ids": [
+        "BND-00953",
+        "BND-00953-U449"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00953"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00953-U449"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00233",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00934",
+      "target_bundle_ids": [
+        "BND-00934",
+        "BND-00934-U104"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00934"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00934-U104"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00234",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00786-R266",
+      "target_bundle_ids": [
+        "BND-00786-R266",
+        "BND-00786-R266-U513"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00786-R266"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00786-R266-U513"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": true,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00235",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00311",
+      "target_bundle_ids": [
+        "BND-00311",
+        "BND-00311-U080"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00311"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00311-U080"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00236",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "subtle",
+      "source_bundle_id": "BND-00937",
+      "target_bundle_ids": [
+        "BND-00937",
+        "BND-00937-U660"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00937"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00937-U660"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00237",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "moderate",
+      "source_bundle_id": "BND-00541",
+      "target_bundle_ids": [
+        "BND-00541",
+        "BND-00541-U934"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00541"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00541-U934"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00238",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00617",
+      "target_bundle_ids": [
+        "BND-00617",
+        "BND-00617-U698"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00617"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00617-U698"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    },
+    {
+      "injection_id": "INJ-00239",
+      "mode": "UNBUNDLING_FRAGMENTATION",
+      "difficulty": "obvious",
+      "source_bundle_id": "BND-00113",
+      "target_bundle_ids": [
+        "BND-00113",
+        "BND-00113-U669"
+      ],
+      "expected_reason_codes": [
+        "EPISODE_SPLIT_ACROSS_CLAIMS"
+      ],
+      "expected_evidence_refs": [
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00113"
+        },
+        {
+          "resource_type": "Claim",
+          "resource_id": "CLM-00113-U669"
+        }
+      ],
+      "violated_invariants": [
+        "Satu episode ditagihkan dalam satu klaim kecuali ada tindak lanjut terdokumentasi."
+      ],
+      "injector_version": "0.1.0",
+      "seed": 20260902,
+      "is_multi_label": false,
+      "excluded_from_features": true
+    }
+  ],
+  "seed": 20260902,
+  "injector_version": "0.1.0"
+}

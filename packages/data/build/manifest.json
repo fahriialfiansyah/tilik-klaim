@@ -1,0 +1,24 @@
+{
+  "generator_version": "0.1.0",
+  "seed": 20260902,
+  "corpus_hash": "db694e6851c9184806bc901ad3fb44c07acaff1449490c1902e6486e8b32ca23",
+  "bundles": 1120,
+  "participants": 300,
+  "providers": 8,
+  "injections": 240,
+  "injections_by_mode": {
+    "PHANTOM_OR_NO_PROCEDURE_EVIDENCE": 60,
+    "REPEAT_BILLING": 60,
+    "CLONED_DOCUMENTATION": 60,
+    "UNBUNDLING_FRAGMENTATION": 60
+  },
+  "multi_label_ratio": 0.06666666666666667,
+  "train": 674,
+  "validation": 218,
+  "test": 228,
+  "excluded_demo": 0,
+  "test_set_digest": "ed903a4c39656e687b35c5f45ef295f9b5d417fcdb58b3cf513466079b9dc1db",
+  "leakage_margin": 0.0008928571428571397,
+  "leakage_passed": true,
+  "generated_at": "2026-08-31T16:02:19.769646+00:00"
+}

@@ -39,9 +39,10 @@ from app.service.validation import (
     parse_json,
     validate_bundle,
 )
+from app.store.audit import AuditEventRecord, new_event_id, occurred_now
 from app.store.bundles import BundleStore, IngestionRecord, new_ingestion_id, received_now
-from app.store.cases import CaseRecord, InMemoryCaseStore, new_case_id, screened_now
-from app.store.registry import get_bundle_store, get_edge_store
+from app.store.cases import CaseRecord, CaseStore, new_case_id, screened_now
+from app.store.registry import get_audit_store, get_bundle_store, get_case_store, get_edge_store
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/v1", tags=["bundles"])
@@ -144,15 +145,11 @@ def _to_response(record: IngestionRecord) -> IngestBundleResponse:
     )
 
 
-CASES = InMemoryCaseStore()
-"""Cases live here until `04-review-slice` gives them a table of their own."""
+def case_store() -> CaseStore:
+    return get_case_store()
 
 
-def case_store() -> InMemoryCaseStore:
-    return CASES
-
-
-InjectedCases = Annotated[InMemoryCaseStore, Depends(case_store)]
+InjectedCases = Annotated[CaseStore, Depends(case_store)]
 
 
 @router.post(
@@ -188,17 +185,24 @@ def screen_ingested_bundle(
         record.bundle.claim.provider_id,
         exclude_bundle_id=record.bundle.bundle_id,
     )
+    # Clone detection is a per-provider pattern, so it needs notes from other participants at
+    # this provider. Only documents cross that boundary — never whole bundles.
+    peer_documents = store.peer_documents_for(
+        record.bundle.claim.provider_id, exclude_bundle_id=record.bundle.bundle_id
+    )
     identity = EngineIdentity(
         engine_version=request.engine_version or record.engine_version,
         ruleset_version=record.ruleset_version,
     )
-    result = screen_bundle(record.bundle, history, identity=identity)
+    result = screen_bundle(record.bundle, history, peer_documents, identity=identity)
     elapsed_ms = int((perf_counter() - started) * 1000)
 
     # Persist the derived graph so case detail can resolve every reason's evidence without
     # re-deriving it. Keyed by ruleset version, so re-screening replaces this slice and an
     # older version's edges stay resolvable for the audit events that cite them.
-    graph = build_evidence_graph(record.bundle, history=history)
+    graph = build_evidence_graph(
+        record.bundle, history=history, peer_documents=peer_documents
+    )
     get_edge_store().replace(record.bundle.bundle_id, record.ruleset_version, graph.edges)
 
     existing = cases.find_by_ingestion(ingestion_id)
@@ -211,9 +215,28 @@ def screen_ingested_bundle(
         # The ingestion's notes travel with the case: they lower a reviewer's certainty about
         # what the record can support, and never raise a signal on their own.
         completeness_notes=record.completeness_notes,
+        participant_token=record.bundle.claim.participant_id,
+        provider_token=record.bundle.claim.provider_id,
+        total_amount=record.bundle.claim.total_amount,
+        currency=record.bundle.claim.currency,
         screened_at=screened_now(),
     )
     cases.save(case)
+    # The screening itself is a history event: a reviewer opening the audit trail must be able
+    # to see when the case was raised and under which engine version, not only what a human did.
+    get_audit_store().append(
+        AuditEventRecord(
+            event_id=new_event_id(),
+            case_id=case.case_id,
+            event_kind="RESCREENED" if existing else "SCREENED",
+            actor_role="system",
+            state_after=CaseState.SCREENED,
+            case_version_before=existing.case_version if existing else None,
+            case_version_after=case.case_version,
+            identity=result.identity,
+            occurred_at=occurred_now(),
+        )
+    )
     store.attach_case(ingestion_id, case.case_id)
 
     logger.info(

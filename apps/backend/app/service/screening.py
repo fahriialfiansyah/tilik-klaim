@@ -23,7 +23,7 @@ from enum import StrEnum
 from typing import TYPE_CHECKING
 
 from pydantic import BaseModel, ConfigDict
-from tilik_domain.canonical import CanonicalBundle
+from tilik_domain.canonical import CanonicalBundle, DocumentRef
 from tilik_domain.reasons import DispositionAction, PriorityBand, ReasonCode
 from tilik_domain.versioning import EngineIdentity
 
@@ -85,13 +85,18 @@ class ScreeningResult(BaseModel):
 def screen_bundle(
     bundle: CanonicalBundle,
     history: Iterable[CanonicalBundle] = (),
+    peer_documents: Iterable[DocumentRef] = (),
     *,
     registry: RuleRegistry = DEFAULT_REGISTRY,
     identity: EngineIdentity | None = None,
 ) -> ScreeningResult:
-    """Screen `bundle` and return its reasons, band, and the basis for both."""
+    """Screen `bundle` and return its reasons, band, and the basis for both.
+
+    `peer_documents` are notes from other participants at the same provider. Clone detection
+    needs them; without them that mode is inert.
+    """
     prior = tuple(history)
-    graph = build_evidence_graph(bundle, history=prior)
+    graph = build_evidence_graph(bundle, history=prior, peer_documents=peer_documents)
     context = RuleContext(bundle=bundle, history=prior, graph=graph)
     reasons = registry.evaluate(context)
 

@@ -25,6 +25,7 @@ from sqlalchemy import (
     Index,
     Integer,
     MetaData,
+    Numeric,
     String,
     Table,
     Text,
@@ -92,3 +93,95 @@ evidence_edges = Table(
     Index("ix_evidence_edges_source", "bundle_id", "ruleset_version", "source_id"),
     Index("ix_evidence_edges_target", "bundle_id", "ruleset_version", "target_id"),
 )
+
+
+cases = Table(
+    "cases",
+    metadata,
+    Column("case_id", String(ID_LENGTH), primary_key=True),
+    Column("ingestion_id", String(ID_LENGTH), nullable=False),
+    Column("bundle_id", String(ID_LENGTH), nullable=False),
+    # Optimistic-locking token. A disposition must name the version it acted on.
+    Column("case_version", Integer, nullable=False),
+    Column("state", String(32), nullable=False),
+    Column("band", String(32), nullable=False),
+    Column("participant_token", String(ID_LENGTH), nullable=False),
+    Column("provider_token", String(ID_LENGTH), nullable=False),
+    Column("total_amount", Numeric(18, 2), nullable=False),
+    Column("currency", String(8), nullable=False, server_default="IDR"),
+    # The whole screening result, so case detail never has to re-screen to explain itself.
+    Column("result", JSONB, nullable=False),
+    Column("completeness_notes", JSONB, nullable=False, server_default="[]"),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    Column("updated_at", DateTime(timezone=True), nullable=False),
+    CheckConstraint("case_version >= 1", name="ck_cases_version_positive"),
+    Index("ix_cases_state", "state"),
+    Index("ix_cases_band", "band"),
+    Index("ix_cases_created_at", "created_at"),
+    Index("ix_cases_ingestion", "ingestion_id"),
+)
+
+
+audit_events = Table(
+    "audit_events",
+    metadata,
+    Column("event_id", String(ID_LENGTH), primary_key=True),
+    Column("case_id", String(ID_LENGTH), nullable=False),
+    Column("event_kind", String(32), nullable=False),
+    Column("actor_role", String(64), nullable=False),
+    Column("action", String(32), nullable=True),
+    Column("structured_reason", Text, nullable=True),
+    Column("note", Text, nullable=True),
+    Column("evidence", JSONB, nullable=False, server_default="[]"),
+    Column("state_before", String(32), nullable=True),
+    Column("state_after", String(32), nullable=True),
+    Column("case_version_before", Integer, nullable=True),
+    Column("case_version_after", Integer, nullable=True),
+    # A correction appends and links; the superseded event stays visible.
+    Column("supersedes_event_id", String(ID_LENGTH), nullable=True),
+    Column("schema_version", String(VERSION_LENGTH), nullable=False),
+    Column("ruleset_version", String(VERSION_LENGTH), nullable=False),
+    Column("engine_version", String(VERSION_LENGTH), nullable=False),
+    Column("dataset_version", String(VERSION_LENGTH), nullable=False),
+    Column("occurred_at", DateTime(timezone=True), nullable=False),
+    # A disposition without a reason is refused by the database, not merely by the DTO.
+    # The UI can be bypassed; this cannot.
+    CheckConstraint(
+        "event_kind <> 'DISPOSITION' "
+        "or (structured_reason is not null and length(btrim(structured_reason)) > 0)",
+        name="ck_audit_disposition_requires_reason",
+    ),
+    Index("ix_audit_case", "case_id", "occurred_at"),
+    Index("ix_audit_supersedes", "supersedes_event_id"),
+)
+
+APPEND_ONLY_TRIGGER_SQL = """
+create or replace function tilik_audit_append_only() returns trigger as $$
+begin
+    raise exception
+        'audit_events is append-only: % is not permitted. Corrections append a superseding '
+        'event and leave the original visible.', tg_op;
+end;
+$$ language plpgsql;
+
+create trigger audit_events_no_update
+    before update on audit_events
+    for each row execute function tilik_audit_append_only();
+
+create trigger audit_events_no_delete
+    before delete on audit_events
+    for each row execute function tilik_audit_append_only();
+"""
+"""Append-only enforced in the database.
+
+A convention is not a control: anything with a connection could rewrite history, and an audit
+trail that can be edited is not an audit trail. The trigger refuses UPDATE and DELETE outright,
+so a correction has to append a superseding event — which is what keeps the original decision,
+and whoever made it, visible.
+"""
+
+DROP_APPEND_ONLY_TRIGGER_SQL = """
+drop trigger if exists audit_events_no_delete on audit_events;
+drop trigger if exists audit_events_no_update on audit_events;
+drop function if exists tilik_audit_append_only();
+"""

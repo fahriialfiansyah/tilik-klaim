@@ -444,12 +444,16 @@ def test_the_selected_store_satisfies_the_protocol() -> None:
 
 
 @pytest.fixture(autouse=True)
-def _clean_cases():
-    from app.router.bundles import CASES
+def cases():
+    """A clean case store and audit trail around every test."""
+    from app.store.registry import get_audit_store, get_case_store
 
-    CASES.clear()
-    yield
-    CASES.clear()
+    case_store, audit = get_case_store(), get_audit_store()
+    case_store.clear()
+    audit.clear()
+    yield case_store
+    case_store.clear()
+    audit.clear()
 
 
 def screen(client: TestClient, ingestion_id: str):
@@ -505,10 +509,8 @@ def test_every_reason_arrives_with_its_counter_evidence(client) -> None:
         assert reason["component_scores"], "component scores travel with the reason"
 
 
-def test_completeness_notes_are_carried_onto_the_case(client) -> None:
+def test_completeness_notes_are_carried_onto_the_case(client, cases) -> None:
     """The ingestion's notes must reach the reviewer, or the caveat is lost between screens."""
-    from app.router.bundles import CASES
-
     bundle = load("clean").bundle
     bare = tuple(line.model_copy(update={"supporting_refs": ()}) for line in bundle.lines)
     thin = bundle.model_copy(
@@ -519,7 +521,7 @@ def test_completeness_notes_are_carried_onto_the_case(client) -> None:
 
     body = screen(client, ingested["ingestion_id"]).json()
 
-    case = CASES.get(body["case_id"])
+    case = cases.get(body["case_id"])
     assert case is not None
     assert case.completeness_notes == tuple(ingested["completeness_notes"])
     assert any("catatan kelengkapan" in cap for cap in body["band"]["caps_applied"])
@@ -563,3 +565,42 @@ def test_screening_an_unknown_ingestion_returns_not_found(client) -> None:
     response = screen(client, "ing_does_not_exist")
     assert response.status_code == 404
     assert response.json()["code"] == ErrorCode.INGESTION_NOT_FOUND
+
+
+def test_cloned_documentation_is_detected_across_participants(client) -> None:
+    """Regression: clone detection must survive the store, not just the service layer.
+
+    This lived at the API level and nowhere else. The service-level tests passed
+    `fixture.history` straight in, so they never exercised the lookup the endpoint uses — and
+    that lookup scoped history per-participant, which made this mode silently inert. Cloning is
+    a per-*provider* pattern: the gold fixture copies a narrative between PSN-1004 and PSN-1005,
+    both at PRV-02.
+    """
+    fixture = load("clone")
+    peer = fixture.history[0]
+    assert peer.claim.participant_id != fixture.bundle.claim.participant_id, "precondition"
+    assert peer.claim.provider_id == fixture.bundle.claim.provider_id, "precondition"
+
+    post(client, peer.model_dump(mode="json"))
+    ingestion_id = post(client, payload_for("clone")).json()["ingestion_id"]
+
+    body = screen(client, ingestion_id).json()
+
+    codes = {reason["code"] for reason in body["reasons"]}
+    assert "NEAR_DUPLICATE_DOCUMENTATION" in codes, (
+        "clone detection is inert through the API; peer documents are not reaching the graph"
+    )
+    assert body["band"]["band"] == "NEEDS_CONTEXT", "similarity alone cannot top the queue"
+
+
+def test_peer_documents_never_carry_other_patients_claim_data(store) -> None:
+    """The widened scope must stay narrow: notes cross, claim lines and diagnoses do not."""
+    from tilik_domain.canonical import DocumentRef
+
+    fixture = load("clone")
+    for bundle in (fixture.history[0], fixture.bundle):
+        post_record = bundle
+        assert post_record is not None
+
+    peers = store.peer_documents_for("PRV-02", exclude_bundle_id="none")
+    assert all(isinstance(document, DocumentRef) for document in peers)

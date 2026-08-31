@@ -1,0 +1,42 @@
+# Generation parameters for the synthetic corpus.
+#
+# Every number here is a TEST-DESIGN CHOICE. None of it is an estimate of JKN prevalence,
+# provider behaviour, or real cost. Changing a value changes what the evaluation measures,
+# never what the world looks like.
+
+seed: 20260902
+
+corpus:
+  # Gate G3 minimum from docs/canonical/04_data_card.md § Prototype scale.
+  claims: 1000
+  participants: 300
+  providers: 8
+
+injections:
+  # ~300 per mode is the target scale; G3 requires at least 200 in total.
+  per_mode: 60
+  # Probability of deliberately reusing an already-injected bundle, so the evaluation has to
+  # cope with overlap instead of assuming every case has exactly one cause. This is the DRAW
+  # PROBABILITY, not a hard cap: repeat and unbundling each produce two bundles, so the realised
+  # multi-label ratio lands slightly above it. The realised value is measured and reported in
+  # the data card rather than assumed.
+  multi_label_ratio: 0.05
+  difficulty_mix:
+    obvious: 0.3
+    moderate: 0.5
+    subtle: 0.2
+
+split:
+  train: 0.6
+  validation: 0.2
+  test: 0.2
+  # Grouping key: related records must never straddle a partition boundary.
+  group_by: [participant, provider_time_block]
+  provider_time_block_days: 30
+
+amounts:
+  currency: IDR
+  # Illustrative only. Chosen so line arithmetic is checkable, not to resemble real tariffs.
+  procedure_unit_price: [150000, 2500000]
+  medication_unit_price: [15000, 400000]
+  rounding_tolerance: "0.01"

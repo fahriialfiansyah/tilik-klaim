@@ -175,8 +175,18 @@ def test_evaluation_response_is_labelled_synthetic_and_carries_limitations() -> 
     assert {m.baseline for m in evaluation.baselines} >= {"B1_RULES_ONLY", "HYBRID"}
 
 
-def test_unimplemented_endpoints_answer_501_naming_their_task() -> None:
-    """The contract is live; the behaviour is not. A caller gets an unambiguous answer."""
-    response = client.get("/v1/cases")
+def test_the_still_unimplemented_endpoint_answers_501_naming_its_task() -> None:
+    """One endpoint remains a placeholder: the evaluation report, owned by sprint 06.
+
+    The other six are live. A caller reaching this one gets an unambiguous answer rather than
+    an empty result that looks like "no data".
+    """
+    response = client.get("/v1/evaluations/run-1")
     assert response.status_code == 501
     assert "sprint" in response.json()["detail"].lower()
+
+
+def test_the_implemented_endpoints_no_longer_answer_501() -> None:
+    """Guards against a placeholder being left in front of working behaviour."""
+    for path in ("/v1/cases", "/v1/cases/does-not-exist"):
+        assert client.get(path).status_code != 501, f"{path} is still a placeholder"

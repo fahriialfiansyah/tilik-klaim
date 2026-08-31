@@ -24,7 +24,7 @@ from uuid import uuid4
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import delete, select, update
 from sqlalchemy.dialects.postgresql import insert as pg_insert
-from tilik_domain.canonical import CanonicalBundle
+from tilik_domain.canonical import CanonicalBundle, DocumentRef
 
 from app.dto.bundles import ResourceCount, ValidationStatus
 from app.errors import ValidationIssue
@@ -84,6 +84,21 @@ class BundleStore(Protocol):
         """
         ...
 
+    def peer_documents_for(
+        self, provider_id: str, *, exclude_bundle_id: str
+    ) -> tuple[DocumentRef, ...]:
+        """Clinical notes from other bundles at the same provider, across participants.
+
+        Cloned documentation is a **per-provider** pattern: the same narrative reused for
+        different patients. Scoping it per-participant, as `history_for` does, makes the
+        detector inert — which is exactly the defect this method exists to fix.
+
+        Only `DocumentRef` rows cross this boundary. Comparing notes needs their text and id;
+        it never needs another patient's claim lines, diagnoses, or amounts, and pulling those
+        in would be exposure without detection benefit.
+        """
+        ...
+
 
 class InMemoryBundleStore:
     """Reference implementation, used by tests and the offline demo."""
@@ -128,6 +143,26 @@ class InMemoryBundleStore:
         ]
         matches.sort(key=lambda record: record.received_at)
         return tuple(record.bundle for record in matches if record.bundle)
+
+    def peer_documents_for(
+        self, provider_id: str, *, exclude_bundle_id: str
+    ) -> tuple[DocumentRef, ...]:
+        records = sorted(
+            (
+                record
+                for record in self._by_id.values()
+                if record.bundle is not None
+                and record.bundle.bundle_id != exclude_bundle_id
+                and record.bundle.claim.provider_id == provider_id
+            ),
+            key=lambda record: record.received_at,
+        )
+        return tuple(
+            document
+            for record in records
+            if record.bundle
+            for document in record.bundle.documents
+        )
 
     def clear(self) -> None:
         """Reset between tests and for the demo-reset route."""
@@ -211,6 +246,25 @@ class SqlBundleStore:
                 .order_by(ingestions.c.received_at)
             ).scalars().all()
         return tuple(CanonicalBundle.model_validate(row) for row in rows)
+
+    def peer_documents_for(
+        self, provider_id: str, *, exclude_bundle_id: str
+    ) -> tuple[DocumentRef, ...]:
+        with session_scope() as session:
+            rows = session.execute(
+                select(ingestions.c.bundle_json)
+                .where(
+                    ingestions.c.bundle_json.is_not(None),
+                    ingestions.c.bundle_json["claim"]["provider_id"].astext == provider_id,
+                    ingestions.c.bundle_json["bundle_id"].astext != exclude_bundle_id,
+                )
+                .order_by(ingestions.c.received_at)
+            ).scalars().all()
+        return tuple(
+            DocumentRef.model_validate(document)
+            for row in rows
+            for document in row.get("documents", ())
+        )
 
     def clear(self) -> None:
         """Wipe every ingestion. Used by tests and the demo-reset route, never in a request."""

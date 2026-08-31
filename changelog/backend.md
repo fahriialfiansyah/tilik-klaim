@@ -130,3 +130,49 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 > **Also:** the Postgres host port is now `${DB_PORT:-5432}` — 5432 was repeatedly taken, here by
 > an editor's automatic port forwarding. This machine uses 55432.
 > Verified: 227 passed · ruff clean.
+
+### 2026-08-31 · [Sprint 01 — synthetic-data](../sprint/backlog/01-synthetic-data/sprint.md) · ✅ Done — Gate G3 met
+
+**Event:** Sprint completed — generator, injectors, splits, and leakage controls
+**Files:** `packages/data/`, `docs/canonical/decisions/ADR-0003-native-generator-instead-of-synthea.md`
+> **Synthea replaced by a native generator, recorded in ADR-0003.** It is not installed, there is
+> no Java Runtime here, and the adapter the data card describes would have discarded most of what
+> Synthea provides — the whole billing layer that all four risk modes are defined over is
+> constructed from scratch either way. The ADR also records what the proposal loses: the
+> "Apache-2.0 Synthea" claim on slide 8 must be removed, not softened.
+> **G3 measured, not asserted:** 1,120 bundles · 240 injections · 60 per mode across all four ·
+> 300 participants · 8 providers · leakage margin **+0.0009** against a 0.10 tolerance. The whole
+> pipeline is deterministic — corpus hash, labels, split digest, and data card all reproduce.
+> **Two injectors were shipping false labels, and the invariant tests caught both.** Repeat copied
+> the encounter at every difficulty, so the engine emitted `DUPLICATE_CLAIM_FINGERPRINT` while the
+> label demanded the overlap reason — the engine was right. It now produces both shapes: verbatim
+> resubmission for obvious, a second encounter for moderate and subtle. Clone dropped three subtle
+> cases below the detector's reporting threshold, labelling as detectable something that was not;
+> it now makes one substitution and refuses to inject into a note too short to absorb it.
+> **The leakage probe is itself tested against a planted leak** — a probe that never fires proves
+> nothing. Raw injector output does leak (`BND-00042-R173` announces its own injector);
+> `strip_injector_traces` regenerates ids and reorders, and the probe confirms the tell is gone.
+> The data card enforces all eleven required elements and the mandatory sentence verbatim.
+> Verified: 47 tests in `packages/data` · backend 229 · domain 21.
+
+### 2026-08-31 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Backend: [case endpoints](../sprint/backlog/04-review-slice/backend/01-case-endpoints.md) + [disposition & audit](../sprint/backlog/04-review-slice/backend/02-disposition-audit.md) · ✅ Done
+
+**Event:** Both backend tasks completed — six of seven endpoints now live
+**Files:** `app/router/{cases,dispositions}.py`, `app/service/{case_query,disposition}.py`, `app/store/{audit,cases,tables}.py`, `migrations/`
+> The vertical slice runs end to end against Postgres: ingest → screen → queue → detail →
+> disposition → audit. All four risk modes fire, a stale write is refused, and the trail shows
+> SCREENED · OPENED · DISPOSITION.
+> **Append-only is enforced by a database trigger, verified live** — UPDATE and DELETE against
+> `audit_events` are both refused with "audit_events is append-only" and the row survives. A
+> reason is required at three layers: DTO, record construction, and a Postgres check constraint;
+> the UI can be bypassed and internal callers can skip the DTO, so only the last catches
+> everything. The audit event is written before the case moves, because an unexplainable state
+> change is worse than a retryable failure.
+> The queue carries no narrative text — asserted against the serialised response using four-word
+> phrases, since reason sentences legitimately share common words with clinical notes. Queue and
+> detail read the same catalog entry, so they cannot disagree about why a case was raised.
+> `NOT_ASSESSABLE` stays distinct from `UNSUPPORTED`: requesting a document is a different act
+> from questioning whether a service happened.
+> `X-Actor-Role` is named as role simulation rather than dressed up as a token — enterprise IAM
+> is out of scope and a credential-shaped header would invite the wrong assumption.
+> Verified: 269 passed with Postgres · 255 passed and 14 skipped without it · ruff clean.

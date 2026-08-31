@@ -94,6 +94,10 @@ class EdgeStore(Protocol):
         """Every edge with `resource_id` at either end — the case-detail lookup."""
         ...
 
+    def clear(self) -> None:
+        """Drop every slice. Test and demo-reset only; never reachable from a request."""
+        ...
+
 
 class InMemoryEdgeStore:
     """Reference implementation, used by tests and the seeded demo.
@@ -137,6 +141,10 @@ class InMemoryEdgeStore:
         return tuple(
             version for stored_id, version in self._slices if stored_id == bundle_id
         )
+
+    def clear(self) -> None:
+        """Reset between tests and for the demo-reset route. Never in a request path."""
+        self._slices.clear()
 
 
 class SqlEdgeStore:

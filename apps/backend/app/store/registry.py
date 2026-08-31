@@ -15,7 +15,9 @@ from __future__ import annotations
 import logging
 from functools import lru_cache
 
+from app.store.audit import AuditStore, InMemoryAuditStore, SqlAuditStore
 from app.store.bundles import BundleStore, InMemoryBundleStore, SqlBundleStore
+from app.store.cases import CaseStore, InMemoryCaseStore, SqlCaseStore
 from app.store.edges import EdgeStore, InMemoryEdgeStore, SqlEdgeStore
 from app.store.engine import is_database_available
 
@@ -40,8 +42,20 @@ def get_edge_store() -> EdgeStore:
     return SqlEdgeStore() if use_database() else InMemoryEdgeStore()
 
 
+@lru_cache
+def get_case_store() -> CaseStore:
+    return SqlCaseStore() if use_database() else InMemoryCaseStore()
+
+
+@lru_cache
+def get_audit_store() -> AuditStore:
+    return SqlAuditStore() if use_database() else InMemoryAuditStore()
+
+
 def reset_stores() -> None:
     """Forget the cached choice so a test can re-probe. Not used in a request path."""
     use_database.cache_clear()
     get_bundle_store.cache_clear()
     get_edge_store.cache_clear()
+    get_case_store.cache_clear()
+    get_audit_store.cache_clear()
