@@ -28,6 +28,7 @@ from app.dto.bundles import (
 )
 from app.dto.common import BandExplanation, EvidenceRefDto, ReasonDto, VersionStamp
 from app.errors import ErrorCode, ErrorResponse
+from app.service.evidence_graph import build_evidence_graph
 from app.service.hashing import idempotency_key, input_hash
 from app.service.rules.registry import ReasonHit
 from app.service.screening import Certainty, screen_bundle
@@ -40,7 +41,7 @@ from app.service.validation import (
 )
 from app.store.bundles import BundleStore, IngestionRecord, new_ingestion_id, received_now
 from app.store.cases import CaseRecord, InMemoryCaseStore, new_case_id, screened_now
-from app.store.registry import get_bundle_store
+from app.store.registry import get_bundle_store, get_edge_store
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/v1", tags=["bundles"])
@@ -193,6 +194,12 @@ def screen_ingested_bundle(
     )
     result = screen_bundle(record.bundle, history, identity=identity)
     elapsed_ms = int((perf_counter() - started) * 1000)
+
+    # Persist the derived graph so case detail can resolve every reason's evidence without
+    # re-deriving it. Keyed by ruleset version, so re-screening replaces this slice and an
+    # older version's edges stay resolvable for the audit events that cite them.
+    graph = build_evidence_graph(record.bundle, history=history)
+    get_edge_store().replace(record.bundle.bundle_id, record.ruleset_version, graph.edges)
 
     existing = cases.find_by_ingestion(ingestion_id)
     case = CaseRecord(

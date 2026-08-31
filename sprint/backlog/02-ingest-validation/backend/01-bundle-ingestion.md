@@ -114,3 +114,34 @@ notes had nowhere to travel to without it. It creates a minimal case, carries th
 and links the case back to its ingestion so a resubmission returns `existing_case_id`. The queue,
 disposition flow, audit trail, and the case table itself remain with `04-review-slice`;
 `app/store/cases.py` holds only what `ScreenResponse` needs, and says so.
+
+## Known defect — clone detection is inert on the live path
+
+Found by seeding a real database end-to-end, not by the test suite. The suite passes
+`fixture.history` straight into `screen_bundle`, so it never exercised the lookup the endpoint
+actually uses.
+
+`BundleStore.history_for()` scopes history to **the same participant and the same provider**.
+That is correct for repeat billing and unbundling, which are per-patient patterns. It is wrong
+for **cloned documentation**, which is a per-*provider* pattern across different patients — the
+gold fixture says so plainly: `PSN-1005` and `PSN-1004`, both at `PRV-02`. With the current
+scope the clone fixture returns no history, no `SIMILAR_TO` edge is drawn, and `clone` screens
+to `NO_OBSERVED_RISK`. One of the four risk modes is silently inert whenever the API is used.
+
+The docstring on `history_for` justified the tight scope as avoiding exposure "for no detection
+benefit". That reasoning does not hold for cloning, where the benefit is the officially listed
+risk mode itself.
+
+**Proposed fix, minimising exposure rather than widening the net:**
+
+1. Add `BundleStore.peer_documents_for(provider_id, *, exclude_bundle_id)` returning only
+   `DocumentRef` rows — not whole bundles. Clone comparison needs note text and its id, never
+   another patient's claim lines, diagnoses, or amounts.
+2. Give `build_evidence_graph` a `peer_documents` argument and derive `SIMILAR_TO` from it as
+   well as from history.
+3. Leave `history_for` exactly as it is, so repeat and unbundling keep their tight scope.
+4. Regression test **at the API level**, ingesting both clone bundles through `POST /v1/bundles`
+   before screening — the level at which this defect actually lives.
+
+Not attempted in this session: it moves a privacy boundary, and that deserves a deliberate pass
+rather than a quick patch at the end of a long one.

@@ -94,17 +94,30 @@ bekerja tanpa Docker sama sekali. Tanpa basis data, 12 test integrasi akan `skip
 Nyalakan bila sedang mengerjakan lapisan persistensi, atau ingin menjalankan test integrasi:
 
 ```
-docker compose up -d db          # Postgres 16 di localhost:5432
+docker compose up -d db          # Postgres 16
 docker compose ps                # tunggu status "healthy"
 
 cd apps/backend
 uv run alembic upgrade head      # buat tabel ingestions & evidence_edges
+uv run python scripts/seed_dev.py  # isi dengan lima skenario gold (opsional)
 ```
 
-> Port 5432 sering sudah dipakai instance Postgres lokal lain. Kalau `docker compose ps`
-> menunjukkan container sehat tetapi koneksi ditolak dengan *password authentication failed*,
-> yang menjawab adalah instance lain — hentikan instance itu, atau ubah pemetaan port di
-> `docker-compose.yml` beserta `DATABASE_URL`.
+**Port host bisa diatur lewat `DB_PORT`** di berkas `.env` root — bawaannya 5432. Port itu
+sering sudah dipakai: instance Postgres lokal lain, atau *automatic port forwarding* editor
+(VS Code kerap merebutnya kembali setelah container mati). Mesin ini memakai **55432**.
+
+> Gejala khasnya: `docker compose ps` menunjukkan container sehat, tetapi koneksi ditolak dengan
+> *password authentication failed for user "tilik"* — yang menjawab bukan container kita.
+> Cek pemiliknya dengan `lsof -nP -iTCP:5432 -sTCP:LISTEN`, lalu pilih port lain:
+>
+> ```
+> echo "DB_PORT=55432" >> .env          # di root repo
+> # samakan port di apps/backend/.env → DATABASE_URL
+> docker compose up -d db
+> ```
+
+> **Menjalankan `uv run pytest` mengosongkan basis data ini.** Fixture test memanggil `clear()`
+> dan memakai `DATABASE_URL` yang sama. Isi ulang dengan `uv run python scripts/seed_dev.py`.
 
 Perintah Alembic yang sering dipakai, semuanya dari `apps/backend`:
 

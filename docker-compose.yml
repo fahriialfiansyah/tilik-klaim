@@ -9,7 +9,9 @@ services:
       POSTGRES_PASSWORD: tilik
       POSTGRES_DB: tilik_klaim
     ports:
-      - "5432:5432"
+      # Host port is configurable because 5432 is frequently taken — by another local
+      # Postgres, or by an editor's automatic port forwarding. Override with DB_PORT.
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - tilik_pgdata:/var/lib/postgresql/data
     healthcheck:

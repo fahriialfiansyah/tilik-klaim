@@ -112,3 +112,21 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 > back so a resubmission returns `existing_case_id`. Re-screening bumps the case version instead
 > of forking a second case. The queue, dispositions, and audit trail stay with `04-review-slice`.
 > Verified: 227 passed with Postgres · 215 passed and 12 skipped without it · ruff clean.
+
+### 2026-08-31 · Sprint 02 follow-up · 🐛 Fixed + defect recorded
+
+**Event:** Evidence edges now persist; clone-detection scope defect found and documented
+**Files:** `apps/backend/app/router/bundles.py`, `docker-compose.yml`, `apps/backend/.env.example`
+> Seeding a live database end-to-end surfaced two things the test suite could not.
+> **Fixed:** `POST /bundles/{id}/screen` derived the evidence graph and threw it away — nothing
+> was ever written to `evidence_edges`. It now persists the slice keyed by ruleset version.
+> Re-seeded: 8 ingestions, 63 edges across 9 edge types.
+> **Recorded, not fixed:** `history_for()` scopes to same participant *and* provider, which is
+> right for repeat and unbundling but wrong for cloning — a per-provider pattern across
+> different patients. The clone fixture therefore screens to `NO_OBSERVED_RISK` through the API,
+> so one of four risk modes is inert on the live path. The suite missed it by passing
+> `fixture.history` directly instead of going through the store. Fix is designed and recorded in
+> the task file; deferred because it moves a privacy boundary.
+> **Also:** the Postgres host port is now `${DB_PORT:-5432}` — 5432 was repeatedly taken, here by
+> an editor's automatic port forwarding. This machine uses 55432.
+> Verified: 227 passed · ruff clean.
