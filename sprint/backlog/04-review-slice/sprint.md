@@ -1,9 +1,10 @@
 # Sprint 04 — Review Vertical Slice
 
-**Status:** 🚧 In Progress
+**Status:** ✅ Done
 **Created At:** 2026-08-30
 **Started At:** 2026-08-31
-**Progress:** backend ✅ both tasks · frontend ✅ `00-port-design-tokens`, ✅ `01-antrean-review` · 📋 `02-detail-kasus`, `03-ingest-page`
+**Completed At:** 2026-09-01
+**Progress:** backend ✅ both tasks · frontend ✅ all four — `00-port-design-tokens`, `01-antrean-review`, `02-detail-kasus`, `03-ingest-page`
 **Gate:** G5 — Web vertical slice · **Deadline:** 9 September 2026
 **Owner:** M2 — Product, UX & Data
 **Work spec:** WS-005 (§ 20)

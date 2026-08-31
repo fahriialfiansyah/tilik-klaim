@@ -1,0 +1,300 @@
+{
+  "bundle": {
+    "accounts": [
+      {
+        "account_id": "ACC-01",
+        "participant_id": "PSN-1003",
+        "provider_id": "PRV-01",
+        "status": "active"
+      }
+    ],
+    "bundle_id": "BND-REPEAT",
+    "charge_items": [
+      {
+        "account_id": "ACC-01",
+        "charge_item_id": "CI-R2",
+        "code": "89.7",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "encounter_id": "ENC-RP-2",
+        "occurred_at": "2026-07-01T11:00:00Z",
+        "quantity": "1",
+        "total_amount": "150000",
+        "unit_price": "150000"
+      }
+    ],
+    "claim": {
+      "care_type": "outpatient",
+      "claim_id": "CLM-RP-B",
+      "currency": "IDR",
+      "encounter_id": "ENC-RP-2",
+      "episode_id": "EPS-R1",
+      "participant_id": "PSN-1003",
+      "provider_id": "PRV-01",
+      "status": "active",
+      "submitted_at": "2026-07-02T10:00:00Z",
+      "total_amount": "150000"
+    },
+    "conditions": [
+      {
+        "code": "J06.9",
+        "code_system": "http://hl7.org/fhir/sid/icd-10",
+        "condition_id": "COND-CLM-RP-B",
+        "encounter_id": "ENC-RP-2",
+        "onset_at": null,
+        "recorded_at": "2026-07-01T10:00:00Z",
+        "verification_status": "confirmed"
+      }
+    ],
+    "diagnostics": [],
+    "documents": [],
+    "encounters": [
+      {
+        "class_code": "AMB",
+        "encounter_id": "ENC-RP-2",
+        "end_at": "2026-07-01T13:00:00Z",
+        "location_id": "LOC-01",
+        "participant_id": "PSN-1003",
+        "provider_id": "PRV-01",
+        "start_at": "2026-07-01T10:00:00Z",
+        "status": "finished"
+      }
+    ],
+    "invoices": [
+      {
+        "account_id": "ACC-01",
+        "charge_item_refs": [
+          {
+            "resource_id": "CI-R2",
+            "resource_type": "ChargeItem"
+          }
+        ],
+        "invoice_id": "INV-CLM-RP-B",
+        "issued_at": "2026-07-02T10:00:00Z",
+        "total_amount": "150000"
+      }
+    ],
+    "lines": [
+      {
+        "charge_item_ref": {
+          "resource_id": "CI-R2",
+          "resource_type": "ChargeItem"
+        },
+        "claim_id": "CLM-RP-B",
+        "code": "89.7",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "description": "Layanan 89.7",
+        "line_amount": "150000",
+        "line_id": "LN-R2",
+        "quantity": "1",
+        "service_at": "2026-07-01T11:00:00Z",
+        "supporting_refs": [
+          {
+            "resource_id": "PROC-R2",
+            "resource_type": "Procedure"
+          }
+        ],
+        "unit_price": "150000"
+      }
+    ],
+    "medications": [],
+    "procedures": [
+      {
+        "code": "89.7",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "encounter_id": "ENC-RP-2",
+        "location_id": "LOC-01",
+        "performed_at": "2026-07-01T11:00:00Z",
+        "performer_id": "PRACT-01",
+        "procedure_id": "PROC-R2",
+        "status": "completed"
+      }
+    ],
+    "provenance": [
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "CLM-RP-B",
+        "resource_type": "Claim",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "LN-R2",
+        "resource_type": "ClaimLine",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "ENC-RP-2",
+        "resource_type": "Encounter",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "PROC-R2",
+        "resource_type": "Procedure",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      }
+    ]
+  },
+  "demo": {
+    "bundle_id": "BND-REPEAT",
+    "description": "Klaim kedua pada episode yang sama dengan baris bertumpang tindih.",
+    "scenario_label": "Tagihan berulang"
+  },
+  "history": [
+    {
+      "accounts": [
+        {
+          "account_id": "ACC-01",
+          "participant_id": "PSN-1003",
+          "provider_id": "PRV-01",
+          "status": "active"
+        }
+      ],
+      "bundle_id": "BND-REPEAT-PRIOR",
+      "charge_items": [
+        {
+          "account_id": "ACC-01",
+          "charge_item_id": "CI-R1",
+          "code": "89.7",
+          "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+          "encounter_id": "ENC-RP-1",
+          "occurred_at": "2026-07-01T09:00:00Z",
+          "quantity": "1",
+          "total_amount": "150000",
+          "unit_price": "150000"
+        }
+      ],
+      "claim": {
+        "care_type": "outpatient",
+        "claim_id": "CLM-RP-A",
+        "currency": "IDR",
+        "encounter_id": "ENC-RP-1",
+        "episode_id": "EPS-R1",
+        "participant_id": "PSN-1003",
+        "provider_id": "PRV-01",
+        "status": "active",
+        "submitted_at": "2026-07-02T08:00:00Z",
+        "total_amount": "150000"
+      },
+      "conditions": [
+        {
+          "code": "J06.9",
+          "code_system": "http://hl7.org/fhir/sid/icd-10",
+          "condition_id": "COND-CLM-RP-A",
+          "encounter_id": "ENC-RP-1",
+          "onset_at": null,
+          "recorded_at": "2026-07-01T08:00:00Z",
+          "verification_status": "confirmed"
+        }
+      ],
+      "diagnostics": [],
+      "documents": [],
+      "encounters": [
+        {
+          "class_code": "AMB",
+          "encounter_id": "ENC-RP-1",
+          "end_at": "2026-07-01T11:00:00Z",
+          "location_id": "LOC-01",
+          "participant_id": "PSN-1003",
+          "provider_id": "PRV-01",
+          "start_at": "2026-07-01T08:00:00Z",
+          "status": "finished"
+        }
+      ],
+      "invoices": [
+        {
+          "account_id": "ACC-01",
+          "charge_item_refs": [
+            {
+              "resource_id": "CI-R1",
+              "resource_type": "ChargeItem"
+            }
+          ],
+          "invoice_id": "INV-CLM-RP-A",
+          "issued_at": "2026-07-02T08:00:00Z",
+          "total_amount": "150000"
+        }
+      ],
+      "lines": [
+        {
+          "charge_item_ref": {
+            "resource_id": "CI-R1",
+            "resource_type": "ChargeItem"
+          },
+          "claim_id": "CLM-RP-A",
+          "code": "89.7",
+          "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+          "description": "Layanan 89.7",
+          "line_amount": "150000",
+          "line_id": "LN-R1",
+          "quantity": "1",
+          "service_at": "2026-07-01T09:00:00Z",
+          "supporting_refs": [
+            {
+              "resource_id": "PROC-R1",
+              "resource_type": "Procedure"
+            }
+          ],
+          "unit_price": "150000"
+        }
+      ],
+      "medications": [],
+      "procedures": [
+        {
+          "code": "89.7",
+          "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+          "encounter_id": "ENC-RP-1",
+          "location_id": "LOC-01",
+          "performed_at": "2026-07-01T09:00:00Z",
+          "performer_id": "PRACT-01",
+          "procedure_id": "PROC-R1",
+          "status": "completed"
+        }
+      ],
+      "provenance": [
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "CLM-RP-A",
+          "resource_type": "Claim",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        },
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "LN-R1",
+          "resource_type": "ClaimLine",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        },
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "ENC-RP-1",
+          "resource_type": "Encounter",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        },
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "PROC-R1",
+          "resource_type": "Procedure",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        }
+      ]
+    }
+  ],
+  "scenario": "repeat"
+}

@@ -60,7 +60,7 @@ English. Never restate a fact across layers.
 | 01 — synthetic-data | G3 · 2 Sep | ✅ **Done, gate met early** | 1,120 bundles · 240 injections · leakage margin +0.0009 |
 | 02 — ingest-validation | G4 · 5 Sep | ✅ Done | `POST /v1/bundles` + screen endpoint live on Postgres |
 | 03 — evidence-rules | G4 · 5 Sep | ✅ **Done, gate met early** | 10 edge types, 4 risk modes, all caps enforced |
-| 04 — review-slice | G5 · 9 Sep | 🚧 backend ✅ / frontend 3 of 4 | `/` and `/cases/:id` live on the real API; only `/ingest` remains |
+| 04 — review-slice | G5 · 9 Sep | ✅ **Done, gate met early** | `/`, `/cases/:id`, and `/ingest` all live on the real API; 14 Playwright specs green |
 | 05 — ranking-models | G6 · 12 Sep | 📋 Planned | — |
 | 06 — evaluation-report | G6 · 12 Sep | 📋 Planned | one endpoint still 501 |
 | 07 — demo-hardening | G8 · 17 Sep | 📋 Planned | — |
@@ -68,9 +68,9 @@ English. Never restate a fact across layers.
 **Verified this session** (re-run immediately before writing this):
 
 ```
-backend 295 passed · domain 23 passed · data 47 passed · web 67 passed · tsc clean
-playwright 7 passed in 7.0s · ruff: All checks passed
-rsbuild 643.2 kB (384.4 kB gzip) · alembic head d1a7c3e50f42
+backend 312 passed · domain 23 passed · data 47 passed · web 91 passed · tsc clean
+playwright 14 passed in 9.6s · ruff: All checks passed
+rsbuild 666.7 kB (390.0 kB gzip) · alembic head d1a7c3e50f42
 ```
 
 The bundle grew from 551.4 kB because the case-detail feature and `@radix-ui/react-dialog`
@@ -113,6 +113,25 @@ ingestions so the detail endpoint answered `lines: []` on data that looked fresh
 closing any drawer dropped focus to `<body>`, because Radix restores focus to a `DialogTrigger`
 this app does not use. Both are recorded in `docs/qa/MANUAL-QA.md` § 3.
 
+**Sprint 04 frontend, task 03 is done — the sprint is closed.** `/ingest` renders widgets 1–11:
+a drop zone whose limits are readable before an upload, the five curated scenarios, the
+validation report, the error table, the copyable input hash, and exactly one button. The absence
+of a configuration wizard is the feature, and it is enforced by the contract as well as the UI —
+`ScreenRequest` carries no detector, threshold, or mode to offer.
+
+**The five samples are generated, not copied.** `apps/backend/scripts/export_demo_samples.py`
+writes them from the gold fixtures into `apps/web/public/samples/`; `tests/test_demo_samples.py`
+fails if they drift, if a scenario loses the history its cross-claim rules need, or if a
+fixture's **answer key** ever reaches the browser. Static files rather than a new endpoint,
+because sprint 07 owns the demo/reset route and the demo has to run with no external network.
+
+**One defect worth carrying forward: a refused bundle is not a broken service.** The API refuses
+along two paths — a `4xx` envelope before parsing (oversized, malformed, too deep) and a `200`
+report with `status: INVALID` after it. A plain `catch` renders the first as "the request
+failed" and offers a retry on a file that will be refused identically every time, while hiding
+the stable code the operator needs. `ApiError` now carries the server's `issues`, and
+`features/review/ingest/rejection.ts` maps all three refusal sources onto one status.
+
 **Design.** The team's mockup landed and was unpacked: `design/tokens.css` (35 colour tokens × 2
 themes, plus type scale, spacing, radius, semantic band aliases), `design/mockup/reference.html`
 (readable markup for all four screens — the bundle itself is one 405 kB base64 line), and
@@ -149,7 +168,8 @@ The lesson generalises: **measure the rendered page, not the token file.** Contr
 **Manual QA lives in [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md)** — five queue states in
 `qa/2026-09-01-antrean-review/`, sixteen case-detail states in `qa/2026-09-01-detail-kasus/`
 (including the stale-version banner, the save failure, the not-found page, and the loading
-skeleton). Every session that adds a screen appends a section there — the owner verifies wording
+skeleton), and nine ingest states in `qa/2026-09-01-ingest/` (all three validation outcomes,
+both refusal paths, the identical-bundle notice, and the service failure). Every session that adds a screen appends a section there — the owner verifies wording
 and colour meaning by eye, which no test does. `docs/` is gitignored, so these live locally
 only.
 
@@ -231,21 +251,20 @@ governs). Do not fill `sqlalchemy.url` in `alembic.ini` — `migrations/env.py` 
 
 ## 6. Next steps
 
-1. **Sprint 04 frontend — `03-ingest-page` is the last one**, and it closes the sprint. Gate G5
-   is 9 September. `00-port-design-tokens`, `01-antrean-review`, and `02-detail-kasus` are all
-   **done**. Build against the live seeded API as the other two did — `POST /v1/bundles` and
-   `POST /v1/bundles/{id}/screen` are live.
+1. **Sprint 05 — ranking models is next** (G6, 12 Sep). Sprint 04 is closed: all three
+   user-facing screens are live against the real API, and `/evaluation` is the only route still
+   a placeholder — it belongs to sprint 06.
 
-   Reusable pieces now include everything the queue offered plus, from the detail screen:
-   `components/ui/dialog.tsx` (a Radix drawer and modal with focus return already fixed),
-   `ExpandableText`, `lib/useLastPresent.ts`, the `case-detail/{api,store,useCaseDetail}.ts`
-   pattern for server state beside a persisted draft, and the Playwright harness — a new spec
-   drops into `apps/web/tests/e2e/` and `tests/e2e/helpers.ts` already looks cases up by risk
-   mode rather than by a pinned identifier.
+   Note sprint 05's kill criterion before starting: if the hybrid adds no measurable value over
+   rules-only, ML is **removed**, and that is an anticipated outcome rather than a failure. See
+   item 3 in blockers before acting on it.
 
-   `/ingest` should carry a `?case=<id>` query parameter: the case screen already navigates
-   there after "minta bukti tambahan", and the ingest page is expected to pick that context up
-   (`brief/04` § 3.1). Nothing reads it yet.
+   Everything the next screen needs already exists: `components/ui/dialog.tsx` (a Radix drawer
+   and modal with focus return fixed), `ExpandableText`, `lib/useLastPresent.ts`,
+   `withStop`/`formatIfTimestamp` in `features/review/shared/format.ts`, the
+   `{api,store,use*}.ts` pattern for server state beside persisted client state, and the
+   Playwright harness — a new spec drops into `apps/web/tests/e2e/`, and `tests/e2e/helpers.ts`
+   looks cases up by risk mode rather than by a pinned identifier so a re-seed cannot break it.
 2. **Sprint 05 — ranking models** (G6, 12 Sep). Note the kill criterion: if the hybrid adds no
    measurable value over rules-only, ML is *removed*, and that is an anticipated outcome rather
    than a failure. See item 3 in blockers before acting on it.

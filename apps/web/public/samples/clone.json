@@ -1,0 +1,336 @@
+{
+  "bundle": {
+    "accounts": [
+      {
+        "account_id": "ACC-01",
+        "participant_id": "PSN-1005",
+        "provider_id": "PRV-02",
+        "status": "active"
+      }
+    ],
+    "bundle_id": "BND-CLONE",
+    "charge_items": [
+      {
+        "account_id": "ACC-01",
+        "charge_item_id": "CI-CL2",
+        "code": "89.7",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "encounter_id": "ENC-CL-2",
+        "occurred_at": "2026-07-02T15:00:00Z",
+        "quantity": "1",
+        "total_amount": "150000",
+        "unit_price": "150000"
+      }
+    ],
+    "claim": {
+      "care_type": "outpatient",
+      "claim_id": "CLM-CL-B",
+      "currency": "IDR",
+      "encounter_id": "ENC-CL-2",
+      "episode_id": "EPS-CL2",
+      "participant_id": "PSN-1005",
+      "provider_id": "PRV-02",
+      "status": "active",
+      "submitted_at": "2026-07-03T14:00:00Z",
+      "total_amount": "150000"
+    },
+    "conditions": [
+      {
+        "code": "J06.9",
+        "code_system": "http://hl7.org/fhir/sid/icd-10",
+        "condition_id": "COND-CLM-CL-B",
+        "encounter_id": "ENC-CL-2",
+        "onset_at": null,
+        "recorded_at": "2026-07-02T14:00:00Z",
+        "verification_status": "confirmed"
+      }
+    ],
+    "diagnostics": [],
+    "documents": [
+      {
+        "author_id": "PRACT-02",
+        "authored_at": "2026-07-02T15:00:00Z",
+        "document_id": "DOC-CL-2",
+        "encounter_id": "ENC-CL-2",
+        "kind": "clinical-note",
+        "text": "Pasien datang dengan keluhan nyeri tenggorokan sejak empat hari. Pemeriksaan fisik menunjukkan faring hiperemis tanpa eksudat. Diberikan terapi simtomatik dan edukasi kebersihan tangan.",
+        "text_hash": "deb06487719eabaafad558a2abaf2aa9"
+      }
+    ],
+    "encounters": [
+      {
+        "class_code": "AMB",
+        "encounter_id": "ENC-CL-2",
+        "end_at": "2026-07-02T17:00:00Z",
+        "location_id": "LOC-01",
+        "participant_id": "PSN-1005",
+        "provider_id": "PRV-02",
+        "start_at": "2026-07-02T14:00:00Z",
+        "status": "finished"
+      }
+    ],
+    "invoices": [
+      {
+        "account_id": "ACC-01",
+        "charge_item_refs": [
+          {
+            "resource_id": "CI-CL2",
+            "resource_type": "ChargeItem"
+          }
+        ],
+        "invoice_id": "INV-CLM-CL-B",
+        "issued_at": "2026-07-03T14:00:00Z",
+        "total_amount": "150000"
+      }
+    ],
+    "lines": [
+      {
+        "charge_item_ref": {
+          "resource_id": "CI-CL2",
+          "resource_type": "ChargeItem"
+        },
+        "claim_id": "CLM-CL-B",
+        "code": "89.7",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "description": "Layanan 89.7",
+        "line_amount": "150000",
+        "line_id": "LN-CL2",
+        "quantity": "1",
+        "service_at": "2026-07-02T15:00:00Z",
+        "supporting_refs": [
+          {
+            "resource_id": "PROC-CL2",
+            "resource_type": "Procedure"
+          }
+        ],
+        "unit_price": "150000"
+      }
+    ],
+    "medications": [],
+    "procedures": [
+      {
+        "code": "89.7",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "encounter_id": "ENC-CL-2",
+        "location_id": "LOC-01",
+        "performed_at": "2026-07-02T15:00:00Z",
+        "performer_id": "PRACT-01",
+        "procedure_id": "PROC-CL2",
+        "status": "completed"
+      }
+    ],
+    "provenance": [
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "CLM-CL-B",
+        "resource_type": "Claim",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "LN-CL2",
+        "resource_type": "ClaimLine",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "ENC-CL-2",
+        "resource_type": "Encounter",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "PROC-CL2",
+        "resource_type": "Procedure",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "DOC-CL-2",
+        "resource_type": "Document",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      }
+    ]
+  },
+  "demo": {
+    "bundle_id": "BND-CLONE",
+    "description": "Catatan klinis nyaris identik dengan kunjungan peserta lain.",
+    "scenario_label": "Dokumentasi salinan"
+  },
+  "history": [
+    {
+      "accounts": [
+        {
+          "account_id": "ACC-01",
+          "participant_id": "PSN-1004",
+          "provider_id": "PRV-02",
+          "status": "active"
+        }
+      ],
+      "bundle_id": "BND-CLONE-PRIOR",
+      "charge_items": [
+        {
+          "account_id": "ACC-01",
+          "charge_item_id": "CI-CL1",
+          "code": "89.7",
+          "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+          "encounter_id": "ENC-CL-1",
+          "occurred_at": "2026-07-01T09:00:00Z",
+          "quantity": "1",
+          "total_amount": "150000",
+          "unit_price": "150000"
+        }
+      ],
+      "claim": {
+        "care_type": "outpatient",
+        "claim_id": "CLM-CL-A",
+        "currency": "IDR",
+        "encounter_id": "ENC-CL-1",
+        "episode_id": "EPS-CL1",
+        "participant_id": "PSN-1004",
+        "provider_id": "PRV-02",
+        "status": "active",
+        "submitted_at": "2026-07-02T08:00:00Z",
+        "total_amount": "150000"
+      },
+      "conditions": [
+        {
+          "code": "J06.9",
+          "code_system": "http://hl7.org/fhir/sid/icd-10",
+          "condition_id": "COND-CLM-CL-A",
+          "encounter_id": "ENC-CL-1",
+          "onset_at": null,
+          "recorded_at": "2026-07-01T08:00:00Z",
+          "verification_status": "confirmed"
+        }
+      ],
+      "diagnostics": [],
+      "documents": [
+        {
+          "author_id": "PRACT-02",
+          "authored_at": "2026-07-01T09:00:00Z",
+          "document_id": "DOC-CL-1",
+          "encounter_id": "ENC-CL-1",
+          "kind": "clinical-note",
+          "text": "Pasien datang dengan keluhan nyeri tenggorokan sejak tiga hari. Pemeriksaan fisik menunjukkan faring hiperemis tanpa eksudat. Diberikan terapi simtomatik dan edukasi kebersihan tangan.",
+          "text_hash": "49dec390c06a3cda15ab7b680dd67b71"
+        }
+      ],
+      "encounters": [
+        {
+          "class_code": "AMB",
+          "encounter_id": "ENC-CL-1",
+          "end_at": "2026-07-01T11:00:00Z",
+          "location_id": "LOC-01",
+          "participant_id": "PSN-1004",
+          "provider_id": "PRV-02",
+          "start_at": "2026-07-01T08:00:00Z",
+          "status": "finished"
+        }
+      ],
+      "invoices": [
+        {
+          "account_id": "ACC-01",
+          "charge_item_refs": [
+            {
+              "resource_id": "CI-CL1",
+              "resource_type": "ChargeItem"
+            }
+          ],
+          "invoice_id": "INV-CLM-CL-A",
+          "issued_at": "2026-07-02T08:00:00Z",
+          "total_amount": "150000"
+        }
+      ],
+      "lines": [
+        {
+          "charge_item_ref": {
+            "resource_id": "CI-CL1",
+            "resource_type": "ChargeItem"
+          },
+          "claim_id": "CLM-CL-A",
+          "code": "89.7",
+          "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+          "description": "Layanan 89.7",
+          "line_amount": "150000",
+          "line_id": "LN-CL1",
+          "quantity": "1",
+          "service_at": "2026-07-01T09:00:00Z",
+          "supporting_refs": [
+            {
+              "resource_id": "PROC-CL1",
+              "resource_type": "Procedure"
+            }
+          ],
+          "unit_price": "150000"
+        }
+      ],
+      "medications": [],
+      "procedures": [
+        {
+          "code": "89.7",
+          "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+          "encounter_id": "ENC-CL-1",
+          "location_id": "LOC-01",
+          "performed_at": "2026-07-01T09:00:00Z",
+          "performer_id": "PRACT-01",
+          "procedure_id": "PROC-CL1",
+          "status": "completed"
+        }
+      ],
+      "provenance": [
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "CLM-CL-A",
+          "resource_type": "Claim",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        },
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "LN-CL1",
+          "resource_type": "ClaimLine",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        },
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "ENC-CL-1",
+          "resource_type": "Encounter",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        },
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "PROC-CL1",
+          "resource_type": "Procedure",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        },
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "DOC-CL-1",
+          "resource_type": "Document",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        }
+      ]
+    }
+  ],
+  "scenario": "clone"
+}

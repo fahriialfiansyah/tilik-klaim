@@ -4,6 +4,30 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 
 ---
 
+### 2026-09-01 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Task: [Ingest and seeded demo page](../sprint/backlog/04-review-slice/frontend/03-ingest-page.md) · ✅ Done
+
+**Event:** Gold scenarios exported as demo payloads, with a drift guard
+**Files:** `apps/backend/scripts/export_demo_samples.py`, `apps/backend/tests/test_demo_samples.py`
+> The ingest screen offers five curated cases that load without an upload. They have to be *the
+> same five* the gold fixtures describe, or the demo would show a system behaving differently
+> from the one the tests cover — so they are generated rather than copied.
+>
+> Two things about the exported shape are deliberate. **The answer key is stripped:** a fixture
+> carries `expected_reason_codes` and `expected_evidence_complete` beside the bundle, kept
+> outside `CanonicalBundle` so no detector can reach them, and shipping them to a browser would
+> put the expected answer one devtools panel away from anyone watching the demo. **The history
+> comes along:** three of the five scenarios are cross-claim patterns that screen to nothing
+> without their prior bundle — a sample exported without it would ingest cleanly and prove the
+> opposite of what it is there to show.
+>
+> Six tests guard all of it, and they were checked by breaking a sample and watching them fail.
+> No API change: the ingest screen uses `POST /v1/bundles` and `POST /v1/bundles/{id}/screen`
+> exactly as they stand, and the demo/reset route stays sprint 07's to design.
+>
+> Backend 312 passed.
+
+---
+
 ### 2026-09-01 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Task: [Case detail, evidence trace, and disposition panel](../sprint/backlog/04-review-slice/frontend/02-detail-kasus.md) · ✅ Done
 
 **Event:** Case detail extended so the screen's binding display rules can actually be met

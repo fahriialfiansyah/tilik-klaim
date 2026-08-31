@@ -1,0 +1,32 @@
+[
+  {
+    "scenario": "clean",
+    "label": "Bersih",
+    "description": "Seluruh baris tagihan punya bukti pendukung yang konsisten.",
+    "history_count": 0
+  },
+  {
+    "scenario": "phantom",
+    "label": "Tagihan tanpa bukti tindakan",
+    "description": "Satu baris tindakan tidak punya catatan tindakan yang selesai.",
+    "history_count": 0
+  },
+  {
+    "scenario": "repeat",
+    "label": "Tagihan berulang",
+    "description": "Klaim kedua pada episode yang sama dengan baris bertumpang tindih.",
+    "history_count": 1
+  },
+  {
+    "scenario": "clone",
+    "label": "Dokumentasi salinan",
+    "description": "Catatan klinis nyaris identik dengan kunjungan peserta lain.",
+    "history_count": 1
+  },
+  {
+    "scenario": "unbundled",
+    "label": "Episode terpecah",
+    "description": "Layanan satu episode dipecah ke dua klaim berdekatan waktu.",
+    "history_count": 1
+  }
+]

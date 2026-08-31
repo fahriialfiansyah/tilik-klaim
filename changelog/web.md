@@ -4,6 +4,53 @@ Append-only. Newest entry at the top.
 
 ---
 
+### 2026-09-01 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Task: [Ingest and seeded demo page](../sprint/backlog/04-review-slice/frontend/03-ingest-page.md) · ✅ Done
+
+**Event:** Task completed — sprint 04 frontend is finished
+**Files:** `apps/web/src/features/review/ingest/`, `apps/web/src/pages/ingest/`, `apps/web/public/samples/`, `apps/web/src/lib/http.ts`, `apps/web/tests/e2e/ingest.spec.ts`
+> Widgets 1–11: a drop zone with its limits stated up front, the five curated scenarios, the
+> validation report, the error table, the input hash, and exactly one button.
+>
+> **The absence of a configuration wizard is the feature.** No detector picker, no threshold, no
+> mode — not in the UI, and not in `ScreenRequest` either, which is what makes it enforceable
+> rather than a promise. A presenter who could tune the engine between two runs could tune their
+> way to a result, and the demo would prove nothing.
+>
+> **The five samples are generated from the backend's gold fixtures**, not copied by hand:
+> `apps/backend/scripts/export_demo_samples.py` writes them to `public/samples/`, and
+> `tests/test_demo_samples.py` fails if they drift, if a sample loses the history its
+> cross-claim rules need, or if a fixture's **answer key** ever reaches the browser. The
+> expected reason codes live outside `CanonicalBundle` precisely so no detector can see them;
+> shipping them to a demo audience would undo that.
+>
+> Static files rather than an endpoint, for two reasons: `docs/canonical/08_demo_runbook.md`
+> needs the demo to run with no external network, and sprint 07 owns the demo/reset route — a
+> new endpoint here would pre-empt a design that sprint has not made yet.
+>
+> **Three scenarios carry a prior claim, and the rows say so.** Repeat billing, cloned
+> documentation, and unbundling are only visible *across* claims, so those samples submit their
+> history first. Ingesting two bundles while appearing to ingest one would misrepresent how the
+> detector works.
+>
+> **The defect worth recording: a rejected bundle is not a broken service.** The API refuses a
+> bundle along two different paths — a `4xx` envelope for anything caught before parsing
+> (oversized, malformed, too deep) and a `200` report with `status: INVALID` for anything caught
+> after. A plain `catch` renders the first as "the request failed" and offers a retry, on a file
+> that will be refused identically every time, while hiding the stable code the operator needs
+> to fix it. `ApiError` now carries the server's `issues`, and `rejection.ts` maps all three
+> refusal sources — browser limit, pre-parse `4xx`, post-parse `INVALID` — onto one status the
+> screen can render.
+>
+> The screen button stays in place when a bundle is refused, disabled with the reason, rather
+> than disappearing: widget 9 specifies "nonaktif disertai alasan", and a control that vanishes
+> leaves the operator hunting for it instead of reading why.
+>
+> Seven Playwright specs against the real API, including the identical-bundle path (pressing
+> screen twice must not put twin cases in the queue) and the oversized file (asserted by
+> counting network requests, which must be zero).
+
+---
+
 ### 2026-09-01 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Task: [Case detail, evidence trace, and disposition panel](../sprint/backlog/04-review-slice/frontend/02-detail-kasus.md) · ✅ Done
 
 **Event:** Task completed

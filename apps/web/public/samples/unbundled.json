@@ -1,0 +1,362 @@
+{
+  "bundle": {
+    "accounts": [
+      {
+        "account_id": "ACC-01",
+        "participant_id": "PSN-1006",
+        "provider_id": "PRV-03",
+        "status": "active"
+      }
+    ],
+    "bundle_id": "BND-UNBUNDLED",
+    "charge_items": [
+      {
+        "account_id": "ACC-01",
+        "charge_item_id": "CI-U2",
+        "code": "93.94",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "encounter_id": "ENC-UB-2",
+        "occurred_at": "2026-07-01T10:00:00Z",
+        "quantity": "1",
+        "total_amount": "225000",
+        "unit_price": "225000"
+      },
+      {
+        "account_id": "ACC-01",
+        "charge_item_id": "CI-U3",
+        "code": "88.71",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "encounter_id": "ENC-UB-2",
+        "occurred_at": "2026-07-01T10:00:00Z",
+        "quantity": "1",
+        "total_amount": "480000",
+        "unit_price": "480000"
+      }
+    ],
+    "claim": {
+      "care_type": "outpatient",
+      "claim_id": "CLM-UB-B",
+      "currency": "IDR",
+      "encounter_id": "ENC-UB-2",
+      "episode_id": "EPS-U1",
+      "participant_id": "PSN-1006",
+      "provider_id": "PRV-03",
+      "status": "active",
+      "submitted_at": "2026-07-02T09:00:00Z",
+      "total_amount": "705000"
+    },
+    "conditions": [
+      {
+        "code": "J06.9",
+        "code_system": "http://hl7.org/fhir/sid/icd-10",
+        "condition_id": "COND-CLM-UB-B",
+        "encounter_id": "ENC-UB-2",
+        "onset_at": null,
+        "recorded_at": "2026-07-01T09:00:00Z",
+        "verification_status": "confirmed"
+      }
+    ],
+    "diagnostics": [],
+    "documents": [],
+    "encounters": [
+      {
+        "class_code": "AMB",
+        "encounter_id": "ENC-UB-2",
+        "end_at": "2026-07-01T12:00:00Z",
+        "location_id": "LOC-01",
+        "participant_id": "PSN-1006",
+        "provider_id": "PRV-03",
+        "start_at": "2026-07-01T09:00:00Z",
+        "status": "finished"
+      }
+    ],
+    "invoices": [
+      {
+        "account_id": "ACC-01",
+        "charge_item_refs": [
+          {
+            "resource_id": "CI-U2",
+            "resource_type": "ChargeItem"
+          },
+          {
+            "resource_id": "CI-U3",
+            "resource_type": "ChargeItem"
+          }
+        ],
+        "invoice_id": "INV-CLM-UB-B",
+        "issued_at": "2026-07-02T09:00:00Z",
+        "total_amount": "705000"
+      }
+    ],
+    "lines": [
+      {
+        "charge_item_ref": {
+          "resource_id": "CI-U2",
+          "resource_type": "ChargeItem"
+        },
+        "claim_id": "CLM-UB-B",
+        "code": "93.94",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "description": "Layanan 93.94",
+        "line_amount": "225000",
+        "line_id": "LN-U2",
+        "quantity": "1",
+        "service_at": "2026-07-01T10:00:00Z",
+        "supporting_refs": [
+          {
+            "resource_id": "PROC-U2",
+            "resource_type": "Procedure"
+          }
+        ],
+        "unit_price": "225000"
+      },
+      {
+        "charge_item_ref": {
+          "resource_id": "CI-U3",
+          "resource_type": "ChargeItem"
+        },
+        "claim_id": "CLM-UB-B",
+        "code": "88.71",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "description": "Layanan 88.71",
+        "line_amount": "480000",
+        "line_id": "LN-U3",
+        "quantity": "1",
+        "service_at": "2026-07-01T10:00:00Z",
+        "supporting_refs": [
+          {
+            "resource_id": "PROC-U3",
+            "resource_type": "Procedure"
+          }
+        ],
+        "unit_price": "480000"
+      }
+    ],
+    "medications": [],
+    "procedures": [
+      {
+        "code": "93.94",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "encounter_id": "ENC-UB-2",
+        "location_id": "LOC-01",
+        "performed_at": "2026-07-01T10:00:00Z",
+        "performer_id": "PRACT-01",
+        "procedure_id": "PROC-U2",
+        "status": "completed"
+      },
+      {
+        "code": "88.71",
+        "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+        "encounter_id": "ENC-UB-2",
+        "location_id": "LOC-01",
+        "performed_at": "2026-07-01T10:00:00Z",
+        "performer_id": "PRACT-01",
+        "procedure_id": "PROC-U3",
+        "status": "completed"
+      }
+    ],
+    "provenance": [
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "CLM-UB-B",
+        "resource_type": "Claim",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "LN-U2",
+        "resource_type": "ClaimLine",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "LN-U3",
+        "resource_type": "ClaimLine",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "ENC-UB-2",
+        "resource_type": "Encounter",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "PROC-U2",
+        "resource_type": "Procedure",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      },
+      {
+        "bundle_hash": null,
+        "last_updated_at": "2026-07-01T08:00:00Z",
+        "resource_id": "PROC-U3",
+        "resource_type": "Procedure",
+        "schema_version": "0.1.0",
+        "source_type": "gold_fixture"
+      }
+    ]
+  },
+  "demo": {
+    "bundle_id": "BND-UNBUNDLED",
+    "description": "Layanan satu episode dipecah ke dua klaim berdekatan waktu.",
+    "scenario_label": "Episode terpecah"
+  },
+  "history": [
+    {
+      "accounts": [
+        {
+          "account_id": "ACC-01",
+          "participant_id": "PSN-1006",
+          "provider_id": "PRV-03",
+          "status": "active"
+        }
+      ],
+      "bundle_id": "BND-UNBUNDLED-PRIOR",
+      "charge_items": [
+        {
+          "account_id": "ACC-01",
+          "charge_item_id": "CI-U1",
+          "code": "89.7",
+          "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+          "encounter_id": "ENC-UB-1",
+          "occurred_at": "2026-07-01T09:00:00Z",
+          "quantity": "1",
+          "total_amount": "150000",
+          "unit_price": "150000"
+        }
+      ],
+      "claim": {
+        "care_type": "outpatient",
+        "claim_id": "CLM-UB-A",
+        "currency": "IDR",
+        "encounter_id": "ENC-UB-1",
+        "episode_id": "EPS-U1",
+        "participant_id": "PSN-1006",
+        "provider_id": "PRV-03",
+        "status": "active",
+        "submitted_at": "2026-07-02T08:00:00Z",
+        "total_amount": "150000"
+      },
+      "conditions": [
+        {
+          "code": "J06.9",
+          "code_system": "http://hl7.org/fhir/sid/icd-10",
+          "condition_id": "COND-CLM-UB-A",
+          "encounter_id": "ENC-UB-1",
+          "onset_at": null,
+          "recorded_at": "2026-07-01T08:00:00Z",
+          "verification_status": "confirmed"
+        }
+      ],
+      "diagnostics": [],
+      "documents": [],
+      "encounters": [
+        {
+          "class_code": "AMB",
+          "encounter_id": "ENC-UB-1",
+          "end_at": "2026-07-01T11:00:00Z",
+          "location_id": "LOC-01",
+          "participant_id": "PSN-1006",
+          "provider_id": "PRV-03",
+          "start_at": "2026-07-01T08:00:00Z",
+          "status": "finished"
+        }
+      ],
+      "invoices": [
+        {
+          "account_id": "ACC-01",
+          "charge_item_refs": [
+            {
+              "resource_id": "CI-U1",
+              "resource_type": "ChargeItem"
+            }
+          ],
+          "invoice_id": "INV-CLM-UB-A",
+          "issued_at": "2026-07-02T08:00:00Z",
+          "total_amount": "150000"
+        }
+      ],
+      "lines": [
+        {
+          "charge_item_ref": {
+            "resource_id": "CI-U1",
+            "resource_type": "ChargeItem"
+          },
+          "claim_id": "CLM-UB-A",
+          "code": "89.7",
+          "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+          "description": "Layanan 89.7",
+          "line_amount": "150000",
+          "line_id": "LN-U1",
+          "quantity": "1",
+          "service_at": "2026-07-01T09:00:00Z",
+          "supporting_refs": [
+            {
+              "resource_id": "PROC-U1",
+              "resource_type": "Procedure"
+            }
+          ],
+          "unit_price": "150000"
+        }
+      ],
+      "medications": [],
+      "procedures": [
+        {
+          "code": "89.7",
+          "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+          "encounter_id": "ENC-UB-1",
+          "location_id": "LOC-01",
+          "performed_at": "2026-07-01T09:00:00Z",
+          "performer_id": "PRACT-01",
+          "procedure_id": "PROC-U1",
+          "status": "completed"
+        }
+      ],
+      "provenance": [
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "CLM-UB-A",
+          "resource_type": "Claim",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        },
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "LN-U1",
+          "resource_type": "ClaimLine",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        },
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "ENC-UB-1",
+          "resource_type": "Encounter",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        },
+        {
+          "bundle_hash": null,
+          "last_updated_at": "2026-07-01T08:00:00Z",
+          "resource_id": "PROC-U1",
+          "resource_type": "Procedure",
+          "schema_version": "0.1.0",
+          "source_type": "gold_fixture"
+        }
+      ]
+    }
+  ],
+  "scenario": "unbundled"
+}

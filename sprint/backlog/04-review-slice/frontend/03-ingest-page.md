@@ -2,7 +2,7 @@
 
 **Stack:** frontend
 **Sprint:** [`../sprint.md`](../sprint.md)
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Foundation:** no
 **Autonomous:** yes
 **Depends on:**
@@ -25,21 +25,21 @@ report and exactly one way forward.
 
 ## TODOs
 
-- [ ] Drag-and-drop upload zone plus file picker
-- [ ] Limits shown **before** upload, not after failure
-- [ ] Five seeded cases listed: clean, phantom, repeat, clone, unbundled
-- [ ] Validation status: valid · valid-with-notes · invalid
-- [ ] Resource counts by type
-- [ ] Error list with code, resource type, resource ID, explanation
-- [ ] Completeness notes shown prominently on valid-with-notes
-- [ ] Input hash displayed and copyable
-- [ ] **One** "Screen claim" button — no configuration wizard of any kind
-- [ ] Button disabled on invalid, with the reason stated
-- [ ] Identical-bundle notice linking to the existing case
-- [ ] **Edge case — oversized file:** rejected client-side before upload, with the limit named
-- [ ] **Edge case — service failure:** honest error plus retry, never a hanging spinner
-- [ ] **Test — component:** all three validation states render correctly
-- [ ] **Test — Playwright:** select seeded phantom case → screen → land on case detail
+- [x] Drag-and-drop upload zone plus file picker
+- [x] Limits shown **before** upload, not after failure
+- [x] Five seeded cases listed: clean, phantom, repeat, clone, unbundled
+- [x] Validation status: valid · valid-with-notes · invalid
+- [x] Resource counts by type
+- [x] Error list with code, resource type, resource ID, explanation
+- [x] Completeness notes shown prominently on valid-with-notes
+- [x] Input hash displayed and copyable
+- [x] **One** "Screen claim" button — no configuration wizard of any kind
+- [x] Button disabled on invalid, with the reason stated
+- [x] Identical-bundle notice linking to the existing case
+- [x] **Edge case — oversized file:** rejected client-side before upload, with the limit named
+- [x] **Edge case — service failure:** honest error plus retry, never a hanging spinner
+- [x] **Test — component:** all three validation states render correctly
+- [x] **Test — Playwright:** select seeded phantom case → screen → land on case detail
 
 ## Done when
 
@@ -49,7 +49,7 @@ reason.
 
 ## Closing checklist
 
-- [ ] All `## TODOs` items above are `[x]`
-- [ ] Done-when assertion verified
-- [ ] Top-of-file header literally reads `**Status:** ✅ Done`
-- [ ] Changelog entry appended to `changelog/web.md`
+- [x] All `## TODOs` items above are `[x]`
+- [x] Done-when assertion verified
+- [x] Top-of-file header literally reads `**Status:** ✅ Done`
+- [x] Changelog entry appended to `changelog/web.md`

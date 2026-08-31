@@ -1,20 +1,45 @@
+/**
+ * One problem the server found, pointed at a specific resource.
+ *
+ * Mirrors `apps/backend/app/errors.py::ValidationIssue`. It travels on the error envelope as
+ * well as on a 200 ingest response, because a bundle can be refused *before* parsing (too
+ * large, malformed, too deep) or *after* it (a dangling reference) — and an operator needs the
+ * same actionable detail either way.
+ */
+export type ApiIssue = {
+  readonly code: string
+  readonly resource_type: string | null
+  readonly resource_id: string | null
+  readonly detail: string
+}
+
 /** The API's error envelope. Every failure arrives in this shape. */
 export type ApiErrorBody = {
   readonly code: string
   readonly detail: string
-  readonly issues?: readonly unknown[]
+  readonly issues?: readonly ApiIssue[]
 }
 
 /** A failed request, carrying the server's own code and message rather than a generic string. */
 export class ApiError extends Error {
   readonly code: string
   readonly status: number
+  /**
+   * The resources the server named, when it named any.
+   *
+   * Dropping these was a real loss on the ingest screen: a malformed or oversized bundle is
+   * refused with a 4xx envelope rather than a 200 report, and without the issues the screen
+   * could only say "the request failed" about a file whose exact problem the server had already
+   * identified.
+   */
+  readonly issues: readonly ApiIssue[]
 
   constructor(status: number, body: ApiErrorBody) {
     super(body.detail)
     this.name = 'ApiError'
     this.code = body.code
     this.status = status
+    this.issues = body.issues ?? []
   }
 }
 
