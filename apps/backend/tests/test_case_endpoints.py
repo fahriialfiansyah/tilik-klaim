@@ -118,6 +118,127 @@ def test_reason_filter_selects_only_matching_cases(seeded) -> None:
     assert body["page"]["total_items"] == 1
 
 
+def test_mode_filter_selects_every_reason_belonging_to_that_mode(seeded) -> None:
+    """A mode spans several reason codes, so it cannot be expressed as a `reason` filter.
+
+    The queue's mode filter has to narrow server-side: filtering the current page in the client
+    would silently drop matches sitting on later pages, which is worse than no filter at all.
+    """
+    body = seeded.get("/v1/cases?mode=PHANTOM_OR_NO_PROCEDURE_EVIDENCE").json()
+    assert body["page"]["total_items"] == 1
+    for row in body["items"]:
+        assert "PHANTOM_OR_NO_PROCEDURE_EVIDENCE" in row["modes"]
+
+
+def test_mode_filter_combines_with_the_other_filters(seeded) -> None:
+    body = seeded.get(
+        "/v1/cases?mode=PHANTOM_OR_NO_PROCEDURE_EVIDENCE&band=NO_OBSERVED_RISK"
+    ).json()
+    assert body["items"] == []
+
+
+@pytest.mark.parametrize("key", ["band", "age", "amount", "evidence"])
+def test_every_sort_key_is_accepted_and_orders_the_whole_queue(seeded, key: str) -> None:
+    """Sorting has to happen server-side for the same reason filtering does.
+
+    Re-ordering an already-paginated page would shuffle rows *within* the page while leaving
+    the page boundaries decided by a different order — a reviewer sorting by amount would not
+    be looking at the largest amounts at all.
+    """
+    body = seeded.get(f"/v1/cases?sort={key}").json()
+    assert body["page"]["total_items"] == len(SCENARIOS)
+    assert len(body["items"]) == len(SCENARIOS)
+
+
+def test_sort_by_amount_descending_puts_the_largest_first(seeded) -> None:
+    body = seeded.get("/v1/cases?sort=amount&order=desc").json()
+    amounts = [float(row["total_amount"]) for row in body["items"]]
+    assert amounts == sorted(amounts, reverse=True)
+
+
+def test_sort_by_amount_ascending_reverses_it(seeded) -> None:
+    body = seeded.get("/v1/cases?sort=amount&order=asc").json()
+    amounts = [float(row["total_amount"]) for row in body["items"]]
+    assert amounts == sorted(amounts)
+
+
+def test_band_order_is_never_reversed_by_the_order_flag(seeded) -> None:
+    """`order=asc` on the band sort must not surface the quietest cases first.
+
+    The default queue order is the product's answer to "what do I review next"; letting a
+    query parameter invert it would put NO_OBSERVED_RISK at the top of the work list.
+    """
+    ascending = [row["band"] for row in seeded.get("/v1/cases?sort=band&order=asc").json()["items"]]
+    descending = [
+        row["band"] for row in seeded.get("/v1/cases?sort=band&order=desc").json()["items"]
+    ]
+    assert ascending == descending
+    assert ascending[0] == "DETERMINISTIC_CONFLICT"
+
+
+def test_an_unknown_sort_key_is_refused_rather_than_silently_ignored(seeded) -> None:
+    """Silently falling back to the default would show a wrong order that looks right."""
+    assert seeded.get("/v1/cases?sort=nonsense").status_code == 422
+
+
+def test_queue_and_detail_report_the_same_evidence_completeness(seeded) -> None:
+    """Two screens must never describe the same case differently.
+
+    The queue derived its billed-line count from the number of *unsupported* lines, so
+    `supported_lines` was zero by construction and a fully supported case rendered as "no
+    billed lines at all". A reviewer comparing the list to the case would have found the
+    system contradicting itself about its own evidence.
+    """
+    for row in seeded.get("/v1/cases").json()["items"]:
+        detail = seeded.get(f"/v1/cases/{row['case_id']}").json()
+        assert row["evidence_completeness"] == detail["evidence_completeness"], row["case_id"]
+
+
+def test_queue_counts_every_billed_line_not_only_the_unsupported_ones(seeded) -> None:
+    for row in seeded.get("/v1/cases").json()["items"]:
+        detail = seeded.get(f"/v1/cases/{row['case_id']}").json()
+        assert row["evidence_completeness"]["total_lines"] == len(detail["lines"])
+
+
+def test_sorting_by_age_descending_puts_the_oldest_case_first(seeded) -> None:
+    """"Descending" has to mean the same thing in every column.
+
+    Age is displayed as `now - screened_at`, which moves opposite to the raw timestamp. Sorting
+    on the timestamp directly made `order=desc` surface the *newest* case — the smallest number
+    in the column — while `order=desc` on amount surfaces the largest. Same control, opposite
+    meaning.
+    """
+    body = seeded.get("/v1/cases?sort=age&order=desc").json()
+    stamps = [row["created_at"] for row in body["items"]]
+    assert stamps == sorted(stamps), "oldest first means ascending screened_at"
+
+
+def test_sorting_by_age_ascending_puts_the_newest_case_first(seeded) -> None:
+    body = seeded.get("/v1/cases?sort=age&order=asc").json()
+    stamps = [row["created_at"] for row in body["items"]]
+    assert stamps == sorted(stamps, reverse=True)
+
+
+def test_search_narrows_the_whole_queue_not_just_the_current_page(seeded) -> None:
+    """Searching client-side would strand matches on later pages.
+
+    With the term applied to one already-paginated page, a case whose identifier sat on page 2
+    was unreachable: the page came back empty, and the empty state offered only "clear the
+    filters" — no way to page forward carrying the term.
+    """
+    everything = seeded.get("/v1/cases").json()["items"]
+    target = everything[-1]["case_id"]
+
+    body = seeded.get(f"/v1/cases?search={target[-8:]}&page_size=1").json()
+    assert body["page"]["total_items"] == 1
+    assert body["items"][0]["case_id"] == target
+
+
+def test_search_matches_nothing_outside_the_case_identifier(seeded) -> None:
+    """There is no name or national-ID field in this system to search by."""
+    assert seeded.get("/v1/cases?search=Budi").json()["page"]["total_items"] == 0
+
+
 def test_pagination_bounds_hold(seeded) -> None:
     first = seeded.get("/v1/cases?page=1&page_size=2").json()
     assert len(first["items"]) == 2

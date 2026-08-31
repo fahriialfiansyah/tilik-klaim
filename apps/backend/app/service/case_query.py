@@ -11,10 +11,11 @@ list screen never does. A test asserts the serialised queue response contains no
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from enum import StrEnum
 from statistics import median
 
 from tilik_domain.canonical import ResourceRef
-from tilik_domain.reasons import CaseState, PriorityBand, ReasonCode, RiskMode
+from tilik_domain.reasons import CaseState, PriorityBand, ReasonCode, RiskMode, definition_for
 from tilik_domain.versioning import EngineIdentity
 
 from app.dto.cases import (
@@ -52,8 +53,10 @@ def filter_cases(
     state: CaseState | None = None,
     band: PriorityBand | None = None,
     reason: ReasonCode | None = None,
+    mode: RiskMode | None = None,
     created_after: datetime | None = None,
     created_before: datetime | None = None,
+    search: str | None = None,
 ) -> tuple[CaseRecord, ...]:
     """Apply the queue filters. Every filter narrows; none reorders."""
     result = records
@@ -67,10 +70,27 @@ def filter_cases(
             for case in result
             if any(hit.code is reason for hit in case.result.reasons)
         )
+    if mode is not None:
+        # A mode spans several reason codes, so this cannot be folded into the `reason`
+        # filter above. It has to narrow here rather than in the client: filtering an
+        # already-paginated page would drop matches sitting on later pages.
+        result = tuple(
+            case
+            for case in result
+            if any(definition_for(hit.code).mode is mode for hit in case.result.reasons)
+        )
     if created_after is not None:
         result = tuple(case for case in result if case.screened_at >= created_after)
     if created_before is not None:
         result = tuple(case for case in result if case.screened_at <= created_before)
+    if search:
+        # Matches the pseudonymous case identifier and nothing else. There is no name or
+        # national-ID field in this system to search by — those columns do not exist.
+        #
+        # Applied here, before pagination, for the same reason the other filters are: narrowing
+        # an already-paginated page strands every match sitting on a later page.
+        needle = search.strip().lower()
+        result = tuple(case for case in result if needle in case.case_id.lower())
     return result
 
 
@@ -87,10 +107,51 @@ stream of newer ones forever.
 """
 
 
-def sort_cases(records: tuple[CaseRecord, ...]) -> tuple[CaseRecord, ...]:
-    return tuple(
-        sorted(records, key=lambda case: (BAND_ORDER[case.result.band], case.screened_at))
-    )
+class SortKey(StrEnum):
+    """What the reviewer chose to order the queue by."""
+
+    BAND = "band"
+    AGE = "age"
+    AMOUNT = "amount"
+    EVIDENCE = "evidence"
+
+
+def _sort_value(case: CaseRecord, key: SortKey) -> tuple:
+    """Sort value for one case, always ending in `screened_at` to break ties stably."""
+    if key is SortKey.AGE:
+        # The column shows `now - screened_at`, which moves opposite to the timestamp. Sorting
+        # on the timestamp directly made `order=desc` surface the newest case — the smallest
+        # number in the column — while `desc` on amount surfaces the largest. Negating it makes
+        # "descending" mean the same thing in every sortable column.
+        return (-case.screened_at.timestamp(),)
+    if key is SortKey.AMOUNT:
+        return (case.total_amount, case.screened_at)
+    if key is SortKey.EVIDENCE:
+        completeness = evidence_completeness(case)
+        supported = (
+            completeness.supported_lines / completeness.total_lines
+            if completeness.total_lines
+            else 1.0
+        )
+        return (supported, case.screened_at)
+    return (BAND_ORDER[case.result.band], case.screened_at)
+
+
+def sort_cases(
+    records: tuple[CaseRecord, ...],
+    *,
+    key: SortKey = SortKey.BAND,
+    descending: bool = False,
+) -> tuple[CaseRecord, ...]:
+    """Order the whole queue before it is paginated.
+
+    The band sort ignores `descending` on purpose. It is the product's answer to "what do I
+    review next", and inverting it would put NO_OBSERVED_RISK at the top of the work list —
+    a reading the system is not entitled to offer. The other keys are neutral comparisons and
+    reverse freely.
+    """
+    reverse = descending and key is not SortKey.BAND
+    return tuple(sorted(records, key=lambda case: _sort_value(case, key), reverse=reverse))
 
 
 def paginate(
@@ -116,6 +177,11 @@ def evidence_completeness(case: CaseRecord, total_lines: int | None = None) -> E
 
     Counted from the screening result's recorded gaps rather than recomputed, so the queue and
     the detail agree with the case as it was screened — not with what a re-screen would say now.
+
+    `total_lines` defaults to the count recorded on the case at screening. It used to fall back
+    to the number of *unsupported* lines, which made `supported_lines` zero by construction: a
+    fully supported case reported "0 of 0 lines" and the queue rendered it as having no billed
+    lines at all, while the detail screen — which passed the real count — disagreed.
     """
     gaps = case.result.gaps
     unsupported = {
@@ -125,7 +191,7 @@ def evidence_completeness(case: CaseRecord, total_lines: int | None = None) -> E
     }
     dangling = sum(1 for gap in gaps if str(gap.reason) == "DANGLING_REFERENCE")
 
-    billed = total_lines if total_lines is not None else len(unsupported)
+    billed = total_lines if total_lines is not None else case.billed_line_count
     return EvidenceCompleteness(
         supported_lines=max(0, billed - len(unsupported)),
         total_lines=billed,

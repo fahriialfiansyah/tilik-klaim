@@ -57,7 +57,7 @@ English. Never restate a fact across layers.
 | 01 — synthetic-data | G3 · 2 Sep | ✅ **Done, gate met early** | 1,120 bundles · 240 injections · leakage margin +0.0009 |
 | 02 — ingest-validation | G4 · 5 Sep | ✅ Done | `POST /v1/bundles` + screen endpoint live on Postgres |
 | 03 — evidence-rules | G4 · 5 Sep | ✅ **Done, gate met early** | 10 edge types, 4 risk modes, all caps enforced |
-| 04 — review-slice | G5 · 9 Sep | 🚧 backend ✅ / frontend 📋 | queue, detail, disposition, audit all live |
+| 04 — review-slice | G5 · 9 Sep | 🚧 backend ✅ / frontend 2 of 4 | queue screen live on real API; detail + ingest remain |
 | 05 — ranking-models | G6 · 12 Sep | 📋 Planned | — |
 | 06 — evaluation-report | G6 · 12 Sep | 📋 Planned | one endpoint still 501 |
 | 07 — demo-hardening | G8 · 17 Sep | 📋 Planned | — |
@@ -65,8 +65,8 @@ English. Never restate a fact across layers.
 **Verified this session** (re-run immediately before writing this):
 
 ```
-backend 269 passed · domain 21 passed · data 47 passed · tsc clean · rsbuild 165.6 kB
-ruff: All checks passed · alembic head c44b0f894fc2
+backend 285 passed · domain 21 passed · data 47 passed · web 18 passed · tsc clean
+ruff: All checks passed · rsbuild 551.4 kB (359.3 kB gzip) · alembic head d1a7c3e50f42
 ```
 
 **Six of seven frozen endpoints are live.** Only `GET /v1/evaluations/{run_id}` still answers 501
@@ -82,8 +82,13 @@ themes, plus type scale, spacing, radius, semantic band aliases), `design/mockup
 `design/mockup/unpack.py` so the next revision resyncs mechanically. Contrast measured: all five
 status bands clear AA in both themes; `--t-3` was corrected to `#6b7977` (4.54:1).
 
-**Not done, and deliberately so:** the Tailwind + shadcn install. The design blocker is cleared but
-that task is marked non-autonomous and awaits an explicit go-ahead.
+**Toolchain installed 1 Sep** after an explicit go-ahead: **Tailwind v4 + shadcn/ui**. Tailwind v4
+is CSS-first, so there is no `tailwind.config.ts` — the theme is a `@theme inline` block in
+`apps/web/src/styles/app.css` pointing at `src/styles/tokens.css`, which is a literal `cp` of
+`design/tokens.css`. **Tailwind's default colour palette is deleted** (`--color-*: initial`) so
+`bg-red-500` no longer exists: red-only-for-conflict and green-only-for-completed-actions are now
+enforced by the build instead of by review. Fonts are self-hosted (`@fontsource`, latin subsets
+only) because the demo runs offline.
 
 ## 3. Environment
 
@@ -108,11 +113,12 @@ docker compose up -d db                       # waits ~10s to report healthy
 cd apps/backend && uv run alembic upgrade head
 uv run python scripts/seed_dev.py             # 5 gold scenarios, ingested + screened
 
-# --- the four verify commands; run ALL after every change ---
-(cd apps/backend   && uv run pytest)          # expect 269 passed (255 + 14 skipped without DB)
+# --- the verify commands; run ALL after every change ---
+(cd apps/backend   && uv run pytest)          # expect 285 passed (271 + 14 skipped without DB)
 (cd packages/domain && uv run pytest)         # expect 21 passed
 (cd packages/data  && uv run pytest)          # expect 47 passed
 (cd apps/web       && npx tsc --noEmit)       # expect silence
+(cd apps/web       && npm test)               # expect 18 passed (vitest)
 (cd apps/backend   && uv run ruff check app tests)   # expect "All checks passed!"
 
 # --- run the services ---
@@ -158,10 +164,13 @@ governs). Do not fill `sqlalchemy.url` in `alembic.ini` — `migrations/env.py` 
 
 ## 6. Next steps
 
-1. **Sprint 04 frontend — the immediate next work**, in this order:
-   `00-port-design-tokens` (needs the go-ahead below) → `01-antrean-review` → `02-detail-kasus`
-   (27 widgets; give it a fresh session) → `03-ingest-page`. Gate G5 is 9 September. The API is
-   complete and seeded, so every screen can be built against real responses.
+1. **Sprint 04 frontend — `02-detail-kasus` is next**, and it deserves a fresh session: 27
+   widgets across three columns plus a drawer and a tab. Then `03-ingest-page`. Gate G5 is
+   9 September. `00-port-design-tokens` and `01-antrean-review` are **done**. Build against the
+   live seeded API as the queue did — `GET /v1/cases/{id}`, `POST /v1/cases/{id}/dispositions`,
+   `GET /v1/cases/{id}/audit` all work. Reusable pieces already exist: `src/lib/http.ts`,
+   `src/features/review/shared/{types,labels,format}.ts`, `BandBadge`, `EvidenceMeter`, and the
+   Vitest setup (`npm test`).
 2. **Sprint 05 — ranking models** (G6, 12 Sep). Note the kill criterion: if the hybrid adds no
    measurable value over rules-only, ML is *removed*, and that is an anticipated outcome rather
    than a failure. See item 3 in blockers before acting on it.
@@ -179,13 +188,15 @@ governs). Do not fill `sqlalchemy.url` in `alembic.ini` — `migrations/env.py` 
 
 ## 7. Blockers / decisions for the user
 
-1. **Tailwind + shadcn install for `apps/web`.** The design blocker is cleared and
-   `design/tokens.css` is ready, but `00-port-design-tokens` is marked non-autonomous and a prior
-   instruction explicitly held the install. Sprint 04 frontend cannot start without this decision.
-2. **Two design questions belong to the design team**, recorded in `design/DESIGN.md` § Deviasi.
-   The 9 px micro-labels (35 occurrences) are worth raising to 10–11 px — not a standards
-   violation, but tiring in an all-day tool, and changing it shifts layout. The 13 px body size and
-   the `--t-3` contrast were already resolved (contract updated; contrast corrected).
+1. ~~**Tailwind + shadcn install.**~~ **Resolved 1 Sep** — Tailwind v4 + shadcn/ui, installed.
+2. ~~**The 9 px micro-label question.**~~ **Resolved 1 Sep** — raised to 11 px by owner decision,
+   applied at source in `design/tokens.css`. All three `design/DESIGN.md` § Deviasi items are now
+   closed. What the design team still owes is the **annotation map for `/cases/:id`** — 27 widgets,
+   the page most expensive to misread.
+3. **`react-router-dom` v6 carries two moderate advisories** (open redirect via backslash in
+   `<Link>`/`useNavigate`; constructor injection in SSR `deserializeErrors`). Both predate this
+   session. The SSR one does not apply — this app is client-only. Fixing them means a breaking
+   upgrade to v7, which was not taken mid-sprint without asking.
 3. **The proposal must drop its Synthea claim.** ADR-0003 replaced Synthea with a native
    generator, so slide 8 can no longer cite Synthea's Apache-2.0 licence as evidence of a
    recognised privacy-safe source. The honest replacement is narrower and still true: the corpus

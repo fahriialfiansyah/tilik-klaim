@@ -44,6 +44,13 @@ class CaseRecord(BaseModel):
     provider_token: str = ""
     total_amount: Decimal = Decimal(0)
     currency: str = "IDR"
+    billed_line_count: int = 0
+    """How many lines the claim billed, counted at screening.
+
+    Kept on the case rather than recomputed from the bundle so the queue can report evidence
+    completeness without reading 25 bundles to build one page — and so it reports the same
+    numbers the case detail does.
+    """
     screened_at: datetime
 
 
@@ -158,6 +165,7 @@ def _case_row(record: CaseRecord) -> dict:
         "currency": record.currency,
         "result": result.model_dump(mode="json"),
         "completeness_notes": list(record.completeness_notes),
+        "billed_line_count": record.billed_line_count,
         "created_at": record.screened_at,
         "updated_at": record.screened_at,
     }
@@ -177,5 +185,6 @@ def _case_record(row: Mapping) -> CaseRecord:
         provider_token=row["provider_token"],
         total_amount=row["total_amount"],
         currency=row["currency"],
+        billed_line_count=row["billed_line_count"],
         screened_at=row["created_at"],
     )

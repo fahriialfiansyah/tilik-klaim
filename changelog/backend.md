@@ -4,6 +4,40 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 
 ---
 
+### 2026-09-01 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Task: [Review queue page](../sprint/backlog/04-review-slice/frontend/01-antrean-review.md) · ✅ Done
+
+**Event:** Queue filtering and sorting extended for the review UI
+**Files:** `apps/backend/app/router/cases.py`, `apps/backend/app/service/case_query.py`, `apps/backend/tests/test_case_endpoints.py`
+> `GET /v1/cases` gained `mode` and `sort`/`order`. Both are additive query parameters that
+> change no wire model, so the frozen contract still holds. They exist because the queue's
+> spec'd mode filter and four sort keys are not implementable correctly in the client: the
+> response is paginated, so narrowing or re-ordering it there would act on one page and
+> silently ignore every match on the others.
+>
+> **The band sort ignores `order` by design.** It is the product's answer to "what do I review
+> next", and inverting it would put `NO_OBSERVED_RISK` at the top of a work list — a reading
+> the system is not entitled to offer. An unknown sort key is refused with 422 rather than
+> falling back to the default, because a wrong order that looks right is worse than an error.
+> **Three defects found in code review of this same change, all fixed:**
+>
+> 1. **The queue and the case detail disagreed about evidence completeness on every case.**
+>    `evidence_completeness()` fell back to the count of *unsupported* lines when no line count
+>    was passed, so `supported_lines` was zero by construction: a fully supported case reported
+>    "0 of 0 lines" and the queue rendered it as having nothing billed at all, while the detail
+>    — which passes the real count — showed 2 of 2. The count is now recorded on the case at
+>    screening (`billed_line_count`, migration `d1a7c3e50f42`), which also keeps the queue from
+>    reading 25 bundles to build one page.
+> 2. **`sort=age&order=desc` returned the newest case first.** Age is displayed as
+>    `now - screened_at`, which moves opposite to the timestamp being sorted, so "descending"
+>    meant "largest" on the amount column and "smallest" on the age column — same control,
+>    opposite meaning. `_sort_value` now sorts on the displayed quantity.
+> 3. **Search was applied client-side to an already-paginated page**, so a case whose identifier
+>    sat on page 2 was unreachable: page 1 came back empty and the empty state offered only
+>    "clear the filters". `search` is now a query parameter narrowing the whole queue, like
+>    every other filter.
+>
+> Verified: 285 tests passing (was 269), ruff clean, alembic head `d1a7c3e50f42`.
+
 ### 2026-08-30 · [Sprint 02 — ingest-validation](../sprint/backlog/02-ingest-validation/sprint.md) · Task: [API contract](../sprint/backlog/02-ingest-validation/backend/00-api-contract.md) · ✅ Done
 
 **Event:** Task completed — **API CONTRACT FROZEN**

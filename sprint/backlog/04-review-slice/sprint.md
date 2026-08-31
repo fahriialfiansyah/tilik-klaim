@@ -1,7 +1,9 @@
 # Sprint 04 — Review Vertical Slice
 
-**Status:** 📋 Planned
+**Status:** 🚧 In Progress
 **Created At:** 2026-08-30
+**Started At:** 2026-08-31
+**Progress:** backend ✅ both tasks · frontend ✅ `00-port-design-tokens`, ✅ `01-antrean-review` · 📋 `02-detail-kasus`, `03-ingest-page`
 **Gate:** G5 — Web vertical slice · **Deadline:** 9 September 2026
 **Owner:** M2 — Product, UX & Data
 **Work spec:** WS-005 (§ 20)
@@ -32,9 +34,11 @@ WS-005 acceptance, carried verbatim:
 
 ## Cross-stack dependencies
 
-Frontend builds against the fixtures frozen in Sprint 02
-[`00-api-contract.md`](../02-ingest-validation/backend/00-api-contract.md), so it runs
-**in parallel** with the backend tasks here rather than after them.
+Frontend was planned to build against the fixtures frozen in Sprint 02
+[`00-api-contract.md`](../02-ingest-validation/backend/00-api-contract.md) so it could run
+**in parallel** with the backend tasks here. In the event the backend landed first, so the
+frontend builds against the **live seeded API** instead. That is strictly better — the screens
+are exercised by real responses rather than by fixtures that can drift from them.
 
 ## Dependency graph
 

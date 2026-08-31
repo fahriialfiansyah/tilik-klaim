@@ -1,0 +1,187 @@
+/* TilikKlaim — lapisan tema aplikasi.
+ *
+ * Tailwind v4 bersifat CSS-first: tidak ada tailwind.config.ts. Tema didefinisikan
+ * di blok @theme di bawah, yang seluruhnya menunjuk ke token di tokens.css.
+ *
+ * @theme inline dipakai dengan sengaja: dengan `inline`, Tailwind TIDAK menerbitkan
+ * ulang variabelnya, hanya menyisipkan var(...) ke dalam utility. Jadi utility
+ * membaca nilai dari tokens.css saat runtime — pergantian tema lewat
+ * [data-theme] langsung mengubah tampilan tanpa membangun ulang.
+ */
+
+@import 'tailwindcss';
+
+/* Font ditumpangkan sendiri, bukan dari Google Fonts seperti di mockup:
+ * brief/03 § 9.3 mewajibkan aplikasi berfungsi penuh tanpa jaringan eksternal,
+ * dan runbook demo dijalankan luring. Tautan CDN akan gagal di sana. */
+@import '@fontsource/ibm-plex-sans/latin-400.css';
+@import '@fontsource/ibm-plex-sans/latin-500.css';
+@import '@fontsource/ibm-plex-sans/latin-600.css';
+@import '@fontsource/ibm-plex-sans/latin-700.css';
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-500.css';
+@import '@fontsource/ibm-plex-mono/latin-600.css';
+
+@import './tokens.css';
+@import './components.css';
+
+@theme inline {
+  /* ---------------------------------------------------------------------
+   * Palet bawaan Tailwind DIHAPUS. Ini bukan pembersihan gaya — ini penegakan.
+   *
+   * design/DESIGN.md mengunci: merah HANYA untuk konflik deterministik, hijau
+   * HANYA untuk aksi yang selesai dan tervalidasi. Selama bg-red-500 dan
+   * text-green-600 masih ada, aturan itu hanya bisa ditegakkan lewat review.
+   * Dengan dihapus, `bg-red-500` tidak menghasilkan apa pun dan ketahuan saat
+   * ditulis — bukan saat sudah tayang di depan juri.
+   * ------------------------------------------------------------------- */
+  --color-*: initial;
+
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-inherit: inherit;
+
+  /* Permukaan. Latar halaman tidak diberi nama sendiri di sini — ia sudah bernama
+   * --color-background di blok shadcn di bawah. Nama kedua (`page`) pernah ada dan
+   * menabrak ukuran teks --text-page: utility `text-*` melayani kedua namespace,
+   * sehingga `text-page` berubah jadi warna teks, bukan ukuran 30px. */
+  --color-card: var(--s-card);
+  --color-sunk: var(--s-sunk);
+  --color-head: var(--s-head);
+  --color-rail: var(--s-rail);
+
+  /* Garis tepi */
+  --color-line: var(--b-1);
+  --color-line-strong: var(--b-2);
+
+  /* Teks */
+  --color-ink: var(--t-1);
+  --color-ink-2: var(--t-2);
+  --color-ink-3: var(--t-3);
+  --color-ink-inv: var(--t-inv);
+  --color-ink-inv-2: var(--t-inv-2);
+
+  /* Aksen merek (navy/teal). Bukan `accent` — nama itu milik shadcn di bawah. */
+  --color-brand: var(--a-1);
+  --color-brand-hover: var(--a-1h);
+  --color-brand-soft: var(--a-1-soft);
+  --color-brand-line: var(--a-1-bd);
+  --color-brand-on: var(--a-1-on);
+
+  /* Pita prioritas. Hanya alias semantik yang diekspos — token mentah
+   * (--red-f, --grn-f, ...) sengaja TIDAK dijadikan utility. */
+  --color-band-conflict: var(--band-conflict-fg);
+  --color-band-conflict-bg: var(--band-conflict-bg);
+  --color-band-conflict-line: var(--band-conflict-bd);
+
+  --color-band-signal: var(--band-signal-fg);
+  --color-band-signal-bg: var(--band-signal-bg);
+  --color-band-signal-line: var(--band-signal-bd);
+
+  --color-band-context: var(--band-context-fg);
+  --color-band-context-bg: var(--band-context-bg);
+  --color-band-context-line: var(--band-context-bd);
+
+  --color-band-quiet: var(--band-none-fg);
+  --color-band-quiet-bg: var(--band-none-bg);
+  --color-band-quiet-line: var(--band-none-bd);
+
+  /* Penanda tata kelola — badge DATA SINTETIK. Amber yang sama dengan pita sinyal,
+   * tapi diberi nama sendiri: ia bukan pita prioritas. Kalau suatu saat keduanya
+   * harus dibedakan warnanya, pemisahannya cukup dilakukan di satu tempat. */
+  --color-notice: var(--amb-f);
+  --color-notice-bg: var(--amb-b);
+  --color-notice-line: var(--amb-d);
+
+  /* Aksi selesai & tervalidasi. BUKAN penanda "klaim aman". */
+  --color-done: var(--action-done-fg);
+  --color-done-bg: var(--action-done-bg);
+  --color-done-line: var(--action-done-bd);
+
+  /* --- Nama yang dipakai komponen shadcn, dipetakan ke token yang sama --- */
+  --color-background: var(--s-page);
+  --color-foreground: var(--t-1);
+  --color-card-foreground: var(--t-1);
+  --color-popover: var(--s-card);
+  --color-popover-foreground: var(--t-1);
+  --color-primary: var(--a-1);
+  --color-primary-foreground: var(--a-1-on);
+  --color-secondary: var(--s-sunk);
+  --color-secondary-foreground: var(--t-1);
+  --color-muted: var(--s-sunk);
+  --color-muted-foreground: var(--t-3);
+  --color-accent: var(--a-1-soft);
+  --color-accent-foreground: var(--t-1);
+  --color-border: var(--b-1);
+  --color-input: var(--b-1);
+  --color-ring: var(--a-1);
+
+  /* Tipografi */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --text-micro: var(--text-micro);
+  --text-micro--line-height: 1.4;
+  --text-meta: var(--text-meta);
+  --text-meta--line-height: 1.45;
+  --text-small: var(--text-small);
+  --text-small--line-height: 1.45;
+  --text-body: var(--text-body);
+  --text-body--line-height: 1.5;
+  --text-body-lg: var(--text-body-lg);
+  --text-body-lg--line-height: 1.4;
+  --text-lead: var(--text-lead);
+  --text-lead--line-height: 1.4;
+  --text-title: var(--text-title);
+  --text-title--line-height: 1.25;
+  --text-page: var(--text-page);
+  --text-page--line-height: 1.1;
+
+  --tracking-label: var(--tracking-label);
+  --tracking-title: var(--tracking-title);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  /* Dinamai `panel`, bukan `card`: utility shadow-* juga menerima nama warna,
+   * jadi `shadow-card` akan bersaing dengan --color-card. */
+  --shadow-panel: var(--shadow);
+}
+
+@layer base {
+  * {
+    border-color: var(--b-1);
+  }
+
+  html {
+    /* Memberi tahu peramban kedua tema tersedia, sehingga kontrol bawaan
+     * (scrollbar, date picker) ikut berganti. */
+    color-scheme: light dark;
+  }
+
+  body {
+    margin: 0;
+    background: var(--s-page);
+    color: var(--t-1);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Fokus selalu terlihat — design/DESIGN.md mengunci ini sebagai syarat
+   * aksesibilitas, bukan pilihan gaya. Cincin ganda mengikuti mockup agar
+   * tetap terbaca di atas kartu maupun di atas latar halaman. */
+  *:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--s-card),
+      0 0 0 4px var(--a-1);
+  }
+
+  /* Nominal dan cap waktu wajib berdigit sejajar agar terbandingkan antar baris. */
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+  }
+}

@@ -112,6 +112,8 @@ cases = Table(
     # The whole screening result, so case detail never has to re-screen to explain itself.
     Column("result", JSONB, nullable=False),
     Column("completeness_notes", JSONB, nullable=False, server_default="[]"),
+    # Counted at screening so the queue does not have to re-read the bundle per row.
+    Column("billed_line_count", Integer, nullable=False, server_default="0"),
     Column("created_at", DateTime(timezone=True), nullable=False),
     Column("updated_at", DateTime(timezone=True), nullable=False),
     CheckConstraint("case_version >= 1", name="ck_cases_version_positive"),

@@ -1,0 +1,296 @@
+/* SALINAN — jangan diedit di sini.
+ *
+ * Berkas ini disalin apa adanya dari design/tokens.css. Kalau token berubah:
+ *
+ *     cp design/tokens.css apps/web/src/styles/tokens.css
+ *
+ * Menyalin ulang tidak bisa meleset; menyamakan 35 nilai warna dengan tangan bisa.
+ * Perbaikan token (mis. koreksi kontras) dilakukan di sumber, bukan ditambal di sini.
+ */
+
+/* TilikKlaim — Design Tokens
+ *
+ * Sumber: design/mockup/tilik-klaim-v2.bundle.html (tim desain, 30 Agustus 2026).
+ * Nilai di bawah diekstrak langsung dari mockup — JANGAN diubah dengan tangan.
+ * Kalau tim desain mengirim mockup baru, ekstrak ulang agar tidak terjadi drift.
+ *
+ * Nama token mengikuti penamaan tim desain apa adanya (--s-*, --a-*, --red-* ...)
+ * supaya sinkronisasi berikutnya bersifat mekanis. Alias semantik ada di bagian
+ * paling bawah — di situlah ATURAN MAKNA dari design/DESIGN.md dikodekan.
+ */
+
+:root,
+[data-theme='light'] {
+  /* Permukaan */
+  --s-page: #f1f3f2;
+  --s-card: #ffffff;
+  --s-sunk: #f8faf9;
+  --s-head: #0b2530;
+  --s-rail: #ffffff;
+
+  /* Garis tepi */
+  --b-1: #dde1e0;
+  --b-2: #c3cac8;
+
+  /* Teks */
+  --t-1: #14211f;
+  --t-2: #4f5d5b;
+  /* Digelapkan dari #6d7b79 milik mockup. Koreksi ini dilakukan dua kali:
+   *
+   *   #6d7b79 → #6b7977  (30 Agu) — 4.41:1 di atas --s-card, di bawah ambang AA 4.5:1
+   *   #6b7977 → #63706e  (1 Sep)  — 4.54:1 hanya berlaku di atas --s-card (putih).
+   *                                  Aplikasi juga memakai --t-3 di atas --s-sunk (4.33:1,
+   *                                  kepala tabel) dan --s-page (4.07:1, catatan kaki).
+   *                                  Keduanya di bawah AA; pengukuran pertama hanya menguji
+   *                                  satu dari tiga permukaan.
+   *
+   * #63706e: --s-card 5.16:1 · --s-sunk 4.92:1 · --s-page 4.63:1 — lulus di ketiganya.
+   * Ini koreksi lantai aksesibilitas, bukan perubahan arah desain. */
+  --t-3: #63706e;
+  --t-inv: #eef3f3;
+  --t-inv-2: #a8bcc2;
+
+  /* Aksen (navy/teal) */
+  --a-1: #0d6675;
+  --a-1h: #12808f;
+  --a-1-soft: #e8f2f3;
+  --a-1-bd: #b9d6da;
+  --a-1-on: #ffffff;
+
+  /* Merah — HANYA konflik deterministik */
+  --red-f: #97231f;
+  --red-b: #fbecea;
+  --red-d: #e7bab5;
+
+  /* Amber — perlu ditinjau */
+  --amb-f: #8a5200;
+  --amb-b: #fdf3e2;
+  --amb-d: #e8cd9c;
+
+  /* Soft/olive — perlu konteks */
+  --sof-f: #6f5a1f;
+  --sof-b: #faf7e8;
+  --sof-d: #e3dcbc;
+
+  /* Netral — tanpa risiko teramati */
+  --neu-f: #4f5d5b;
+  --neu-b: #eceeed;
+  --neu-d: #d3d9d8;
+
+  /* Hijau — HANYA aksi selesai & tervalidasi */
+  --grn-f: #1c6244;
+  --grn-b: #e8f2ec;
+  --grn-d: #b6d4c4;
+
+  /* Lain-lain */
+  --logo-amb: #e8a33d;
+  --scrim: rgba(11,37,48,.34);
+  --shadow: 0 1px 2px rgba(11,37,48,.05);
+}
+
+/* Tema gelap: dipilih eksplisit lewat [data-theme="dark"] ... */
+[data-theme='dark'] {
+  /* Permukaan */
+  --s-page: #0b1618;
+  --s-card: #122126;
+  --s-sunk: #0e1d21;
+  --s-head: #081114;
+  --s-rail: #0f1d21;
+
+  /* Garis tepi */
+  --b-1: #24373c;
+  --b-2: #375056;
+
+  /* Teks */
+  --t-1: #e7efef;
+  --t-2: #a9bcbd;
+  --t-3: #85999b;
+  --t-inv: #e7efef;
+  --t-inv-2: #8fa8ac;
+
+  /* Aksen (navy/teal) */
+  --a-1: #4fb3c0;
+  --a-1h: #6ec8d3;
+  --a-1-soft: #10333a;
+  --a-1-bd: #20606c;
+  --a-1-on: #04191d;
+
+  /* Merah — HANYA konflik deterministik */
+  --red-f: #f09b93;
+  --red-b: #2c1a18;
+  --red-d: #5a302b;
+
+  /* Amber — perlu ditinjau */
+  --amb-f: #e9b769;
+  --amb-b: #2a2115;
+  --amb-d: #5a4629;
+
+  /* Soft/olive — perlu konteks */
+  --sof-f: #d5cd9c;
+  --sof-b: #23231a;
+  --sof-d: #494533;
+
+  /* Netral — tanpa risiko teramati */
+  --neu-f: #a9bcbd;
+  --neu-b: #1a2a2e;
+  --neu-d: #2f4348;
+
+  /* Hijau — HANYA aksi selesai & tervalidasi */
+  --grn-f: #7fd0a5;
+  --grn-b: #122a20;
+  --grn-d: #2b5641;
+
+  /* Lain-lain */
+  --logo-amb: #f0b45c;
+  --scrim: rgba(2,10,12,.6);
+  --shadow: 0 1px 2px rgba(0,0,0,.3);
+}
+
+/* ... dan mengikuti preferensi sistem selama pengguna belum memilih tema terang. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    /* Permukaan */
+    --s-page: #0b1618;
+    --s-card: #122126;
+    --s-sunk: #0e1d21;
+    --s-head: #081114;
+    --s-rail: #0f1d21;
+  
+    /* Garis tepi */
+    --b-1: #24373c;
+    --b-2: #375056;
+  
+    /* Teks */
+    --t-1: #e7efef;
+    --t-2: #a9bcbd;
+    --t-3: #85999b;
+    --t-inv: #e7efef;
+    --t-inv-2: #8fa8ac;
+  
+    /* Aksen (navy/teal) */
+    --a-1: #4fb3c0;
+    --a-1h: #6ec8d3;
+    --a-1-soft: #10333a;
+    --a-1-bd: #20606c;
+    --a-1-on: #04191d;
+  
+    /* Merah — HANYA konflik deterministik */
+    --red-f: #f09b93;
+    --red-b: #2c1a18;
+    --red-d: #5a302b;
+  
+    /* Amber — perlu ditinjau */
+    --amb-f: #e9b769;
+    --amb-b: #2a2115;
+    --amb-d: #5a4629;
+  
+    /* Soft/olive — perlu konteks */
+    --sof-f: #d5cd9c;
+    --sof-b: #23231a;
+    --sof-d: #494533;
+  
+    /* Netral — tanpa risiko teramati */
+    --neu-f: #a9bcbd;
+    --neu-b: #1a2a2e;
+    --neu-d: #2f4348;
+  
+    /* Hijau — HANYA aksi selesai & tervalidasi */
+    --grn-f: #7fd0a5;
+    --grn-b: #122a20;
+    --grn-d: #2b5641;
+  
+    /* Lain-lain */
+    --logo-amb: #f0b45c;
+    --scrim: rgba(2,10,12,.6);
+    --shadow: 0 1px 2px rgba(0,0,0,.3);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Tipografi, jarak, radius
+ * Nilai diambil dari frekuensi pemakaian nyata di mockup.
+ * ------------------------------------------------------------------------- */
+
+:root {
+  --font-sans: 'IBM Plex Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Skala teks. --text-body adalah ukuran isi tabel & kartu.
+   * 13px adalah nilai yang berlaku: kontrak di design/DESIGN.md sudah disesuaikan
+   * dari tebakan awal 14-16px mengikuti mockup. Lihat § Deviasi di sana. */
+  /* Dinaikkan dari 9px milik mockup atas keputusan pemilik proyek (31 Agu 2026).
+   * Alasannya keterbacaan pada alat yang dipakai sepanjang hari, bukan pelanggaran
+   * standar — karena itu keputusannya ditunggu, tidak diambil sepihak. Perubahan ini
+   * menggeser lebar kolom kepala tabel. Ditangani seperti koreksi --t-3 di atas:
+   * diperbaiki di sumber, bukan ditambal di salinan aplikasi. */
+  --text-micro: 11px;   /* label mikro huruf besar, selalu berpasangan letter-spacing */
+  --text-meta: 11px;    /* metadata baris, kode, cap waktu */
+  --text-small: 12px;
+  --text-body: 13px;
+  --text-body-lg: 14px;
+  --text-lead: 16px;
+  --text-title: 20px;
+  --text-page: 30px;    /* judul halaman */
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --tracking-label: .13em;   /* wajib dipasangkan dengan --text-micro/--text-meta */
+  --tracking-title: -0.028em;
+
+  /* Jarak: kelipatan 8 sesuai DESIGN.md; 4px tersedia untuk kerapatan operasional. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  --radius-sm: 2px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --header-h: 56px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Alias semantik — DI SINILAH ATURAN MAKNA DIKODEKAN.
+ *
+ * Aturan berikut berasal dari design/DESIGN.md dan bersifat mengikat:
+ *   - Merah HANYA untuk konflik deterministik. Merah menandai konflik pasti,
+ *     BUKAN menandai pihak yang bersalah.
+ *   - Hijau HANYA untuk aksi yang sudah selesai dan tervalidasi.
+ *     Hijau TIDAK PERNAH dipakai untuk menandai klaim sebagai aman.
+ *   - Kasus tanpa sinyal memakai pita netral dan berbunyi
+ *     "tidak ada risiko teramati" — tidak pernah "bersih" atau "aman".
+ *   - Status wajib selalu punya label teks. Warna saja tidak pernah cukup.
+ *
+ * Pakai alias ini di kode aplikasi, bukan token mentah di atas, supaya
+ * penyalahgunaan warna terlihat saat review.
+ * ------------------------------------------------------------------------- */
+
+:root {
+  /* Pita prioritas — urut dari paling mendesak */
+  --band-conflict-fg: var(--red-f);   /* konflik deterministik */
+  --band-conflict-bg: var(--red-b);
+  --band-conflict-bd: var(--red-d);
+
+  --band-signal-fg: var(--amb-f);     /* sinyal prioritas tinggi */
+  --band-signal-bg: var(--amb-b);
+  --band-signal-bd: var(--amb-d);
+
+  --band-context-fg: var(--sof-f);    /* perlu konteks */
+  --band-context-bg: var(--sof-b);
+  --band-context-bd: var(--sof-d);
+
+  --band-none-fg: var(--neu-f);       /* tidak ada risiko teramati */
+  --band-none-bg: var(--neu-b);
+  --band-none-bd: var(--neu-d);
+
+  /* Aksi selesai & tervalidasi. Bukan penanda "klaim aman". */
+  --action-done-fg: var(--grn-f);
+  --action-done-bg: var(--grn-b);
+  --action-done-bd: var(--grn-d);
+}

@@ -25,10 +25,18 @@
   /* Teks */
   --t-1: #14211f;
   --t-2: #4f5d5b;
-  /* Digelapkan dari #6d7b79 milik mockup: nilai itu hanya mencapai 4.41:1 di atas
-   * --s-card, di bawah ambang AA 4.5:1 untuk teks normal. #6b7977 memberi 4.54:1.
+  /* Digelapkan dari #6d7b79 milik mockup. Koreksi ini dilakukan dua kali:
+   *
+   *   #6d7b79 → #6b7977  (30 Agu) — 4.41:1 di atas --s-card, di bawah ambang AA 4.5:1
+   *   #6b7977 → #63706e  (1 Sep)  — 4.54:1 hanya berlaku di atas --s-card (putih).
+   *                                  Aplikasi juga memakai --t-3 di atas --s-sunk (4.33:1,
+   *                                  kepala tabel) dan --s-page (4.07:1, catatan kaki).
+   *                                  Keduanya di bawah AA; pengukuran pertama hanya menguji
+   *                                  satu dari tiga permukaan.
+   *
+   * #63706e: --s-card 5.16:1 · --s-sunk 4.92:1 · --s-page 4.63:1 — lulus di ketiganya.
    * Ini koreksi lantai aksesibilitas, bukan perubahan arah desain. */
-  --t-3: #6b7977;
+  --t-3: #63706e;
   --t-inv: #eef3f3;
   --t-inv-2: #a8bcc2;
 
@@ -198,9 +206,14 @@
   --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Skala teks. --text-body adalah ukuran isi tabel & kartu.
-   * CATATAN: mockup memakai 13px, sedangkan design/DESIGN.md mengunci 14-16px.
-   * Selisih ini belum diselesaikan — lihat design/DESIGN.md § Deviasi. */
-  --text-micro: 9px;    /* label mikro huruf besar, selalu berpasangan letter-spacing */
+   * 13px adalah nilai yang berlaku: kontrak di design/DESIGN.md sudah disesuaikan
+   * dari tebakan awal 14-16px mengikuti mockup. Lihat § Deviasi di sana. */
+  /* Dinaikkan dari 9px milik mockup atas keputusan pemilik proyek (31 Agu 2026).
+   * Alasannya keterbacaan pada alat yang dipakai sepanjang hari, bukan pelanggaran
+   * standar — karena itu keputusannya ditunggu, tidak diambil sepihak. Perubahan ini
+   * menggeser lebar kolom kepala tabel. Ditangani seperti koreksi --t-3 di atas:
+   * diperbaiki di sumber, bukan ditambal di salinan aplikasi. */
+  --text-micro: 11px;   /* label mikro huruf besar, selalu berpasangan letter-spacing */
   --text-meta: 11px;    /* metadata baris, kode, cap waktu */
   --text-small: 12px;
   --text-body: 13px;

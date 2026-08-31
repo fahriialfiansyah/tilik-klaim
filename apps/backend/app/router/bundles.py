@@ -219,6 +219,7 @@ def screen_ingested_bundle(
         provider_token=record.bundle.claim.provider_id,
         total_amount=record.bundle.claim.total_amount,
         currency=record.bundle.claim.currency,
+        billed_line_count=len(record.bundle.lines),
         screened_at=screened_now(),
     )
     cases.save(case)

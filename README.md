@@ -133,9 +133,38 @@ tidak mungkin menunjuk basis data yang berbeda. Jangan mengisi `sqlalchemy.url` 
 
 ### 4. Jalankan kedua layanan
 
-Pilih salah satu cara. **Cara A** adalah cara baku dan berjalan di semua sistem operasi.
+Pilih salah satu cara. **Cara A** adalah cara terpendek di macOS, Linux, dan WSL;
+**Cara B** adalah cara baku yang berjalan di semua sistem operasi tanpa alat tambahan.
 
-#### Cara A — dua terminal (semua OS, tanpa alat tambahan)
+#### Cara A — satu perintah (macOS, Linux, WSL)
+
+```bash
+./scripts/dev.sh
+```
+
+Skrip ini menjalankan API dan Web berdampingan di satu terminal, memberi awalan `[api]` /
+`[web]` pada setiap baris log, dan **Ctrl-C menghentikan keduanya sekaligus** — termasuk anak
+proses `uvicorn --reload` dan Rsbuild, sehingga port tidak tertinggal terkunci. Bila salah satu
+layanan mati, yang lain ikut dihentikan; separuh stack yang hidup lebih menyesatkan daripada
+stack yang mati seluruhnya.
+
+Sebelum menyalakan apa pun, skrip memeriksa `uv` dan `npm` tersedia serta port 8000/3000 masih
+bebas, lalu berhenti dengan pesan yang menyebut PID pemakainya bila tidak.
+
+| Opsi | Guna |
+|------|------|
+| `--db` | Nyalakan Postgres via Docker Compose + `alembic upgrade head` lebih dulu |
+| `--skip-install` | Lewati `npm install` otomatis saat `node_modules` belum ada |
+| `--api-port PORT` | Ganti port API (bawaan 8000) |
+| `--web-port PORT` | Ganti port Web (bawaan 3000) |
+| `--help` | Daftar opsi |
+
+> Skrip ini sengaja berjalan di **latar depan**. Tidak ada cara membuat server pengembangan
+> selamat dari *restart* atau *shutdown* mesin — tmux pun mati, karena proses tidak bertahan
+> melewati reboot. Bila memang ingin kedua layanan hidup otomatis setiap kali login, itu tugas
+> `launchd` (macOS) atau `systemd --user` (Linux), bukan tugas skrip ini.
+
+#### Cara B — dua terminal (semua OS, tanpa alat tambahan)
 
 Buka dua jendela/tab terminal. Keduanya dimulai dari root repo.
 
@@ -156,9 +185,10 @@ npm run dev
 Biarkan kedua terminal terbuka selama pengembangan. Log tampil langsung di masing-masing
 terminal, dan hot reload aktif di kedua layanan.
 
-#### Cara B — satu sesi tmux (opsional; macOS, Linux, atau Windows via WSL)
+#### Cara C — satu sesi tmux (opsional; macOS, Linux, atau Windows via WSL)
 
-Berguna bila ingin kedua proses tetap hidup setelah terminal ditutup. Membutuhkan
+Berguna bila ingin kedua proses tetap hidup setelah terminal ditutup — tetapi tetap mati
+saat mesin di-*restart*. Membutuhkan
 `tmux` (`brew install tmux` / `apt install tmux`).
 
 ```bash
@@ -239,7 +269,7 @@ npm run typecheck    # pemeriksaan tipe
 | Test integrasi ter-`skip` | Tidak ada Postgres yang terjangkau. Jalankan `docker compose up -d db` lalu `uv run alembic upgrade head` |
 | `password authentication failed for user "tilik"` | Ada Postgres lain di port 5432. Hentikan instance itu, atau ubah pemetaan port di `docker-compose.yml` dan `DATABASE_URL` |
 | PowerShell menolak menjalankan skrip pemasangan | Jalankan sekali: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` |
-| `error connecting to /tmp/tmux-*/default` | Hanya muncul pada Cara B saat belum ada server tmux — normal, `tmux new-session` akan menyalakannya |
+| `error connecting to /tmp/tmux-*/default` | Hanya muncul pada Cara C saat belum ada server tmux — normal, `tmux new-session` akan menyalakannya |
 
 ## Mulai dari mana
 

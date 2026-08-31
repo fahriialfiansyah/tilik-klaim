@@ -1,0 +1,49 @@
+/* Tema scrollbar untuk react-perfect-scrollbar.
+ *
+ * .claude/rules/architecture.md mewajibkan region gulir berbatas memakai
+ * PerfectScrollArea, dan tema thumb/rail-nya dikendalikan dari sini dengan
+ * token desain — supaya scrollbar ikut berganti bersama tema, bukan tetap
+ * abu-abu bawaan library di tema gelap.
+ */
+
+@import 'react-perfect-scrollbar/dist/css/styles.css';
+
+.ps__rail-x,
+.ps__rail-y {
+  background: transparent !important;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.ps:hover > .ps__rail-x,
+.ps:hover > .ps__rail-y,
+.ps--focus > .ps__rail-x,
+.ps--focus > .ps__rail-y,
+.ps--scrolling-x > .ps__rail-x,
+.ps--scrolling-y > .ps__rail-y {
+  opacity: 1;
+}
+
+.ps__thumb-x,
+.ps__thumb-y {
+  background-color: var(--b-2);
+  border-radius: var(--radius-sm);
+}
+
+.ps__rail-x:hover > .ps__thumb-x,
+.ps__rail-y:hover > .ps__thumb-y,
+.ps__rail-x:focus > .ps__thumb-x,
+.ps__rail-y:focus > .ps__thumb-y,
+.ps__rail-x.ps--clicking .ps__thumb-x,
+.ps__rail-y.ps--clicking .ps__thumb-y {
+  background-color: var(--t-3);
+}
+
+/* Rail tetap punya ruang tetap supaya munculnya scrollbar tidak menggeser isi. */
+.ps__rail-y {
+  width: 10px;
+}
+
+.ps__rail-x {
+  height: 10px;
+}

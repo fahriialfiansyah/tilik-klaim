@@ -1,7 +1,7 @@
 # TilikKlaim — Arah Desain (Ringkas)
 
-> **Status:** 🟢 **Mockup tim desain sudah masuk — token terkunci, dua hal masih terbuka.**
-> **Versi:** 0.2.0 · **Tanggal:** 2026-08-30
+> **Status:** 🟢 **Mockup tim desain sudah masuk — token terkunci dan sudah terpasang di aplikasi.**
+> **Versi:** 0.3.0 · **Tanggal:** 2026-09-01
 > **Sumber:** `docs/HEALTHKATHON_2026_WINNING_MASTER_PLAN.docx` §14 (Figma / UX Brief)
 > **Halaman & widget:** [`sprint/00-app-spec.md`](../sprint/00-app-spec.md)
 
@@ -41,7 +41,9 @@ Dokumen ini sengaja **tidak lengkap**. Ia hanya mengunci arah yang sudah diputus
 | `design/mockup/reference.html` | Turunan yang bisa dibaca: markup + CSS keempat layar. **Ini yang dipakai saat implementasi React** | ✅ Turunan |
 | `design/mockup/unpack.py` | Membangkitkan ulang kedua turunan di atas dari bundel | ✅ Ada |
 | `design/tokens.css` | 35 token warna × 2 tema, plus tipografi, jarak, dan alias semantik | ✅ Masuk |
-| Peta anotasi | Pemetaan setiap bidang di layar ke respons antarmuka | ⬜ Belum ada |
+| `apps/web/src/styles/tokens.css` | Salinan mentah `design/tokens.css` di dalam aplikasi. Disalin dengan `cp`, tidak diketik ulang | ✅ Terpasang |
+| `apps/web/src/styles/app.css` | Pengikatan Tailwind v4 (`@theme inline`) ke token di atas, plus nama yang dipakai shadcn | ✅ Terpasang |
+| Peta anotasi | Pemetaan setiap bidang di layar ke respons antarmuka | ⬜ Belum ada — `/` sudah terimplementasi tanpa peta ini, `/cases/:id` yang paling membutuhkannya |
 
 Keempat layar ada di dalam satu berkas `reference.html`, ditandai atribut
 `data-screen-label`: `Antrean Review`, `Detail Kasus`, `Ingest / Demo`, `Audit & Evaluasi`.
@@ -60,29 +62,37 @@ hanya blok warna yang perlu disegarkan.
 
 ## Deviasi & hal yang masih terbuka
 
-Dua hal di mockup belum sejalan dengan arah yang dikunci di atas. Keduanya menunggu
-keputusan, dan **belum diubah sepihak** karena menyangkut keterbacaan.
+Tiga hal di mockup tidak sejalan dengan arah yang dikunci di atas. **Ketiganya sudah selesai**
+per 1 Sep 2026; tidak ada lagi yang menunggu keputusan.
 
-Dua hal diselesaikan dengan cara berbeda, dan pembedaannya disengaja: **ambang yang bisa
-diukur diperbaiki tanpa menunggu, pertimbangan desain diserahkan pada pemiliknya.**
+Cara menyelesaikannya sengaja dibedakan: **ambang yang bisa diukur diperbaiki tanpa menunggu,
+pertimbangan desain diserahkan pada pemiliknya.** Dua yang pertama ada di tabel di bawah; yang
+ketiga — ukuran label mikro — ada di bagian sesudahnya karena keputusannya datang belakangan.
 
 | Hal | Temuan | Keputusan |
 |-----|--------|-----------|
-| Kontras `--t-3` | Teks tersier `#6d7b79` di atas kartu putih hanya **4.41:1** — di bawah ambang AA 4.5:1 | ✅ **Diperbaiki** ke `#6b7977` (**4.54:1**). AA adalah lantai terukur yang sudah dikunci di tabel atas, bukan preferensi; pergeserannya 2 poin per kanal sehingga maksud desainer tetap utuh |
+| Kontras `--t-3` | Teks tersier `#6d7b79` di atas kartu putih hanya **4.41:1** — di bawah ambang AA 4.5:1 | ✅ **Diperbaiki dua kali.** 30 Agu → `#6b7977` (4.54:1 di atas `--s-card`). **1 Sep → `#63706e`**: pengukuran pertama hanya menguji satu dari tiga permukaan. Aplikasi juga memakai `--t-3` di atas `--s-sunk` (kepala tabel, **4.33:1**) dan `--s-page` (catatan kaki, **4.07:1**) — keduanya gagal. Nilai baru lulus di ketiganya: 5.16 / 4.92 / 4.63. AA adalah lantai terukur yang sudah dikunci di tabel atas, bukan preferensi |
 | Ukuran teks isi | Kontrak lama menyebut 14–16 px; mockup memakai **13 px** (64 kemunculan) | ✅ **Kontraknya yang disesuaikan** menjadi 13 px. Baris 14–16 px ditulis saat dokumen ini masih berstatus "arah saja" — sebuah tebakan placeholder. Mockup adalah bukti yang lebih baru dari pihak yang memiliki keputusan kerapatan, dan 13 px koheren untuk tabel operasional. WCAG tidak menetapkan ukuran font minimum |
 
-Sisanya lulus. Kelima pita status memenuhi AA di kedua tema — paling rendah 5.81:1 pada tema
-terang dan 7.50:1 pada tema gelap.
+Sisanya lulus. Diukur ulang **pada layar yang sudah jadi**, bukan hanya dari nilai token —
+di situlah kegagalan `--t-3` di atas dua permukaan lain akhirnya terlihat. Angka terendah pada
+`/` (Antrean Review) setelah perbaikan: **4.63:1** pada tema terang dan **5.78:1** pada tema
+gelap; kelima pita status berada jauh di atasnya (5.81–9.83).
 
-### Satu hal untuk ditinjau tim desain
+### Label mikro — sudah diputuskan (1 Sep 2026)
 
-Label mikro **9 px** (35 kemunculan, berpasangan dengan `letter-spacing: .13em`) layak dinaikkan
-ke 10–11 px. Ini bukan pelanggaran standar — karena itu tidak diubah sepihak — tetapi pada alat
-yang dipakai sepanjang hari ukuran itu melelahkan, dan mengubahnya menggeser layout sehingga
-keputusannya milik tim desain.
+Label mikro **9 px** (35 kemunculan, berpasangan dengan `letter-spacing: .13em`) **dinaikkan ke
+11 px** atas keputusan pemilik proyek. Alasannya keterbacaan pada alat yang dipakai sepanjang
+hari; ini bukan pelanggaran standar, karena itu keputusannya ditunggu dan tidak diambil sepihak.
 
-**Prioritas untuk tim desain** kalau masih ada waktu: peta anotasi untuk `/` (Antrean Review)
-dan `/cases/:id` (Detail Kasus) lebih dulu. Keduanya yang dipakai demo 90 detik di depan juri.
+Perubahan diterapkan di `design/tokens.css` (bukan ditambal di salinan aplikasi), mengikuti cara
+koreksi `--t-3` ditangani. Kepala tabel antrean sudah diperiksa ulang setelah perubahan: lebar
+kolom tetap muat dan tidak ada label yang terpotong.
+
+**Prioritas untuk tim desain** kalau masih ada waktu: peta anotasi untuk `/cases/:id`
+(Detail Kasus). `/` (Antrean Review) sudah terimplementasi dari mockup tanpa peta anotasi, tetapi
+`/cases/:id` punya 27 widget dan jauh lebih mahal kalau salah tafsir. Keduanya yang dipakai demo
+90 detik di depan juri.
 
 ---
 

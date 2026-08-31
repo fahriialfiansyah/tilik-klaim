@@ -8,10 +8,11 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
+from enum import StrEnum
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query, Response
-from tilik_domain.reasons import CaseState, PriorityBand, ReasonCode
+from tilik_domain.reasons import CaseState, PriorityBand, ReasonCode, RiskMode
 from tilik_domain.versioning import EngineIdentity
 
 from app.dto.cases import CaseDetailResponse, CaseQueueResponse
@@ -19,6 +20,7 @@ from app.errors import ErrorCode, ErrorResponse
 from app.service.case_query import (
     DEFAULT_PAGE_SIZE,
     MAX_PAGE_SIZE,
+    SortKey,
     filter_cases,
     paginate,
     queue_metrics,
@@ -32,6 +34,13 @@ from app.store.registry import get_bundle_store, get_case_store
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/v1", tags=["cases"])
+
+
+class SortOrder(StrEnum):
+    """Direction for the sortable queue columns. Ignored by the band sort — see `sort_cases`."""
+
+    ASC = "asc"
+    DESC = "desc"
 
 ERROR_RESPONSES: dict[int | str, dict] = {
     code: {"model": ErrorResponse} for code in (400, 403, 404, 409, 422)
@@ -61,8 +70,12 @@ def list_cases(
     state: CaseState | None = None,
     band: PriorityBand | None = None,
     reason: ReasonCode | None = None,
+    mode: RiskMode | None = None,
     created_after: datetime | None = None,
     created_before: datetime | None = None,
+    search: str | None = Query(default=None, max_length=128),
+    sort: SortKey = SortKey.BAND,
+    order: SortOrder = SortOrder.DESC,
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
 ) -> CaseQueueResponse:
@@ -74,9 +87,13 @@ def list_cases(
             state=state,
             band=band,
             reason=reason,
+            mode=mode,
             created_after=created_after,
             created_before=created_before,
-        )
+            search=search,
+        ),
+        key=sort,
+        descending=order is SortOrder.DESC,
     )
     window, page_info = paginate(matching, page, page_size)
 
