@@ -98,3 +98,25 @@ def test_four_disposition_actions_and_none_is_a_verdict() -> None:
     names = " ".join(action.value.lower() for action in DispositionAction)
     for verdict in ("fraud", "reject_claim", "deny", "sanction"):
         assert verdict not in names
+
+
+def test_expected_support_names_what_is_missing_not_what_is_cited() -> None:
+    """The two evidence fields diverge exactly where a reviewer would be misled otherwise.
+
+    A phantom reason *requires* the line and the visit — without them it could not be stated at
+    all — and *expects* a completed procedure that is not there. Reporting the first as
+    "expected evidence" told the screen everything had been found, on the one case whose whole
+    finding is an absence.
+    """
+    phantom = definition_for(ReasonCode.LINE_WITHOUT_COMPLETED_PROCEDURE)
+    assert ResourceType.PROCEDURE in phantom.expected_support
+    assert ResourceType.PROCEDURE not in phantom.required_evidence
+
+    medication = definition_for(ReasonCode.LINE_WITHOUT_MEDICATION_DISPENSE)
+    assert ResourceType.MEDICATION in medication.expected_support
+
+
+def test_every_reason_states_the_support_it_expects() -> None:
+    """Defaulting to `required_evidence` keeps the field non-optional for readers."""
+    for definition in REASON_CATALOG.values():
+        assert definition.expected_support, f"{definition.code} expects nothing"

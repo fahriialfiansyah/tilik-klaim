@@ -3,8 +3,10 @@ from __future__ import annotations
 
 from datetime import datetime
 from decimal import Decimal
+from enum import StrEnum
 
 from pydantic import Field
+from tilik_domain.canonical import ResourceType
 from tilik_domain.reasons import CaseState, PriorityBand, RiskMode
 
 from app.dto.common import BandExplanation, Dto, EvidenceRefDto, PageInfo, ReasonDto, VersionStamp
@@ -120,6 +122,57 @@ class ComparisonCandidate(Dto):
     )
 
 
+class SourceAvailability(StrEnum):
+    """Why a referenced resource can or cannot be shown in full.
+
+    Four outcomes, and keeping them apart is the whole point. Collapsing them into a boolean
+    would put a deliberate privacy boundary and a genuine integrity defect behind the same
+    empty panel, and `sprint/00-app-spec.md` § 4 rule 4 makes the second one a defect the
+    screen has to name.
+    """
+
+    PRESENT = "PRESENT"
+    """Carried by this bundle. Shown in full."""
+
+    RELATED_BUNDLE = "RELATED_BUNDLE"
+    """Belongs to another submission the rule compared against.
+
+    Openable, so the reviewer can confirm the compared thing exists and when — but reduced to
+    non-identifying fields. Never another participant's narrative, never their token.
+    """
+
+    NOT_STORED = "NOT_STORED"
+    """Referenced by identity and never stored as a resource: an episode, a practitioner.
+
+    Not a defect. `ResourceType.is_stored_resource` is the same distinction, made once.
+    """
+
+    MISSING = "MISSING"
+    """Cited by a reason and resolvable to nothing. **This is the defect.**"""
+
+
+class SourceField(Dto):
+    """One field of a raw resource. Ordered pairs, so two renderings stay comparable."""
+
+    name: str
+    value: str
+
+
+class SourceResource(Dto):
+    """The resource behind an evidence reference, so every reference opens.
+
+    An unresolvable reference is recorded here with `MISSING` rather than dropped. Dropping it
+    would render as a shorter list — indistinguishable from a reason that cited less — which is
+    exactly how a broken evidence trail hides.
+    """
+
+    resource_type: ResourceType
+    resource_id: str
+    label: str
+    availability: SourceAvailability
+    fields: tuple[SourceField, ...] = ()
+
+
 class CaseDetailResponse(Dto):
     """Everything needed to understand and disposition one case."""
 
@@ -139,6 +192,8 @@ class CaseDetailResponse(Dto):
     timeline: tuple[TimelineEvent, ...]
     comparisons: tuple[ComparisonCandidate, ...] = ()
     evidence_completeness: EvidenceCompleteness
+    sources: tuple[SourceResource, ...] = ()
+    """Every resource any reason references, resolved once so the UI never guesses."""
     suggested_action: str | None = Field(
         default=None,
         description=(

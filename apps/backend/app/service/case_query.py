@@ -14,7 +14,7 @@ from datetime import UTC, datetime
 from enum import StrEnum
 from statistics import median
 
-from tilik_domain.canonical import ResourceRef
+from tilik_domain.canonical import CanonicalBundle, DocumentRef, ResourceRef
 from tilik_domain.reasons import CaseState, PriorityBand, ReasonCode, RiskMode, definition_for
 from tilik_domain.versioning import EngineIdentity
 
@@ -22,13 +22,19 @@ from app.dto.cases import (
     CaseDetailResponse,
     CaseSummary,
     ClaimLineView,
-    ComparisonCandidate,
-    ComparisonField,
     EvidenceCompleteness,
     QueueMetrics,
     TimelineEvent,
 )
-from app.dto.common import BandExplanation, EvidenceRefDto, PageInfo, ReasonDto, VersionStamp
+from app.dto.common import (
+    BandExplanation,
+    CounterEvidenceDto,
+    EvidenceRefDto,
+    PageInfo,
+    ReasonDto,
+    VersionStamp,
+)
+from app.service.case_sources import build_comparisons, build_source_index
 from app.service.rules.registry import ReasonHit
 from app.store.bundles import IngestionRecord
 from app.store.cases import CaseRecord
@@ -200,9 +206,42 @@ def evidence_completeness(case: CaseRecord, total_lines: int | None = None) -> E
     )
 
 
+def order_by_strength(hits: tuple[ReasonHit, ...]) -> tuple[ReasonHit, ...]:
+    """Strongest reason first, applied once so every surface agrees.
+
+    Rules are *evaluated* in a fixed registration order, which keeps two screenings of one
+    bundle reproducible. That order says nothing about which reason a person should read first,
+    and reading the list in it put whichever rule happened to be registered earliest at the top
+    of the queue row, the case header, and the reason cards — while the priority band came from
+    a stronger reason further down.
+
+    Three keys, in order, and each is a claim the response can defend:
+
+    * a **deterministic** reason outranks a scored one — one is a rule violated for certain, the
+      other is a similarity worth a look;
+    * **fewer counter-arguments** outranks more, because counter-evidence genuinely weakens a
+      reason and the screen says so;
+    * **more supporting references** outranks fewer.
+
+    The sort is stable, so registration order still breaks every remaining tie and the result
+    stays reproducible.
+    """
+    return tuple(
+        sorted(
+            hits,
+            key=lambda hit: (
+                hit.deterministic,
+                -len(hit.counter_evidence),
+                len(hit.evidence),
+            ),
+            reverse=True,
+        )
+    )
+
+
 def to_summary(case: CaseRecord) -> CaseSummary:
     """One queue row. Reason sentence first, and no narrative text anywhere."""
-    reasons = case.result.reasons
+    reasons = order_by_strength(case.result.reasons)
     return CaseSummary(
         reason_sentence=(
             reasons[0].sentence_id
@@ -257,9 +296,17 @@ def to_reason_dto(hit: ReasonHit) -> ReasonDto:
         mode=hit.mode,
         sentence=hit.sentence_id,
         deterministic=hit.deterministic,
+        expected_support=definition_for(hit.code).expected_support,
         evidence=tuple(_ref_dto(ref) for ref in hit.evidence),
         counter_evidence=tuple(
             _ref_dto(ref) for note in hit.counter_evidence for ref in note.refs
+        ),
+        # The sentence is the argument; the refs alone are only a place to look. Both ship.
+        counter_evidence_notes=tuple(
+            CounterEvidenceDto(
+                note=note.note_id, refs=tuple(_ref_dto(ref) for ref in note.refs)
+            )
+            for note in hit.counter_evidence
         ),
         component_scores=dict(hit.component_scores),
         ruleset_version=hit.ruleset_version,
@@ -274,15 +321,35 @@ def _ref_dto(ref: ResourceRef) -> EvidenceRefDto:
     )
 
 
-def to_detail(case: CaseRecord, ingestion: IngestionRecord | None) -> CaseDetailResponse:
-    """Everything needed to understand and disposition one case."""
+def to_detail(
+    case: CaseRecord,
+    ingestion: IngestionRecord | None,
+    history: tuple[CanonicalBundle, ...] = (),
+    peer_documents: tuple[DocumentRef, ...] = (),
+) -> CaseDetailResponse:
+    """Everything needed to understand and disposition one case.
+
+    `history` and `peer_documents` are the other submissions the rules compared this one
+    against. They are what makes a reference to a prior claim or a peer note *openable* rather
+    than a dead end, and what gives the comparison drawer two real sides to put next to each
+    other. Both default to empty so a caller that only wants the reasons need not fetch them.
+    """
     result = case.result
-    reasons = tuple(to_reason_dto(hit) for hit in result.reasons)
+    hits = order_by_strength(result.reasons)
+    reasons = tuple(to_reason_dto(hit) for hit in hits)
     bundle = ingestion.bundle if ingestion else None
 
     lines = _line_views(case, bundle)
     line_count = len(lines) if lines else None
     encounter_start, encounter_end = _encounter_window(bundle, case)
+    timeline = _timeline(bundle, case)
+    timeline_refs = tuple(
+        ResourceRef(
+            resource_type=event.resource.resource_type, resource_id=event.resource.resource_id
+        )
+        for event in timeline
+        if event.resource is not None
+    )
 
     return CaseDetailResponse(
         case_id=case.case_id,
@@ -298,9 +365,10 @@ def to_detail(case: CaseRecord, ingestion: IngestionRecord | None) -> CaseDetail
         reasons=reasons,
         band=_band_explanation(case),
         lines=lines,
-        timeline=_timeline(bundle, case),
-        comparisons=_comparisons(result.reasons),
+        timeline=timeline,
+        comparisons=build_comparisons(hits, bundle, history, peer_documents),
         evidence_completeness=evidence_completeness(case, line_count),
+        sources=build_source_index(hits, bundle, history, peer_documents, timeline_refs),
         suggested_action=str(result.suggested_action) if result.suggested_action else None,
         versions=VersionStamp(**result.identity.model_dump()),
     )
@@ -382,43 +450,6 @@ def _timeline(bundle, case: CaseRecord) -> tuple[TimelineEvent, ...]:
             )
         )
     return tuple(sorted(events, key=lambda event: event.occurred_at))
-
-
-def _comparisons(hits: tuple[ReasonHit, ...]) -> tuple[ComparisonCandidate, ...]:
-    """Side-by-side pairs for the two comparison-shaped modes.
-
-    Clone comparisons always carry the template caveat: shared templates produce high similarity
-    without anything being copied, and a reviewer must read that before acting.
-    """
-    candidates: list[ComparisonCandidate] = []
-    for hit in hits:
-        if hit.mode not in {RiskMode.REPEAT_BILLING, RiskMode.CLONED_DOCUMENTATION}:
-            continue
-        others = [ref for ref in hit.evidence if str(ref.resource_type) in {"Claim", "Document"}]
-        if len(others) < 2:
-            continue
-        candidates.append(
-            ComparisonCandidate(
-                candidate_claim_id=others[1].resource_id,
-                fields=tuple(
-                    ComparisonField(
-                        field_name=name,
-                        left_value=f"{value}",
-                        right_value=f"{value}",
-                        matches=True,
-                    )
-                    for name, value in hit.component_scores
-                ),
-                similarity_components=dict(hit.component_scores),
-                template_caveat=(
-                    "Dokumentasi berbasis templat menghasilkan kemiripan tinggi tanpa ada "
-                    "yang disalin. Baca ini sebelum mengambil keputusan."
-                    if hit.mode is RiskMode.CLONED_DOCUMENTATION
-                    else None
-                ),
-            )
-        )
-    return tuple(candidates)
 
 
 def _band_explanation(case: CaseRecord) -> BandExplanation:

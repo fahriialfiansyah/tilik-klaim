@@ -43,6 +43,18 @@ class EvidenceRefDto(Dto):
     label: str = Field(description="Short working-language description of the resource.")
 
 
+class CounterEvidenceDto(Dto):
+    """One fact that argues against the reason it accompanies, **in words**.
+
+    The refs alone were shipped for a while and it hollowed the feature out: a reviewer saw
+    `Encounter ENC-PH-1` under a "counter-evidence" heading with nothing saying why it weakened
+    anything. The sentence is the argument; the references are only where to look next.
+    """
+
+    note: str = Field(description="Working language, written by the rule that raised the reason.")
+    refs: tuple[EvidenceRefDto, ...] = ()
+
+
 class ReasonDto(Dto):
     """One reason, with its evidence and whatever argues against it.
 
@@ -55,7 +67,24 @@ class ReasonDto(Dto):
     sentence: str = Field(description="From the reason catalog. Clients never compose their own.")
     deterministic: bool
     evidence: tuple[EvidenceRefDto, ...]
+    expected_support: tuple[ResourceType, ...] = ()
+    """Resource types that should stand behind the billed line, from the reason catalog.
+
+    The screen shows expected evidence beside found evidence, and the gap between them is what
+    a reviewer is actually judging. Deriving the expectation in the client would put a second
+    copy of the catalog there, free to drift from the one that raised the reason.
+
+    Note this is the catalog's `expected_support`, not its `required_evidence`. The latter is
+    what the *reason* needs to be well formed, and rendering it here reported "everything
+    expected was found" on a phantom case — whose whole finding is that something is absent.
+    """
     counter_evidence: tuple[EvidenceRefDto, ...] = ()
+    counter_evidence_notes: tuple[CounterEvidenceDto, ...] = ()
+    """The same counter-evidence with its sentences kept.
+
+    `counter_evidence` stays as the flat reference list it has always been so no existing
+    client breaks; this field is the one a reviewer actually reads.
+    """
     component_scores: dict[str, float] = Field(
         default_factory=dict,
         description="Per-component scores, kept alongside the reason rather than collapsed.",

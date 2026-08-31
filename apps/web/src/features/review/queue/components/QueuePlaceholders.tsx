@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
+import { withStop } from '@/features/review/shared/format'
 
 /**
  * The four states that all look like "a table with nothing in it" but mean different things and
@@ -14,11 +15,6 @@ import { Button } from '@/components/ui/button'
  */
 
 const SKELETON_ROWS = 6
-
-/** Server messages arrive with and without trailing punctuation; both have to read as a sentence. */
-function withStop(message: string): string {
-  return /[.!?]$/.test(message) ? message : `${message}.`
-}
 
 export function QueueLoading() {
   return (

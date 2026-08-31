@@ -344,3 +344,177 @@ def test_unknown_case_returns_a_named_error(api) -> None:
     response = api.get("/v1/cases/case_nope")
     assert response.status_code == 404
     assert response.json()["code"] == "CASE_NOT_FOUND"
+
+
+# --------------------------------------------------------------------------------------
+# Counter-evidence sentences, openable sources, and real comparisons
+#
+# All three exist so the case-detail screen can keep the promises `sprint/00-app-spec.md` § 4
+# binds it to. Each was, at one point, satisfied only in shape: counter-evidence arrived as a
+# bare resource id with the sentence stripped off, every evidence reference was a pointer to
+# nothing the client could open, and the comparison drawer's "fields" compared a number to
+# itself. All three read as working features until someone looked at the screen.
+# --------------------------------------------------------------------------------------
+
+
+def test_counter_evidence_carries_its_sentence_not_only_a_reference(api) -> None:
+    """A bare resource id is not an argument against a signal.
+
+    The rules already write the sentence — "Bundel ini hanya memuat bukti yang ikut terkirim…"
+    is what stops a missing record from reading as a missing service. Dropping it on the way to
+    the wire left the reviewer a resource id with no idea why it weakened anything.
+    """
+    case_id = ingest_and_screen(api, "phantom")["case_id"]
+    body = api.get(f"/v1/cases/{case_id}").json()
+
+    notes = body["primary_reason"]["counter_evidence_notes"]
+    assert notes, "a reason must carry the argument against it, in words"
+    assert all(note["note"].strip() for note in notes), "a note without text explains nothing"
+    assert any(len(note["note"].split()) > 5 for note in notes), "these are sentences, not labels"
+
+
+def test_every_reason_reference_appears_in_the_source_index(api) -> None:
+    """Display rule 4: an evidence reference the UI cannot open is a defect, not a blank panel.
+
+    The index is what makes "openable" true. Every reference a reason cites has an entry, and
+    the entry says which of the four availabilities applies — so an unresolvable one surfaces as
+    an integrity defect rather than a panel that quietly renders nothing.
+    """
+    case_id = ingest_and_screen(api, "phantom")["case_id"]
+    body = api.get(f"/v1/cases/{case_id}").json()
+
+    indexed = {(s["resource_type"], s["resource_id"]) for s in body["sources"]}
+    assert indexed, "the detail must ship a source index"
+    for reason in body["reasons"]:
+        for ref in (*reason["evidence"], *reason["counter_evidence"]):
+            assert (ref["resource_type"], ref["resource_id"]) in indexed, f"unopenable {ref}"
+
+
+def test_sources_present_in_this_bundle_carry_their_fields(api) -> None:
+    case_id = ingest_and_screen(api, "phantom")["case_id"]
+    body = api.get(f"/v1/cases/{case_id}").json()
+
+    present = [s for s in body["sources"] if s["availability"] == "PRESENT"]
+    assert present, "the reasons cite resources this bundle carries"
+    assert all(s["fields"] for s in present), "a resource shown as present must show its content"
+
+
+def test_a_peer_document_is_marked_related_and_never_carries_its_text(api) -> None:
+    """Cloning is a cross-participant pattern, so the peer note belongs to someone else.
+
+    It has to be *openable* — the reviewer must see that the compared document exists and when
+    it was written — and it must never show that person's narrative or token.
+    `docs/canonical/07_privacy_threat_model.md` treats the highlight as the exposure route.
+    """
+    fixture = load("clone")
+    peer_text = fixture.history[0].documents[0].text
+    assert peer_text, "precondition: the peer note has text"
+
+    case_id = ingest_and_screen(api, "clone")["case_id"]
+    response = api.get(f"/v1/cases/{case_id}")
+    body = response.json()
+
+    related = [s for s in body["sources"] if s["availability"] == "RELATED_BUNDLE"]
+    assert related, "the peer document must be openable, not absent"
+    assert peer_text not in response.text, "a peer participant's narrative left the boundary"
+    for source in related:
+        names = {field["name"] for field in source["fields"]}
+        assert "participant_id" not in names
+        assert "text" not in names
+
+
+def test_an_unresolvable_reference_is_reported_as_missing_rather_than_omitted(api) -> None:
+    """Silence is the failure mode this guards against.
+
+    Dropping a reference the store cannot resolve would render as a shorter list — indis-
+    tinguishable from a reason that simply cited less. `MISSING` makes the defect visible.
+    """
+    from app.dto.cases import SourceAvailability
+
+    assert SourceAvailability.MISSING == "MISSING"
+    case_id = ingest_and_screen(api, "phantom")["case_id"]
+    body = api.get(f"/v1/cases/{case_id}").json()
+    assert all(
+        s["availability"] in {a.value for a in SourceAvailability} for s in body["sources"]
+    )
+
+
+def test_repeat_comparison_compares_two_real_claims_field_by_field(api) -> None:
+    """The drawer's job is to show what actually differs between the pair.
+
+    It used to list the reason's own component scores with the same value on both sides and
+    `matches` hard-coded true — a comparison in which nothing could ever differ.
+    """
+    case_id = ingest_and_screen(api, "repeat")["case_id"]
+    body = api.get(f"/v1/cases/{case_id}").json()
+
+    assert body["comparisons"], "a repeat reason must offer its pair"
+    fields = body["comparisons"][0]["fields"]
+    assert fields, "a comparison with no fields compares nothing"
+    assert any(not field["matches"] for field in fields), "two distinct claims differ somewhere"
+    assert any(
+        field["left_value"] != field["right_value"] for field in fields
+    ), "a differing field must show two different values"
+
+
+def test_clone_comparison_never_puts_another_participant_in_the_drawer(api) -> None:
+    case_id = ingest_and_screen(api, "clone")["case_id"]
+    response = api.get(f"/v1/cases/{case_id}")
+    comparison = response.json()["comparisons"][0]
+
+    peer_token = load("clone").history[0].claim.participant_id
+    rendered = " ".join(
+        f"{f['field_name']} {f['left_value']} {f['right_value']}" for f in comparison["fields"]
+    )
+    assert peer_token not in rendered, "the drawer named the other participant"
+    assert comparison["similarity_components"], "the reviewer still sees what drove the score"
+
+
+def test_reasons_are_ordered_strongest_first_everywhere_they_appear(api) -> None:
+    """The card that opens on load must be the strongest one, and the queue must agree.
+
+    Rule-registration order is fixed for reproducibility, not for reading — a non-deterministic
+    similarity reason registered before a deterministic conflict would lead both the queue row
+    and the case header while the band came from the reason underneath it. Ordering once, in
+    the response, keeps every surface saying the same thing.
+    """
+    case_id = ingest_and_screen(api, "unbundled")["case_id"]
+    detail = api.get(f"/v1/cases/{case_id}").json()
+
+    strengths = [
+        (reason["deterministic"], -len(reason["counter_evidence_notes"]))
+        for reason in detail["reasons"]
+    ]
+    assert strengths == sorted(strengths, reverse=True), "cards would open on a weaker reason"
+    assert detail["primary_reason"] == detail["reasons"][0]
+
+    row = next(
+        item for item in api.get("/v1/cases").json()["items"] if item["case_id"] == case_id
+    )
+    assert row["reason_sentence"] == detail["reasons"][0]["sentence"]
+
+
+def test_timeline_resources_are_indexed_so_the_screen_cannot_flag_them_as_broken(api) -> None:
+    """The timeline draws an unresolvable reference as an integrity defect.
+
+    So a resource that is present and fine but simply not cited by any reason has to be in the
+    index too, or the episode timeline would report a working bundle as a broken evidence trail.
+    """
+    case_id = ingest_and_screen(api, "phantom")["case_id"]
+    body = api.get(f"/v1/cases/{case_id}").json()
+
+    indexed = {(s["resource_type"], s["resource_id"]) for s in body["sources"]}
+    referenced = [event["resource"] for event in body["timeline"] if event["resource"]]
+    assert referenced, "precondition: the timeline points at resources"
+    for ref in referenced:
+        assert (ref["resource_type"], ref["resource_id"]) in indexed, f"unopenable {ref}"
+
+
+def test_expected_evidence_names_the_absent_resource(api) -> None:
+    """The evidence panel has to point at what is missing, not at what is already on screen."""
+    case_id = ingest_and_screen(api, "phantom")["case_id"]
+    reason = api.get(f"/v1/cases/{case_id}").json()["primary_reason"]
+
+    assert "Procedure" in reason["expected_support"]
+    found = {ref["resource_type"] for ref in reason["evidence"]}
+    assert "Procedure" not in found, "precondition: the procedure record is what is absent"

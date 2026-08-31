@@ -4,6 +4,61 @@ Append-only. Newest entry at the top.
 
 ---
 
+### 2026-09-01 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Task: [Case detail, evidence trace, and disposition panel](../sprint/backlog/04-review-slice/frontend/02-detail-kasus.md) · ✅ Done
+
+**Event:** Task completed
+**Files:** `apps/web/src/features/review/case-detail/`, `apps/web/src/pages/case-detail/`, `apps/web/src/components/ui/dialog.tsx`, `apps/web/src/lib/useLastPresent.ts`, `apps/web/tests/e2e/`, `apps/web/playwright.config.ts`
+> Widgets 1–27 on one screen, built against the live seeded API. The density is the point: the
+> workflow's contract is **one screen to resolve one reason**, and a reviewer who has to
+> navigate away to weigh counter-evidence will decide without it.
+>
+> All five binding display rules are implemented and each is asserted somewhere:
+>
+> * **Reason before score.** The reason sentence is the page's `<h1>`; the band and the
+>   confidence basis sit below it in DOM order as well as visually.
+> * **Counter-evidence has equal standing.** Widget 13 renders *outside* the reason card's
+>   collapsible, so collapsing a card does not hide the argument against it. When a reason has
+>   none the section says so rather than vanishing — an absent heading reads as "nothing was
+>   looked for", not "nothing was found".
+> * **One evidence path, not a network.** Claim → line → visit → clinical evidence, stopping at
+>   the first node with nothing under it. Every node has at most one successor by construction.
+> * **Every reference opens.** Each one resolves against the source index the API now ships, and
+>   an unresolvable one renders as a flagged **evidence-integrity defect** rather than a link
+>   that does nothing.
+> * **Keyboard-operable throughout,** proven by a Playwright spec rather than by inspection.
+>
+> **Playwright installed** (pre-authorised) with the three specs the task names plus an
+> accessibility smoke — seven tests, run against the real API and a seeded database because two
+> of them assert something only a real server can refuse. The whole suite finishes in about
+> seven seconds, which also settles the task's under-90-seconds demo assertion.
+>
+> **Four defects found by opening the page, not by the compiler:**
+>
+> 1. **Focus never came back from a drawer.** Radix restores focus to `DialogTrigger`, which
+>    this app does not use — every drawer opens from an ordinary evidence-reference button — so
+>    the ref was null, Radix's `preventDefault()` suppressed the browser's own restore, and
+>    focus landed on `<body>`. With a mouse it is invisible; with a keyboard every closed drawer
+>    sent the reviewer back to the top of the page. `Dialog` now captures the previously focused
+>    element during render (a parent's effects run *after* its children's, by which time the
+>    focus scope has already moved focus) and restores it on close.
+> 2. **Hovering an action looked identical to selecting one.** Both drew the brand border and
+>    tinted ground, so running the pointer down the four actions made each look chosen in turn.
+>    Hover now only firms the border.
+> 3. **The evidence path accused a case with nothing wrong with it.** The chain always ended in
+>    a "bukti klinis tidak ditemukan" node, including on a case where no detector had fired and
+>    every line was supported. With no reason selected the path now simply stops.
+> 4. **Form controls were drawn as stand-ins beside a visually hidden input.** The control was
+>    no longer where it appeared to be, so a click landed on the label and hit-testing missed it
+>    entirely. Radios and checkboxes are now styled in place with `appearance-none`.
+>
+> The disposition draft lives in a module store rather than component state, and that is the
+> screen's central guarantee rather than a structural preference: a stale-version rejection
+> re-fetches the case and re-renders the panel, and component state would come back empty. The
+> reviewer's action, reason, and note survive both a refused save and a failed one, and the
+> banner names what changed, who changed it, and offers a reload.
+
+---
+
 ### 2026-09-01 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Task: [Review queue page](../sprint/backlog/04-review-slice/frontend/01-antrean-review.md) · ✅ Done
 
 **Event:** Task completed

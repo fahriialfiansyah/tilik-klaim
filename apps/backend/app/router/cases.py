@@ -126,4 +126,17 @@ def get_case(
         )
 
     ingestion = bundles.get(case.ingestion_id)
-    return to_detail(case, ingestion)
+    if ingestion is None or ingestion.bundle is None:
+        return to_detail(case, ingestion)
+
+    # The other submissions the rules compared this one against. Without them a reference to a
+    # prior claim or a peer note resolves to nothing, and the screen would report a genuine
+    # comparison as an evidence-integrity defect.
+    claim = ingestion.bundle.claim
+    history = bundles.history_for(
+        claim.participant_id, claim.provider_id, exclude_bundle_id=ingestion.bundle.bundle_id
+    )
+    peer_documents = bundles.peer_documents_for(
+        claim.provider_id, exclude_bundle_id=ingestion.bundle.bundle_id
+    )
+    return to_detail(case, ingestion, history, peer_documents)

@@ -4,6 +4,61 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 
 ---
 
+### 2026-09-01 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Task: [Case detail, evidence trace, and disposition panel](../sprint/backlog/04-review-slice/frontend/02-detail-kasus.md) · ✅ Done
+
+**Event:** Case detail extended so the screen's binding display rules can actually be met
+**Files:** `apps/backend/app/service/case_sources.py`, `apps/backend/app/service/case_query.py`, `apps/backend/app/dto/{cases,common,dispositions}.py`, `apps/backend/app/router/cases.py`, `apps/backend/scripts/seed_dev.py`, `packages/domain/src/tilik_domain/reasons.py`
+> Four additive changes to `GET /v1/cases/{id}`. Every one adds a defaulted field and changes no
+> existing wire model, so the frozen contract and the committed fixtures both still hold. Each
+> exists because a spec'd display rule could not be met correctly in the client.
+>
+> 1. **Counter-evidence now carries its sentence.** The rules already wrote it — "*Bundel ini
+>    hanya memuat bukti yang ikut terkirim. Tidak ditemukannya catatan di sini bukan bukti bahwa
+>    layanan tidak diberikan*" is the sentence that keeps a missing record from reading as a
+>    missing service — and the DTO was dropping it, shipping only the bare resource references.
+>    Widget 13 was therefore a resource id under a heading, with no argument in it at all.
+>    `counter_evidence_notes` carries note plus refs; `counter_evidence` stays as it was.
+> 2. **A source index, so every evidence reference opens.** `sources` resolves each reference a
+>    reason cites — and each one the episode timeline points at — to one of four states:
+>    `PRESENT`, `RELATED_BUNDLE`, `NOT_STORED`, `MISSING`. Only the last is a defect, and it is
+>    *recorded* rather than omitted: dropping an unresolvable reference renders as a shorter
+>    list, indistinguishable from a reason that simply cited less. `RELATED_BUNDLE` is reduced to
+>    non-identifying fields — never a peer participant's narrative or token, which
+>    `docs/canonical/07_privacy_threat_model.md` names as the exposure route for clone
+>    comparisons.
+> 3. **Comparisons compare something.** `fields` was built from the reason's own component
+>    scores with the same value on both sides and `matches` hard-coded true — a comparison in
+>    which nothing could ever differ. Repeat-billing pairs are now compared claim to claim
+>    (visit, care type, total, line count, submission time, episode) with a real overlap window;
+>    clone pairs are compared by document shape only.
+> 4. **`expected_support` on the reason catalog.** `required_evidence` says what the *reason*
+>    needs to be well formed; the screen needs what should have stood behind the *billed line*.
+>    Rendering the first as "bukti yang diharapkan" reported that everything expected had been
+>    found — on a phantom case, whose entire finding is an absence.
+>
+> **Reasons are now ordered strongest-first in the response,** once, so the queue row, the case
+> header, and the reason cards cannot disagree. Rule registration order is fixed for
+> reproducibility and says nothing about what a person should read first; a similarity reason
+> registered ahead of a deterministic conflict would have led every surface while the band came
+> from the reason underneath it.
+>
+> **`scripts/seed_dev.py` cleared bundles but not cases.** The previous run's cases survived,
+> pointing at ingestion ids that had been deleted, so the detail endpoint answered with empty
+> `lines` and `timeline`. The screen rendered a case with no billed lines on it, from a database
+> that looked freshly seeded. It now empties every store.
+>
+> **`docs/api/openapi.json` regenerated, and `scripts/export_openapi.py` added so it stops
+> drifting.** It had been written once at the contract freeze in sprint 02 and never again, so
+> two sprints of implementation had passed it by: it still described `ReasonDto` without its
+> counter-evidence notes and `/v1/cases` with ingest-only error codes that endpoint never
+> returns. A spec that has quietly stopped matching the service is worse than none — a generated
+> client compiles against it and fails at runtime. The frozen contract is unaffected: it lives in
+> `tests/test_api_contract.py` and the committed fixtures, both of which read the live app.
+>
+> Ten new tests; backend 295 passed, domain 23 passed.
+
+---
+
 ### 2026-09-01 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Task: [Review queue page](../sprint/backlog/04-review-slice/frontend/01-antrean-review.md) · ✅ Done
 
 **Event:** Queue filtering and sorting extended for the review UI

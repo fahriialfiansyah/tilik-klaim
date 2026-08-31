@@ -4,8 +4,9 @@ State snapshot for picking this up in a fresh session.
 Pair with [`sprint/01-sprint-planning.md`](../sprint/01-sprint-planning.md), `changelog/{backend,web}.md`, and `docs/canonical/`.
 
 - Repo: `/Users/fahrialfiansyah121gmail.com/Documents/HEALTHKATHON-2026/tilik-klaim`
-- Branch: `development` · 15 commits, HEAD `7d0fc47`, clean tree, **in sync with a PUBLIC
-  GitHub remote** (`github.com/fahriialfiansyah/tilik-klaim`) — do not push without asking
+- Branch: `development` · 16 commits, HEAD `a108950`, **working tree dirty — sprint 04 frontend
+  task 02 is finished but uncommitted, awaiting the owner's review**. In sync with a PUBLIC
+  GitHub remote (`github.com/fahriialfiansyah/tilik-klaim`) — do not push without asking
 - Companion: [`CONTINUE-PROMPT.md`](./CONTINUE-PROMPT.md) boots a fresh session into the next
   task; [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md) is what the owner checks by eye
 - Goal: a claim-evidence integrity layer that screens synthetic SATUSEHAT-shaped JKN claim
@@ -59,7 +60,7 @@ English. Never restate a fact across layers.
 | 01 — synthetic-data | G3 · 2 Sep | ✅ **Done, gate met early** | 1,120 bundles · 240 injections · leakage margin +0.0009 |
 | 02 — ingest-validation | G4 · 5 Sep | ✅ Done | `POST /v1/bundles` + screen endpoint live on Postgres |
 | 03 — evidence-rules | G4 · 5 Sep | ✅ **Done, gate met early** | 10 edge types, 4 risk modes, all caps enforced |
-| 04 — review-slice | G5 · 9 Sep | 🚧 backend ✅ / frontend 2 of 4 | `/` live on the real API; `/cases/:id` + `/ingest` remain |
+| 04 — review-slice | G5 · 9 Sep | 🚧 backend ✅ / frontend 3 of 4 | `/` and `/cases/:id` live on the real API; only `/ingest` remains |
 | 05 — ranking-models | G6 · 12 Sep | 📋 Planned | — |
 | 06 — evaluation-report | G6 · 12 Sep | 📋 Planned | one endpoint still 501 |
 | 07 — demo-hardening | G8 · 17 Sep | 📋 Planned | — |
@@ -67,9 +68,16 @@ English. Never restate a fact across layers.
 **Verified this session** (re-run immediately before writing this):
 
 ```
-backend 285 passed · domain 21 passed · data 47 passed · web 18 passed · tsc clean
-ruff: All checks passed · rsbuild 551.4 kB (359.3 kB gzip) · alembic head d1a7c3e50f42
+backend 295 passed · domain 23 passed · data 47 passed · web 67 passed · tsc clean
+playwright 7 passed in 7.0s · ruff: All checks passed
+rsbuild 643.2 kB (384.4 kB gzip) · alembic head d1a7c3e50f42
 ```
+
+The bundle grew from 551.4 kB because the case-detail feature and `@radix-ui/react-dialog`
+landed. **Playwright is installed** — `@playwright/test` plus Chromium, config in
+`apps/web/playwright.config.ts`, specs in `apps/web/tests/e2e/`, run with
+`(cd apps/web && npm run test:e2e)`. It needs the API, the web dev server, and a **freshly
+seeded** database; it reuses an already-running `npm run dev` rather than starting a second.
 
 **Six of seven frozen endpoints are live.** Only `GET /v1/evaluations/{run_id}` still answers 501
 naming sprint 06; `test_the_implemented_endpoints_no_longer_answer_501` guards against a
@@ -77,6 +85,33 @@ placeholder being left in front of working behaviour.
 
 The full vertical slice runs end to end against real Postgres: ingest → screen → queue → detail →
 disposition → audit, with all four risk modes firing and a stale write refused.
+
+**Sprint 04 frontend, task 02 is done.** `/cases/:id` renders all 27 widgets against the live
+seeded API: three columns, a source drawer, a comparison drawer, a confirmation dialog, and an
+audit tab. All five binding display rules are implemented and each is asserted — reason before
+score, counter-evidence outside the collapsible, a single-track evidence path, every reference
+openable, and the whole flow keyboard-operable. Details in `changelog/{web,backend}.md`; the
+click-through and 16 screenshots are in `docs/qa/MANUAL-QA.md` § 1b.
+
+**The screen needed four additive API changes**, all defaulted fields that leave the frozen
+contract and the committed fixtures intact. Each was a display rule that could not be met
+correctly in the client, and three of them looked finished until the page was open:
+
+| Change | What was wrong before |
+|---|---|
+| `counter_evidence_notes` | The rules wrote the sentence; the DTO shipped only the refs. Widget 13 was a bare resource id under a "counter-evidence" heading — a heading with no argument under it |
+| `sources` (four availabilities) | Nothing resolved a reference to anything, so "every reference must open" had no mechanism. `MISSING` is *recorded* rather than omitted, because a dropped reference renders as a shorter list |
+| real `ComparisonField`s | `fields` came from the reason's own component scores with left = right and `matches` hard-coded true — a comparison in which nothing could differ |
+| `expected_support` on the catalog | `required_evidence` is what the *reason* needs to be well formed. Rendering it as "expected evidence" told the reviewer everything had been found, on a phantom case whose whole finding is an absence |
+
+Reasons are now ordered strongest-first **in the response**, once, so the queue row, the case
+header, and the reason cards cannot disagree about what to read first.
+
+**Two more defects were only visible in a browser**, and one only with a keyboard:
+`scripts/seed_dev.py` cleared bundles but not cases, leaving orphan cases pointing at deleted
+ingestions so the detail endpoint answered `lines: []` on data that looked freshly seeded; and
+closing any drawer dropped focus to `<body>`, because Radix restores focus to a `DialogTrigger`
+this app does not use. Both are recorded in `docs/qa/MANUAL-QA.md` § 3.
 
 **Design.** The team's mockup landed and was unpacked: `design/tokens.css` (35 colour tokens × 2
 themes, plus type scale, spacing, radius, semantic band aliases), `design/mockup/reference.html`
@@ -111,9 +146,12 @@ four are the kind that pass review:
 The lesson generalises: **measure the rendered page, not the token file.** Contrast was
 "verified" in August from token values alone and three of those checks were wrong.
 
-**Manual QA lives in [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md)** with screenshots of all five queue
-states in `qa/2026-09-01-antrean-review/`. Every session that adds a screen appends a section
-there — the owner verifies wording and colour meaning by eye, which no test does.
+**Manual QA lives in [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md)** — five queue states in
+`qa/2026-09-01-antrean-review/`, sixteen case-detail states in `qa/2026-09-01-detail-kasus/`
+(including the stale-version banner, the save failure, the not-found page, and the loading
+skeleton). Every session that adds a screen appends a section there — the owner verifies wording
+and colour meaning by eye, which no test does. `docs/` is gitignored, so these live locally
+only.
 
 ## 3. Environment
 
@@ -180,6 +218,10 @@ append to `changelog/{backend,web}.md`.
 | Service-level tests passing `fixture.history` directly **hid a live defect** | test cross-claim behaviour at the **API** level, where the store lookup actually runs |
 | A text search for forbidden words flags the docstring that forbids them | walk the AST, or match multi-word phrases |
 | macOS has no `timeout` | `curl --max-time` |
+| `scripts/seed_dev.py` cleared bundles but not cases, so orphan cases pointed at deleted ingestions and `GET /v1/cases/{id}` answered `lines: []` | fixed — it now clears every store; if a case detail ever looks empty again, check the case's `ingestion_id` still exists |
+| A visually hidden (`sr-only`) form input is no longer where it looks, so clicks land on the label and pointer hit-testing misses it | style the real control in place with `appearance-none`; `bg-clip-content` plus padding draws a radio's dot |
+| Radix `Dialog` restores focus to `DialogTrigger`, which this app never uses — so it `preventDefault()`s the browser restore and focus falls to `<body>` | `components/ui/dialog.tsx` captures the focused element during render and restores it in `onCloseAutoFocus` |
+| Conditionally rendering `DialogContent` alongside its own `open` state unmounts it before Radix's close cleanup runs | `lib/useLastPresent.ts` keeps the last value for the closing frame |
 
 **Do not:** run `.claude/skills/bootstrap-project/scripts/init_boilerplate.sh` (targets an
 unreachable internal host; its `unzip -o` would overwrite `apps/`). Do not blind-`cat >` a file you
@@ -189,18 +231,21 @@ governs). Do not fill `sqlalchemy.url` in `alembic.ini` — `migrations/env.py` 
 
 ## 6. Next steps
 
-1. **Sprint 04 frontend — `02-detail-kasus` is next**, and it deserves a fresh session: 27
-   widgets across three columns plus a drawer and a tab. Then `03-ingest-page`. Gate G5 is
-   9 September. `00-port-design-tokens` and `01-antrean-review` are **done**. Build against the
-   live seeded API as the queue did — `GET /v1/cases/{id}`, `POST /v1/cases/{id}/dispositions`,
-   `GET /v1/cases/{id}/audit` all work. Reusable pieces already exist: `src/lib/http.ts`,
-   `src/features/review/shared/{types,labels,format}.ts`, `BandBadge`, `EvidenceMeter`,
-   `PerfectScrollArea`, `components/ui/button.tsx`, and the Vitest setup (`npm test`).
+1. **Sprint 04 frontend — `03-ingest-page` is the last one**, and it closes the sprint. Gate G5
+   is 9 September. `00-port-design-tokens`, `01-antrean-review`, and `02-detail-kasus` are all
+   **done**. Build against the live seeded API as the other two did — `POST /v1/bundles` and
+   `POST /v1/bundles/{id}/screen` are live.
 
-   **Playwright is pre-authorised but not yet installed.** Tasks 02, 03 and sprint 07 all
-   specify E2E specs, and sprint 07's gate — the full demo path under 90 seconds, offline —
-   has no other mechanical proof. Install `@playwright/test` + Chromium, specs in
-   `apps/web/tests/e2e/`.
+   Reusable pieces now include everything the queue offered plus, from the detail screen:
+   `components/ui/dialog.tsx` (a Radix drawer and modal with focus return already fixed),
+   `ExpandableText`, `lib/useLastPresent.ts`, the `case-detail/{api,store,useCaseDetail}.ts`
+   pattern for server state beside a persisted draft, and the Playwright harness — a new spec
+   drops into `apps/web/tests/e2e/` and `tests/e2e/helpers.ts` already looks cases up by risk
+   mode rather than by a pinned identifier.
+
+   `/ingest` should carry a `?case=<id>` query parameter: the case screen already navigates
+   there after "minta bukti tambahan", and the ingest page is expected to pick that context up
+   (`brief/04` § 3.1). Nothing reads it yet.
 2. **Sprint 05 — ranking models** (G6, 12 Sep). Note the kill criterion: if the hybrid adds no
    measurable value over rules-only, ML is *removed*, and that is an anticipated outcome rather
    than a failure. See item 3 in blockers before acting on it.
@@ -214,17 +259,40 @@ governs). Do not fill `sqlalchemy.url` in `alembic.ini` — `migrations/env.py` 
    is `docs/canonical/09_proposal_evidence_map.md`.
 
 **Owed cleanups**, none blocking: a separate test database so `pytest` stops wiping dev data;
-`app/service/evidence_graph.py` is 516 lines (above the 200–400 typical, within the 800 maximum);
-`billed_line_count` back-fills as 0 on cases screened before migration `d1a7c3e50f42` — re-seeding
-or re-screening fixes them, and the seeded demo data is regenerated anyway.
+`app/service/evidence_graph.py` is 516 lines and `app/service/case_query.py` is 469 (both above
+the 200–400 typical, both within the 800 maximum); `billed_line_count` back-fills as 0 on cases
+screened before migration `d1a7c3e50f42` — re-seeding or re-screening fixes them, and the seeded
+demo data is regenerated anyway. The Playwright specs run with a single worker against the shared
+dev database, which is correct today (a disposition bumps a case version, so parallel specs would
+manufacture the very conflict one of them tests for) but is the same shared-database rough edge.
+
+**`docs/api/openapi.json` had drifted for two sprints** and is now regenerated. It was written
+once at the contract freeze and never again, so it still described `ReasonDto` without its
+counter-evidence notes and `/v1/cases` with ingest-only error codes that endpoint never returns.
+`apps/backend/scripts/export_openapi.py` regenerates it; run it after any router or DTO change.
+The frozen contract itself is `tests/test_api_contract.py` plus the fixtures under
+`tests/fixtures/api/`, both of which read the live app — that JSON is documentation, not the
+source of truth, which is exactly why nothing caught it going stale.
+
+**`docs/` is gitignored but `docs/HANDOVER.md`, `docs/CONTINUE-PROMPT.md`, `docs/canonical/`,
+and `docs/api/` are tracked** (they predate the ignore rule added in `a108950`). New files under
+`docs/` — the QA screenshots, for instance — are therefore invisible to git. That is consistent
+with the QA folder being a local artefact for the owner, but it is worth a deliberate decision
+rather than an accident.
+
+**`ComparisonCandidate.candidate_case_id` is still always `null`.** Resolving a candidate claim
+back to *its* case would let the comparison drawer link through to it, which the spec does not
+require but a reviewer would reach for. It needs a bundle-id → ingestion lookup the store does
+not currently offer.
 
 ## 7. Blockers / decisions for the user
 
 1. ~~**Tailwind + shadcn install.**~~ **Resolved 1 Sep** — Tailwind v4 + shadcn/ui, installed.
 2. ~~**The 9 px micro-label question.**~~ **Resolved 1 Sep** — raised to 11 px by owner decision,
    applied at source in `design/tokens.css`. All three `design/DESIGN.md` § Deviasi items are now
-   closed. What the design team still owes is the **annotation map for `/cases/:id`** — 27 widgets,
-   the page most expensive to misread.
+   closed. What the design team still owes is the **annotation map for `/cases/:id`** — 27
+   widgets, the page most expensive to misread. The page is now built and can be reviewed as
+   it stands, so the map would confirm intent rather than unblock anything.
 3. **`react-router-dom` v6 carries two moderate advisories** (open redirect via backslash in
    `<Link>`/`useNavigate`; constructor injection in SSR `deserializeErrors`). Both predate this
    session. The SSR one does not apply — this app is client-only. Fixing them means a breaking

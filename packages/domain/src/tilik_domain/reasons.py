@@ -112,7 +112,22 @@ class ReasonDefinition(BaseModel):
     sentence_id: str
     """Working-language sentence the reviewer reads. No model jargon, no accusation."""
     required_evidence: tuple[ResourceType, ...]
-    """Resource types that must accompany this reason for it to be valid."""
+    """Resource types that must accompany this reason for it to be valid.
+
+    This is about the **reason**: what the engine has to be able to point at before the reason
+    is well formed. It is not what the reviewer is looking for — see `expected_support`.
+    """
+    expected_support: tuple[ResourceType, ...] = ()
+    """Resource types that should stand behind the billed line, had the service been recorded.
+
+    This is about the **claim**, and the two diverge exactly where it matters most. A reason
+    saying "this line has no completed procedure record" *requires* the line and the visit to be
+    citable, and *expects* a `Procedure` that is not there. Rendering `required_evidence` as
+    "bukti yang diharapkan" told a reviewer everything expected had been found, on a case whose
+    whole finding is that something is missing.
+
+    Defaults to `required_evidence` when a reason draws no distinction between the two.
+    """
     deterministic: bool
     """True when a versioned invariant is violated outright, rather than inferred."""
     ruleset_version: str = RULESET_VERSION
@@ -125,6 +140,7 @@ def _build_catalog() -> dict[ReasonCode, ReasonDefinition]:
             mode=RiskMode.PHANTOM_OR_NO_PROCEDURE_EVIDENCE,
             sentence_id="Baris tindakan ini tidak punya catatan tindakan yang selesai.",
             required_evidence=(ResourceType.CLAIM_LINE, ResourceType.ENCOUNTER),
+            expected_support=(ResourceType.PROCEDURE, ResourceType.ENCOUNTER),
             deterministic=True,
         ),
         ReasonDefinition(
@@ -132,6 +148,7 @@ def _build_catalog() -> dict[ReasonCode, ReasonDefinition]:
             mode=RiskMode.PHANTOM_OR_NO_PROCEDURE_EVIDENCE,
             sentence_id="Baris obat ini tidak punya catatan penyerahan obat.",
             required_evidence=(ResourceType.CLAIM_LINE, ResourceType.ENCOUNTER),
+            expected_support=(ResourceType.MEDICATION, ResourceType.ENCOUNTER),
             deterministic=True,
         ),
         ReasonDefinition(
@@ -170,7 +187,16 @@ def _build_catalog() -> dict[ReasonCode, ReasonDefinition]:
             deterministic=True,
         ),
     )
-    return {definition.code: definition for definition in definitions}
+    return {
+        definition.code: (
+            definition
+            if definition.expected_support
+            # A reason that draws no distinction expects exactly what it requires; filling it
+            # here rather than at every call site keeps the field non-optional for readers.
+            else definition.model_copy(update={"expected_support": definition.required_evidence})
+        )
+        for definition in definitions
+    }
 
 
 REASON_CATALOG: dict[ReasonCode, ReasonDefinition] = _build_catalog()

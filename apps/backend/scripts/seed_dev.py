@@ -24,7 +24,12 @@ from fastapi.testclient import TestClient  # noqa: E402
 
 from app.main import app  # noqa: E402
 from app.store.engine import is_database_available  # noqa: E402
-from app.store.registry import get_bundle_store, get_edge_store  # noqa: E402
+from app.store.registry import (  # noqa: E402
+    get_audit_store,
+    get_bundle_store,
+    get_case_store,
+    get_edge_store,
+)
 from tests.fixtures import SCENARIOS, load  # noqa: E402
 
 
@@ -34,9 +39,12 @@ def main() -> int:
         print("  docker compose up -d db && uv run alembic upgrade head")
         return 1
 
-    bundles, edges = get_bundle_store(), get_edge_store()
-    bundles.clear()
-    edges.clear()
+    # Every store is emptied, not just the bundles. Clearing bundles alone left the
+    # previous run's cases behind pointing at ingestion ids that no longer existed, so
+    # `GET /v1/cases/{id}` answered with empty `lines` and `timeline` — a case detail
+    # screen with no claim lines on it, from data that looked seeded.
+    for store in (get_case_store(), get_audit_store(), get_edge_store(), get_bundle_store()):
+        store.clear()
 
     client = TestClient(app)
     for scenario in SCENARIOS:

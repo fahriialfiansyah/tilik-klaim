@@ -28,7 +28,7 @@
             "type": "string"
           },
           "event_kind": {
-            "description": "CREATED | SCREENED | DISPOSITION | RESCREENED | SUPERSEDE",
+            "description": "CREATED | SCREENED | RESCREENED | OPENED | DISPOSITION | SUPERSEDE",
             "title": "Event Kind",
             "type": "string"
           },
@@ -285,6 +285,14 @@
               "$ref": "#/components/schemas/ReasonDto"
             },
             "title": "Reasons",
+            "type": "array"
+          },
+          "sources": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/SourceResource"
+            },
+            "title": "Sources",
             "type": "array"
           },
           "state": {
@@ -607,6 +615,30 @@
           "matches"
         ],
         "title": "ComparisonField",
+        "type": "object"
+      },
+      "CounterEvidenceDto": {
+        "additionalProperties": false,
+        "description": "One fact that argues against the reason it accompanies, **in words**.\n\nThe refs alone were shipped for a while and it hollowed the feature out: a reviewer saw\n`Encounter ENC-PH-1` under a \"counter-evidence\" heading with nothing saying why it weakened\nanything. The sentence is the argument; the references are only where to look next.",
+        "properties": {
+          "note": {
+            "description": "Working language, written by the rule that raised the reason.",
+            "title": "Note",
+            "type": "string"
+          },
+          "refs": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRefDto"
+            },
+            "title": "Refs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "note"
+        ],
+        "title": "CounterEvidenceDto",
         "type": "object"
       },
       "DispositionAction": {
@@ -1140,6 +1172,14 @@
             "title": "Counter Evidence",
             "type": "array"
           },
+          "counter_evidence_notes": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/CounterEvidenceDto"
+            },
+            "title": "Counter Evidence Notes",
+            "type": "array"
+          },
           "deterministic": {
             "title": "Deterministic",
             "type": "boolean"
@@ -1149,6 +1189,14 @@
               "$ref": "#/components/schemas/EvidenceRefDto"
             },
             "title": "Evidence",
+            "type": "array"
+          },
+          "expected_support": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ResourceType"
+            },
+            "title": "Expected Support",
             "type": "array"
           },
           "mode": {
@@ -1208,7 +1256,8 @@
           "Account",
           "ChargeItem",
           "Invoice",
-          "Episode"
+          "Episode",
+          "Practitioner"
         ],
         "title": "ResourceType",
         "type": "string"
@@ -1367,6 +1416,93 @@
         "title": "ScreenResponse",
         "type": "object"
       },
+      "SortKey": {
+        "description": "What the reviewer chose to order the queue by.",
+        "enum": [
+          "band",
+          "age",
+          "amount",
+          "evidence"
+        ],
+        "title": "SortKey",
+        "type": "string"
+      },
+      "SortOrder": {
+        "description": "Direction for the sortable queue columns. Ignored by the band sort \u2014 see `sort_cases`.",
+        "enum": [
+          "asc",
+          "desc"
+        ],
+        "title": "SortOrder",
+        "type": "string"
+      },
+      "SourceAvailability": {
+        "description": "Why a referenced resource can or cannot be shown in full.\n\nFour outcomes, and keeping them apart is the whole point. Collapsing them into a boolean\nwould put a deliberate privacy boundary and a genuine integrity defect behind the same\nempty panel, and `sprint/00-app-spec.md` \u00a7 4 rule 4 makes the second one a defect the\nscreen has to name.",
+        "enum": [
+          "PRESENT",
+          "RELATED_BUNDLE",
+          "NOT_STORED",
+          "MISSING"
+        ],
+        "title": "SourceAvailability",
+        "type": "string"
+      },
+      "SourceField": {
+        "additionalProperties": false,
+        "description": "One field of a raw resource. Ordered pairs, so two renderings stay comparable.",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ],
+        "title": "SourceField",
+        "type": "object"
+      },
+      "SourceResource": {
+        "additionalProperties": false,
+        "description": "The resource behind an evidence reference, so every reference opens.\n\nAn unresolvable reference is recorded here with `MISSING` rather than dropped. Dropping it\nwould render as a shorter list \u2014 indistinguishable from a reason that cited less \u2014 which is\nexactly how a broken evidence trail hides.",
+        "properties": {
+          "availability": {
+            "$ref": "#/components/schemas/SourceAvailability"
+          },
+          "fields": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/SourceField"
+            },
+            "title": "Fields",
+            "type": "array"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "resource_id": {
+            "title": "Resource Id",
+            "type": "string"
+          },
+          "resource_type": {
+            "$ref": "#/components/schemas/ResourceType"
+          }
+        },
+        "required": [
+          "resource_type",
+          "resource_id",
+          "label",
+          "availability"
+        ],
+        "title": "SourceResource",
+        "type": "object"
+      },
       "TimelineEvent": {
         "additionalProperties": false,
         "properties": {
@@ -1521,7 +1657,7 @@
     },
     "/v1/bundles": {
       "post": {
-        "description": "Validate a bundle and return counts, issues, and a deterministic input hash.\n\nThe optional demo scenario label never enters detector features.",
+        "description": "Validate a bundle and return counts, issues, and a deterministic input hash.",
         "operationId": "ingest_bundle_v1_bundles_post",
         "responses": {
           "200": {
@@ -1543,16 +1679,6 @@
               }
             },
             "description": "Bad Request"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Not Found"
           },
           "409": {
             "content": {
@@ -1595,13 +1721,16 @@
             "description": "Unprocessable Entity"
           }
         },
-        "summary": "Submit one synthetic bundle for validation"
+        "summary": "Submit one synthetic bundle for validation",
+        "tags": [
+          "bundles"
+        ]
       }
     },
     "/v1/bundles/{ingestion_id}/screen": {
       "post": {
-        "description": "Idempotent for the same input hash and engine version.",
-        "operationId": "screen_bundle_v1_bundles__ingestion_id__screen_post",
+        "description": "Screen a validated bundle and return its reasons, band, and case.\n\nIdempotent for the same input hash and engine version: re-screening returns the existing\ncase with its version bumped, rather than creating a second case for one claim.",
+        "operationId": "screen_ingested_bundle_v1_bundles__ingestion_id__screen_post",
         "parameters": [
           {
             "in": "path",
@@ -1644,16 +1773,6 @@
             },
             "description": "Bad Request"
           },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
           "409": {
             "content": {
               "application/json": {
@@ -1695,12 +1814,15 @@
             "description": "Unprocessable Entity"
           }
         },
-        "summary": "Screen an ingested bundle"
+        "summary": "Screen an ingested bundle",
+        "tags": [
+          "bundles"
+        ]
       }
     },
     "/v1/cases": {
       "get": {
-        "description": "Pseudonymous fields only. Never returns raw medical text.",
+        "description": "The ordered work list. Pseudonymous fields only; no narrative text.",
         "operationId": "list_cases_v1_cases_get",
         "parameters": [
           {
@@ -1721,6 +1843,38 @@
           },
           {
             "in": "query",
+            "name": "band",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/PriorityBand"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Band"
+            }
+          },
+          {
+            "in": "query",
+            "name": "reason",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ReasonCode"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Reason"
+            }
+          },
+          {
+            "in": "query",
             "name": "mode",
             "required": false,
             "schema": {
@@ -1737,18 +1891,71 @@
           },
           {
             "in": "query",
-            "name": "band",
+            "name": "created_after",
             "required": false,
             "schema": {
               "anyOf": [
                 {
-                  "$ref": "#/components/schemas/PriorityBand"
+                  "format": "date-time",
+                  "type": "string"
                 },
                 {
                   "type": "null"
                 }
               ],
-              "title": "Band"
+              "title": "Created After"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_before",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Created Before"
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Search"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/SortKey",
+              "default": "band"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/SortOrder",
+              "default": "desc"
             }
           },
           {
@@ -1796,6 +2003,16 @@
             },
             "description": "Bad Request"
           },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
           "404": {
             "content": {
               "application/json": {
@@ -1816,26 +2033,6 @@
             },
             "description": "Conflict"
           },
-          "413": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Request Entity Too Large"
-          },
-          "415": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Unsupported Media Type"
-          },
           "422": {
             "content": {
               "application/json": {
@@ -1847,11 +2044,15 @@
             "description": "Unprocessable Entity"
           }
         },
-        "summary": "Paginated review queue"
+        "summary": "Review queue",
+        "tags": [
+          "cases"
+        ]
       }
     },
     "/v1/cases/{case_id}": {
       "get": {
+        "description": "Claim lines, reasons with evidence and counter-evidence, timeline, and comparisons.",
         "operationId": "get_case_v1_cases__case_id__get",
         "parameters": [
           {
@@ -1885,6 +2086,16 @@
             },
             "description": "Bad Request"
           },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
           "404": {
             "content": {
               "application/json": {
@@ -1905,26 +2116,6 @@
             },
             "description": "Conflict"
           },
-          "413": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Request Entity Too Large"
-          },
-          "415": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Unsupported Media Type"
-          },
           "422": {
             "content": {
               "application/json": {
@@ -1936,12 +2127,15 @@
             "description": "Unprocessable Entity"
           }
         },
-        "summary": "One case with evidence, counter-evidence, and timeline"
+        "summary": "Case detail",
+        "tags": [
+          "cases"
+        ]
       }
     },
     "/v1/cases/{case_id}/audit": {
       "get": {
-        "description": "Authorized role only. Corrections append a superseding event; nothing is overwritten.",
+        "description": "The full history. Restricted, because it names people and their decisions.",
         "operationId": "get_audit_v1_cases__case_id__audit_get",
         "parameters": [
           {
@@ -1950,6 +2144,16 @@
             "required": true,
             "schema": {
               "title": "Case Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
               "type": "string"
             }
           }
@@ -1965,7 +2169,7 @@
             },
             "description": "Successful Response"
           },
-          "400": {
+          "403": {
             "content": {
               "application/json": {
                 "schema": {
@@ -1973,7 +2177,7 @@
                 }
               }
             },
-            "description": "Bad Request"
+            "description": "Forbidden"
           },
           "404": {
             "content": {
@@ -1995,26 +2199,6 @@
             },
             "description": "Conflict"
           },
-          "413": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Request Entity Too Large"
-          },
-          "415": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Unsupported Media Type"
-          },
           "422": {
             "content": {
               "application/json": {
@@ -2026,12 +2210,15 @@
             "description": "Unprocessable Entity"
           }
         },
-        "summary": "Append-only case history"
+        "summary": "Case history",
+        "tags": [
+          "dispositions"
+        ]
       }
     },
     "/v1/cases/{case_id}/dispositions": {
       "post": {
-        "description": "Optimistic locking on `expected_case_version`; a reason is required.\n\nNo disposition triggers claim rejection, payment action, sanction, or code change.",
+        "description": "Record the reviewer's decision, or refuse and write nothing.\n\nNothing this endpoint does rejects a claim, releases or stops a payment, imposes a sanction,\nor alters a code. It moves a case's state and appends an event, and that is the whole of it.",
         "operationId": "create_disposition_v1_cases__case_id__dispositions_post",
         "parameters": [
           {
@@ -2040,6 +2227,16 @@
             "required": true,
             "schema": {
               "title": "Case Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
               "type": "string"
             }
           }
@@ -2055,7 +2252,7 @@
           "required": true
         },
         "responses": {
-          "201": {
+          "200": {
             "content": {
               "application/json": {
                 "schema": {
@@ -2065,7 +2262,7 @@
             },
             "description": "Successful Response"
           },
-          "400": {
+          "403": {
             "content": {
               "application/json": {
                 "schema": {
@@ -2073,7 +2270,7 @@
                 }
               }
             },
-            "description": "Bad Request"
+            "description": "Forbidden"
           },
           "404": {
             "content": {
@@ -2095,26 +2292,6 @@
             },
             "description": "Conflict"
           },
-          "413": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Request Entity Too Large"
-          },
-          "415": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Unsupported Media Type"
-          },
           "422": {
             "content": {
               "application/json": {
@@ -2126,7 +2303,10 @@
             "description": "Unprocessable Entity"
           }
         },
-        "summary": "Record a human disposition"
+        "summary": "Record a human disposition",
+        "tags": [
+          "dispositions"
+        ]
       }
     },
     "/v1/evaluations/{run_id}": {

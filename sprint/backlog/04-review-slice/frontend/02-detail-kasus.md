@@ -2,7 +2,7 @@
 
 **Stack:** frontend
 **Sprint:** [`../sprint.md`](../sprint.md)
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Foundation:** no
 **Autonomous:** yes
 **Depends on:**
@@ -26,33 +26,33 @@ One screen where an operator understands a single reason and records a defensibl
 
 ## TODOs
 
-- [ ] Header above the fold: case ID, status, amount, encounter window, primary reason, confidence basis, four action buttons
-- [ ] **Reason before score** — primary reason sits above the confidence basis in visual and reading order
-- [ ] Claim-line list with four support states, including *cannot be assessed* distinct from *unsupported*
-- [ ] Reason cards ordered by evidence strength; strongest opens on load
-- [ ] Expected evidence vs found evidence, with every reference openable
-- [ ] **Counter-evidence given equal standing** — never hidden behind a collapsed panel
-- [ ] Episode timeline
-- [ ] Evidence path kept small and single-track, not a tangled network
-- [ ] Source-resource panel showing raw resource plus rule and model version
-- [ ] Comparison drawer for repeat and clone candidates, with matched and differing fields
-- [ ] Template warning readable **before** the action buttons on clone reasons
-- [ ] Similarity highlights never expose another participant's identity
-- [ ] Disposition panel: four actions, structured reason, free-text note
-- [ ] Save disabled until action **and** reason are both filled
-- [ ] "Confirm anomaly" opens a confirmation stating this is **not** a fraud finding
-- [ ] "Request evidence" pre-selects missing resources but stays editable
-- [ ] Optimistic locking on case version
-- [ ] Audit tab rendering the event timeline
-- [ ] **Edge case — stale case:** save rejected, operator input **preserved**, reload offered
-- [ ] **Edge case — API failure on save:** honest error, input preserved, retry available
-- [ ] **Edge case — long text:** truncation with expand, no layout break
-- [ ] **Edge case — multiple reasons:** all cards listed, ordered
-- [ ] **Edge case — no counter-evidence:** section states none was found, rather than vanishing
-- [ ] **Test — Playwright happy path:** queue → detail → disposition → audit event visible
-- [ ] **Test — Playwright false-positive path:** counter-evidence leads to reject-signal
-- [ ] **Test — Playwright error path:** stale version rejected without losing input
-- [ ] **Test — accessibility smoke:** the whole flow is keyboard-operable, focus returns sensibly from the drawer
+- [x] Header above the fold: case ID, status, amount, encounter window, primary reason, confidence basis, four action buttons
+- [x] **Reason before score** — primary reason sits above the confidence basis in visual and reading order
+- [x] Claim-line list with four support states, including *cannot be assessed* distinct from *unsupported*
+- [x] Reason cards ordered by evidence strength; strongest opens on load
+- [x] Expected evidence vs found evidence, with every reference openable
+- [x] **Counter-evidence given equal standing** — never hidden behind a collapsed panel
+- [x] Episode timeline
+- [x] Evidence path kept small and single-track, not a tangled network
+- [x] Source-resource panel showing raw resource plus rule and model version
+- [x] Comparison drawer for repeat and clone candidates, with matched and differing fields
+- [x] Template warning readable **before** the action buttons on clone reasons
+- [x] Similarity highlights never expose another participant's identity
+- [x] Disposition panel: four actions, structured reason, free-text note
+- [x] Save disabled until action **and** reason are both filled
+- [x] "Confirm anomaly" opens a confirmation stating this is **not** a fraud finding
+- [x] "Request evidence" pre-selects missing resources but stays editable
+- [x] Optimistic locking on case version
+- [x] Audit tab rendering the event timeline
+- [x] **Edge case — stale case:** save rejected, operator input **preserved**, reload offered
+- [x] **Edge case — API failure on save:** honest error, input preserved, retry available
+- [x] **Edge case — long text:** truncation with expand, no layout break
+- [x] **Edge case — multiple reasons:** all cards listed, ordered
+- [x] **Edge case — no counter-evidence:** section states none was found, rather than vanishing
+- [x] **Test — Playwright happy path:** queue → detail → disposition → audit event visible
+- [x] **Test — Playwright false-positive path:** counter-evidence leads to reject-signal
+- [x] **Test — Playwright error path:** stale version rejected without losing input
+- [x] **Test — accessibility smoke:** the whole flow is keyboard-operable, focus returns sensibly from the drawer
 
 ## Done when
 
@@ -62,10 +62,10 @@ losing operator input; and all three Playwright paths pass.
 
 ## Closing checklist
 
-- [ ] All `## TODOs` items above are `[x]`
-- [ ] Done-when assertion verified
-- [ ] Top-of-file header literally reads `**Status:** ✅ Done`
-- [ ] Changelog entry appended to `changelog/web.md`
+- [x] All `## TODOs` items above are `[x]`
+- [x] Done-when assertion verified
+- [x] Top-of-file header literally reads `**Status:** ✅ Done`
+- [x] Changelog entry appended to `changelog/web.md`
 
 ## Notes
 

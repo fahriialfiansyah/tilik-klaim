@@ -55,7 +55,9 @@ class AuditEvent(Dto):
 
     event_id: str
     case_id: str
-    event_kind: str = Field(description="CREATED | SCREENED | DISPOSITION | RESCREENED | SUPERSEDE")
+    event_kind: str = Field(
+        description="CREATED | SCREENED | RESCREENED | OPENED | DISPOSITION | SUPERSEDE"
+    )
     actor_role: str
     action: DispositionAction | None = None
     structured_reason: str | None = None
