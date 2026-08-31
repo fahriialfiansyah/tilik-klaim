@@ -1,223 +1,201 @@
 # HANDOVER — TilikKlaim
 
 State snapshot for picking this up in a fresh session.
-Pair with [`brief/00_OVERVIEW.md`](../brief/00_OVERVIEW.md), [`sprint/01-sprint-planning.md`](../sprint/01-sprint-planning.md), and [`docs/canonical/`](canonical/).
+Pair with [`sprint/01-sprint-planning.md`](../sprint/01-sprint-planning.md), `changelog/{backend,web}.md`, and `docs/canonical/`.
 
 - Repo: `/Users/fahrialfiansyah121gmail.com/Documents/HEALTHKATHON-2026/tilik-klaim`
-- Branch: `development` · **pushed to a PUBLIC GitHub remote** (`fahriialfiansyah/tilik-klaim`) · 5 commits · HEAD `5a5aa78` · working tree clean
-- Goal (one line): A claim-evidence integrity layer that screens synthetic SATUSEHAT-shaped JKN claim bundles for four facility risk patterns and requires a logged human disposition — built for Healthkathon 2026, proposal due **19 September 2026**.
+- Branch: `development` · 13 commits, HEAD `b0c2f2c`, **in sync with a PUBLIC GitHub remote**
+  (`github.com/fahriialfiansyah/tilik-klaim`) — do not push without asking
+- Goal: a claim-evidence integrity layer that screens synthetic SATUSEHAT-shaped JKN claim
+  bundles for four facility risk patterns and requires a logged human disposition. Healthkathon
+  2026 entry, category *Efisiensi Risiko pada Fasilitas Kesehatan*; proposal due **19 September
+  2026** (internal upload target 18 Sep)
 
 ---
 
 ## 1. Orientation (read first)
 
-**This is a competition entry, not a product build.** Two clocks run at once: an engineering
-clock (gates G3–G8) and a proposal clock (submission 19 Sep, internal target 18 Sep). Work
-that does not produce evidence for the proposal is usually the wrong work.
+**The ethical core is encoded in types and asserted by tests — it is not a style preference.**
+The system reports "risiko atau anomali yang perlu ditinjau". It never states fraud, never
+rejects a claim, never moves a payment, never imposes a sanction, never changes a code, and never
+decides medical necessity. Tests enforce this: `test_no_rule_ever_uses_the_word_fraud` scans
+reason text, and `test_no_action_triggers_payment_rejection_or_sanction` walks the disposition
+service's **syntax tree** (not its text — the module docstring names those words precisely to rule
+them out).
 
-**Three document layers, one writer per fact.** Do not restate across layers — the master
-plan's § 19 anti-duplication rule is enforced here:
+**One distinction carries more weight than any other.** An incomplete record and a
+billed-but-unevidenced service look identical at the schema level. Conflating them is how this
+system would manufacture a false accusation. So:
 
-| Layer | Path | Contains | Editable? |
-|-------|------|----------|-----------|
-| Canonical | `docs/canonical/` | Rules, product decision, architecture, data card, model card, evaluation plan, threat model | **Read-only.** Change only via a new ADR in `docs/canonical/decisions/` |
-| Brief | `brief/` | Product blueprint, 6 modules, business-technical language, Indonesian | Yes |
-| Sprint | `sprint/` | Page spec, sprint plan, per-stack task files, English | Yes |
+- ingestion returns three states, and `VALID_WITH_NOTES` is *not* a softer `INVALID`;
+- **a billed line with no supporting reference is a finding, not a completeness note.** An earlier
+  version recorded it as incompleteness, which lowered certainty and would have defused the
+  phantom detector entirely. `test_an_unevidenced_line_is_a_finding_not_a_completeness_note` locks
+  this;
+- an incomplete bundle *lowers* the band and routes to `REQUEST_EVIDENCE`, never toward
+  `CONFIRM_ANOMALY`;
+- case detail keeps `NOT_ASSESSABLE` distinct from `UNSUPPORTED`.
 
-The `.docx` at `docs/HEALTHKATHON_2026_WINNING_MASTER_PLAN.docx` is the origin of all three.
-It is an archive — read it for context, never edit it.
+**Cloning is a per-provider pattern across different patients**, not per-patient. This cost a real
+defect: `history_for()` scopes to same participant + provider (correct for repeat and unbundling),
+which made clone detection silently inert through the API while service-level tests passed.
+`peer_documents_for(provider_id)` now returns **only `DocumentRef`** — notes cross that wider
+boundary, whole bundles never do.
 
-**Two vocabularies that are easy to conflate:**
+**Three doc layers, one writer per fact.** `docs/canonical/` is read-only (change only via a new
+ADR); `brief/` is the product blueprint in Indonesian; `sprint/` holds plans and task files in
+English. Never restate a fact across layers.
 
-- *Stage* (`brief/00_OVERVIEW.md`) is `MVP` — this governs the pipeline rules and permits real
-  backend work. *Maturity label* to judges is `functional prototype` — a competition claim.
-  They are different axes. Do not "fix" one to match the other.
-- *Injection ground-truth label* ≠ *fraud label*. The generator injects known patterns so
-  detection can be scored. It says nothing about anyone's conduct.
-
-**The ethical constraint is load-bearing, not decoration.** The system reports "risk or
-anomaly requiring review". It never states fraud, rejects a claim, stops payment, imposes a
-sanction, alters a code, or decides medical necessity. Most subtly: **an incomplete record
-looks identical to a billed-but-unevidenced service**, and conflating them is how this system
-would produce false accusations. That distinction is encoded in types
-(`ValidationStatus.VALID_WITH_NOTES`, `support_state="NOT_ASSESSABLE"`) and asserted by tests.
-
-**No LLM anywhere in the risk decision path.** Locked by
-`docs/canonical/decisions/ADR-0002-no-llm-in-risk-score.md`. No agents either — the brief's
-Workforce Manifest holds only `be_service` and `fe_shell`, deliberately, so `sprint-builder`
-never injects an agent-management sprint.
+**No LLM anywhere in the risk path, and no agents** (ADR-0002). The Workforce Manifest holds only
+`be_service` and `fe_shell`.
 
 ## 2. Done so far
 
-**Sprint 00 — Foundation ✅ Done (verified)**
+| Sprint | Gate | Status | Evidence |
+|---|---|---|---|
+| 00 — foundation | — | ✅ Done | both apps scaffolded and green |
+| 01 — synthetic-data | G3 · 2 Sep | ✅ **Done, gate met early** | 1,120 bundles · 240 injections · leakage margin +0.0009 |
+| 02 — ingest-validation | G4 · 5 Sep | ✅ Done | `POST /v1/bundles` + screen endpoint live on Postgres |
+| 03 — evidence-rules | G4 · 5 Sep | ✅ **Done, gate met early** | 10 edge types, 4 risk modes, all caps enforced |
+| 04 — review-slice | G5 · 9 Sep | 🚧 backend ✅ / frontend 📋 | queue, detail, disposition, audit all live |
+| 05 — ranking-models | G6 · 12 Sep | 📋 Planned | — |
+| 06 — evaluation-report | G6 · 12 Sep | 📋 Planned | one endpoint still 501 |
+| 07 — demo-hardening | G8 · 17 Sep | 📋 Planned | — |
 
-| Item | Evidence |
-|------|----------|
-| FastAPI service, env-driven config, `/healthz` reporting engine identity + `data_class: synthetic` | `uv run pytest` green |
-| React 18 + TS + Rsbuild shell, config-driven menu, 4 routes | `tsc --noEmit` clean; build 165.6 kB (55.0 kB gzip) |
-| Local Postgres via Docker Compose, no external network | `docker compose config -q` valid |
+**Verified this session** (re-run immediately before writing this):
 
-**Sprint 01 — Synthetic Data 🚧 In Progress · Gate G3 due 2 Sep 18:00**
+```
+backend 269 passed · domain 21 passed · data 47 passed · tsc clean · rsbuild 165.6 kB
+ruff: All checks passed · alembic head c44b0f894fc2
+```
 
-- ✅ `sprint/backlog/01-synthetic-data/backend/00-canonical-schema.md` (**foundation — unblocks Sprints 02/03/04/06**).
-  `packages/domain` installable: 11 schema domains, 7-entry reason catalog covering all 4 risk
-  modes, 10 evidence edge types, 5 committed gold fixtures. **62 tests passing.**
-- 📋 `01-synthea-adapter`, `02-risk-injectors`, `03-split-and-leakage-controls` (all under
-  `sprint/backlog/01-synthetic-data/backend/`) — **blocked on
-  Java + Synthea** (see § 7).
+**Six of seven frozen endpoints are live.** Only `GET /v1/evaluations/{run_id}` still answers 501
+naming sprint 06; `test_the_implemented_endpoints_no_longer_answer_501` guards against a
+placeholder being left in front of working behaviour.
 
-**Sprint 02 — Ingest & Validation 🚧 In Progress · Gate G4 due 5 Sep**
+The full vertical slice runs end to end against real Postgres: ingest → screen → queue → detail →
+disposition → audit, with all four risk modes firing and a stale write refused.
 
-- ✅ `sprint/backlog/02-ingest-validation/backend/00-api-contract.md` (**foundation — unblocks Sprint 04 frontend**).
-  7 endpoints in `docs/api/openapi.json`, 29 wire models, 18 stable error codes, 10 committed
-  example responses. **64 tests passing.**
-- 📋 `sprint/backlog/02-ingest-validation/backend/01-bundle-ingestion.md`.
+**Design.** The team's mockup landed and was unpacked: `design/tokens.css` (35 colour tokens × 2
+themes, plus type scale, spacing, radius, semantic band aliases), `design/mockup/reference.html`
+(readable markup for all four screens — the bundle itself is one 405 kB base64 line), and
+`design/mockup/unpack.py` so the next revision resyncs mechanically. Contrast measured: all five
+status bands clear AA in both themes; `--t-3` was corrected to `#6b7977` (4.54:1).
 
-**Sprints 03–07 — 📋 Planned.** 21 task files total, each carrying its WS spec's Acceptance as
-`## Done when` and its Tests + Edge cases as TODO checkboxes.
-
-**Not started and correctly so:** `design/tokens.css` and HTML mockups — owned by the user's
-design teammate. `sprint/backlog/04-review-slice/frontend/00-port-design-tokens.md` is marked ⏸ Blocked.
+**Not done, and deliberately so:** the Tailwind + shadcn install. The design blocker is cleared but
+that task is marked non-autonomous and awaits an explicit go-ahead.
 
 ## 3. Environment
 
-macOS (darwin 25.6.0), zsh, Apple Silicon.
-
-| Tool | State | Note |
-|------|-------|------|
-| Python | system 3.9.6 | **Too old.** `uv venv --python 3.11` fetches 3.11.15; both venvs already use it |
-| uv | 0.11.30 | Manages both Python venvs |
-| Node | v20.20.2, npm 10.8.2 | `apps/web/node_modules` installed |
-| Docker | 29.6.2 | **Daemon was NOT running** this session — start Docker Desktop before `docker compose up` |
-| Java | **absent** | Blocks Synthea. See § 7 |
-
-**Ports:** web `3000`, API `8000`, Postgres `5432`.
-
-**Secrets:** none in the repo. `apps/backend/.env.example` documents the contract; `.env` is
-gitignored. Postgres dev credentials (`tilik`/`tilik`) are in `docker-compose.yml` and are
-local-only throwaways.
-
-**`.claude/` is gitignored** and must stay that way — it holds the user's office skills, and
-this is a personal project. It contains `.claude/skills/bootstrap-project/scripts/init_boilerplate.sh`, which
-carries an internal office host and API key. Verified never tracked. **Do not `git add -f` it.**
+- **Python**: `uv` manages 3.11. System Python is 3.9 and too old. Never activate a venv manually —
+  `uv run` handles it.
+- **Node**: 20.x for `apps/web`.
+- **Postgres 16** via Docker Compose, container `tilik_klaim_db`, **host port 55432** on this
+  machine (`DB_PORT` in the repo-root `.env`; the compose default is still 5432 for teammates).
+- **Docker Desktop dies often here.** `open -a Docker`, then wait for `docker info` to answer.
+- Secrets: `apps/backend/.env` (gitignored), template in `.env.example`. Local credentials are
+  `tilik` / `tilik` / `tilik_klaim` — synthetic data only, nothing sensitive.
+- **The backend runs with no database at all**, falling back to in-memory stores. That is a
+  requirement, not a convenience: the demo runbook needs an offline run and the frontend team has
+  no Docker. Without Postgres, 14 integration tests `skip` — they do not fail.
 
 ## 4. Build / run / test / verify
 
 ```bash
-cd /Users/fahrialfiansyah121gmail.com/Documents/HEALTHKATHON-2026/tilik-klaim
+# --- database (optional; API runs without it) ---
+open -a Docker && sleep 25                    # macOS; daemon is flaky here
+docker compose up -d db                       # waits ~10s to report healthy
+cd apps/backend && uv run alembic upgrade head
+uv run python scripts/seed_dev.py             # 5 gold scenarios, ingested + screened
 
-# --- Verify everything (the path to run before and after any change) ---
-(cd apps/backend   && uv run pytest)        # expect: 64 passed
-(cd packages/domain && uv run pytest)       # expect: 21 passed
-(cd apps/web       && npx tsc --noEmit)     # expect: silent
-(cd apps/web       && npx rsbuild build)    # expect: ~165 kB total
+# --- the four verify commands; run ALL after every change ---
+(cd apps/backend   && uv run pytest)          # expect 269 passed (255 + 14 skipped without DB)
+(cd packages/domain && uv run pytest)         # expect 21 passed
+(cd packages/data  && uv run pytest)          # expect 47 passed
+(cd apps/web       && npx tsc --noEmit)       # expect silence
+(cd apps/backend   && uv run ruff check app tests)   # expect "All checks passed!"
 
-# --- First-time setup on a fresh clone ---
-(cd packages/domain && uv venv --python 3.11 && uv pip install -e ".[dev]")
-(cd apps/backend    && uv venv --python 3.11 && uv pip install -e ".[dev]" && uv pip install -e ../../packages/domain)
-(cd apps/web        && npm install)
+# --- run the services ---
+(cd apps/backend && uv run uvicorn app.main:app --reload --port 8000)
+(cd apps/web     && npm run dev)              # :3000
 
-# --- Run ---
-open -a Docker && sleep 20          # daemon must be up first
-docker compose up -d db             # Postgres on 5432
-(cd apps/backend && uv run uvicorn app.main:app --reload)   # :8000, /docs, /healthz
-(cd apps/web && npm run dev)                                 # :3000
+# --- regenerate the synthetic corpus (deterministic) ---
+(cd packages/data && uv run python -m tilik_data.pipeline --out build)
 
-# --- Regenerate committed artifacts (deterministic; a diff means something changed) ---
-(cd apps/backend && uv run python tests/fixtures/build_gold.py)   # 5 gold fixtures
-(cd apps/backend && uv run python tests/fixtures/build_api.py)    # 10 API fixtures
-(cd apps/backend && uv run python -c "
-import json,pathlib; from app.main import app
-pathlib.Path('../../docs/api/openapi.json').write_text(
-    json.dumps(app.openapi(), indent=2, sort_keys=True)+'\n')")
+# --- DBeaver / any SQL client ---
+# host localhost · port 55432 · db tilik_klaim · user tilik · password tilik
 ```
-
-**Verify a contract change:** re-run the two builders, then `git diff` the fixtures. If the
-diff is unintended, the contract moved without anyone deciding to move it.
 
 ## 5. Conventions & gotchas
 
-**Project rules**
+**Conventions.** Conventional Commits, one line, no watermark trailer. Code identifiers in
+English, user-facing text in Indonesian. Backend code in `apps/backend/app/{router,service,dto,store}/`;
+shared types in `packages/domain`; generator in `packages/data`; frontend domain components in
+`apps/web/src/features/{domain}/{feature}/components/` — **never** bare `src/components/`;
+navigation only in `src/config/menu/*`. Immutable models (`frozen=True`), files 200–400 lines,
+functions under 50, explicit error handling, no magic numbers. When a task completes: tick every
+`## TODOs` box, set the top-of-file `**Status:** ✅ Done` (the header is the source of truth), and
+append to `changelog/{backend,web}.md`.
 
-- Commits: Conventional Commits. Do **not** push without asking — the remote is public.
-- Component placement (`.claude/rules/architecture.md`): domain components go in
-  `src/features/{domain}/{feature}/components/`, never bare `src/components/`. Navigation is
-  config-driven in `src/config/menu/*` — layouts must not hardcode route arrays.
-- Naming: **code identifiers English, user-facing text Indonesian.** `apps/web/src/pages/queue/QueuePage.tsx`
-  renders `<h1>Antrean Review</h1>`. Screen ids in `design/flow.json` must stay identical to
-  `APP_MENU` ids in `apps/web/src/config/menu/app-menu.ts`.
-- Sprint closure: when a task is done, tick every `## TODOs` box, set the top-of-file
-  `**Status:** ✅ Done`, and append to `changelog/{web,backend}.md`. The header is the source of
-  truth — a ticked checklist under a `📋 Planned` header does not count.
-- Style: immutable models (`frozen=True`), files 200–400 lines, functions under 50, no magic
-  numbers, errors handled explicitly.
+**Traps hit this session, with the fix:**
 
-**Traps already hit this session — do not repeat**
+| Trap | Fix |
+|---|---|
+| `uv run pytest` **empties the dev database** — fixtures call `clear()` on the same `DATABASE_URL` | re-seed with `scripts/seed_dev.py`; a separate test database is still owed |
+| Port 5432 gets stolen by **VS Code's automatic port forwarding** after a container stops; symptom is a healthy container but *password authentication failed for user "tilik"* | `lsof -nP -iTCP:5432 -sTCP:LISTEN` to find the owner; this machine uses `DB_PORT=55432` |
+| `ruff` B008 on `Depends()` in argument defaults | use `Annotated[T, Depends(f)]`, the modern FastAPI form |
+| `SourceType` has no `EMR`/`BILLING` — only `SYNTHETIC_GENERATOR`, `UPLOADED_BUNDLE`, `GOLD_FIXTURE` | correct as-is: provenance records how a record entered *this* system |
+| `ClaimStatus` has no `SUBMITTED` (`DRAFT`/`ACTIVE`/`CANCELLED`/`ENTERED_IN_ERROR`) | use `ACTIVE` |
+| Service-level tests passing `fixture.history` directly **hid a live defect** | test cross-claim behaviour at the **API** level, where the store lookup actually runs |
+| A text search for forbidden words flags the docstring that forbids them | walk the AST, or match multi-word phrases |
+| macOS has no `timeout` | `curl --max-time` |
 
-| Trap | What happened | Fix |
-|------|---------------|-----|
-| `cat > file` on an unread file | Overwrote `.gitignore` and dropped its `.claude` entry, nearly committing office skills to a public repo | **Read a file before overwriting it.** Use append or a targeted edit when adding |
-| Office scaffold service | `.claude/skills/bootstrap-project/scripts/init_boilerplate.sh` POSTs to an internal office host, unreachable here (connection timeout), and `unzip -o` would **overwrite `apps/`** | **Never run it.** Apps were scaffolded by hand |
-| Leakage test matched its own docstring | Test asserted terms against the whole JSON schema, including descriptions; the docstring explaining the rule contained "scenario" | Assert against **field names**, not serialized schema text |
-| `model_fields` on an instance | Pydantic deprecation, removed in V3 | Access from the **class**: `CaseSummary.model_fields` |
-| `timeout` command | Not present on macOS | Use `curl --max-time` / `--connect-timeout` |
-| Route inspection | `app.routes` wraps included routers in `_IncludedRouter`; paths look missing | Inspect `app.openapi()["paths"]` instead |
-| `grep -E` with `\|` | ERE uses bare `|`; `\|` silently matches nothing and looks like a real failure | Use `|` with `-E` |
-
-**Architectural decisions already made — do not silently revisit**
-
-- **Plain Postgres, not Supabase.** `.claude/rules/architecture.md` mandates Supabase, but
-  `docs/canonical/03_architecture.md` § Component rationale specifies "PostgreSQL with JSONB",
-  and this product needs no Auth/Storage/Realtime (roles are simulated). User confirmed.
-  Reversible — self-hosted Supabase is Postgres plus services.
-- **Tailwind and shadcn deliberately not installed**, pending `design/tokens.css` from the
-  design team. Shell classes are Tailwind-shaped but inert. User confirmed: keep waiting.
-- **Routes answer `501`** naming their implementing task, rather than returning fake data. A
-  fixture served from a live endpoint looks like success and misleads.
-- **10 evidence edge types, not 9.** One canonical bullet describes two distinct relations
-  (`AUTHORED_BY`, `PART_OF_ENCOUNTER`).
+**Do not:** run `.claude/skills/bootstrap-project/scripts/init_boilerplate.sh` (targets an
+unreachable internal host; its `unzip -o` would overwrite `apps/`). Do not blind-`cat >` a file you
+have not read. Do not swap Postgres for Supabase (decided; `docs/canonical/03_architecture.md`
+governs). Do not fill `sqlalchemy.url` in `alembic.ini` — `migrations/env.py` reads it from
+`app.config` so the service and its migrations cannot diverge.
 
 ## 6. Next steps
 
-1. **`03-evidence-rules` — highest value, unblocked, closes Gate G4 (5 Sep).**
-   `sprint/backlog/03-evidence-rules/backend/01-evidence-graph.md`, then `02-rule-engine.md`
-   in the same folder. Gold fixtures already exist,
-   so this needs no Synthea. Target: the phantom fixture screens to
-   `LINE_WITHOUT_COMPLETED_PROCEDURE` with resolvable evidence, and the clean fixture produces
-   no reason.
-2. **`sprint/backlog/02-ingest-validation/backend/01-bundle-ingestion.md`** — needs Postgres up. Watch the
-   partial-bundle edge case: it resolves to *valid-with-notes*, never *invalid*.
-3. **`sprint/backlog/04-review-slice/frontend/`** — can start **now, in parallel**, against
-   `apps/backend/tests/fixtures/api/*.json`. No running backend required.
-4. **Sprint 01 remainder** — only after Java + Synthea are installed. Needed for G3's statistical
-   scale (1.000 claims / 200 injections), not for proving the engine works.
-5. Then: `05-ranking-models` → `06-evaluation-report` → `07-demo-hardening`.
+1. **Sprint 04 frontend — the immediate next work**, in this order:
+   `00-port-design-tokens` (needs the go-ahead below) → `01-antrean-review` → `02-detail-kasus`
+   (27 widgets; give it a fresh session) → `03-ingest-page`. Gate G5 is 9 September. The API is
+   complete and seeded, so every screen can be built against real responses.
+2. **Sprint 05 — ranking models** (G6, 12 Sep). Note the kill criterion: if the hybrid adds no
+   measurable value over rules-only, ML is *removed*, and that is an anticipated outcome rather
+   than a failure. See item 3 in blockers before acting on it.
+3. **Sprint 06 — evaluation report** (G6). The last 501 endpoint. The corpus, labels, frozen
+   split, and leakage report already exist in `packages/data/build/`.
+4. **Sprint 07 — demo hardening** (G8, 17 Sep).
+5. **Proposal work, unscheduled but real.** Four gaps were identified against the competition
+   guidance and none is code: payer/customer identification, business case framed as a cost model
+   with stated assumptions (never a savings claim), field user validation, and impact on
+   underserved regions. Details in the analysis recorded earlier this session; the affected file
+   is `docs/canonical/09_proposal_evidence_map.md`.
 
-Sprints 01 and 02 are still in `sprint/backlog/` despite being in progress. Promoting them to
-`sprint/active/` is the user's call.
+**Owed cleanups**, none blocking: a separate test database so `pytest` stops wiping dev data;
+`app/service/evidence_graph.py` is 516 lines (above the 200–400 typical, within the 800 maximum).
 
 ## 7. Blockers / decisions for the user
 
-**1. ✅ Office host purged from public git history (was Blocker #1).**
-An internal office host and port appeared in two commits, both pushed to a **public** GitHub
-repo. **Resolved 2026-08-30:** history was rewritten to purge the value from every commit and
-force-pushed, at the user's explicit instruction. A pre-rewrite backup is kept locally at
-branch `backup/pre-rewrite-20260830` and tag `pre-rewrite-20260830`; delete them once you are
-satisfied, since they still contain the original value.
-
-The office API key (`void-daemon`) was **never** tracked — it lives only in gitignored
-`.claude/`, confirmed by `git ls-files`. If any collaborator cloned or forked between the
-original push and the rewrite, their copy still carries the old history.
-
-**2. Java + Synthea not installed.** Blocks the three remaining Sprint 01 tasks and therefore
-Gate G3's statistical scale. Requires a JDK plus a ~200 MB download. Not on the critical path
-for G4 — the gold fixtures cover that.
-
-**3. `design/tokens.css` and mockups** — owed by the user's design teammate. Until they land,
-`sprint/backlog/04-review-slice/frontend/00-port-design-tokens.md` stays ⏸ Blocked and the UI renders unstyled.
-
-**4. Gate G3 kill criteria fall due 2 Sep 18:00.** Two of the five in
-`docs/canonical/01_product_decision.md` resolve then: if published fields cannot support three
-modes, or the generator is not reproducible, the plan says switch to the backup solution
-(RujukTepat). **Someone must call this explicitly at that hour.** Letting it slide silently is
-the most expensive failure mode in the plan.
+1. **Tailwind + shadcn install for `apps/web`.** The design blocker is cleared and
+   `design/tokens.css` is ready, but `00-port-design-tokens` is marked non-autonomous and a prior
+   instruction explicitly held the install. Sprint 04 frontend cannot start without this decision.
+2. **Two design questions belong to the design team**, recorded in `design/DESIGN.md` § Deviasi.
+   The 9 px micro-labels (35 occurrences) are worth raising to 10–11 px — not a standards
+   violation, but tiring in an all-day tool, and changing it shifts layout. The 13 px body size and
+   the `--t-3` contrast were already resolved (contract updated; contrast corrected).
+3. **The proposal must drop its Synthea claim.** ADR-0003 replaced Synthea with a native
+   generator, so slide 8 can no longer cite Synthea's Apache-2.0 licence as evidence of a
+   recognised privacy-safe source. The honest replacement is narrower and still true: the corpus
+   is wholly synthetic, generated by project code, seeded and reproducible, and no real patient
+   record of any origin was involved.
+4. **`docs/Pedoman_Healthkathon_2026.docx` is unverified and probably not authentic.** Its
+   metadata is machine-generated (creator "Un-named", empty `app.xml`, created and modified 13 ms
+   apart), and the data portal it cites — `slicedata.bpjs-kesehatan.go.id` — **does not resolve**.
+   The real portal is `data.bpjs-kesehatan.go.id`, whose Data Sampel needs a CAPTCHA-gated account
+   and, judging by its description (participant service-history summaries), lacks the RME
+   resources this system screens. Treat every factual detail in that DOCX as unconfirmed until
+   cross-checked against the official PDFs. Its judging criteria differ from the canonical six and
+   should be handled as a **superset**, not a replacement.
