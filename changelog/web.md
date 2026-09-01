@@ -230,3 +230,29 @@ Append-only. Newest entry at the top.
 > curve, so the page compares the four baselines at that budget. The sweep needs a wire-model
 > change, which was not taken unilaterally.
 > Verified: web 104 passed (was 91) · tsc clean · playwright 14 passed in 10.0s.
+
+### 2026-09-01 · [Sprint 07 — demo-hardening](../sprint/backlog/07-demo-hardening/sprint.md) · Frontend: [demo flow & fallback](../sprint/backlog/07-demo-hardening/frontend/01-demo-flow-rehearsal.md) · 🚧 In Progress
+
+**Event:** The 90-second flow is walked, timed, and proven offline; the human rehearsal is owed
+**Files:** `apps/web/tests/e2e/demo-flow.spec.ts`, `docs/artifacts/screenshots/`
+> Three tests, ~3.5 s: the full path timed against a budget, the evaluation beat inside its
+> twenty-second slot, and every demo route walked with **every non-localhost request aborted** —
+> offline verified by blocking the network, not by assuming it. Suite is now 17.
+> **The budget is asserted, not assumed.** A flow that works but takes two minutes fails on stage
+> as surely as one that errors. The machine finishes in ~3.5 s and the test holds it under 30 s,
+> leaving two thirds of the runbook's ninety for narration. Passing is necessary, not sufficient:
+> the machine does not narrate or move a cursor.
+> **The spec resets itself** via `scripts/demo_reset.py` in `beforeAll`, because requesting
+> evidence moves the demo case out of the state the flow starts from — so a second run would find
+> it already dispositioned, which is the exact failure the reset exists to prevent.
+> **Two behaviours the runbook does not describe, found by walking it.** Requesting evidence hands
+> the reviewer to `/ingest?case=…` rather than back to the queue — right, since that is where the
+> facility's replacement bundle arrives, and a better beat than the runbook's. And the audit
+> timeline reads in working language, so the test asserts *Disposisi dicatat* rather than the raw
+> `DISPOSITION` enum; `OPENED` once shipped untranslated into an otherwise Indonesian history.
+> Four proposal artifacts captured to `docs/artifacts/screenshots/`; the capture asserts on every
+> page that the synthetic badge is present and that nothing matching a 13- or 16-digit identifier
+> or `NIK` appears — checked rather than eyeballed.
+> **Still owed, and human:** the three-minute rehearsal with narration, two written case studies,
+> the recorded 1080p fallback, and the six-frame screenshot PDF.
+> Verified: web 104 passed · tsc clean · playwright 17 passed in 12.6 s.

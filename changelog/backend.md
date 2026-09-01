@@ -383,3 +383,23 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 > value is prioritisation, not detection. No tuning was done.
 > Verified: evaluation 47 passed · backend 322 passed (was 312) · model 71 · data 57 · domain 23 ·
 > web 104 · tsc clean · ruff clean · playwright 14 passed in 10.0s.
+
+### 2026-09-01 · [Sprint 07 — demo-hardening](../sprint/backlog/07-demo-hardening/sprint.md) · Backend: [demo reset & health](../sprint/backlog/07-demo-hardening/backend/01-demo-reset-and-health.md) · ✅ Done
+
+**Event:** One-command demo reset, and a readiness check that answers "will the demo work"
+**Files:** `apps/backend/scripts/demo_reset.py`, `app/service/demo_state.py`, `app/router/health.py`, `tests/test_demo_readiness.py`
+> `uv run python scripts/demo_reset.py` empties every store together, re-seeds the five gold
+> scenarios, and **verifies** — 0.2–0.4 s, idempotent. A seed that "succeeded" while the phantom
+> fixture screened to nothing exits non-zero here instead of being discovered on stage.
+> **`/healthz` deliberately does not fail when the database does.** `railway.json` probes that
+> path; a 5xx there would restart the container in a loop precisely when the database is already
+> struggling, and the backend is designed to run with no database at all so the demo can be
+> rehearsed offline. Liveness stays `200 · ok`; the new `readiness` block reports database
+> reachability, seeded-case count, whether the runbook's ideal case is present *and untouched*,
+> and a named problem for each thing wrong. `--check` reads that block and exits non-zero — which
+> is where "fails loudly" belongs, because a pre-demo check is read by a person and a container
+> probe is not.
+> **Readiness checks the demo case, not a row count.** Five rows is not a working demo: a case
+> someone already dispositioned is a different demo, and
+> `test_an_opened_demo_case_makes_the_system_not_ready` holds that line.
+> Verified: backend 330 passed (was 322) · ruff clean · playwright 17 passed in 12.6 s.

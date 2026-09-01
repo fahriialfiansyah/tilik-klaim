@@ -69,12 +69,12 @@ tune until something looks better.
 | 04 — review-slice | G5 · 9 Sep | ✅ **Done, gate met early** | all three screens live on the real API; 14 Playwright specs green in 9.8 s |
 | 05 — ranking-models | G6 · 12 Sep | ✅ **Done** | `packages/model` built, 71 tests; incremental value measured in 06 |
 | 06 — evaluation-report | G6 · 12 Sep | 🚧 **Built, not closed** | all 7 endpoints live; official run + write-up + sign-offs owed |
-| 07 — demo-hardening | G8 · 17 Sep | 📋 **Next** | owns the demo/reset route |
+| 07 — demo-hardening | G8 · 17 Sep | 🚧 **Backend done** | reset + readiness live; human rehearsal & recording owed |
 
 **Verified immediately before writing this:**
 
 ```
-backend 322 · domain 23 · data 57 · model 71 · evaluation 47 · web 104 · playwright 14
+backend 330 · domain 23 · data 57 · model 71 · evaluation 47 · web 104 · playwright 17
 tsc clean · ruff: All checks passed · alembic head d1a7c3e50f42
 ```
 
@@ -140,6 +140,8 @@ actual payload, not the source you just wrote.**
 # --- everything at once (API + Web + Postgres + migrations; Ctrl-C stops all) ---
 ./scripts/dev.sh --db
 (cd apps/backend && uv run python scripts/seed_dev.py)   # once, after the DB is up
+(cd apps/backend && uv run python scripts/demo_reset.py) # before a demo or the E2E suite
+(cd apps/backend && uv run python scripts/demo_reset.py --check)  # readiness, exits non-zero
 
 # --- or piecemeal ---
 open -a Docker && sleep 25                    # macOS; daemon is flaky here

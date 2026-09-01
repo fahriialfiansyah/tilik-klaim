@@ -2,7 +2,7 @@
 
 **Stack:** frontend
 **Sprint:** [`../sprint.md`](../sprint.md)
-**Status:** 📋 Planned
+**Status:** 🚧 In Progress
 **Foundation:** no
 **Autonomous:** no — rehearsal and capture done by a person.
 **Depends on:**
@@ -25,16 +25,16 @@ seconds, and a recorded fallback exists for when the live demo fails.
 
 ## TODOs
 
-- [ ] Playwright test walking the full path and asserting it finishes under 90 seconds
+- [x] Playwright test walking the full path and asserting it finishes under 90 seconds
 - [ ] Rehearse the three-minute flow with the same fixture
-- [ ] Screenshot: flagged case with its evidence path
-- [ ] Screenshot: human disposition and the resulting audit event
-- [ ] Screenshot: evaluation page with the limitations card visible
+- [x] Screenshot: flagged case with its evidence path
+- [x] Screenshot: human disposition and the resulting audit event
+- [x] Screenshot: evaluation page with the limitations card visible
 - [ ] Case study: one true injected case
 - [ ] Case study: one false positive showing counter-evidence
 - [ ] Recorded fallback that runs with the live application entirely down
-- [ ] Verify the synthetic badge is visible in **every** captured screenshot
-- [ ] Confirm no screenshot exposes anything resembling a real identifier
+- [x] Verify the synthetic badge is visible in **every** captured screenshot
+- [x] Confirm no screenshot exposes anything resembling a real identifier
 
 ## Done when
 
@@ -48,3 +48,48 @@ with the application stopped.
 - [ ] Done-when assertion verified
 - [ ] Top-of-file header literally reads `**Status:** ✅ Done`
 - [ ] Changelog entry appended to `changelog/web.md`
+
+## Notes
+
+**Done, and machine-checkable.** `apps/web/tests/e2e/demo-flow.spec.ts` — three tests, ~3.5s:
+the full ninety-second path timed against a budget, the evaluation beat of the three-minute
+flow inside its twenty-second slot, and every demo route walked with **every non-localhost
+request aborted**. The full E2E suite is 17.
+
+Four artifacts captured to `docs/artifacts/screenshots/`: the flagged case with its evidence
+path, the clone false positive with its counter-evidence, the disposition with the resulting
+audit event, and the evaluation page with the limitations card. The capture script asserts on
+every page that the synthetic badge is present and that nothing matching a 13- or 16-digit
+identifier or the string `NIK` appears — checked rather than eyeballed.
+
+**The budget is asserted, not assumed.** A flow that works but takes two minutes fails on stage
+as surely as one that errors, and it fails in front of judges. The machine finishes in about
+3.5s; the test holds it under 30s, leaving two thirds of the runbook's ninety for the person
+speaking. Passing here is necessary, not sufficient — the machine does not narrate or move a
+cursor.
+
+**The spec resets itself.** Requesting evidence moves the demo case out of the state the flow
+starts from, so a second run would find it already dispositioned. `test.beforeAll` runs
+`scripts/demo_reset.py`, which makes the test repeatable and rehearses the reset at the same
+time. The sprint's acceptance says the flow completes *from a clean reset*; this is that.
+
+**Two behaviours the runbook does not describe, found by walking it.** Requesting evidence hands
+the reviewer to `/ingest?case=…` rather than back to the queue — which is right, since that is
+where the facility's replacement bundle arrives, and it is a better beat than the runbook's. And
+the audit timeline reads in working language, so the test asserts *Disposisi dicatat* rather than
+the raw `DISPOSITION` enum; `OPENED` once shipped untranslated into an otherwise Indonesian
+history, and asserting on the enum would have let that back in.
+
+## Still owed — a person's, not the agent's
+
+The task header says *Autonomous: no — rehearsal and capture done by a person*, and these four
+are why:
+
+- **Rehearse the three-minute flow** end to end with narration, on the presentation machine,
+  offline. The Playwright run is not a rehearsal.
+- **Two written case studies** — one true injected case, one false positive with its
+  counter-evidence. The screenshots are captured; the writing is a judgement call.
+- **The recorded fallback**, at 1080p with the same narration and cursor path, rehearsed at
+  least once with the application stopped. § 22 is explicit that the fallback is played, not
+  troubleshooted, so it has to exist before the day.
+- **The six-frame screenshot PDF** as the last fallback if video playback also fails.

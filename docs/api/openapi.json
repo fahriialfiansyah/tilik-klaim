@@ -1684,16 +1684,14 @@
   "paths": {
     "/healthz": {
       "get": {
-        "description": "Liveness probe. Also surfaces the engine identity used by the demo runbook.",
+        "description": "Liveness, the engine identity the runbook quotes, and demo readiness.",
         "operationId": "healthz_healthz_get",
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": {
-                    "type": "string"
-                  },
+                  "additionalProperties": true,
                   "title": "Response Healthz Healthz Get",
                   "type": "object"
                 }
