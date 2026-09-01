@@ -1,0 +1,36 @@
+[project]
+name = "tilik-evaluation"
+version = "0.1.0"
+description = "TilikKlaim reproducible offline evaluation: baselines, metrics, artifacts"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.9",
+    "numpy>=1.26",
+    "tilik-domain",
+    "tilik-data",
+    "tilik-model",
+    "tilik-klaim-api",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["runner"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.uv.sources]
+tilik-domain = { path = "../packages/domain", editable = true }
+tilik-data = { path = "../packages/data", editable = true }
+tilik-model = { path = "../packages/model", editable = true }
+tilik-klaim-api = { path = "../apps/backend", editable = true }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

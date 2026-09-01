@@ -35,6 +35,11 @@ class Settings(BaseSettings):
     max_bundle_bytes: int = 8 * 1024 * 1024
     max_json_depth: int = 32
 
+    # Where the offline evaluation runner writes its artifacts. The API only ever reads them —
+    # a metric is produced by `evaluation/runner`, deliberately by an engineer, never by a
+    # request. Relative paths resolve against the repository root.
+    evaluation_artifacts_dir: str = "evaluation/artifacts"
+
     @field_validator("database_url")
     @classmethod
     def name_the_driver(cls, value: str) -> str:

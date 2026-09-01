@@ -348,3 +348,38 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 > Nothing outside the package imports any module in it and no score reaches a wire model, so the
 > sprint's removal clause stays a single revert.
 > Verified: model 71 passed · backend 312 · domain 23 · data 57 · web 91 · tsc clean · ruff clean.
+
+### 2026-09-01 · [Sprint 06 — evaluation-report](../sprint/backlog/06-evaluation-report/sprint.md) · Backend: [evaluation runner](../sprint/backlog/06-evaluation-report/backend/01-evaluation-runner.md) · ✅ Done
+
+**Event:** `evaluation/runner` built; the last 501 endpoint is now live — all seven are implemented
+**Files:** `evaluation/runner/*.py`, `evaluation/tests/`, `apps/backend/app/service/evaluation_artifacts.py`, `apps/backend/app/router/evaluations.py`, `app/config.py`, `app/main.py`; `app/router/contract.py` deleted
+> One command rebuilds every metric, table, and chart: `uv run python -m runner.run --build …`.
+> Four baselines (B0 random, B1 rules-only, B2 statistical-only, hybrid), the seven primary
+> metrics, bootstrap intervals, five breakdown dimensions, and case reports for manual review.
+> **Gates run before any metric.** `preflight.py` refuses a corpus whose ids still carry an
+> injector suffix, refuses a demo fixture in any partition, and halts on the leakage probe. A
+> metric computed on a leaking corpus is a number someone might believe, and one that exists
+> gets quoted.
+> **`metrics.json` carries no run id and no timestamp**, because it is hashed and compared
+> across runs; anything that legitimately differs between two runs of one commit is in the
+> manifest. Latency is written but deliberately *not* hashed — it measures the machine, not the
+> method, and hashing it would make the reproducibility check permanently false.
+> **A near-miss.** Evidence-reference validity first reported 39 of 140 displayed references as
+> unresolvable. All 39 were clone reasons pointing at a *peer* note — another participant's, at
+> the same facility, which is exactly where a clone reason must point. The checker was wrong, not
+> the detector. Left as measured, the obvious response would have been to "fix" a working
+> detector. Validity is 1447/1447 once peer documents are in the resolvable set.
+> **`GET /v1/evaluations/{run_id}` reads artifacts and computes nothing.** A metric producible by
+> an HTTP request is a metric produced more than once. `latest` is a reserved path *value*, not a
+> new endpoint, so the frozen contract is intact. Undefined values are **omitted** rather than
+> zero-filled: the wire model's floats cannot carry a null, and a zero would claim a measurement
+> nobody made. `app/router/contract.py` is deleted — it held only placeholders and there are none
+> left.
+> **Rehearsal figures only** — the official run waits on the `packages/data/build/` regeneration
+> decision, and `load_build` correctly refuses the current artifacts. Against a scratch corpus the
+> hybrid's macro F1 is *identical* to rules-only (0.6510): it detects nothing the rules do not.
+> What moves is ranking — PR-AUC 0.7122 → 0.8440, precision at the review budget 0.9565 → 1.0000
+> — bought at slightly more false positives per 100 clean claims. If that holds, the incremental
+> value is prioritisation, not detection. No tuning was done.
+> Verified: evaluation 47 passed · backend 322 passed (was 312) · model 71 · data 57 · domain 23 ·
+> web 104 · tsc clean · ruff clean · playwright 14 passed in 10.0s.

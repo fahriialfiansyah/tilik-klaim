@@ -175,18 +175,18 @@ def test_evaluation_response_is_labelled_synthetic_and_carries_limitations() -> 
     assert {m.baseline for m in evaluation.baselines} >= {"B1_RULES_ONLY", "HYBRID"}
 
 
-def test_the_still_unimplemented_endpoint_answers_501_naming_its_task() -> None:
-    """One endpoint remains a placeholder: the evaluation report, owned by sprint 06.
+def test_every_frozen_endpoint_is_now_implemented() -> None:
+    """All seven are live; sprint 06 filled the last placeholder.
 
-    The other six are live. A caller reaching this one gets an unambiguous answer rather than
-    an empty result that looks like "no data".
+    Guards against a placeholder being left in front of working behaviour — the failure this
+    catches is a stub quietly answering 501 while the code behind it already works.
     """
-    response = client.get("/v1/evaluations/run-1")
-    assert response.status_code == 501
-    assert "sprint" in response.json()["detail"].lower()
-
-
-def test_the_implemented_endpoints_no_longer_answer_501() -> None:
-    """Guards against a placeholder being left in front of working behaviour."""
-    for path in ("/v1/cases", "/v1/cases/does-not-exist"):
+    for path in ("/v1/cases", "/v1/cases/does-not-exist", "/v1/evaluations/latest"):
         assert client.get(path).status_code != 501, f"{path} is still a placeholder"
+
+
+def test_a_missing_evaluation_run_is_a_404_not_a_501() -> None:
+    """"Nothing has been run yet" is a state the page renders, not an unimplemented endpoint."""
+    response = client.get("/v1/evaluations/no-such-run")
+    assert response.status_code == 404
+    assert response.json()["code"] == "EVALUATION_RUN_NOT_FOUND"

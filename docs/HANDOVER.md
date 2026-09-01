@@ -68,27 +68,27 @@ tune until something looks better.
 | 03 — evidence-rules | G4 · 5 Sep | ✅ **Done, gate met early** | 10 edge types, 4 risk modes, all caps enforced |
 | 04 — review-slice | G5 · 9 Sep | ✅ **Done, gate met early** | all three screens live on the real API; 14 Playwright specs green in 9.8 s |
 | 05 — ranking-models | G6 · 12 Sep | ✅ **Done** | `packages/model` built, 71 tests; incremental value measured in 06 |
-| 06 — evaluation-report | G6 · 12 Sep | 📋 **Next** | one endpoint still 501; owns the incremental-value measurement |
-| 07 — demo-hardening | G8 · 17 Sep | 📋 Planned | owns the demo/reset route |
+| 06 — evaluation-report | G6 · 12 Sep | 🚧 **Built, not closed** | all 7 endpoints live; official run + write-up + sign-offs owed |
+| 07 — demo-hardening | G8 · 17 Sep | 📋 **Next** | owns the demo/reset route |
 
 **Verified immediately before writing this:**
 
 ```
-backend 312 passed · domain 23 passed · data 57 passed · model 71 passed · web 91 passed
+backend 322 · domain 23 · data 57 · model 71 · evaluation 47 · web 104 · playwright 14
 tsc clean · ruff: All checks passed · alembic head d1a7c3e50f42
 ```
 
 `packages/data` rose 47 → 57 (the artifact writer finally has tests) and `packages/model` is new.
 Add it to the sweep: `(cd packages/model && uv run pytest)`.
 
-**Six of seven frozen endpoints are live.** Only `GET /v1/evaluations/{run_id}` answers 501
-naming sprint 06; `test_the_implemented_endpoints_no_longer_answer_501` guards against a
-placeholder being left in front of working behaviour.
+**All seven frozen endpoints are live.** Sprint 06 filled the last one;
+`test_every_frozen_endpoint_is_now_implemented` guards against a placeholder being left in front
+of working behaviour, and `app/router/contract.py` is gone because it held only placeholders.
 
 **All three operator screens are complete**, each verified in a browser rather than only by test:
 `/` (Antrean Review), `/cases/:id` (Detail Kasus — 27 widgets, five binding display rules), and
-`/ingest` (Ingest / Demo — 11 widgets, three validation states). `/evaluation` is still a
-placeholder and belongs to sprint 06. The full path — ingest → screen → queue → detail →
+`/ingest` (Ingest / Demo — 11 widgets, three validation states), and `/evaluation` (Audit &
+Evaluasi — 9 widgets, display-only, four states). The full path — ingest → screen → queue → detail →
 disposition → audit — runs end to end against real Postgres with all four risk modes firing and a
 stale write refused.
 

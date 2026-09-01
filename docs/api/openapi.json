@@ -913,6 +913,19 @@
         "title": "EvidenceRefDto",
         "type": "object"
       },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
       "IngestBundleResponse": {
         "additionalProperties": false,
         "description": "Result of submitting one bundle.",
@@ -1536,6 +1549,46 @@
           "label"
         ],
         "title": "TimelineEvent",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
         "type": "object"
       },
       "ValidationIssue": {
@@ -2311,7 +2364,7 @@
     },
     "/v1/evaluations/{run_id}": {
       "get": {
-        "description": "Reads generated artifacts. The synthetic label is displayed prominently.",
+        "description": "Read one run. The synthetic label travels with the payload, never as UI decoration.",
         "operationId": "get_evaluation_v1_evaluations__run_id__get",
         "parameters": [
           {
@@ -2335,16 +2388,6 @@
             },
             "description": "Successful Response"
           },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Bad Request"
-          },
           "404": {
             "content": {
               "application/json": {
@@ -2355,48 +2398,21 @@
             },
             "description": "Not Found"
           },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
-          "413": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Request Entity Too Large"
-          },
-          "415": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            },
-            "description": "Unsupported Media Type"
-          },
           "422": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             },
-            "description": "Unprocessable Entity"
+            "description": "Validation Error"
           }
         },
-        "summary": "Reproducible evaluation artifacts"
+        "summary": "Reproducible evaluation artifacts",
+        "tags": [
+          "evaluations"
+        ]
       }
     }
   }

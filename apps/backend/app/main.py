@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.router import bundles, cases, contract, dispositions, health
+from app.router import bundles, cases, dispositions, evaluations, health
 
 settings = get_settings()
 
@@ -38,7 +38,7 @@ if settings.cors_origins or settings.cors_allow_origin_regex:
     )
 
 app.include_router(health.router)
-app.include_router(contract.router)
+app.include_router(evaluations.router)
 app.include_router(bundles.router)
 app.include_router(cases.router)
 app.include_router(dispositions.router)

@@ -204,3 +204,29 @@ Append-only. Newest entry at the top.
 > 7.50:1 dark). Two deviations recorded rather than silently resolved — body text is 13 px
 > against a locked 14–16 px, and `--t-3` reaches only 4.41:1. Remaining work is the Tailwind
 > and shadcn install, which waits on an explicit go-ahead.
+
+### 2026-09-01 · [Sprint 06 — evaluation-report](../sprint/backlog/06-evaluation-report/sprint.md) · Frontend: [evaluation page](../sprint/backlog/06-evaluation-report/frontend/01-evaluation-page.md) · ✅ Done
+
+**Event:** `/evaluation` is live — the fourth and last screen, reading artifacts only
+**Files:** `src/features/review/evaluation/**`, `src/pages/evaluation/EvaluationPage.tsx`
+> All nine widgets render from `GET /v1/evaluations/latest`. **Display only**: the single button
+> on the page is *Salin* on the limitations card. A page that could re-tune a threshold would let
+> someone tune against the frozen test set it is showing.
+> **Charts and tables cannot disagree by construction** — both are built by one selector from one
+> response and rendered through one formatter, so a mismatch could not be a rounding difference.
+> **All four baselines and all four modes are always listed**, in canonical order, whether or not
+> the response carries them. A missing row reads *tidak terukur*; iterating the response instead
+> would make an unmeasured baseline silently vanish from the comparison.
+> **`absent` is a distinct status from `failed`.** "Nothing has been run" shows the command;
+> "the service is down" shows a retry. Both produce an empty page and mean opposite things.
+> **Three defects found only by opening the page**, all of which passed the compiler, 104 unit
+> tests, and a read-through: case counts rendered as `7.0000` because every cell went through one
+> metric formatter; the limitations card rendered in English on an Indonesian screen, because the
+> canonical rows are English and the artifact carries them verbatim; and the manifest's English
+> `threshold_logic` string printed raw into the version card. Click-through and screenshots in
+> `docs/qa/MANUAL-QA.md` § 1d.
+> **Widget 6 deviates from the spec and it is flagged.** § 6 asks for precision across *various*
+> budget sizes; the frozen `EvaluationResponse` carries one fixed budget and has no field for a
+> curve, so the page compares the four baselines at that budget. The sweep needs a wire-model
+> change, which was not taken unilaterally.
+> Verified: web 104 passed (was 91) · tsc clean · playwright 14 passed in 10.0s.
