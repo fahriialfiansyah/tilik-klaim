@@ -67,17 +67,19 @@ tune until something looks better.
 | 02 — ingest-validation | G4 · 5 Sep | ✅ Done | `POST /v1/bundles` + screen endpoint live on Postgres |
 | 03 — evidence-rules | G4 · 5 Sep | ✅ **Done, gate met early** | 10 edge types, 4 risk modes, all caps enforced |
 | 04 — review-slice | G5 · 9 Sep | ✅ **Done, gate met early** | all three screens live on the real API; 14 Playwright specs green in 9.8 s |
-| 05 — ranking-models | G6 · 12 Sep | 📋 **Next** | `packages/model/` is an empty placeholder |
-| 06 — evaluation-report | G6 · 12 Sep | 📋 Planned | one endpoint still 501 |
+| 05 — ranking-models | G6 · 12 Sep | ✅ **Done** | `packages/model` built, 71 tests; incremental value measured in 06 |
+| 06 — evaluation-report | G6 · 12 Sep | 📋 **Next** | one endpoint still 501; owns the incremental-value measurement |
 | 07 — demo-hardening | G8 · 17 Sep | 📋 Planned | owns the demo/reset route |
 
 **Verified immediately before writing this:**
 
 ```
-backend 312 passed · domain 23 passed · data 47 passed · web 91 passed · tsc clean
-playwright 14 passed in 9.8s · ruff: All checks passed
-rsbuild 666.7 kB (390.0 kB gzip) · alembic head d1a7c3e50f42
+backend 312 passed · domain 23 passed · data 57 passed · model 71 passed · web 91 passed
+tsc clean · ruff: All checks passed · alembic head d1a7c3e50f42
 ```
+
+`packages/data` rose 47 → 57 (the artifact writer finally has tests) and `packages/model` is new.
+Add it to the sweep: `(cd packages/model && uv run pytest)`.
 
 **Six of seven frozen endpoints are live.** Only `GET /v1/evaluations/{run_id}` answers 501
 naming sprint 06; `test_the_implemented_endpoints_no_longer_answer_501` guards against a
@@ -297,12 +299,30 @@ under `docs/` are invisible to git.
    "
    ```
 
-   `write_artifacts` has no test at all. The fix is small — write `cleaned` rather than
-   `result.corpus.bundles`, carry the rename through the labels, and add a test asserting the
-   three files join — but it contains one decision that is the owner's: **re-generating changes
-   `test_set_digest`, and sprint 01's gate evidence quotes the current one.** Re-freezing a split
-   that was announced as frozen is a reproducibility claim worth making deliberately rather than
-   as a side effect.
+   **Status (1 Sep): the code and its tests are done; only the regeneration waits on you.**
+   `BuildResult` now carries only the scrubbed bundles and the labels renamed to match, so
+   reaching past the scrub is unrepresentable. `packages/data/tests/test_artifacts.py` asserts
+   on the files themselves. The scrub also turned out to be incomplete — it rewrote `bundle_id`
+   only, leaving `CLM-00008-U798` and `LN-00008-1-U798` inside the record, contradicting this
+   task's own note that it "regenerates every identifier"; it now rewrites every marked
+   identifier through one rename map.
+
+   **The decision is smaller than it looked. `test_set_digest` does not change.** Measured
+   against the real config: `ed903a4c39656e…` before and after, along with every partition
+   count, the split membership, the multi-label ratio, and the leakage margin. The frozen test
+   set is **not** re-frozen, so sprint 01's gate evidence survives intact. The only value that
+   moves is `corpus_hash` (`db694e6851c9…` → `1ff95898c696…`), and it moves because the current
+   one describes a corpus that was never written to disk. It is quoted in exactly one place,
+   `packages/data/build/DATA_CARD.md`, which the pipeline regenerates.
+
+   **What regenerating costs:** the four files under `packages/data/build/` are tracked in git,
+   so it produces a large diff (`corpus.json` is 4.6 MB). **What it unblocks:** sprint 05 cannot
+   fit a model on the published corpus until the artifacts join, and sprint 06 cannot score
+   against it. To do it:
+
+   ```bash
+   (cd packages/data && uv run python -m tilik_data.pipeline --out build)
+   ```
 
 2. **`react-router-dom` v6 carries two moderate advisories** (open redirect via backslash in
    `<Link>`/`useNavigate`; constructor injection in SSR `deserializeErrors`). Both predate these

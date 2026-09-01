@@ -12,12 +12,20 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
+from tilik_domain.canonical import CanonicalBundle
 
 from tilik_data.amounts import ROUNDING_TOLERANCE
-from tilik_data.corpus import Corpus, InjectionPlan, build_corpus
+from tilik_data.corpus import InjectionPlan, build_corpus
 from tilik_data.data_card import CorpusStats, missing_elements, render
 from tilik_data.generator import corpus_hash
-from tilik_data.leakage import LeakageReport, probe, strip_injector_traces
+from tilik_data.injectors.labels import LabelSet
+from tilik_data.leakage import (
+    LeakageReport,
+    injector_free_ids,
+    probe,
+    rename_labels,
+    strip_injector_traces,
+)
 from tilik_data.manifest import GENERATOR_VERSION, Manifest
 from tilik_data.split import Split, SplitRatios, make_split
 
@@ -28,7 +36,16 @@ class LeakageDetected(RuntimeError):
 
 @dataclass(frozen=True)
 class BuildResult:
-    corpus: Corpus
+    """What a run publishes — and only that.
+
+    There is deliberately no pre-strip corpus on this type. `write_artifacts` used to reach past
+    the scrub and write the corpus as the injectors left it, which published the tell and left
+    the split unjoinable; holding only the scrubbed corpus and the labels renamed to match makes
+    that mistake unrepresentable rather than merely fixed.
+    """
+
+    bundles: tuple[CanonicalBundle, ...]
+    labels: LabelSet
     split: Split
     manifest: Manifest
     leakage: LeakageReport
@@ -59,15 +76,12 @@ def run(config: dict, *, halt_on_leak: bool = True) -> BuildResult:
         plan=plan,
     )
 
-    # Strip what the injectors left behind before anything measures the corpus.
-    injected = corpus.injected_bundle_ids()
-    import hashlib
-
+    # Strip what the injectors left behind before anything measures the corpus. The labels go
+    # through the *same* rename, so ground truth still names records that exist.
+    renaming = injector_free_ids(corpus.bundles, seed)
     cleaned = strip_injector_traces(corpus.bundles, seed)
-    renamed_injected = frozenset(
-        f"BND-{hashlib.sha256(f'{seed}:{bundle_id}'.encode()).hexdigest()[:12]}"
-        for bundle_id in injected
-    )
+    labels = rename_labels(corpus.labels, renaming)
+    renamed_injected = labels.bundle_ids()
 
     split = make_split(
         cleaned,
@@ -90,9 +104,9 @@ def run(config: dict, *, halt_on_leak: bool = True) -> BuildResult:
         bundles=len(cleaned),
         participants=int(corpus_config["participants"]),
         providers=int(corpus_config["providers"]),
-        injections=len(corpus.labels.labels),
-        injections_by_mode=corpus.labels.counts_by_mode(),
-        multi_label_ratio=corpus.labels.multi_label_ratio(),
+        injections=len(labels.labels),
+        injections_by_mode=labels.counts_by_mode(),
+        multi_label_ratio=labels.multi_label_ratio(),
         train=len(split.train),
         validation=len(split.validation),
         test=len(split.test),
@@ -127,18 +141,23 @@ def run(config: dict, *, halt_on_leak: bool = True) -> BuildResult:
         leakage_margin=report.margin,
         leakage_passed=not report.leaked,
     )
-    return BuildResult(corpus, split, manifest, report, card)
+    return BuildResult(cleaned, labels, split, manifest, report, card)
 
 
 def write_artifacts(result: BuildResult, out_dir: Path) -> None:
-    """Persist the corpus, labels, split, manifest, and data card."""
+    """Persist the corpus, labels, split, manifest, and data card.
+
+    Everything written here comes from the same scrubbed, renamed run, so the four files join on
+    one id space. `tests/test_artifacts.py` asserts that on the files themselves rather than on
+    the in-memory result — the distinction is exactly what went wrong before.
+    """
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "manifest.json").write_text(
         result.manifest.model_dump_json(indent=2), encoding="utf-8"
     )
     (out_dir / "DATA_CARD.md").write_text(result.data_card, encoding="utf-8")
     (out_dir / "labels.json").write_text(
-        result.corpus.labels.model_dump_json(indent=2), encoding="utf-8"
+        result.labels.model_dump_json(indent=2), encoding="utf-8"
     )
     (out_dir / "split.json").write_text(
         json.dumps(
@@ -155,7 +174,7 @@ def write_artifacts(result: BuildResult, out_dir: Path) -> None:
     )
     (out_dir / "corpus.json").write_text(
         json.dumps(
-            [bundle.model_dump(mode="json") for bundle in result.corpus.bundles],
+            [bundle.model_dump(mode="json") for bundle in result.bundles],
             separators=(",", ":"),
             default=str,
         ),

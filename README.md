@@ -154,6 +154,7 @@ bebas, lalu berhenti dengan pesan yang menyebut PID pemakainya bila tidak.
 | Opsi | Guna |
 |------|------|
 | `--db` | Nyalakan Postgres via Docker Compose + `alembic upgrade head` lebih dulu |
+| `--free-ports` | Hentikan server dev yatim yang masih menempati port, lalu mulai |
 | `--skip-install` | Lewati `npm install` otomatis saat `node_modules` belum ada |
 | `--api-port PORT` | Ganti port API (bawaan 8000) |
 | `--web-port PORT` | Ganti port Web (bawaan 3000) |

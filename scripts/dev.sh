@@ -15,6 +15,7 @@ API_PORT="${API_PORT:-8000}"
 WEB_PORT="${WEB_PORT:-3000}"
 WITH_DB=0
 SKIP_INSTALL=0
+FREE_PORTS=0
 
 # Warna hanya bila stdout adalah terminal, supaya `./scripts/dev.sh > log.txt` tetap bersih.
 if [ -t 1 ]; then
@@ -29,6 +30,8 @@ Penggunaan: ./scripts/dev.sh [opsi]
 
   --db              Nyalakan Postgres via Docker Compose lalu jalankan `alembic upgrade head`
                     sebelum kedua layanan hidup. Tanpa ini backend memakai penyimpanan in-memory.
+  --free-ports      Hentikan proses yang masih menempati port API/Web sebelum mulai.
+                    Berguna untuk membereskan server dev yatim dari terminal yang sudah ditutup.
   --skip-install    Jangan jalankan `npm install` walau node_modules belum ada.
   --api-port PORT   Port API (bawaan 8000, atau env API_PORT).
   --web-port PORT   Port Web (bawaan 3000, atau env WEB_PORT).
@@ -39,6 +42,7 @@ USAGE
 while [ $# -gt 0 ]; do
   case "$1" in
     --db) WITH_DB=1; shift ;;
+    --free-ports) FREE_PORTS=1; shift ;;
     --skip-install) SKIP_INSTALL=1; shift ;;
     --api-port) API_PORT="${2:?--api-port butuh nilai}"; shift 2 ;;
     --web-port) WEB_PORT="${2:?--web-port butuh nilai}"; shift 2 ;;
@@ -63,6 +67,30 @@ port_owner() { lsof -nP -iTCP:"$1" -sTCP:LISTEN -t 2>/dev/null | head -1; }
 # Kedua port diperiksa sekaligus, lalu dilaporkan bersama. Berhenti pada konflik pertama
 # memaksa menebak satu per satu — dan pesan yang menyebut port lain mudah disangka
 # "semua port dipakai", padahal yang bentrok cuma satu.
+# --free-ports: lepaskan port lebih dulu. PID sengaja diselesaikan di sini, bukan dihafal —
+# server dev yatim muncul dengan PID baru setiap kali, jadi PID yang ditulis tangan cepat basi.
+free_port() {
+  local port=$1 label=$2 pid owner
+  pid="$(port_owner "$port")" || true
+  [ -z "$pid" ] && return 0
+  owner="$(ps -p "$pid" -o comm= 2>/dev/null | sed 's|.*/||' || true)"
+  log "Melepaskan port $port ($label): kill $pid (${owner:-tak dikenal})"
+  kill "$pid" 2>/dev/null || true
+  # Beri kesempatan berhenti rapi; paksa bila keras kepala.
+  for _ in 1 2 3 4 5 6 7 8 9 10; do
+    [ -z "$(port_owner "$port")" ] && return 0
+    sleep 0.5
+  done
+  pid="$(port_owner "$port")" || true
+  [ -n "$pid" ] && kill -9 "$pid" 2>/dev/null || true
+  sleep 0.5
+}
+
+if [ "$FREE_PORTS" -eq 1 ]; then
+  free_port "$API_PORT" api
+  free_port "$WEB_PORT" web
+fi
+
 CONFLICTS=""
 check_port() {
   local port=$1 label=$2 pid owner
@@ -81,6 +109,7 @@ if [ -n "$CONFLICTS" ]; then
   printf '%s[dev]%s Tidak bisa mulai — port berikut sudah terpakai:\n%s' "$C_ERR" "$C_OFF" "$CONFLICTS" >&2
   printf '%s[dev]%s Port lain sudah dicek dan bebas; hanya yang tercantum di atas yang bentrok.\n' "$C_ERR" "$C_OFF" >&2
   printf '%s[dev]%s Biang keroknya biasanya server dev dari terminal lama yang sudah ditutup.\n' "$C_ERR" "$C_OFF" >&2
+  printf '%s[dev]%s Bereskan sekalian lalu mulai: ./scripts/dev.sh --free-ports\n' "$C_ERR" "$C_OFF" >&2
   exit 1
 fi
 

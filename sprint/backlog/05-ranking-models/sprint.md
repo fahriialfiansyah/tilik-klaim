@@ -1,6 +1,6 @@
 # Sprint 05 — Ranking Models
 
-**Status:** 📋 Planned
+**Status:** ✅ Done
 **Created At:** 2026-08-30
 **Gate:** G6 — Evaluation evidence · **Deadline:** 12 September 2026
 **Owner:** M1 — Technical & AI
@@ -51,4 +51,26 @@ Source: `docs/HEALTHKATHON_2026_WINNING_MASTER_PLAN.docx` § 20 *Important const
 
 ## Outcome
 
-(Filled in when the sprint moves to `archive/`.)
+`packages/model` is built, tested, and behind one call site. Three of the four acceptance
+clauses are met and asserted:
+
+- **Reproducible** — a saved model reloads and reproduces identical predictions
+  (`tests/test_serialization.py`), and the forest's random state is pinned to the corpus seed.
+- **No injection fields present** — the leakage probe re-identifies the whole corpus and asserts
+  the feature table does not move, which covers the injector suffix, the record ordinal, and
+  anything else an identifier could carry.
+- **A text-only signal cannot produce the highest band** — the ceiling is applied to the
+  similarity *component*, so no combination of inputs routes around it.
+
+The fourth clause — *produces incremental precision@K / recall@K **or is removed*** — is
+measured in Sprint 06, which shares this sprint's G6 gate. **Removal remains a live outcome**,
+and the layer was built so that taking it is a single revert: nothing outside `packages/model`
+imports any module in it, and no score reaches a wire model.
+
+Delivered: 71 tests in `packages/model`; 21 features across the six named families; a character
+n-gram TF-IDF similarity baseline; an Isolation Forest over robustly scaled peer features; band
+thresholds fitted on validation only, with `fit` refusing any other partition by name; and a
+model card generator that states its metrics are pending rather than quoting one nobody measured.
+
+Not yet produced: a rendered `MODEL_CARD.md` for the published corpus, which waits on the
+`packages/data/build/` regeneration decision in `docs/HANDOVER.md` § 7 blocker 1.

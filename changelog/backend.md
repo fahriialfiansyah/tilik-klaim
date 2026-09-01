@@ -289,3 +289,62 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 > `X-Actor-Role` is named as role simulation rather than dressed up as a token — enterprise IAM
 > is out of scope and a credential-shaped header would invite the wrong assumption.
 > Verified: 269 passed with Postgres · 255 passed and 14 skipped without it · ruff clean.
+
+### 2026-09-01 · [Sprint 01 — synthetic-data](../sprint/backlog/01-synthetic-data/sprint.md) · Fix: published artifacts did not join · 🔧 Code done, regeneration pending
+
+**Event:** `write_artifacts` published the corpus from before the injector scrub
+**Files:** `packages/data/src/tilik_data/{leakage,pipeline}.py`, `packages/data/tests/{test_artifacts,test_leakage}.py`
+> `write_artifacts` wrote `result.corpus.bundles` — the corpus **before**
+> `strip_injector_traces` ran. So `corpus.json` still carried the injector tell (120 of 1,120
+> ids shaped like `BND-00008-U798`), `split.json` held the renamed ids and shared **zero**
+> overlap with it, and `manifest.corpus_hash` hashed a corpus nobody published. The leakage
+> probe reported a pass because it ran on `cleaned`, which never reached disk. `write_artifacts`
+> had no test at all, which is why this survived from Sprint 01 to Sprint 05.
+> `BuildResult` now carries **only** the scrubbed bundles and the labels renamed to match, so
+> reaching past the scrub is unrepresentable rather than merely fixed.
+> **The scrub itself was incomplete.** It rewrote `bundle_id` and nothing else, leaving
+> `CLM-00008-U798` and `LN-00008-1-U798` inside the record saying the same thing one level down
+> — invisible to a probe that only reads bundle ids, and contradicting Sprint 01's own note that
+> it "regenerates every identifier". It now rewrites every injector-marked identifier through
+> one rename map, and the labels are carried through that same map so ground truth still joins.
+> `tests/test_artifacts.py` asserts on the **files**, not the in-memory result: the three files
+> share one id space, every label target and evidence ref resolves, the manifest describes the
+> corpus actually written, and no published string anywhere carries an injector suffix.
+> **`test_set_digest` is unchanged** by the fix — `ed903a4c39656e…` before and after, along with
+> every partition count, the split membership, and the leakage margin. The frozen split is not
+> re-frozen; only `corpus_hash` moves, and it moves because the old value described a corpus
+> that was never written. **Regeneration awaits the owner's decision** (`docs/HANDOVER.md` § 7).
+> Verified: data 57 passed (was 47) · backend 312 · domain 23 · model 71 · web 91 · tsc clean · ruff clean.
+
+### 2026-09-01 · [Sprint 05 — ranking-models](../sprint/backlog/05-ranking-models/sprint.md) · Backend: [similarity & anomaly baselines](../sprint/backlog/05-ranking-models/backend/01-similarity-anomaly.md) · ✅ Done
+
+**Event:** `packages/model` created — ranking baselines behind a single call site
+**Files:** `packages/model/src/tilik_model/{feature_schema,features,measures,similarity,anomaly,calibration,ranking,persistence,dataset,model_card,version}.py`, `packages/model/tests/`
+> 21 features across the six families the canonical model card names, a character n-gram TF-IDF
+> similarity baseline, and an Isolation Forest over robustly scaled peer features. The
+> aggregation is the specified `max(deterministic, calibrated_similarity, calibrated_anomaly)`
+> with all three caps, applied in one place and recorded by name on every result.
+> **The caps are ordered deliberately.** The similarity ceiling is applied to the *component*,
+> so no combination of inputs lets text lift a case into a high band. The duplicate-fingerprint
+> floor raises an exact duplicate — a floor on queue position, nothing more. The
+> incomplete-bundle step-down comes **last**, because it is the cap that protects against a false
+> accusation and must override the other two; it never drops a case below *needs context*, so a
+> raised case stays visible while ceasing to be urgent.
+> **The leakage probe re-identifies the whole corpus and refits the peer profile on it**, then
+> asserts the feature table does not move. That is stronger than checking no injector field was
+> copied into a column: it proves no feature reads an identifier at all. A companion test plants
+> an id-reading feature and confirms the probe catches it.
+> **Thresholds are fitted on validation only, and `BandCalibration.fit` refuses any other
+> partition by name** rather than trusting the caller. A statistical score can never reach
+> `DETERMINISTIC_CONFLICT`, and the model emits no disposition other than *request evidence*.
+> **Training would have seen test participants.** The split groups by
+> `(participant, facility, time block)`, so a participant can appear in two partitions at another
+> facility or in another month: 125 of 140 test participants also appear in train, and 299 of 674
+> training bundles are contaminated. Rather than re-cut a split announced as frozen, the
+> contamination is dropped on the training side and the count reported.
+> **A band raised only by a model score has no reason to show a reviewer.** Suppressing those
+> would be a fourth cap the canonical card does not specify, so each is flagged
+> `explained_by_reasons: false` and named in the model card's limitations; Sprint 06 decides.
+> Nothing outside the package imports any module in it and no score reaches a wire model, so the
+> sprint's removal clause stays a single revert.
+> Verified: model 71 passed · backend 312 · domain 23 · data 57 · web 91 · tsc clean · ruff clean.
