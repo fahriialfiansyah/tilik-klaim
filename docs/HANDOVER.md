@@ -1,18 +1,19 @@
 # HANDOVER — TilikKlaim
 
 State snapshot for picking this up in a fresh session.
-Pair with [`sprint/01-sprint-planning.md`](../sprint/01-sprint-planning.md), `changelog/{backend,web}.md`, and `docs/canonical/`.
+Pair with [`sprint/01-sprint-planning.md`](../sprint/01-sprint-planning.md),
+`changelog/{backend,web}.md`, `docs/canonical/`, and [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md).
 
 - Repo: `/Users/fahrialfiansyah121gmail.com/Documents/HEALTHKATHON-2026/tilik-klaim`
-- Branch: `development` · 16 commits, HEAD `a108950`, **working tree dirty — sprint 04 frontend
-  task 02 is finished but uncommitted, awaiting the owner's review**. In sync with a PUBLIC
-  GitHub remote (`github.com/fahriialfiansyah/tilik-klaim`) — do not push without asking
+- Branch: `development` · 18 commits, HEAD `3c661e7`, tree clean except `scripts/dev.sh`
+  (the owner's own in-progress `--free-ports` flag). **In sync with a PUBLIC GitHub remote**
+  (`github.com/fahriialfiansyah/tilik-klaim`) — do not push without asking.
 - Companion: [`CONTINUE-PROMPT.md`](./CONTINUE-PROMPT.md) boots a fresh session into the next
-  task; [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md) is what the owner checks by eye
+  task; [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md) is what the owner checks by eye.
 - Goal: a claim-evidence integrity layer that screens synthetic SATUSEHAT-shaped JKN claim
   bundles for four facility risk patterns and requires a logged human disposition. Healthkathon
   2026 entry, category *Efisiensi Risiko pada Fasilitas Kesehatan*; proposal due **19 September
-  2026** (internal upload target 18 Sep)
+  2026** (internal upload target 18 Sep).
 
 ---
 
@@ -30,154 +31,94 @@ them out).
 billed-but-unevidenced service look identical at the schema level. Conflating them is how this
 system would manufacture a false accusation. So:
 
-- ingestion returns three states, and `VALID_WITH_NOTES` is *not* a softer `INVALID`;
-- **a billed line with no supporting reference is a finding, not a completeness note.** An earlier
-  version recorded it as incompleteness, which lowered certainty and would have defused the
-  phantom detector entirely. `test_an_unevidenced_line_is_a_finding_not_a_completeness_note` locks
-  this;
+- ingestion returns three states, and `VALID_WITH_NOTES` is *not* a softer `INVALID` — it still
+  screens, and the ingest screen's tests assert exactly that;
+- **a billed line with no supporting reference is a finding, not a completeness note.** An
+  earlier version recorded it as incompleteness, which lowered certainty and would have defused
+  the phantom detector entirely;
 - an incomplete bundle *lowers* the band and routes to `REQUEST_EVIDENCE`, never toward
   `CONFIRM_ANOMALY`;
 - case detail keeps `NOT_ASSESSABLE` distinct from `UNSUPPORTED`.
 
-**Cloning is a per-provider pattern across different patients**, not per-patient. This cost a real
-defect: `history_for()` scopes to same participant + provider (correct for repeat and unbundling),
-which made clone detection silently inert through the API while service-level tests passed.
-`peer_documents_for(provider_id)` now returns **only `DocumentRef`** — notes cross that wider
-boundary, whole bundles never do.
+**Cloning is a per-provider pattern across different patients**, not per-patient.
+`history_for()` scopes to same participant + provider (correct for repeat and unbundling);
+`peer_documents_for(provider_id)` crosses the wider boundary and returns **only `DocumentRef`** —
+notes cross, whole bundles never do.
 
 **Three doc layers, one writer per fact.** `docs/canonical/` is read-only (change only via a new
 ADR); `brief/` is the product blueprint in Indonesian; `sprint/` holds plans and task files in
 English. Never restate a fact across layers.
 
 **No LLM anywhere in the risk path, and no agents** (ADR-0002). The Workforce Manifest holds only
-`be_service` and `fe_shell`.
+`be_service` and `fe_shell`. This binds sprint 05 directly: no LLM and no GNN in the score.
+
+**Sprint 05's kill criterion is a designed outcome, not a failure mode.** If the hybrid adds no
+measurable value over rules-only, the ML layer is **removed** and TilikKlaim ships rules-only.
+`docs/canonical/01_product_decision.md` says so explicitly: *"this is not a product kill."*
+Reporting that honestly is stronger evidence of method than a marginal gain would be — so do not
+tune until something looks better.
 
 ## 2. Done so far
 
 | Sprint | Gate | Status | Evidence |
 |---|---|---|---|
 | 00 — foundation | — | ✅ Done | both apps scaffolded and green |
-| 01 — synthetic-data | G3 · 2 Sep | ✅ **Done, gate met early** | 1,120 bundles · 240 injections · leakage margin +0.0009 |
+| 01 — synthetic-data | G3 · 2 Sep | ✅ **Done, gate met early** | 1,120 bundles · 240 injections · leakage margin +0.0009 — **but see § 7 blocker 1** |
 | 02 — ingest-validation | G4 · 5 Sep | ✅ Done | `POST /v1/bundles` + screen endpoint live on Postgres |
 | 03 — evidence-rules | G4 · 5 Sep | ✅ **Done, gate met early** | 10 edge types, 4 risk modes, all caps enforced |
-| 04 — review-slice | G5 · 9 Sep | ✅ **Done, gate met early** | `/`, `/cases/:id`, and `/ingest` all live on the real API; 14 Playwright specs green |
-| 05 — ranking-models | G6 · 12 Sep | 📋 Planned | — |
+| 04 — review-slice | G5 · 9 Sep | ✅ **Done, gate met early** | all three screens live on the real API; 14 Playwright specs green in 9.8 s |
+| 05 — ranking-models | G6 · 12 Sep | 📋 **Next** | `packages/model/` is an empty placeholder |
 | 06 — evaluation-report | G6 · 12 Sep | 📋 Planned | one endpoint still 501 |
-| 07 — demo-hardening | G8 · 17 Sep | 📋 Planned | — |
+| 07 — demo-hardening | G8 · 17 Sep | 📋 Planned | owns the demo/reset route |
 
-**Verified this session** (re-run immediately before writing this):
+**Verified immediately before writing this:**
 
 ```
 backend 312 passed · domain 23 passed · data 47 passed · web 91 passed · tsc clean
-playwright 14 passed in 9.6s · ruff: All checks passed
+playwright 14 passed in 9.8s · ruff: All checks passed
 rsbuild 666.7 kB (390.0 kB gzip) · alembic head d1a7c3e50f42
 ```
 
-The bundle grew from 551.4 kB because the case-detail feature and `@radix-ui/react-dialog`
-landed. **Playwright is installed** — `@playwright/test` plus Chromium, config in
-`apps/web/playwright.config.ts`, specs in `apps/web/tests/e2e/`, run with
-`(cd apps/web && npm run test:e2e)`. It needs the API, the web dev server, and a **freshly
-seeded** database; it reuses an already-running `npm run dev` rather than starting a second.
-
-**Six of seven frozen endpoints are live.** Only `GET /v1/evaluations/{run_id}` still answers 501
+**Six of seven frozen endpoints are live.** Only `GET /v1/evaluations/{run_id}` answers 501
 naming sprint 06; `test_the_implemented_endpoints_no_longer_answer_501` guards against a
 placeholder being left in front of working behaviour.
 
-The full vertical slice runs end to end against real Postgres: ingest → screen → queue → detail →
-disposition → audit, with all four risk modes firing and a stale write refused.
+**All three operator screens are complete**, each verified in a browser rather than only by test:
+`/` (Antrean Review), `/cases/:id` (Detail Kasus — 27 widgets, five binding display rules), and
+`/ingest` (Ingest / Demo — 11 widgets, three validation states). `/evaluation` is still a
+placeholder and belongs to sprint 06. The full path — ingest → screen → queue → detail →
+disposition → audit — runs end to end against real Postgres with all four risk modes firing and a
+stale write refused.
 
-**Sprint 04 frontend, task 02 is done.** `/cases/:id` renders all 27 widgets against the live
-seeded API: three columns, a source drawer, a comparison drawer, a confirmation dialog, and an
-audit tab. All five binding display rules are implemented and each is asserted — reason before
-score, counter-evidence outside the collapsible, a single-track evidence path, every reference
-openable, and the whole flow keyboard-operable. Details in `changelog/{web,backend}.md`; the
-click-through and 16 screenshots are in `docs/qa/MANUAL-QA.md` § 1b.
+**Manual QA is in [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md)** with 30 screenshots across three
+folders: five queue states, sixteen case-detail states (including the stale-version banner, the
+save failure, the not-found page and the loading skeleton), and nine ingest states (all three
+validation outcomes, both refusal paths, the identical-bundle notice, the service failure).
+`docs/` is gitignored, so those screenshots live locally only.
 
-**The screen needed four additive API changes**, all defaulted fields that leave the frozen
-contract and the committed fixtures intact. Each was a display rule that could not be met
-correctly in the client, and three of them looked finished until the page was open:
-
-| Change | What was wrong before |
-|---|---|
-| `counter_evidence_notes` | The rules wrote the sentence; the DTO shipped only the refs. Widget 13 was a bare resource id under a "counter-evidence" heading — a heading with no argument under it |
-| `sources` (four availabilities) | Nothing resolved a reference to anything, so "every reference must open" had no mechanism. `MISSING` is *recorded* rather than omitted, because a dropped reference renders as a shorter list |
-| real `ComparisonField`s | `fields` came from the reason's own component scores with left = right and `matches` hard-coded true — a comparison in which nothing could differ |
-| `expected_support` on the catalog | `required_evidence` is what the *reason* needs to be well formed. Rendering it as "expected evidence" told the reviewer everything had been found, on a phantom case whose whole finding is an absence |
-
-Reasons are now ordered strongest-first **in the response**, once, so the queue row, the case
-header, and the reason cards cannot disagree about what to read first.
-
-**Two more defects were only visible in a browser**, and one only with a keyboard:
-`scripts/seed_dev.py` cleared bundles but not cases, leaving orphan cases pointing at deleted
-ingestions so the detail endpoint answered `lines: []` on data that looked freshly seeded; and
-closing any drawer dropped focus to `<body>`, because Radix restores focus to a `DialogTrigger`
-this app does not use. Both are recorded in `docs/qa/MANUAL-QA.md` § 3.
-
-**Sprint 04 frontend, task 03 is done — the sprint is closed.** `/ingest` renders widgets 1–11:
-a drop zone whose limits are readable before an upload, the five curated scenarios, the
-validation report, the error table, the copyable input hash, and exactly one button. The absence
-of a configuration wizard is the feature, and it is enforced by the contract as well as the UI —
-`ScreenRequest` carries no detector, threshold, or mode to offer.
-
-**The five samples are generated, not copied.** `apps/backend/scripts/export_demo_samples.py`
-writes them from the gold fixtures into `apps/web/public/samples/`; `tests/test_demo_samples.py`
-fails if they drift, if a scenario loses the history its cross-claim rules need, or if a
-fixture's **answer key** ever reaches the browser. Static files rather than a new endpoint,
-because sprint 07 owns the demo/reset route and the demo has to run with no external network.
-
-**One defect worth carrying forward: a refused bundle is not a broken service.** The API refuses
-along two paths — a `4xx` envelope before parsing (oversized, malformed, too deep) and a `200`
-report with `status: INVALID` after it. A plain `catch` renders the first as "the request
-failed" and offers a retry on a file that will be refused identically every time, while hiding
-the stable code the operator needs. `ApiError` now carries the server's `issues`, and
-`features/review/ingest/rejection.ts` maps all three refusal sources onto one status.
-
-**Design.** The team's mockup landed and was unpacked: `design/tokens.css` (35 colour tokens × 2
-themes, plus type scale, spacing, radius, semantic band aliases), `design/mockup/reference.html`
-(readable markup for all four screens — the bundle itself is one 405 kB base64 line), and
-`design/mockup/unpack.py` so the next revision resyncs mechanically. Contrast measured: all five
-status bands clear AA in both themes; `--t-3` was corrected to `#6b7977` (4.54:1).
-
-**Toolchain installed 1 Sep** after an explicit go-ahead: **Tailwind v4 + shadcn/ui**. Tailwind v4
-is CSS-first, so there is no `tailwind.config.ts` — the theme is a `@theme inline` block in
-`apps/web/src/styles/app.css` pointing at `src/styles/tokens.css`, which is a literal `cp` of
-`design/tokens.css`. **Tailwind's default colour palette is deleted** (`--color-*: initial`) so
-`bg-red-500` no longer exists: red-only-for-conflict and green-only-for-completed-actions are now
-enforced by the build instead of by review. Fonts are self-hosted (`@fontsource`, latin subsets
-only) because the demo runs offline.
-
-**Sprint 04 frontend, tasks 00 and 01 are done.** `/` (Antrean Review) renders from the live
-seeded API: five operational metrics that each apply their own filter, server-side filters for
-status/mode/band/date-range/search, four server-side sort keys, and a queue whose first column is
-the working-language reason sentence. All four empty-and-error states are visually distinct and
-were each confirmed in the browser, not only by test.
-
-**Four defects were found by looking at the running page rather than by the compiler**, and all
-four are the kind that pass review:
+**Defects worth carrying forward — every one was found by opening the page or reading the actual
+payload, not by the compiler or the test suite:**
 
 | Defect | Why it was invisible |
 |---|---|
-| Queue and case detail disagreed about evidence completeness on **every** case | `evidence_completeness()` fell back to the count of *unsupported* lines, so `supported_lines` was 0 by construction. The queue said "Tidak ada baris tertagih" about fully supported claims — a plausible-looking sentence that was simply false. Fixed by recording `billed_line_count` at screening (migration `d1a7c3e50f42`) |
-| **Every** Button lost its text colour | `tailwind-merge` only knows Tailwind's stock type scale, so it read `text-body-lg` as a *colour*, judged it to conflict with `text-brand-on`, and kept the last. Primary buttons rendered near-black on dark teal at **2.5:1**. `cn()` now declares the project's scale |
-| `--t-3` failed AA on two of three surfaces | August's correction measured it only against `--s-card`. The app also paints it on `--s-sunk` (4.33:1) and `--s-page` (4.07:1). Corrected to `#63706e` |
-| `sort=age&order=desc` returned the **newest** case | Age displays as `now - screened_at`, which moves opposite to the timestamp being sorted — so "descending" meant "largest" on Amount and "smallest" on Age, from the same control |
+| Queue and case detail disagreed about evidence completeness on **every** case | `evidence_completeness()` fell back to the count of *unsupported* lines, so `supported_lines` was 0 by construction. Fixed by recording `billed_line_count` at screening (migration `d1a7c3e50f42`) |
+| **Every** Button lost its text colour | `tailwind-merge` read `text-body-lg` as a *colour* and dropped `text-brand-on`. Primary buttons rendered at **2.5:1**. `cn()` now declares the project's type scale in `src/lib/utils.ts` |
+| Counter-evidence reached the screen as a bare resource id | The rules wrote the sentence; the DTO shipped only the refs. Widget 13 was a heading with no argument under it |
+| The comparison drawer compared a number to itself | `fields` came from the reason's own component scores, left = right, `matches` hard-coded true |
+| "Expected evidence" reported everything found on a phantom case | `required_evidence` (what the *reason* needs to be well formed) was rendered where `expected_support` (what should back the *billed line*) belonged |
+| Focus fell to `<body>` when any drawer closed | Radix restores focus to `DialogTrigger`, which this app never uses, and `preventDefault()`s the browser's own restore. Invisible with a mouse |
+| A refused bundle was reported as a broken service | The API refuses along two paths — `4xx` before parsing, `200` + `INVALID` after — and a plain `catch` offered a retry on a file that would be refused identically every time |
+| `seed_dev.py` cleared bundles but not cases | Orphan cases pointed at deleted ingestions, so case detail answered `lines: []` on data that looked freshly seeded |
+| `docs/api/openapi.json` sat two sprints stale | Regenerating it was a manual step nobody remembered. `scripts/export_openapi.py` now exists; run it after any router or DTO change |
 
-The lesson generalises: **measure the rendered page, not the token file.** Contrast was
-"verified" in August from token values alone and three of those checks were wrong.
-
-**Manual QA lives in [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md)** — five queue states in
-`qa/2026-09-01-antrean-review/`, sixteen case-detail states in `qa/2026-09-01-detail-kasus/`
-(including the stale-version banner, the save failure, the not-found page, and the loading
-skeleton), and nine ingest states in `qa/2026-09-01-ingest/` (all three validation outcomes,
-both refusal paths, the identical-bundle notice, and the service failure). Every session that adds a screen appends a section there — the owner verifies wording
-and colour meaning by eye, which no test does. `docs/` is gitignored, so these live locally
-only.
+The lesson generalises, and is why `qa/MANUAL-QA.md` exists: **measure the rendered page and the
+actual payload, not the source you just wrote.**
 
 ## 3. Environment
 
-- **Python**: `uv` manages 3.11. System Python is 3.9 and too old. Never activate a venv manually —
-  `uv run` handles it.
-- **Node**: 20.x for `apps/web`.
+- **Python**: `uv` manages 3.11. System Python is 3.9 and too old. Never activate a venv
+  manually — `uv run` handles it.
+- **Node**: 20.x for `apps/web`. **Playwright** (`@playwright/test` + Chromium) is installed.
 - **Postgres 16** via Docker Compose, container `tilik_klaim_db`, **host port 55432** on this
   machine (`DB_PORT` in the repo-root `.env`; the compose default is still 5432 for teammates).
 - **Docker Desktop dies often here.** `open -a Docker`, then wait for `docker info` to answer.
@@ -186,146 +127,203 @@ only.
 - **The backend runs with no database at all**, falling back to in-memory stores. That is a
   requirement, not a convenience: the demo runbook needs an offline run and the frontend team has
   no Docker. Without Postgres, 14 integration tests `skip` — they do not fail.
+- **ML dependencies are already declared.** `apps/backend/pyproject.toml` carries
+  `scikit-learn>=1.5` and `pandas>=2.2`. `packages/model/` is an empty placeholder holding only a
+  README; sprint 05 writes its `pyproject.toml` — copy the shape of `packages/data/pyproject.toml`,
+  which shows the `[tool.uv.sources]` editable-path pattern for depending on `tilik-domain`.
 
 ## 4. Build / run / test / verify
 
 ```bash
-# --- database (optional; API runs without it) ---
+# --- everything at once (API + Web + Postgres + migrations; Ctrl-C stops all) ---
+./scripts/dev.sh --db
+(cd apps/backend && uv run python scripts/seed_dev.py)   # once, after the DB is up
+
+# --- or piecemeal ---
 open -a Docker && sleep 25                    # macOS; daemon is flaky here
-docker compose up -d db                       # waits ~10s to report healthy
-cd apps/backend && uv run alembic upgrade head
-uv run python scripts/seed_dev.py             # 5 gold scenarios, ingested + screened
-
-# --- the verify commands; run ALL after every change ---
-(cd apps/backend   && uv run pytest)          # expect 285 passed (271 + 14 skipped without DB)
-(cd packages/domain && uv run pytest)         # expect 21 passed
-(cd packages/data  && uv run pytest)          # expect 47 passed
-(cd apps/web       && npx tsc --noEmit)       # expect silence
-(cd apps/web       && npm test)               # expect 18 passed (vitest)
-(cd apps/backend   && uv run ruff check app tests)   # expect "All checks passed!"
-
-# --- run the services ---
+docker compose up -d db                       # ~10s to report healthy
+(cd apps/backend && uv run alembic upgrade head)
 (cd apps/backend && uv run uvicorn app.main:app --reload --port 8000)
-(cd apps/web     && npm run dev)              # :3000
+(cd apps/web     && npm run dev)              # :3000, proxies /v1 to :8000
 
-# --- regenerate the synthetic corpus (deterministic) ---
+# --- the six verify commands; run ALL after every change, and report the counts ---
+(cd apps/backend    && uv run pytest)                 # expect 312 passed
+(cd packages/domain && uv run pytest)                 # expect 23 passed
+(cd packages/data   && uv run pytest)                 # expect 47 passed
+(cd apps/web        && npx tsc --noEmit)              # expect silence
+(cd apps/web        && npm test)                      # expect 91 passed (vitest)
+(cd apps/backend    && uv run ruff check app tests)   # expect "All checks passed!"
+
+# --- end-to-end (needs API + web up and a FRESH seed) ---
+(cd apps/backend && uv run python scripts/seed_dev.py)
+(cd apps/web && npm run test:e2e)             # expect 14 passed, ~10s
+
+# --- generated artifacts: regenerate after any change to what they describe ---
+(cd apps/backend && uv run python scripts/export_openapi.py)        # docs/api/openapi.json
+(cd apps/backend && uv run python scripts/export_demo_samples.py)   # apps/web/public/samples/
 (cd packages/data && uv run python -m tilik_data.pipeline --out build)
 
 # --- DBeaver / any SQL client ---
 # host localhost · port 55432 · db tilik_klaim · user tilik · password tilik
 ```
 
+**How a visible change is verified:** load the affected screen at <http://localhost:3000> against
+a seeded database and look at it. Screenshots of every state go to `docs/qa/<date>-<screen>/` with
+a numbered click-through appended to `docs/qa/MANUAL-QA.md` — the owner checks those by eye in the
+morning, which is the whole point of the folder.
+
 ## 5. Conventions & gotchas
 
 **Conventions.** Conventional Commits, one line, no watermark trailer. Code identifiers in
-English, user-facing text in Indonesian. Backend code in `apps/backend/app/{router,service,dto,store}/`;
-shared types in `packages/domain`; generator in `packages/data`; frontend domain components in
+English, user-facing text in Indonesian. Backend code in
+`apps/backend/app/{router,service,dto,store}/`; shared types in `packages/domain`; generator in
+`packages/data`; models in `packages/model`; frontend domain components in
 `apps/web/src/features/{domain}/{feature}/components/` — **never** bare `src/components/`;
-navigation only in `src/config/menu/*`. Immutable models (`frozen=True`), files 200–400 lines,
-functions under 50, explicit error handling, no magic numbers. When a task completes: tick every
-`## TODOs` box, set the top-of-file `**Status:** ✅ Done` (the header is the source of truth), and
-append to `changelog/{backend,web}.md`.
+navigation only in `src/config/menu/*`; bounded scroll regions use `PerfectScrollArea`. Immutable
+models (`frozen=True`), files 200–400 lines, functions under 50, explicit error handling, no magic
+numbers. TDD: write the failing test first. When a task completes: tick every `## TODOs` box, set
+the top-of-file `**Status:** ✅ Done` (the header is the source of truth), and append to
+`changelog/{backend,web}.md`. Completed sprints stay in `sprint/backlog/` in this repo — sprints
+00–04 all did; flip the status in `sprint/01-sprint-planning.md` rather than moving folders.
 
-**Traps hit this session, with the fix:**
+**Tailwind v4 is CSS-first — there is no `tailwind.config.ts`.** The theme is an `@theme inline`
+block in `apps/web/src/styles/app.css` pointing at `src/styles/tokens.css`, a literal `cp` of
+`design/tokens.css`. **Tailwind's default colour palette is deleted** (`--color-*: initial`), so
+`bg-red-500` produces nothing on purpose: red-only-for-conflict and green-only-for-completed-
+actions are enforced by the build rather than by review. Use the semantic names (`bg-card`,
+`text-ink`, `border-line`, `bg-brand`, `text-band-conflict`, `bg-notice-bg`, `text-done`).
+
+**Traps hit across these sessions, with the fix:**
 
 | Trap | Fix |
 |---|---|
 | `uv run pytest` **empties the dev database** — fixtures call `clear()` on the same `DATABASE_URL` | re-seed with `scripts/seed_dev.py`; a separate test database is still owed |
-| Port 5432 gets stolen by **VS Code's automatic port forwarding** after a container stops; symptom is a healthy container but *password authentication failed for user "tilik"* | `lsof -nP -iTCP:5432 -sTCP:LISTEN` to find the owner; this machine uses `DB_PORT=55432` |
-| `ruff` B008 on `Depends()` in argument defaults | use `Annotated[T, Depends(f)]`, the modern FastAPI form |
+| Port 5432 gets stolen by **VS Code's automatic port forwarding**; symptom is a healthy container but *password authentication failed for user "tilik"* | `lsof -nP -iTCP:5432 -sTCP:LISTEN`; this machine uses `DB_PORT=55432` |
+| Orphaned dev servers hold :3000/:8000 after a terminal closes | `./scripts/dev.sh --free-ports` (the owner's uncommitted addition), or `pkill -f rsbuild` / `pkill -f "uvicorn app.main:app"` |
+| `ruff` B008 on `Depends()` in argument defaults | use `Annotated[T, Depends(f)]` |
 | `SourceType` has no `EMR`/`BILLING` — only `SYNTHETIC_GENERATOR`, `UPLOADED_BUNDLE`, `GOLD_FIXTURE` | correct as-is: provenance records how a record entered *this* system |
 | `ClaimStatus` has no `SUBMITTED` (`DRAFT`/`ACTIVE`/`CANCELLED`/`ENTERED_IN_ERROR`) | use `ACTIVE` |
 | Service-level tests passing `fixture.history` directly **hid a live defect** | test cross-claim behaviour at the **API** level, where the store lookup actually runs |
 | A text search for forbidden words flags the docstring that forbids them | walk the AST, or match multi-word phrases |
 | macOS has no `timeout` | `curl --max-time` |
-| `scripts/seed_dev.py` cleared bundles but not cases, so orphan cases pointed at deleted ingestions and `GET /v1/cases/{id}` answered `lines: []` | fixed — it now clears every store; if a case detail ever looks empty again, check the case's `ingestion_id` still exists |
 | A visually hidden (`sr-only`) form input is no longer where it looks, so clicks land on the label and pointer hit-testing misses it | style the real control in place with `appearance-none`; `bg-clip-content` plus padding draws a radio's dot |
-| Radix `Dialog` restores focus to `DialogTrigger`, which this app never uses — so it `preventDefault()`s the browser restore and focus falls to `<body>` | `components/ui/dialog.tsx` captures the focused element during render and restores it in `onCloseAutoFocus` |
 | Conditionally rendering `DialogContent` alongside its own `open` state unmounts it before Radix's close cleanup runs | `lib/useLastPresent.ts` keeps the last value for the closing frame |
+| Generated artifacts drift the moment regenerating becomes a step someone must remember | both exporters now have a script, and the demo samples have drift tests. Run them |
 
 **Do not:** run `.claude/skills/bootstrap-project/scripts/init_boilerplate.sh` (targets an
-unreachable internal host; its `unzip -o` would overwrite `apps/`). Do not blind-`cat >` a file you
-have not read. Do not swap Postgres for Supabase (decided; `docs/canonical/03_architecture.md`
+unreachable internal host; its `unzip -o` would overwrite `apps/`). Do not blind-`cat >` a file
+you have not read. Do not swap Postgres for Supabase (decided; `docs/canonical/03_architecture.md`
 governs). Do not fill `sqlalchemy.url` in `alembic.ini` — `migrations/env.py` reads it from
 `app.config` so the service and its migrations cannot diverge.
 
 ## 6. Next steps
 
-1. **Sprint 05 — ranking models is next** (G6, 12 Sep). Sprint 04 is closed: all three
-   user-facing screens are live against the real API, and `/evaluation` is the only route still
-   a placeholder — it belongs to sprint 06.
+1. **Fix the corpus/split artifact mismatch before anything else in sprint 05** — see § 7
+   blocker 1. Sprint 05's task declares a dependency on the frozen grouped split, and that split
+   currently cannot be joined to the published corpus at all. Small change, but everything
+   downstream rests on it, and one decision inside it is the owner's.
 
-   Note sprint 05's kill criterion before starting: if the hybrid adds no measurable value over
-   rules-only, ML is **removed**, and that is an anticipated outcome rather than a failure. See
-   item 3 in blockers before acting on it.
+2. **Sprint 05 — ranking models** (G6, 12 Sep), one task:
+   [`sprint/backlog/05-ranking-models/backend/01-similarity-anomaly.md`](../sprint/backlog/05-ranking-models/backend/01-similarity-anomaly.md).
+   Autonomous, and long. It creates `packages/model/` from scratch: six feature families, a
+   TF-IDF character n-gram or MinHash similarity baseline, an Isolation Forest or LOF anomaly
+   baseline, band calibration **on validation data only**, and a model card.
 
-   Everything the next screen needs already exists: `components/ui/dialog.tsx` (a Radix drawer
-   and modal with focus return fixed), `ExpandableText`, `lib/useLastPresent.ts`,
-   `withStop`/`formatIfTimestamp` in `features/review/shared/format.ts`, the
-   `{api,store,use*}.ts` pattern for server state beside persisted client state, and the
-   Playwright harness — a new spec drops into `apps/web/tests/e2e/`, and `tests/e2e/helpers.ts`
-   looks cases up by risk mode rather than by a pinned identifier so a re-seed cannot break it.
-2. **Sprint 05 — ranking models** (G6, 12 Sep). Note the kill criterion: if the hybrid adds no
-   measurable value over rules-only, ML is *removed*, and that is an anticipated outcome rather
-   than a failure. See item 3 in blockers before acting on it.
-3. **Sprint 06 — evaluation report** (G6). The last 501 endpoint. The corpus, labels, frozen
-   split, and leakage report already exist in `packages/data/build/`.
-4. **Sprint 07 — demo hardening** (G8, 17 Sep).
-5. **Proposal work, unscheduled but real.** Four gaps were identified against the competition
-   guidance and none is code: payer/customer identification, business case framed as a cost model
-   with stated assumptions (never a savings claim), field user validation, and impact on
-   underserved regions. Details in the analysis recorded earlier this session; the affected file
-   is `docs/canonical/09_proposal_evidence_map.md`.
+   Read `docs/canonical/05_model_card.md` § Feature families and § Risk aggregation first — the
+   aggregation formula and all three caps are specified there verbatim, so they are not design
+   decisions to make. The formula is
+   `priority = max(deterministic_priority, calibrated_similarity, calibrated_anomaly)`, and the
+   three caps already exist in the rules layer and must survive: no high band from text
+   similarity alone; missing evidence plus an incomplete bundle lowers certainty toward *request
+   evidence*; an exact duplicate fingerprint is high priority and still human-reviewed.
+   **Store every component score and version, not just the aggregate.**
+
+   Five tests carry the task and should be written first: group-split enforcement (training never
+   sees test participants or provider-time blocks), serialization round-trip (a saved model
+   reloads and reproduces identical predictions), feature-schema conformance, the **leakage
+   probe** (no injector metadata reachable from features), and threshold boundaries.
+
+   **Build so that removal is a clean revert.** Keep the model behind one call site and do not
+   let its scores reach a wire model until sprint 06 has measured that they earn it.
+
+3. **Sprint 06 — evaluation report** (G6). The last 501 endpoint, plus the `/evaluation` screen.
+   The corpus, labels, frozen split and leakage report all live in `packages/data/build/`.
+
+4. **Sprint 07 — demo hardening** (G8, 17 Sep). Owns the demo/reset route and the offline
+   rehearsal; the ingest screen deliberately left that route to this sprint.
+
+5. **Proposal work, unscheduled but real.** Four gaps against the competition guidance, none of
+   them code: payer/customer identification; the business case framed as a cost model with stated
+   assumptions (never a savings claim); field user validation; and impact on underserved regions.
+   The affected file is `docs/canonical/09_proposal_evidence_map.md`.
 
 **Owed cleanups**, none blocking: a separate test database so `pytest` stops wiping dev data;
 `app/service/evidence_graph.py` is 516 lines and `app/service/case_query.py` is 469 (both above
-the 200–400 typical, both within the 800 maximum); `billed_line_count` back-fills as 0 on cases
-screened before migration `d1a7c3e50f42` — re-seeding or re-screening fixes them, and the seeded
-demo data is regenerated anyway. The Playwright specs run with a single worker against the shared
-dev database, which is correct today (a disposition bumps a case version, so parallel specs would
-manufacture the very conflict one of them tests for) but is the same shared-database rough edge.
-
-**`docs/api/openapi.json` had drifted for two sprints** and is now regenerated. It was written
-once at the contract freeze and never again, so it still described `ReasonDto` without its
-counter-evidence notes and `/v1/cases` with ingest-only error codes that endpoint never returns.
-`apps/backend/scripts/export_openapi.py` regenerates it; run it after any router or DTO change.
-The frozen contract itself is `tests/test_api_contract.py` plus the fixtures under
-`tests/fixtures/api/`, both of which read the live app — that JSON is documentation, not the
-source of truth, which is exactly why nothing caught it going stale.
-
-**`docs/` is gitignored but `docs/HANDOVER.md`, `docs/CONTINUE-PROMPT.md`, `docs/canonical/`,
-and `docs/api/` are tracked** (they predate the ignore rule added in `a108950`). New files under
-`docs/` — the QA screenshots, for instance — are therefore invisible to git. That is consistent
-with the QA folder being a local artefact for the owner, but it is worth a deliberate decision
-rather than an accident.
-
-**`ComparisonCandidate.candidate_case_id` is still always `null`.** Resolving a candidate claim
-back to *its* case would let the comparison drawer link through to it, which the spec does not
-require but a reviewer would reach for. It needs a bundle-id → ingestion lookup the store does
-not currently offer.
+the 200–400 typical, both within the 800 maximum); `ComparisonCandidate.candidate_case_id` is
+always `null` because resolving a candidate claim back to *its* case needs a bundle-id → ingestion
+lookup the store does not offer; `docs/` is gitignored but `docs/HANDOVER.md`, `docs/api/`,
+`docs/canonical/` and `docs/CONTINUE-PROMPT.md` are tracked from before that rule, so new files
+under `docs/` are invisible to git.
 
 ## 7. Blockers / decisions for the user
 
-1. ~~**Tailwind + shadcn install.**~~ **Resolved 1 Sep** — Tailwind v4 + shadcn/ui, installed.
-2. ~~**The 9 px micro-label question.**~~ **Resolved 1 Sep** — raised to 11 px by owner decision,
-   applied at source in `design/tokens.css`. All three `design/DESIGN.md` § Deviasi items are now
-   closed. What the design team still owes is the **annotation map for `/cases/:id`** — 27
-   widgets, the page most expensive to misread. The page is now built and can be reviewed as
-   it stands, so the map would confirm intent rather than unblock anything.
-3. **`react-router-dom` v6 carries two moderate advisories** (open redirect via backslash in
-   `<Link>`/`useNavigate`; constructor injection in SSR `deserializeErrors`). Both predate this
-   session. The SSR one does not apply — this app is client-only. Fixing them means a breaking
-   upgrade to v7, which was not taken mid-sprint without asking.
+1. **`packages/data/build/` is internally inconsistent, and it blocks sprint 05.** Found while
+   preparing this handover; nothing consumes those files yet, so it has been latent since
+   sprint 01.
+
+   `pipeline.write_artifacts()` writes `result.corpus.bundles` — the corpus **before**
+   `strip_injector_traces()` runs. Two consequences:
+
+   - **The published corpus still carries the injector tell.** 120 of 1,120 bundle ids look like
+     `BND-00008-U798` and `BND-00016-R141`, announcing both that a record was injected and which
+     injector did it. That is precisely what `strip_injector_traces` exists to remove. The
+     leakage probe reported `leakage_passed: true` because it ran on `cleaned`, which never
+     reached disk.
+   - **`split.json` cannot be joined to `corpus.json`.** The split was computed on the renamed
+     bundles, so its ids (`BND-0060398b8d24`) share **zero** overlap with the corpus ids
+     (`BND-00000`) or with the label ids. `manifest.corpus_hash` likewise hashes a corpus that
+     was never written.
+
+   Reproduce both in one command:
+
+   ```bash
+   cd packages/data && python3 -c "
+   import json
+   corpus = {b['bundle_id'] for b in json.load(open('build/corpus.json'))}
+   split  = json.load(open('build/split.json'))
+   ids    = set(split['train']) | set(split['validation']) | set(split['test'])
+   print('overlap:', len(corpus & ids))                     # prints 0
+   print('leaky ids:', sum('-' in i[4:] for i in corpus))   # prints 120
+   "
+   ```
+
+   `write_artifacts` has no test at all. The fix is small — write `cleaned` rather than
+   `result.corpus.bundles`, carry the rename through the labels, and add a test asserting the
+   three files join — but it contains one decision that is the owner's: **re-generating changes
+   `test_set_digest`, and sprint 01's gate evidence quotes the current one.** Re-freezing a split
+   that was announced as frozen is a reproducibility claim worth making deliberately rather than
+   as a side effect.
+
+2. **`react-router-dom` v6 carries two moderate advisories** (open redirect via backslash in
+   `<Link>`/`useNavigate`; constructor injection in SSR `deserializeErrors`). Both predate these
+   sessions. The SSR one does not apply — this app is client-only. Fixing them means a breaking
+   upgrade to v7, not taken mid-sprint without asking.
+
 3. **The proposal must drop its Synthea claim.** ADR-0003 replaced Synthea with a native
    generator, so slide 8 can no longer cite Synthea's Apache-2.0 licence as evidence of a
    recognised privacy-safe source. The honest replacement is narrower and still true: the corpus
    is wholly synthetic, generated by project code, seeded and reproducible, and no real patient
    record of any origin was involved.
+
 4. **`docs/Pedoman_Healthkathon_2026.docx` is unverified and probably not authentic.** Its
    metadata is machine-generated (creator "Un-named", empty `app.xml`, created and modified 13 ms
    apart), and the data portal it cites — `slicedata.bpjs-kesehatan.go.id` — **does not resolve**.
    The real portal is `data.bpjs-kesehatan.go.id`, whose Data Sampel needs a CAPTCHA-gated account
-   and, judging by its description (participant service-history summaries), lacks the RME
-   resources this system screens. Treat every factual detail in that DOCX as unconfirmed until
-   cross-checked against the official PDFs. Its judging criteria differ from the canonical six and
-   should be handled as a **superset**, not a replacement.
+   and, judging by its description, lacks the RME resources this system screens. Treat every
+   factual detail in that DOCX as unconfirmed until cross-checked against the official PDFs. Its
+   judging criteria differ from the canonical six and should be handled as a **superset**, not a
+   replacement.
+
+5. **The design team still owes the annotation map for `/cases/:id`** — 27 widgets, the page most
+   expensive to misread. The page is built and can be reviewed as it stands, so the map would
+   confirm intent rather than unblock anything.
