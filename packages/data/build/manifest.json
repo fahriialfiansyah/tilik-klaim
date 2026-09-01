@@ -1,7 +1,7 @@
 {
   "generator_version": "0.1.0",
   "seed": 20260902,
-  "corpus_hash": "db694e6851c9184806bc901ad3fb44c07acaff1449490c1902e6486e8b32ca23",
+  "corpus_hash": "1ff95898c6966a4e4f08f1a6e4b309dac30dbe043d0499ebd032c1bbe47f9c22",
   "bundles": 1120,
   "participants": 300,
   "providers": 8,
@@ -20,5 +20,5 @@
   "test_set_digest": "ed903a4c39656e687b35c5f45ef295f9b5d417fcdb58b3cf513466079b9dc1db",
   "leakage_margin": 0.0008928571428571397,
   "leakage_passed": true,
-  "generated_at": "2026-08-31T16:02:19.769646+00:00"
+  "generated_at": "2026-09-01T15:38:55.458031+00:00"
 }

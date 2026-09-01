@@ -41,7 +41,7 @@ proposal will cite.
 - [x] Tune thresholds on validation data only; evaluate **once** on the frozen grouped test set
 - [x] Bootstrap confidence intervals where feasible
 - [x] Break results down by mode, difficulty, provider, evidence completeness, and single vs multi-label
-- [x] Manually review ≥25 false positives and ≥25 false negatives; write up the top failure modes — *material generated into `case_reports.json`; the human write-up is owed, see Notes*
+- [x] Manually review ≥25 false positives and ≥25 false negatives; write up the top failure modes — *25 of 84 FP reviewed; **only 9 FN exist**, all reviewed. Draft in `docs/artifacts/failure-modes.md`, pending M1 validation*
 - [x] Outputs: `metrics.json`, tables CSV, charts, case reports, run manifest
 - [x] Manifest records dataset hash, generator version, split manifest, feature/rule/model versions, thresholds, code commit, environment, artifact hashes
 - [x] Limitations card generated as copy-ready text, including the mandatory synthetic sentence
@@ -111,15 +111,25 @@ The checker was wrong, not the detector: it searched only the bundle and its sam
 history. Left as measured, the obvious response would have been to "fix" a working detector.
 Validity is 1447/1447 once peer documents are in the resolvable set.
 
-**Still owed.**
+**The official run is done.** `packages/data/build/` was regenerated on 1 Sep with the owner's
+go-ahead; `test_set_digest` came back unchanged (`ed903a4c39656e…`), so the frozen split was not
+re-frozen. Run `run-20260901T110000Z` in `evaluation/artifacts/`.
 
-- The **official run** waits on the `packages/data/build/` regeneration decision
-  (`docs/HANDOVER.md` § 7 blocker 1). `load_build` refuses the current artifacts, which is the
-  correct behaviour and was verified by running the CLI against them.
-- The **manual failure-mode write-up** over the 25 false positives and 25 false negatives in
-  `case_reports.json`. The runner supplies the material and makes no claim about what it shows;
-  reading them is a person's job.
-- The **three sign-offs** in `../sprint.md` — experiment record, claim interpretation, visuals.
+**Failure-mode write-up drafted** in `docs/artifacts/failure-modes.md`. Two findings are worth
+carrying into the proposal:
+
+- **Clone detection is the false-positive engine.** Precision 0.1154 at recall 1.0000 — it flags
+  130 of 228 claims to catch 15. 24 of the 25 reviewed false positives raise
+  `NEAR_DUPLICATE_DOCUMENTATION` alone, and every one stops at *needs context* because the
+  similarity ceiling holds. The cost is review time, not an accusation.
+- **All 9 false negatives are the earliest bundle of their injected pair, with empty history** —
+  verified 9 of 9, not sampled. Repeat and unbundling injectors label *both* bundles, but at the
+  first one's submission time the sibling does not exist, so the rule cannot fire. Recall for
+  those two modes is understated by construction. Whether to re-scope the label is an evaluation
+  design decision and was left to the sign-offs.
+
+**Still owed:** the **three sign-offs** in `../sprint.md` — experiment record, claim
+interpretation, visuals.
 
 **Rehearsal figures, not results.** Run against a corpus regenerated into a scratch directory,
 so they are not the frozen-test-set numbers and must not be quoted:

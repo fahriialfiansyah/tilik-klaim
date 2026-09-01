@@ -54,14 +54,13 @@ Source: `docs/HEALTHKATHON_2026_WINNING_MASTER_PLAN.docx` § 20 *Important const
 **Both tasks are built and green; the sprint is not closed.** Three things stand between here and
 done, and none of them is code:
 
-1. **The official run.** `packages/data/build/` has not been regenerated — see
-   `docs/HANDOVER.md` § 7 blocker 1 — so every figure produced so far is a rehearsal against a
-   scratch corpus and must not be quoted. `load_build` refuses the published artifacts, which is
-   the correct behaviour and was verified by running the CLI against them.
-2. **The manual failure-mode write-up** over the 25 false positives and 25 false negatives the
-   runner writes into `case_reports.json`.
-3. **The three sign-offs** in the table above. They are separate deliberately: the person who
-   produced a number should not be the only one deciding what it is allowed to claim.
+1. ~~The official run~~ — **done.** The corpus was regenerated with the owner's go-ahead and
+   `test_set_digest` came back unchanged, so the frozen split was not re-frozen. Run
+   `run-20260901T110000Z`.
+2. ~~The manual failure-mode write-up~~ — **drafted** in `docs/artifacts/failure-modes.md`,
+   pending M1 validation.
+3. **The three sign-offs** in the table above — still open. They are separate deliberately: the
+   person who produced a number should not be the only one deciding what it is allowed to claim.
 
 Acceptance, as it stands:
 
@@ -77,9 +76,22 @@ Acceptance, as it stands:
 - **Chart values match the JSON** — asserted by reading the numbers back out of the rendered SVG
   and, on the page, by building charts and tables from one selector through one formatter.
 
-**What the rehearsal suggests, pending the official run.** The hybrid's macro F1 is *identical*
-to rules-only: it detects nothing the rules do not. What improves is ranking — PR-AUC 0.7122 →
-0.8440 and precision at the review budget 0.9565 → 1.0000 — at slightly more false positives per
-100 clean claims. If that holds on the frozen test set, the incremental value is prioritisation
-and not detection, and that is the only claim the proposal may make. If it does not hold, sprint
-05's removal clause applies.
+**What the official run measured — and why the removal clause is live.**
+
+| | Rules only | Hybrid | 95% intervals overlap? |
+|---|---|---|---|
+| Macro F1 | 0.6510 | 0.6510 | identical |
+| Precision @ budget 23 | 0.9565 | 1.0000 | **yes** — [0.870, 1.000] vs [0.913, 1.000] |
+| Recall @ budget | 0.3235 | 0.3382 | a one-case difference |
+| PR-AUC | 0.7122 | **0.8440** | no interval computed |
+
+**Per-mode metrics are identical across all four modes.** The statistical layer detects nothing
+the rules do not. What moves is ranking.
+
+The acceptance clause names **precision@K and recall@K**, and on those the improvement is *not
+statistically established* — the intervals overlap and recall differs by one case. PR-AUC shows a
+real gap but is not the stated criterion and carries no interval.
+
+So sprint 05's removal clause is genuinely live, and that decision belongs to the sign-offs.
+`docs/canonical/01_product_decision.md`: *"this is not a product kill."* Reporting it honestly is
+stronger evidence of method than a marginal gain would be.

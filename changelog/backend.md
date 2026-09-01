@@ -430,3 +430,41 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 > layer is handed without the submission behind it.
 > Verified: backend 337 passed (was 330) · web 107 (was 104) · ruff clean · playwright 17 · the
 > dev database survived a full `pytest` run with its five seeded cases intact.
+
+### 2026-09-01 · Corpus regenerated · Sprint 06 official run · ✅ Done
+
+**Event:** `packages/data/build/` regenerated with the owner's go-ahead; sprint 06 evaluated once against the frozen test set
+**Files:** `packages/data/build/*`, `evaluation/artifacts/run-20260901T110000Z/`, `docs/artifacts/failure-modes.md`
+> `test_set_digest` came back **unchanged** (`ed903a4c39656e…`), so the frozen split was not
+> re-frozen and sprint 01's gate evidence survives. Only `corpus_hash` moved, from
+> `db694e6851c9…` to `1ff95898c696…`, and it moved because the old value described a corpus that
+> was never written to disk. The artifacts now join fully: 1120/1120 split ids present, 352/352
+> label targets resolve, **0 identifiers carrying an injector suffix**.
+> **The official run measured what the rehearsal predicted, and the result is not a win.**
+> Per-mode metrics are **identical across all four modes** between rules-only and hybrid: the
+> statistical layer detects nothing the rules do not. Precision at budget rose 0.9565 → 1.0000
+> but the 95% intervals overlap ([0.870, 1.000] vs [0.913, 1.000]); recall@K differs by one case.
+> PR-AUC shows a real gap (0.7122 → 0.8440) but is not the acceptance criterion and carries no
+> interval. **Sprint 05's removal clause is live**, and the decision belongs to the sign-offs.
+> **Failure-mode write-up drafted.** Clone detection is the false-positive engine — precision
+> 0.1154 at recall 1.0000, flagging 130 of 228 claims to catch 15, with 24 of 25 reviewed false
+> positives raising `NEAR_DUPLICATE_DOCUMENTATION` alone. And **all 9 false negatives are the
+> earliest bundle of their injected pair, with empty history** — verified 9 of 9. Repeat and
+> unbundling label *both* bundles, but at the first one's submission time the sibling does not
+> exist, so the rule cannot fire. Recall for those modes is understated by construction.
+> Only 9 false negatives exist, not the 25 the plan asks to review; that is reported as-is rather
+> than padded.
+
+### 2026-09-01 · Readiness caught a live "the demo would have failed" condition · ✅ Done
+
+**Event:** The API served in-memory state for hours while Postgres was up and reachable
+**Files:** `app/service/demo_state.py`, `tests/test_demo_readiness.py`
+> The running API reported `database_reachable: true` and `persistence: "in-memory"`. It had
+> started while Postgres was still coming up, chose the in-memory stores, and `use_database()`
+> caches that answer for the life of the process — deliberately, so two stores can never disagree
+> about where an ingestion lives. The consequence: `demo_reset.py` wrote five cases to Postgres
+> and the API kept serving three from memory. Two E2E specs failed and looked like a regression
+> in code that was fine.
+> **Re-seeding does not fix it; only a restart does**, and the check now says exactly that.
+> This is the failure sprint 07 exists to prevent, found in the wild by the check built for it.
+> Verified: backend 338 passed (was 337) · playwright 17 passed after the restart · ruff clean.

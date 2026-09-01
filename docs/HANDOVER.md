@@ -63,20 +63,26 @@ tune until something looks better.
 | Sprint | Gate | Status | Evidence |
 |---|---|---|---|
 | 00 — foundation | — | ✅ Done | both apps scaffolded and green |
-| 01 — synthetic-data | G3 · 2 Sep | ✅ **Done, gate met early** | 1,120 bundles · 240 injections · leakage margin +0.0009 — **but see § 7 blocker 1** |
+| 01 — synthetic-data | G3 · 2 Sep | ✅ **Done** | 1,120 bundles · 240 injections · leakage margin +0.0009 · artifacts regenerated 1 Sep, `test_set_digest` unchanged |
 | 02 — ingest-validation | G4 · 5 Sep | ✅ Done | `POST /v1/bundles` + screen endpoint live on Postgres |
 | 03 — evidence-rules | G4 · 5 Sep | ✅ **Done, gate met early** | 10 edge types, 4 risk modes, all caps enforced |
 | 04 — review-slice | G5 · 9 Sep | ✅ **Done, gate met early** | all three screens live on the real API; 14 Playwright specs green in 9.8 s |
 | 05 — ranking-models | G6 · 12 Sep | ✅ **Done** | `packages/model` built, 71 tests; incremental value measured in 06 |
-| 06 — evaluation-report | G6 · 12 Sep | 🚧 **Built, not closed** | all 7 endpoints live; official run + write-up + sign-offs owed |
-| 07 — demo-hardening | G8 · 17 Sep | 🚧 **Backend done** | reset + readiness live; human rehearsal & recording owed |
+| 06 — evaluation-report | G6 · 12 Sep | 🚧 **Official run done** | only the three sign-offs remain; **removal clause is live** |
+| 07 — demo-hardening | G8 · 17 Sep | 🚧 **Nearly done** | only the 1080p recording + 3-min rehearsal remain |
 
 **Verified immediately before writing this:**
 
 ```
-backend 330 · domain 23 · data 57 · model 71 · evaluation 47 · web 104 · playwright 17
+backend 338 · domain 23 · data 57 · model 71 · evaluation 47 · web 107 · playwright 17
 tsc clean · ruff: All checks passed · alembic head d1a7c3e50f42
 ```
+
+**A trap worth knowing before you debug anything.** If `/healthz` reports
+`database_reachable: true` with `persistence: "in-memory"`, the API started before Postgres was
+up and cached that choice for the life of the process. `demo_reset.py` then writes to Postgres
+while the API serves memory, screens look plausibly wrong, and E2E specs fail as if the code
+regressed. **Restart the API**; re-seeding does not help. The readiness block says so.
 
 `packages/data` rose 47 → 57 (the artifact writer finally has tests) and `packages/model` is new.
 Add it to the sweep: `(cd packages/model && uv run pytest)`.

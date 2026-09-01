@@ -4,9 +4,9 @@
       "injection_id": "INJ-00000",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00540",
+      "source_bundle_id": "BND-5c936d91ff42",
       "target_bundle_ids": [
-        "BND-00540"
+        "BND-5c936d91ff42"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -29,9 +29,9 @@
       "injection_id": "INJ-00001",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00430",
+      "source_bundle_id": "BND-1fe8b0f71af4",
       "target_bundle_ids": [
-        "BND-00430"
+        "BND-1fe8b0f71af4"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -54,9 +54,9 @@
       "injection_id": "INJ-00002",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00912",
+      "source_bundle_id": "BND-c9b2464259c8",
       "target_bundle_ids": [
-        "BND-00912"
+        "BND-c9b2464259c8"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -79,9 +79,9 @@
       "injection_id": "INJ-00003",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00460",
+      "source_bundle_id": "BND-1b5cea5144b1",
       "target_bundle_ids": [
-        "BND-00460"
+        "BND-1b5cea5144b1"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -104,9 +104,9 @@
       "injection_id": "INJ-00004",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00534",
+      "source_bundle_id": "BND-0f4d953be203",
       "target_bundle_ids": [
-        "BND-00534"
+        "BND-0f4d953be203"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -129,9 +129,9 @@
       "injection_id": "INJ-00005",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00781",
+      "source_bundle_id": "BND-b7ec7d3d48de",
       "target_bundle_ids": [
-        "BND-00781"
+        "BND-b7ec7d3d48de"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -154,9 +154,9 @@
       "injection_id": "INJ-00006",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00918"
+        "BND-bba2b6857b0c"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -179,9 +179,9 @@
       "injection_id": "INJ-00007",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00560",
+      "source_bundle_id": "BND-fcd537db37ad",
       "target_bundle_ids": [
-        "BND-00560"
+        "BND-fcd537db37ad"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -204,9 +204,9 @@
       "injection_id": "INJ-00008",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00108",
+      "source_bundle_id": "BND-706d17450cfc",
       "target_bundle_ids": [
-        "BND-00108"
+        "BND-706d17450cfc"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -229,9 +229,9 @@
       "injection_id": "INJ-00009",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00219",
+      "source_bundle_id": "BND-cb019517a600",
       "target_bundle_ids": [
-        "BND-00219"
+        "BND-cb019517a600"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -254,9 +254,9 @@
       "injection_id": "INJ-00010",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00460",
+      "source_bundle_id": "BND-1b5cea5144b1",
       "target_bundle_ids": [
-        "BND-00460"
+        "BND-1b5cea5144b1"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -279,9 +279,9 @@
       "injection_id": "INJ-00011",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00385",
+      "source_bundle_id": "BND-409967c9bcf9",
       "target_bundle_ids": [
-        "BND-00385"
+        "BND-409967c9bcf9"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -304,9 +304,9 @@
       "injection_id": "INJ-00012",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00048",
+      "source_bundle_id": "BND-31be0d26963a",
       "target_bundle_ids": [
-        "BND-00048"
+        "BND-31be0d26963a"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -329,9 +329,9 @@
       "injection_id": "INJ-00013",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00602",
+      "source_bundle_id": "BND-09755aa3719f",
       "target_bundle_ids": [
-        "BND-00602"
+        "BND-09755aa3719f"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -354,9 +354,9 @@
       "injection_id": "INJ-00014",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00163",
+      "source_bundle_id": "BND-80ef62ede098",
       "target_bundle_ids": [
-        "BND-00163"
+        "BND-80ef62ede098"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -379,9 +379,9 @@
       "injection_id": "INJ-00015",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00895",
+      "source_bundle_id": "BND-411610b347f7",
       "target_bundle_ids": [
-        "BND-00895"
+        "BND-411610b347f7"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -404,9 +404,9 @@
       "injection_id": "INJ-00016",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00884",
+      "source_bundle_id": "BND-5613c1496169",
       "target_bundle_ids": [
-        "BND-00884"
+        "BND-5613c1496169"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -429,9 +429,9 @@
       "injection_id": "INJ-00017",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00482",
+      "source_bundle_id": "BND-c3b044e2affc",
       "target_bundle_ids": [
-        "BND-00482"
+        "BND-c3b044e2affc"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -454,9 +454,9 @@
       "injection_id": "INJ-00018",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00262",
+      "source_bundle_id": "BND-1e4b227d4951",
       "target_bundle_ids": [
-        "BND-00262"
+        "BND-1e4b227d4951"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -479,9 +479,9 @@
       "injection_id": "INJ-00019",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00079",
+      "source_bundle_id": "BND-fb5ca8d396ae",
       "target_bundle_ids": [
-        "BND-00079"
+        "BND-fb5ca8d396ae"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -504,9 +504,9 @@
       "injection_id": "INJ-00020",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00720",
+      "source_bundle_id": "BND-b5b33d5eaec1",
       "target_bundle_ids": [
-        "BND-00720"
+        "BND-b5b33d5eaec1"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -529,9 +529,9 @@
       "injection_id": "INJ-00021",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00489",
+      "source_bundle_id": "BND-2e1cf22f659c",
       "target_bundle_ids": [
-        "BND-00489"
+        "BND-2e1cf22f659c"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -554,9 +554,9 @@
       "injection_id": "INJ-00022",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00174",
+      "source_bundle_id": "BND-791674127892",
       "target_bundle_ids": [
-        "BND-00174"
+        "BND-791674127892"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -579,9 +579,9 @@
       "injection_id": "INJ-00023",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00126",
+      "source_bundle_id": "BND-01636c7e26dd",
       "target_bundle_ids": [
-        "BND-00126"
+        "BND-01636c7e26dd"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -604,9 +604,9 @@
       "injection_id": "INJ-00024",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00224",
+      "source_bundle_id": "BND-de41575ad770",
       "target_bundle_ids": [
-        "BND-00224"
+        "BND-de41575ad770"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -629,9 +629,9 @@
       "injection_id": "INJ-00025",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00987",
+      "source_bundle_id": "BND-9b2b902b48b7",
       "target_bundle_ids": [
-        "BND-00987"
+        "BND-9b2b902b48b7"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -654,9 +654,9 @@
       "injection_id": "INJ-00026",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00480",
+      "source_bundle_id": "BND-a4c9cdf85cf1",
       "target_bundle_ids": [
-        "BND-00480"
+        "BND-a4c9cdf85cf1"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -679,9 +679,9 @@
       "injection_id": "INJ-00027",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00526",
+      "source_bundle_id": "BND-4d950e877d1f",
       "target_bundle_ids": [
-        "BND-00526"
+        "BND-4d950e877d1f"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -704,9 +704,9 @@
       "injection_id": "INJ-00028",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00843",
+      "source_bundle_id": "BND-ad8b9f9d39fb",
       "target_bundle_ids": [
-        "BND-00843"
+        "BND-ad8b9f9d39fb"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -729,9 +729,9 @@
       "injection_id": "INJ-00029",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00407",
+      "source_bundle_id": "BND-02069902a0d9",
       "target_bundle_ids": [
-        "BND-00407"
+        "BND-02069902a0d9"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -754,9 +754,9 @@
       "injection_id": "INJ-00030",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00210",
+      "source_bundle_id": "BND-db21c8cbe656",
       "target_bundle_ids": [
-        "BND-00210"
+        "BND-db21c8cbe656"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -779,9 +779,9 @@
       "injection_id": "INJ-00031",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00571",
+      "source_bundle_id": "BND-a2074bcb5a83",
       "target_bundle_ids": [
-        "BND-00571"
+        "BND-a2074bcb5a83"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -804,9 +804,9 @@
       "injection_id": "INJ-00032",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00109",
+      "source_bundle_id": "BND-fa1990dc8534",
       "target_bundle_ids": [
-        "BND-00109"
+        "BND-fa1990dc8534"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -829,9 +829,9 @@
       "injection_id": "INJ-00033",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00437",
+      "source_bundle_id": "BND-692d6af17655",
       "target_bundle_ids": [
-        "BND-00437"
+        "BND-692d6af17655"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -854,9 +854,9 @@
       "injection_id": "INJ-00034",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00385",
+      "source_bundle_id": "BND-409967c9bcf9",
       "target_bundle_ids": [
-        "BND-00385"
+        "BND-409967c9bcf9"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -879,9 +879,9 @@
       "injection_id": "INJ-00035",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00595",
+      "source_bundle_id": "BND-c616121f457f",
       "target_bundle_ids": [
-        "BND-00595"
+        "BND-c616121f457f"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -904,9 +904,9 @@
       "injection_id": "INJ-00036",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00172",
+      "source_bundle_id": "BND-dec1f4aabdce",
       "target_bundle_ids": [
-        "BND-00172"
+        "BND-dec1f4aabdce"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -929,9 +929,9 @@
       "injection_id": "INJ-00037",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00249",
+      "source_bundle_id": "BND-731528918f42",
       "target_bundle_ids": [
-        "BND-00249"
+        "BND-731528918f42"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -954,9 +954,9 @@
       "injection_id": "INJ-00038",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00631",
+      "source_bundle_id": "BND-ec8282ab025d",
       "target_bundle_ids": [
-        "BND-00631"
+        "BND-ec8282ab025d"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -979,9 +979,9 @@
       "injection_id": "INJ-00039",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00075",
+      "source_bundle_id": "BND-dc57e867154a",
       "target_bundle_ids": [
-        "BND-00075"
+        "BND-dc57e867154a"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -1004,9 +1004,9 @@
       "injection_id": "INJ-00040",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00062",
+      "source_bundle_id": "BND-94821c8fc82c",
       "target_bundle_ids": [
-        "BND-00062"
+        "BND-94821c8fc82c"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -1029,9 +1029,9 @@
       "injection_id": "INJ-00041",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00259",
+      "source_bundle_id": "BND-781cd556a990",
       "target_bundle_ids": [
-        "BND-00259"
+        "BND-781cd556a990"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -1054,9 +1054,9 @@
       "injection_id": "INJ-00042",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00809",
+      "source_bundle_id": "BND-67447b6acb9c",
       "target_bundle_ids": [
-        "BND-00809"
+        "BND-67447b6acb9c"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -1079,9 +1079,9 @@
       "injection_id": "INJ-00043",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00037",
+      "source_bundle_id": "BND-dac20412676b",
       "target_bundle_ids": [
-        "BND-00037"
+        "BND-dac20412676b"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -1104,9 +1104,9 @@
       "injection_id": "INJ-00044",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00507",
+      "source_bundle_id": "BND-6f6c29b9a00e",
       "target_bundle_ids": [
-        "BND-00507"
+        "BND-6f6c29b9a00e"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -1129,9 +1129,9 @@
       "injection_id": "INJ-00045",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00622",
+      "source_bundle_id": "BND-3be9b0016e21",
       "target_bundle_ids": [
-        "BND-00622"
+        "BND-3be9b0016e21"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -1154,9 +1154,9 @@
       "injection_id": "INJ-00046",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00612",
+      "source_bundle_id": "BND-a3e39d0ddd49",
       "target_bundle_ids": [
-        "BND-00612"
+        "BND-a3e39d0ddd49"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -1179,9 +1179,9 @@
       "injection_id": "INJ-00047",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00341",
+      "source_bundle_id": "BND-36a3512af3fd",
       "target_bundle_ids": [
-        "BND-00341"
+        "BND-36a3512af3fd"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -1204,9 +1204,9 @@
       "injection_id": "INJ-00048",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00625",
+      "source_bundle_id": "BND-3b2002c5c99f",
       "target_bundle_ids": [
-        "BND-00625"
+        "BND-3b2002c5c99f"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -1229,9 +1229,9 @@
       "injection_id": "INJ-00049",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00605",
+      "source_bundle_id": "BND-2a9f8be7c543",
       "target_bundle_ids": [
-        "BND-00605"
+        "BND-2a9f8be7c543"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -1254,9 +1254,9 @@
       "injection_id": "INJ-00050",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00639",
+      "source_bundle_id": "BND-747fa3f4140e",
       "target_bundle_ids": [
-        "BND-00639"
+        "BND-747fa3f4140e"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_COMPLETED_PROCEDURE"
@@ -1279,9 +1279,9 @@
       "injection_id": "INJ-00051",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00688",
+      "source_bundle_id": "BND-75e7b2d4b052",
       "target_bundle_ids": [
-        "BND-00688"
+        "BND-75e7b2d4b052"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -1304,9 +1304,9 @@
       "injection_id": "INJ-00052",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00610",
+      "source_bundle_id": "BND-4231f279ef7e",
       "target_bundle_ids": [
-        "BND-00610"
+        "BND-4231f279ef7e"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -1329,9 +1329,9 @@
       "injection_id": "INJ-00053",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00221",
+      "source_bundle_id": "BND-216122f0cce1",
       "target_bundle_ids": [
-        "BND-00221"
+        "BND-216122f0cce1"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -1354,9 +1354,9 @@
       "injection_id": "INJ-00054",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00808",
+      "source_bundle_id": "BND-fd07f910ee3c",
       "target_bundle_ids": [
-        "BND-00808"
+        "BND-fd07f910ee3c"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -1379,9 +1379,9 @@
       "injection_id": "INJ-00055",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00864",
+      "source_bundle_id": "BND-d0f551747edf",
       "target_bundle_ids": [
-        "BND-00864"
+        "BND-d0f551747edf"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -1404,9 +1404,9 @@
       "injection_id": "INJ-00056",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00325",
+      "source_bundle_id": "BND-423efa16350c",
       "target_bundle_ids": [
-        "BND-00325"
+        "BND-423efa16350c"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -1429,9 +1429,9 @@
       "injection_id": "INJ-00057",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00794",
+      "source_bundle_id": "BND-5b8a570f1994",
       "target_bundle_ids": [
-        "BND-00794"
+        "BND-5b8a570f1994"
       ],
       "expected_reason_codes": [
         "SUPPORTING_EVIDENCE_ENTERED_IN_ERROR"
@@ -1454,9 +1454,9 @@
       "injection_id": "INJ-00058",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00682",
+      "source_bundle_id": "BND-a23ef231c83e",
       "target_bundle_ids": [
-        "BND-00682"
+        "BND-a23ef231c83e"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -1479,9 +1479,9 @@
       "injection_id": "INJ-00059",
       "mode": "PHANTOM_OR_NO_PROCEDURE_EVIDENCE",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00558",
+      "source_bundle_id": "BND-2ca92b9f837b",
       "target_bundle_ids": [
-        "BND-00558"
+        "BND-2ca92b9f837b"
       ],
       "expected_reason_codes": [
         "LINE_WITHOUT_MEDICATION_DISPENSE"
@@ -1504,10 +1504,10 @@
       "injection_id": "INJ-00060",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00338",
+      "source_bundle_id": "BND-55879e19ea33",
       "target_bundle_ids": [
-        "BND-00338",
-        "BND-00338-R378"
+        "BND-55879e19ea33",
+        "BND-4ce2bdcd91ac"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1519,7 +1519,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00338-R378"
+          "resource_id": "CLM-7f427c561a8b"
         }
       ],
       "violated_invariants": [
@@ -1534,10 +1534,10 @@
       "injection_id": "INJ-00061",
       "mode": "REPEAT_BILLING",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00878",
+      "source_bundle_id": "BND-e9eb673ef2ba",
       "target_bundle_ids": [
-        "BND-00878",
-        "BND-00878-R463"
+        "BND-e9eb673ef2ba",
+        "BND-055abd441e62"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1549,7 +1549,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00878-R463"
+          "resource_id": "CLM-22d45d723eac"
         }
       ],
       "violated_invariants": [
@@ -1564,10 +1564,10 @@
       "injection_id": "INJ-00062",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00367",
+      "source_bundle_id": "BND-466e2d5866f0",
       "target_bundle_ids": [
-        "BND-00367",
-        "BND-00367-R205"
+        "BND-466e2d5866f0",
+        "BND-6dfe3b9d6307"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1579,7 +1579,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00367-R205"
+          "resource_id": "CLM-5f8bc3a85572"
         }
       ],
       "violated_invariants": [
@@ -1594,10 +1594,10 @@
       "injection_id": "INJ-00063",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00859",
+      "source_bundle_id": "BND-43e990d038e2",
       "target_bundle_ids": [
-        "BND-00859",
-        "BND-00859-R390"
+        "BND-43e990d038e2",
+        "BND-de0d682a7a1e"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1609,7 +1609,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00859-R390"
+          "resource_id": "CLM-d12464da4381"
         }
       ],
       "violated_invariants": [
@@ -1624,10 +1624,10 @@
       "injection_id": "INJ-00064",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00034",
+      "source_bundle_id": "BND-f68eb9967446",
       "target_bundle_ids": [
-        "BND-00034",
-        "BND-00034-R587"
+        "BND-f68eb9967446",
+        "BND-d11074fff5e1"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1639,7 +1639,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00034-R587"
+          "resource_id": "CLM-f1e6933fbc0c"
         }
       ],
       "violated_invariants": [
@@ -1654,10 +1654,10 @@
       "injection_id": "INJ-00065",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00143",
+      "source_bundle_id": "BND-0b08ccbec446",
       "target_bundle_ids": [
-        "BND-00143",
-        "BND-00143-R640"
+        "BND-0b08ccbec446",
+        "BND-720e2a904875"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -1669,7 +1669,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00143-R640"
+          "resource_id": "CLM-c1d0ffcaa235"
         }
       ],
       "violated_invariants": [
@@ -1684,10 +1684,10 @@
       "injection_id": "INJ-00066",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00863",
+      "source_bundle_id": "BND-15a487cce98a",
       "target_bundle_ids": [
-        "BND-00863",
-        "BND-00863-R269"
+        "BND-15a487cce98a",
+        "BND-8f1ac3d63cfb"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1699,7 +1699,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00863-R269"
+          "resource_id": "CLM-5eb4590dafe2"
         }
       ],
       "violated_invariants": [
@@ -1714,10 +1714,10 @@
       "injection_id": "INJ-00067",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00185",
+      "source_bundle_id": "BND-ce7fb61894c2",
       "target_bundle_ids": [
-        "BND-00185",
-        "BND-00185-R093"
+        "BND-ce7fb61894c2",
+        "BND-85ee470be094"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1729,7 +1729,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00185-R093"
+          "resource_id": "CLM-82fcfdcf10f6"
         }
       ],
       "violated_invariants": [
@@ -1744,10 +1744,10 @@
       "injection_id": "INJ-00068",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00544",
+      "source_bundle_id": "BND-9264f87591a3",
       "target_bundle_ids": [
-        "BND-00544",
-        "BND-00544-R421"
+        "BND-9264f87591a3",
+        "BND-ac915d889ca9"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1759,7 +1759,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00544-R421"
+          "resource_id": "CLM-b768b8f06afa"
         }
       ],
       "violated_invariants": [
@@ -1774,10 +1774,10 @@
       "injection_id": "INJ-00069",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00900",
+      "source_bundle_id": "BND-668dd6852dda",
       "target_bundle_ids": [
-        "BND-00900",
-        "BND-00900-R229"
+        "BND-668dd6852dda",
+        "BND-b5f2d79519d4"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1789,7 +1789,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00900-R229"
+          "resource_id": "CLM-10b0791b402b"
         }
       ],
       "violated_invariants": [
@@ -1804,10 +1804,10 @@
       "injection_id": "INJ-00070",
       "mode": "REPEAT_BILLING",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00469",
+      "source_bundle_id": "BND-a1d9a1b51352",
       "target_bundle_ids": [
-        "BND-00469",
-        "BND-00469-R836"
+        "BND-a1d9a1b51352",
+        "BND-0e28624a39fb"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1819,7 +1819,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00469-R836"
+          "resource_id": "CLM-645fd9803fa7"
         }
       ],
       "violated_invariants": [
@@ -1834,10 +1834,10 @@
       "injection_id": "INJ-00071",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00609",
+      "source_bundle_id": "BND-d606cd2f7011",
       "target_bundle_ids": [
-        "BND-00609",
-        "BND-00609-R613"
+        "BND-d606cd2f7011",
+        "BND-f736f4cd929e"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1849,7 +1849,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00609-R613"
+          "resource_id": "CLM-1fbde1859663"
         }
       ],
       "violated_invariants": [
@@ -1864,10 +1864,10 @@
       "injection_id": "INJ-00072",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00591",
+      "source_bundle_id": "BND-7878a94c2178",
       "target_bundle_ids": [
-        "BND-00591",
-        "BND-00591-R029"
+        "BND-7878a94c2178",
+        "BND-d41e2f995b29"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1879,7 +1879,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00591-R029"
+          "resource_id": "CLM-5384d8f2c0a5"
         }
       ],
       "violated_invariants": [
@@ -1894,10 +1894,10 @@
       "injection_id": "INJ-00073",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00800",
+      "source_bundle_id": "BND-49034dc4440a",
       "target_bundle_ids": [
-        "BND-00800",
-        "BND-00800-R969"
+        "BND-49034dc4440a",
+        "BND-36b8079d3364"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -1909,7 +1909,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00800-R969"
+          "resource_id": "CLM-78808afb37ed"
         }
       ],
       "violated_invariants": [
@@ -1924,10 +1924,10 @@
       "injection_id": "INJ-00074",
       "mode": "REPEAT_BILLING",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00802",
+      "source_bundle_id": "BND-e7d50b0716ed",
       "target_bundle_ids": [
-        "BND-00802",
-        "BND-00802-R088"
+        "BND-e7d50b0716ed",
+        "BND-f2482e6663de"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -1939,7 +1939,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00802-R088"
+          "resource_id": "CLM-105ca1e616e2"
         }
       ],
       "violated_invariants": [
@@ -1954,10 +1954,10 @@
       "injection_id": "INJ-00075",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00289",
+      "source_bundle_id": "BND-25df766f66e1",
       "target_bundle_ids": [
-        "BND-00289",
-        "BND-00289-R781"
+        "BND-25df766f66e1",
+        "BND-c669a60c73ad"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -1969,7 +1969,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00289-R781"
+          "resource_id": "CLM-060dae65f7df"
         }
       ],
       "violated_invariants": [
@@ -1984,10 +1984,10 @@
       "injection_id": "INJ-00076",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00452",
+      "source_bundle_id": "BND-453da8b0a01d",
       "target_bundle_ids": [
-        "BND-00452",
-        "BND-00452-R355"
+        "BND-453da8b0a01d",
+        "BND-0cacb9b1e71f"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -1999,7 +1999,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00452-R355"
+          "resource_id": "CLM-aa4218dce054"
         }
       ],
       "violated_invariants": [
@@ -2014,10 +2014,10 @@
       "injection_id": "INJ-00077",
       "mode": "REPEAT_BILLING",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00705",
+      "source_bundle_id": "BND-9dc0a74e59ac",
       "target_bundle_ids": [
-        "BND-00705",
-        "BND-00705-R662"
+        "BND-9dc0a74e59ac",
+        "BND-11c51a8b41ce"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2029,7 +2029,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00705-R662"
+          "resource_id": "CLM-2659657e33c0"
         }
       ],
       "violated_invariants": [
@@ -2044,10 +2044,10 @@
       "injection_id": "INJ-00078",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00503",
+      "source_bundle_id": "BND-b197946f526f",
       "target_bundle_ids": [
-        "BND-00503",
-        "BND-00503-R843"
+        "BND-b197946f526f",
+        "BND-5b2827ccaed5"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2059,7 +2059,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00503-R843"
+          "resource_id": "CLM-d912826b10d9"
         }
       ],
       "violated_invariants": [
@@ -2074,10 +2074,10 @@
       "injection_id": "INJ-00079",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00049",
+      "source_bundle_id": "BND-c49313419182",
       "target_bundle_ids": [
-        "BND-00049",
-        "BND-00049-R588"
+        "BND-c49313419182",
+        "BND-46ae0ecad72f"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2089,7 +2089,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00049-R588"
+          "resource_id": "CLM-10e1005c16bd"
         }
       ],
       "violated_invariants": [
@@ -2104,10 +2104,10 @@
       "injection_id": "INJ-00080",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00369",
+      "source_bundle_id": "BND-5af9e2db6a94",
       "target_bundle_ids": [
-        "BND-00369",
-        "BND-00369-R210"
+        "BND-5af9e2db6a94",
+        "BND-9045170e0374"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2119,7 +2119,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00369-R210"
+          "resource_id": "CLM-753938a6c667"
         }
       ],
       "violated_invariants": [
@@ -2134,10 +2134,10 @@
       "injection_id": "INJ-00081",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00419",
+      "source_bundle_id": "BND-4f189eaf0da6",
       "target_bundle_ids": [
-        "BND-00419",
-        "BND-00419-R133"
+        "BND-4f189eaf0da6",
+        "BND-f5b81b220995"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2149,7 +2149,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00419-R133"
+          "resource_id": "CLM-4ef400bc2ddb"
         }
       ],
       "violated_invariants": [
@@ -2164,10 +2164,10 @@
       "injection_id": "INJ-00082",
       "mode": "REPEAT_BILLING",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00786",
+      "source_bundle_id": "BND-02c6a4de7b9c",
       "target_bundle_ids": [
-        "BND-00786",
-        "BND-00786-R266"
+        "BND-02c6a4de7b9c",
+        "BND-2251e1c0015d"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2179,7 +2179,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00786-R266"
+          "resource_id": "CLM-676db01024cf"
         }
       ],
       "violated_invariants": [
@@ -2194,10 +2194,10 @@
       "injection_id": "INJ-00083",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00716",
+      "source_bundle_id": "BND-aa436b621935",
       "target_bundle_ids": [
-        "BND-00716",
-        "BND-00716-R540"
+        "BND-aa436b621935",
+        "BND-4fd1b5b6f640"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -2209,7 +2209,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00716-R540"
+          "resource_id": "CLM-e2199220d9d9"
         }
       ],
       "violated_invariants": [
@@ -2224,10 +2224,10 @@
       "injection_id": "INJ-00084",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00753",
+      "source_bundle_id": "BND-2cfeff667982",
       "target_bundle_ids": [
-        "BND-00753",
-        "BND-00753-R801"
+        "BND-2cfeff667982",
+        "BND-ce11fb19026a"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -2239,7 +2239,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00753-R801"
+          "resource_id": "CLM-c18ca364d6f8"
         }
       ],
       "violated_invariants": [
@@ -2254,10 +2254,10 @@
       "injection_id": "INJ-00085",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00485",
+      "source_bundle_id": "BND-30574e591be8",
       "target_bundle_ids": [
-        "BND-00485",
-        "BND-00485-R197"
+        "BND-30574e591be8",
+        "BND-b13003f65d60"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2269,7 +2269,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00485-R197"
+          "resource_id": "CLM-dffe0f4fbafc"
         }
       ],
       "violated_invariants": [
@@ -2284,10 +2284,10 @@
       "injection_id": "INJ-00086",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00016",
+      "source_bundle_id": "BND-cb29779a3fc2",
       "target_bundle_ids": [
-        "BND-00016",
-        "BND-00016-R141"
+        "BND-cb29779a3fc2",
+        "BND-10f328b586f8"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2299,7 +2299,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00016-R141"
+          "resource_id": "CLM-d20b9615bbd1"
         }
       ],
       "violated_invariants": [
@@ -2314,10 +2314,10 @@
       "injection_id": "INJ-00087",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00815",
+      "source_bundle_id": "BND-da720e33fe89",
       "target_bundle_ids": [
-        "BND-00815",
-        "BND-00815-R779"
+        "BND-da720e33fe89",
+        "BND-50a9bcb75b11"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2329,7 +2329,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00815-R779"
+          "resource_id": "CLM-0712fd099c89"
         }
       ],
       "violated_invariants": [
@@ -2344,10 +2344,10 @@
       "injection_id": "INJ-00088",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00078",
+      "source_bundle_id": "BND-66337612a8b0",
       "target_bundle_ids": [
-        "BND-00078",
-        "BND-00078-R882"
+        "BND-66337612a8b0",
+        "BND-7beffca74783"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2359,7 +2359,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00078-R882"
+          "resource_id": "CLM-e9de6c3dce1c"
         }
       ],
       "violated_invariants": [
@@ -2374,10 +2374,10 @@
       "injection_id": "INJ-00089",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00684",
+      "source_bundle_id": "BND-c91cc9032990",
       "target_bundle_ids": [
-        "BND-00684",
-        "BND-00684-R368"
+        "BND-c91cc9032990",
+        "BND-4b867ef2495c"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2389,7 +2389,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00684-R368"
+          "resource_id": "CLM-b1a750d8a428"
         }
       ],
       "violated_invariants": [
@@ -2404,10 +2404,10 @@
       "injection_id": "INJ-00090",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00154",
+      "source_bundle_id": "BND-825ae103a562",
       "target_bundle_ids": [
-        "BND-00154",
-        "BND-00154-R439"
+        "BND-825ae103a562",
+        "BND-a1ece0710f70"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2419,7 +2419,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00154-R439"
+          "resource_id": "CLM-21121165cfb7"
         }
       ],
       "violated_invariants": [
@@ -2434,10 +2434,10 @@
       "injection_id": "INJ-00091",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00799",
+      "source_bundle_id": "BND-1145d1f3306f",
       "target_bundle_ids": [
-        "BND-00799",
-        "BND-00799-R934"
+        "BND-1145d1f3306f",
+        "BND-1a0f35716c66"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2449,7 +2449,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00799-R934"
+          "resource_id": "CLM-3da3a2c5715b"
         }
       ],
       "violated_invariants": [
@@ -2464,10 +2464,10 @@
       "injection_id": "INJ-00092",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00613",
+      "source_bundle_id": "BND-4a8da52c35be",
       "target_bundle_ids": [
-        "BND-00613",
-        "BND-00613-R021"
+        "BND-4a8da52c35be",
+        "BND-6088d1178bb6"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -2479,7 +2479,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00613-R021"
+          "resource_id": "CLM-10ab55bc025f"
         }
       ],
       "violated_invariants": [
@@ -2494,10 +2494,10 @@
       "injection_id": "INJ-00093",
       "mode": "REPEAT_BILLING",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00974",
+      "source_bundle_id": "BND-c9ea228fde4c",
       "target_bundle_ids": [
-        "BND-00974",
-        "BND-00974-R484"
+        "BND-c9ea228fde4c",
+        "BND-7b03da0abb10"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2509,7 +2509,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00974-R484"
+          "resource_id": "CLM-6d6356661995"
         }
       ],
       "violated_invariants": [
@@ -2524,10 +2524,10 @@
       "injection_id": "INJ-00094",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00744",
+      "source_bundle_id": "BND-afe8225c3194",
       "target_bundle_ids": [
-        "BND-00744",
-        "BND-00744-R652"
+        "BND-afe8225c3194",
+        "BND-d3c8cf1ea679"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -2539,7 +2539,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00744-R652"
+          "resource_id": "CLM-621e1d109c74"
         }
       ],
       "violated_invariants": [
@@ -2554,10 +2554,10 @@
       "injection_id": "INJ-00095",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00862",
+      "source_bundle_id": "BND-53a5795c2fd3",
       "target_bundle_ids": [
-        "BND-00862",
-        "BND-00862-R192"
+        "BND-53a5795c2fd3",
+        "BND-d5510792ac67"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -2569,7 +2569,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00862-R192"
+          "resource_id": "CLM-bab951e11931"
         }
       ],
       "violated_invariants": [
@@ -2584,10 +2584,10 @@
       "injection_id": "INJ-00096",
       "mode": "REPEAT_BILLING",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00547",
+      "source_bundle_id": "BND-8fc93af030bf",
       "target_bundle_ids": [
-        "BND-00547",
-        "BND-00547-R335"
+        "BND-8fc93af030bf",
+        "BND-b6d7ee02c85f"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2599,7 +2599,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00547-R335"
+          "resource_id": "CLM-a6b85e4832da"
         }
       ],
       "violated_invariants": [
@@ -2614,10 +2614,10 @@
       "injection_id": "INJ-00097",
       "mode": "REPEAT_BILLING",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00404",
+      "source_bundle_id": "BND-0b09052aec52",
       "target_bundle_ids": [
-        "BND-00404",
-        "BND-00404-R266"
+        "BND-0b09052aec52",
+        "BND-ae46d721315f"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2629,7 +2629,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00404-R266"
+          "resource_id": "CLM-e4726d55c636"
         }
       ],
       "violated_invariants": [
@@ -2644,10 +2644,10 @@
       "injection_id": "INJ-00098",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00871",
+      "source_bundle_id": "BND-daf6900fd8b4",
       "target_bundle_ids": [
-        "BND-00871",
-        "BND-00871-R187"
+        "BND-daf6900fd8b4",
+        "BND-b2d85540b35f"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -2659,7 +2659,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00871-R187"
+          "resource_id": "CLM-fa0f74dc0e16"
         }
       ],
       "violated_invariants": [
@@ -2674,10 +2674,10 @@
       "injection_id": "INJ-00099",
       "mode": "REPEAT_BILLING",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00272",
+      "source_bundle_id": "BND-0ff1cd9f93b8",
       "target_bundle_ids": [
-        "BND-00272",
-        "BND-00272-R312"
+        "BND-0ff1cd9f93b8",
+        "BND-7707f6543aa5"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2689,7 +2689,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00272-R312"
+          "resource_id": "CLM-064ff712225d"
         }
       ],
       "violated_invariants": [
@@ -2704,10 +2704,10 @@
       "injection_id": "INJ-00100",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00415",
+      "source_bundle_id": "BND-7a7c1b602e79",
       "target_bundle_ids": [
-        "BND-00415",
-        "BND-00415-R622"
+        "BND-7a7c1b602e79",
+        "BND-61859402087a"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -2719,7 +2719,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00415-R622"
+          "resource_id": "CLM-a2ea16918f58"
         }
       ],
       "violated_invariants": [
@@ -2734,10 +2734,10 @@
       "injection_id": "INJ-00101",
       "mode": "REPEAT_BILLING",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00882",
+      "source_bundle_id": "BND-5e6a0c5df978",
       "target_bundle_ids": [
-        "BND-00882",
-        "BND-00882-R552"
+        "BND-5e6a0c5df978",
+        "BND-128f4b453d13"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2749,7 +2749,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00882-R552"
+          "resource_id": "CLM-2a9334cc2105"
         }
       ],
       "violated_invariants": [
@@ -2764,10 +2764,10 @@
       "injection_id": "INJ-00102",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00434",
+      "source_bundle_id": "BND-f69f49ea3662",
       "target_bundle_ids": [
-        "BND-00434",
-        "BND-00434-R047"
+        "BND-f69f49ea3662",
+        "BND-119bc519cbff"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2779,7 +2779,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00434-R047"
+          "resource_id": "CLM-39a0eb79f281"
         }
       ],
       "violated_invariants": [
@@ -2794,10 +2794,10 @@
       "injection_id": "INJ-00103",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00404",
+      "source_bundle_id": "BND-0b09052aec52",
       "target_bundle_ids": [
-        "BND-00404",
-        "BND-00404-R453"
+        "BND-0b09052aec52",
+        "BND-7539cd11854c"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -2809,7 +2809,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00404-R453"
+          "resource_id": "CLM-38c16aac6fe7"
         }
       ],
       "violated_invariants": [
@@ -2824,10 +2824,10 @@
       "injection_id": "INJ-00104",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00127",
+      "source_bundle_id": "BND-db1f4c39576c",
       "target_bundle_ids": [
-        "BND-00127",
-        "BND-00127-R259"
+        "BND-db1f4c39576c",
+        "BND-8454da520ca0"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -2839,7 +2839,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00127-R259"
+          "resource_id": "CLM-c52bf8fd91a7"
         }
       ],
       "violated_invariants": [
@@ -2854,10 +2854,10 @@
       "injection_id": "INJ-00105",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00543",
+      "source_bundle_id": "BND-179d923d42bd",
       "target_bundle_ids": [
-        "BND-00543",
-        "BND-00543-R214"
+        "BND-179d923d42bd",
+        "BND-5943ffc70d63"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2869,7 +2869,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00543-R214"
+          "resource_id": "CLM-a6ec01b20f11"
         }
       ],
       "violated_invariants": [
@@ -2884,10 +2884,10 @@
       "injection_id": "INJ-00106",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00518",
+      "source_bundle_id": "BND-04bca2afd40e",
       "target_bundle_ids": [
-        "BND-00518",
-        "BND-00518-R239"
+        "BND-04bca2afd40e",
+        "BND-1f8e3e6e77d9"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2899,7 +2899,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00518-R239"
+          "resource_id": "CLM-f9a1c8ffd5d1"
         }
       ],
       "violated_invariants": [
@@ -2914,10 +2914,10 @@
       "injection_id": "INJ-00107",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00351",
+      "source_bundle_id": "BND-5e649314d8ed",
       "target_bundle_ids": [
-        "BND-00351",
-        "BND-00351-R405"
+        "BND-5e649314d8ed",
+        "BND-2e6217522d9d"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -2929,7 +2929,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00351-R405"
+          "resource_id": "CLM-757f9175922a"
         }
       ],
       "violated_invariants": [
@@ -2944,10 +2944,10 @@
       "injection_id": "INJ-00108",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00897",
+      "source_bundle_id": "BND-064255003c8a",
       "target_bundle_ids": [
-        "BND-00897",
-        "BND-00897-R021"
+        "BND-064255003c8a",
+        "BND-44a1651c11c3"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -2959,7 +2959,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00897-R021"
+          "resource_id": "CLM-45c0691126e4"
         }
       ],
       "violated_invariants": [
@@ -2974,10 +2974,10 @@
       "injection_id": "INJ-00109",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00192",
+      "source_bundle_id": "BND-39224af329f0",
       "target_bundle_ids": [
-        "BND-00192",
-        "BND-00192-R025"
+        "BND-39224af329f0",
+        "BND-264fa6cc7eb8"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -2989,7 +2989,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00192-R025"
+          "resource_id": "CLM-cf12b0b0b8b1"
         }
       ],
       "violated_invariants": [
@@ -3004,10 +3004,10 @@
       "injection_id": "INJ-00110",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00954",
+      "source_bundle_id": "BND-b0dbf165a059",
       "target_bundle_ids": [
-        "BND-00954",
-        "BND-00954-R784"
+        "BND-b0dbf165a059",
+        "BND-e5140afc0a31"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -3019,7 +3019,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00954-R784"
+          "resource_id": "CLM-008155312235"
         }
       ],
       "violated_invariants": [
@@ -3034,10 +3034,10 @@
       "injection_id": "INJ-00111",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00168",
+      "source_bundle_id": "BND-7f0d32504b7b",
       "target_bundle_ids": [
-        "BND-00168",
-        "BND-00168-R827"
+        "BND-7f0d32504b7b",
+        "BND-a8f80865b7ef"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -3049,7 +3049,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00168-R827"
+          "resource_id": "CLM-8f21815c9493"
         }
       ],
       "violated_invariants": [
@@ -3064,10 +3064,10 @@
       "injection_id": "INJ-00112",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00019",
+      "source_bundle_id": "BND-7f2f2504ceb6",
       "target_bundle_ids": [
-        "BND-00019",
-        "BND-00019-R239"
+        "BND-7f2f2504ceb6",
+        "BND-1c310245ab36"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -3079,7 +3079,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00019-R239"
+          "resource_id": "CLM-4f1f3fb2a212"
         }
       ],
       "violated_invariants": [
@@ -3094,10 +3094,10 @@
       "injection_id": "INJ-00113",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00170",
+      "source_bundle_id": "BND-0f699a8ef2ed",
       "target_bundle_ids": [
-        "BND-00170",
-        "BND-00170-R281"
+        "BND-0f699a8ef2ed",
+        "BND-52eb6d2c5d72"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -3109,7 +3109,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00170-R281"
+          "resource_id": "CLM-001ee2c6f245"
         }
       ],
       "violated_invariants": [
@@ -3124,10 +3124,10 @@
       "injection_id": "INJ-00114",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00081",
+      "source_bundle_id": "BND-1d41e6b7b237",
       "target_bundle_ids": [
-        "BND-00081",
-        "BND-00081-R398"
+        "BND-1d41e6b7b237",
+        "BND-1e258258d599"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -3139,7 +3139,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00081-R398"
+          "resource_id": "CLM-e923132f9f08"
         }
       ],
       "violated_invariants": [
@@ -3154,10 +3154,10 @@
       "injection_id": "INJ-00115",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00627",
+      "source_bundle_id": "BND-2abdd995936e",
       "target_bundle_ids": [
-        "BND-00627",
-        "BND-00627-R615"
+        "BND-2abdd995936e",
+        "BND-af8a788081af"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -3169,7 +3169,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00627-R615"
+          "resource_id": "CLM-dbd9de6a605a"
         }
       ],
       "violated_invariants": [
@@ -3184,10 +3184,10 @@
       "injection_id": "INJ-00116",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00195",
+      "source_bundle_id": "BND-f467bd96851e",
       "target_bundle_ids": [
-        "BND-00195",
-        "BND-00195-R069"
+        "BND-f467bd96851e",
+        "BND-2754c369d05d"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -3199,7 +3199,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00195-R069"
+          "resource_id": "CLM-2b74147020d3"
         }
       ],
       "violated_invariants": [
@@ -3214,10 +3214,10 @@
       "injection_id": "INJ-00117",
       "mode": "REPEAT_BILLING",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00707",
+      "source_bundle_id": "BND-c281f6c036f0",
       "target_bundle_ids": [
-        "BND-00707",
-        "BND-00707-R828"
+        "BND-c281f6c036f0",
+        "BND-ad71b4620f23"
       ],
       "expected_reason_codes": [
         "DUPLICATE_CLAIM_FINGERPRINT"
@@ -3229,7 +3229,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00707-R828"
+          "resource_id": "CLM-93d962299201"
         }
       ],
       "violated_invariants": [
@@ -3244,10 +3244,10 @@
       "injection_id": "INJ-00118",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00470",
+      "source_bundle_id": "BND-eb60c136115b",
       "target_bundle_ids": [
-        "BND-00470",
-        "BND-00470-R465"
+        "BND-eb60c136115b",
+        "BND-0b5145e13802"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -3259,7 +3259,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00470-R465"
+          "resource_id": "CLM-42c5785f50d1"
         }
       ],
       "violated_invariants": [
@@ -3274,10 +3274,10 @@
       "injection_id": "INJ-00119",
       "mode": "REPEAT_BILLING",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00239",
+      "source_bundle_id": "BND-9af80ba88eed",
       "target_bundle_ids": [
-        "BND-00239",
-        "BND-00239-R050"
+        "BND-9af80ba88eed",
+        "BND-d4293531a5a9"
       ],
       "expected_reason_codes": [
         "OVERLAPPING_CLAIM_SAME_EPISODE"
@@ -3289,7 +3289,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00239-R050"
+          "resource_id": "CLM-dd0fc6b8f0a4"
         }
       ],
       "violated_invariants": [
@@ -3304,9 +3304,9 @@
       "injection_id": "INJ-00120",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00540",
+      "source_bundle_id": "BND-5c936d91ff42",
       "target_bundle_ids": [
-        "BND-00515"
+        "BND-b6f599da3885"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3333,9 +3333,9 @@
       "injection_id": "INJ-00121",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00460",
+      "source_bundle_id": "BND-1b5cea5144b1",
       "target_bundle_ids": [
-        "BND-00286"
+        "BND-7e2b3b8db738"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3362,9 +3362,9 @@
       "injection_id": "INJ-00122",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00631",
+      "source_bundle_id": "BND-ec8282ab025d",
       "target_bundle_ids": [
-        "BND-00281"
+        "BND-95fea7e1e20e"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3391,9 +3391,9 @@
       "injection_id": "INJ-00123",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00460",
+      "source_bundle_id": "BND-1b5cea5144b1",
       "target_bundle_ids": [
-        "BND-00028"
+        "BND-c1e1de4294b0"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3420,9 +3420,9 @@
       "injection_id": "INJ-00124",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00593"
+        "BND-3d7f6bdb7293"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3449,9 +3449,9 @@
       "injection_id": "INJ-00125",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00219",
+      "source_bundle_id": "BND-cb019517a600",
       "target_bundle_ids": [
-        "BND-00365"
+        "BND-de00006773c9"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3478,9 +3478,9 @@
       "injection_id": "INJ-00126",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00108",
+      "source_bundle_id": "BND-706d17450cfc",
       "target_bundle_ids": [
-        "BND-00791"
+        "BND-6e448cdd3001"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3507,9 +3507,9 @@
       "injection_id": "INJ-00127",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00621"
+        "BND-ca7e79da7073"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3536,9 +3536,9 @@
       "injection_id": "INJ-00128",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00631",
+      "source_bundle_id": "BND-ec8282ab025d",
       "target_bundle_ids": [
-        "BND-00094"
+        "BND-9106998b8f23"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3565,9 +3565,9 @@
       "injection_id": "INJ-00129",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00108",
+      "source_bundle_id": "BND-706d17450cfc",
       "target_bundle_ids": [
-        "BND-00232"
+        "BND-c027754babcc"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3594,9 +3594,9 @@
       "injection_id": "INJ-00130",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00219",
+      "source_bundle_id": "BND-cb019517a600",
       "target_bundle_ids": [
-        "BND-00275"
+        "BND-2b071ce551d0"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3623,9 +3623,9 @@
       "injection_id": "INJ-00131",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00540",
+      "source_bundle_id": "BND-5c936d91ff42",
       "target_bundle_ids": [
-        "BND-00679"
+        "BND-a4687cfd4f89"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3652,9 +3652,9 @@
       "injection_id": "INJ-00132",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00219",
+      "source_bundle_id": "BND-cb019517a600",
       "target_bundle_ids": [
-        "BND-00157"
+        "BND-c7134f1eee3b"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3681,9 +3681,9 @@
       "injection_id": "INJ-00133",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00108",
+      "source_bundle_id": "BND-706d17450cfc",
       "target_bundle_ids": [
-        "BND-00244"
+        "BND-98f17e128f27"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3710,9 +3710,9 @@
       "injection_id": "INJ-00134",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00602",
+      "source_bundle_id": "BND-09755aa3719f",
       "target_bundle_ids": [
-        "BND-00211"
+        "BND-6b16f14acf73"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3739,9 +3739,9 @@
       "injection_id": "INJ-00135",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00602",
+      "source_bundle_id": "BND-09755aa3719f",
       "target_bundle_ids": [
-        "BND-00179"
+        "BND-5229d36fda06"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3768,9 +3768,9 @@
       "injection_id": "INJ-00136",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00316"
+        "BND-d29755365a69"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3797,9 +3797,9 @@
       "injection_id": "INJ-00137",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00602",
+      "source_bundle_id": "BND-09755aa3719f",
       "target_bundle_ids": [
-        "BND-00521"
+        "BND-5c79184ecd45"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3826,9 +3826,9 @@
       "injection_id": "INJ-00138",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00460",
+      "source_bundle_id": "BND-1b5cea5144b1",
       "target_bundle_ids": [
-        "BND-00379"
+        "BND-9d06f62964f7"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3855,9 +3855,9 @@
       "injection_id": "INJ-00139",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00602",
+      "source_bundle_id": "BND-09755aa3719f",
       "target_bundle_ids": [
-        "BND-00915"
+        "BND-59421fddd3fa"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3884,9 +3884,9 @@
       "injection_id": "INJ-00140",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00430",
+      "source_bundle_id": "BND-1fe8b0f71af4",
       "target_bundle_ids": [
-        "BND-00334"
+        "BND-9b37e2c7b642"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3913,9 +3913,9 @@
       "injection_id": "INJ-00141",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00460",
+      "source_bundle_id": "BND-1b5cea5144b1",
       "target_bundle_ids": [
-        "BND-00293"
+        "BND-164d3e664a87"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3942,9 +3942,9 @@
       "injection_id": "INJ-00142",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00430",
+      "source_bundle_id": "BND-1fe8b0f71af4",
       "target_bundle_ids": [
-        "BND-00592"
+        "BND-fc30ab12c84f"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -3971,9 +3971,9 @@
       "injection_id": "INJ-00143",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00460",
+      "source_bundle_id": "BND-1b5cea5144b1",
       "target_bundle_ids": [
-        "BND-00022"
+        "BND-8e2e50cea4b0"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4000,9 +4000,9 @@
       "injection_id": "INJ-00144",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00540",
+      "source_bundle_id": "BND-5c936d91ff42",
       "target_bundle_ids": [
-        "BND-00017"
+        "BND-3ab130528d4a"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4029,9 +4029,9 @@
       "injection_id": "INJ-00145",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00069"
+        "BND-3aa672c7f792"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4058,9 +4058,9 @@
       "injection_id": "INJ-00146",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00930"
+        "BND-6f480ecb6a7a"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4087,9 +4087,9 @@
       "injection_id": "INJ-00147",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00460",
+      "source_bundle_id": "BND-1b5cea5144b1",
       "target_bundle_ids": [
-        "BND-00603"
+        "BND-2d64f2c344b2"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4116,9 +4116,9 @@
       "injection_id": "INJ-00148",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00341"
+        "BND-36a3512af3fd"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4145,9 +4145,9 @@
       "injection_id": "INJ-00149",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00540",
+      "source_bundle_id": "BND-5c936d91ff42",
       "target_bundle_ids": [
-        "BND-00450"
+        "BND-6d9ba04c2c10"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4174,9 +4174,9 @@
       "injection_id": "INJ-00150",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00219",
+      "source_bundle_id": "BND-cb019517a600",
       "target_bundle_ids": [
-        "BND-00742"
+        "BND-2e7eb2b9639c"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4203,9 +4203,9 @@
       "injection_id": "INJ-00151",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00602",
+      "source_bundle_id": "BND-09755aa3719f",
       "target_bundle_ids": [
-        "BND-00888"
+        "BND-ad7f9d1ecbe1"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4232,9 +4232,9 @@
       "injection_id": "INJ-00152",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00602",
+      "source_bundle_id": "BND-09755aa3719f",
       "target_bundle_ids": [
-        "BND-00604"
+        "BND-59a2173442af"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4261,9 +4261,9 @@
       "injection_id": "INJ-00153",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00540",
+      "source_bundle_id": "BND-5c936d91ff42",
       "target_bundle_ids": [
-        "BND-00938"
+        "BND-b4464781c218"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4290,9 +4290,9 @@
       "injection_id": "INJ-00154",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00540",
+      "source_bundle_id": "BND-5c936d91ff42",
       "target_bundle_ids": [
-        "BND-00817"
+        "BND-3824937cae97"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4319,9 +4319,9 @@
       "injection_id": "INJ-00155",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00430",
+      "source_bundle_id": "BND-1fe8b0f71af4",
       "target_bundle_ids": [
-        "BND-00176"
+        "BND-9d932ed3eb48"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4348,9 +4348,9 @@
       "injection_id": "INJ-00156",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00631",
+      "source_bundle_id": "BND-ec8282ab025d",
       "target_bundle_ids": [
-        "BND-00213"
+        "BND-d9c1a702a478"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4377,9 +4377,9 @@
       "injection_id": "INJ-00157",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00567"
+        "BND-3bd8e8b04265"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4406,9 +4406,9 @@
       "injection_id": "INJ-00158",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00430",
+      "source_bundle_id": "BND-1fe8b0f71af4",
       "target_bundle_ids": [
-        "BND-00842"
+        "BND-602b2dea91a7"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4435,9 +4435,9 @@
       "injection_id": "INJ-00159",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00219",
+      "source_bundle_id": "BND-cb019517a600",
       "target_bundle_ids": [
-        "BND-00020"
+        "BND-a0cc81f5a8b7"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4464,9 +4464,9 @@
       "injection_id": "INJ-00160",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00540",
+      "source_bundle_id": "BND-5c936d91ff42",
       "target_bundle_ids": [
-        "BND-00955"
+        "BND-98d00587d1a9"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4493,9 +4493,9 @@
       "injection_id": "INJ-00161",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00631",
+      "source_bundle_id": "BND-ec8282ab025d",
       "target_bundle_ids": [
-        "BND-00633"
+        "BND-efc3d2d134f9"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4522,9 +4522,9 @@
       "injection_id": "INJ-00162",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00108",
+      "source_bundle_id": "BND-706d17450cfc",
       "target_bundle_ids": [
-        "BND-00215"
+        "BND-f9073ece36c3"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4551,9 +4551,9 @@
       "injection_id": "INJ-00163",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00460",
+      "source_bundle_id": "BND-1b5cea5144b1",
       "target_bundle_ids": [
-        "BND-00957"
+        "BND-4a13611aad2d"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4580,9 +4580,9 @@
       "injection_id": "INJ-00164",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00532"
+        "BND-657400844bea"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4609,9 +4609,9 @@
       "injection_id": "INJ-00165",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00474"
+        "BND-d00512d25096"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4638,9 +4638,9 @@
       "injection_id": "INJ-00166",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00460",
+      "source_bundle_id": "BND-1b5cea5144b1",
       "target_bundle_ids": [
-        "BND-00926"
+        "BND-53767bc4cdd5"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4667,9 +4667,9 @@
       "injection_id": "INJ-00167",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00108",
+      "source_bundle_id": "BND-706d17450cfc",
       "target_bundle_ids": [
-        "BND-00944"
+        "BND-f75a60011f97"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4696,9 +4696,9 @@
       "injection_id": "INJ-00168",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00602",
+      "source_bundle_id": "BND-09755aa3719f",
       "target_bundle_ids": [
-        "BND-00145"
+        "BND-4725b26ffbfa"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4725,9 +4725,9 @@
       "injection_id": "INJ-00169",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00260"
+        "BND-52d6444b6eea"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4754,9 +4754,9 @@
       "injection_id": "INJ-00170",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00918",
+      "source_bundle_id": "BND-bba2b6857b0c",
       "target_bundle_ids": [
-        "BND-00149"
+        "BND-66e4eb4fc895"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4783,9 +4783,9 @@
       "injection_id": "INJ-00171",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00108",
+      "source_bundle_id": "BND-706d17450cfc",
       "target_bundle_ids": [
-        "BND-00998"
+        "BND-b7a73dd3e053"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4812,9 +4812,9 @@
       "injection_id": "INJ-00172",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00540",
+      "source_bundle_id": "BND-5c936d91ff42",
       "target_bundle_ids": [
-        "BND-00756"
+        "BND-ff520ebc7cc8"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4841,9 +4841,9 @@
       "injection_id": "INJ-00173",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00602",
+      "source_bundle_id": "BND-09755aa3719f",
       "target_bundle_ids": [
-        "BND-00687"
+        "BND-f74dab78d9b0"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4870,9 +4870,9 @@
       "injection_id": "INJ-00174",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00108",
+      "source_bundle_id": "BND-706d17450cfc",
       "target_bundle_ids": [
-        "BND-00104"
+        "BND-2363041021ae"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4899,9 +4899,9 @@
       "injection_id": "INJ-00175",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00460",
+      "source_bundle_id": "BND-1b5cea5144b1",
       "target_bundle_ids": [
-        "BND-00006"
+        "BND-8349da173463"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4928,9 +4928,9 @@
       "injection_id": "INJ-00176",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00430",
+      "source_bundle_id": "BND-1fe8b0f71af4",
       "target_bundle_ids": [
-        "BND-00761"
+        "BND-9f48bbb5c2f5"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4957,9 +4957,9 @@
       "injection_id": "INJ-00177",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00430",
+      "source_bundle_id": "BND-1fe8b0f71af4",
       "target_bundle_ids": [
-        "BND-00618"
+        "BND-341d10b7b842"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -4986,9 +4986,9 @@
       "injection_id": "INJ-00178",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00631",
+      "source_bundle_id": "BND-ec8282ab025d",
       "target_bundle_ids": [
-        "BND-00243"
+        "BND-1e63bad95681"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -5015,9 +5015,9 @@
       "injection_id": "INJ-00179",
       "mode": "CLONED_DOCUMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00540",
+      "source_bundle_id": "BND-5c936d91ff42",
       "target_bundle_ids": [
-        "BND-00146"
+        "BND-880ff859d6a6"
       ],
       "expected_reason_codes": [
         "NEAR_DUPLICATE_DOCUMENTATION"
@@ -5044,10 +5044,10 @@
       "injection_id": "INJ-00180",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00474",
+      "source_bundle_id": "BND-d00512d25096",
       "target_bundle_ids": [
-        "BND-00474",
-        "BND-00474-U476"
+        "BND-d00512d25096",
+        "BND-43da37d40c90"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5059,7 +5059,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00474-U476"
+          "resource_id": "CLM-3c45dde41255"
         }
       ],
       "violated_invariants": [
@@ -5074,10 +5074,10 @@
       "injection_id": "INJ-00181",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00161",
+      "source_bundle_id": "BND-05d6f0fe65ef",
       "target_bundle_ids": [
-        "BND-00161",
-        "BND-00161-U829"
+        "BND-05d6f0fe65ef",
+        "BND-e776cb64adea"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5089,7 +5089,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00161-U829"
+          "resource_id": "CLM-2a69bd9fa941"
         }
       ],
       "violated_invariants": [
@@ -5104,10 +5104,10 @@
       "injection_id": "INJ-00182",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00792",
+      "source_bundle_id": "BND-12fafa39fcbf",
       "target_bundle_ids": [
-        "BND-00792",
-        "BND-00792-U585"
+        "BND-12fafa39fcbf",
+        "BND-52cae4412599"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5119,7 +5119,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00792-U585"
+          "resource_id": "CLM-a19b67f21f7a"
         }
       ],
       "violated_invariants": [
@@ -5134,10 +5134,10 @@
       "injection_id": "INJ-00183",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00173",
+      "source_bundle_id": "BND-af302312472a",
       "target_bundle_ids": [
-        "BND-00173",
-        "BND-00173-U129"
+        "BND-af302312472a",
+        "BND-08b42d0b1a98"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5149,7 +5149,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00173-U129"
+          "resource_id": "CLM-f2fb24720395"
         }
       ],
       "violated_invariants": [
@@ -5164,10 +5164,10 @@
       "injection_id": "INJ-00184",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00829",
+      "source_bundle_id": "BND-b700b869de9a",
       "target_bundle_ids": [
-        "BND-00829",
-        "BND-00829-U378"
+        "BND-b700b869de9a",
+        "BND-8e6f348a7bcb"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5179,7 +5179,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00829-U378"
+          "resource_id": "CLM-03f00377bd50"
         }
       ],
       "violated_invariants": [
@@ -5194,10 +5194,10 @@
       "injection_id": "INJ-00185",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00667",
+      "source_bundle_id": "BND-8ff2c6857932",
       "target_bundle_ids": [
-        "BND-00667",
-        "BND-00667-U071"
+        "BND-8ff2c6857932",
+        "BND-96101c96b05a"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5209,7 +5209,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00667-U071"
+          "resource_id": "CLM-abd0b040c89a"
         }
       ],
       "violated_invariants": [
@@ -5224,10 +5224,10 @@
       "injection_id": "INJ-00186",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00733",
+      "source_bundle_id": "BND-360c2fd2d74b",
       "target_bundle_ids": [
-        "BND-00733",
-        "BND-00733-U938"
+        "BND-360c2fd2d74b",
+        "BND-4eaddbb842c2"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5239,7 +5239,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00733-U938"
+          "resource_id": "CLM-ce6a768051f7"
         }
       ],
       "violated_invariants": [
@@ -5254,10 +5254,10 @@
       "injection_id": "INJ-00187",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00721",
+      "source_bundle_id": "BND-8d896a4fabf7",
       "target_bundle_ids": [
-        "BND-00721",
-        "BND-00721-U932"
+        "BND-8d896a4fabf7",
+        "BND-56a354a85147"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5269,7 +5269,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00721-U932"
+          "resource_id": "CLM-457a5a10820a"
         }
       ],
       "violated_invariants": [
@@ -5284,10 +5284,10 @@
       "injection_id": "INJ-00188",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00241",
+      "source_bundle_id": "BND-e6c6f0f3993f",
       "target_bundle_ids": [
-        "BND-00241",
-        "BND-00241-U242"
+        "BND-e6c6f0f3993f",
+        "BND-8a67a9be1d3b"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5299,7 +5299,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00241-U242"
+          "resource_id": "CLM-c112fd689a8e"
         }
       ],
       "violated_invariants": [
@@ -5314,10 +5314,10 @@
       "injection_id": "INJ-00189",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00494",
+      "source_bundle_id": "BND-33d7a6487990",
       "target_bundle_ids": [
-        "BND-00494",
-        "BND-00494-U774"
+        "BND-33d7a6487990",
+        "BND-48683df1b1d9"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5329,7 +5329,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00494-U774"
+          "resource_id": "CLM-a417bae781f4"
         }
       ],
       "violated_invariants": [
@@ -5344,10 +5344,10 @@
       "injection_id": "INJ-00190",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00208",
+      "source_bundle_id": "BND-530668ef64f8",
       "target_bundle_ids": [
-        "BND-00208",
-        "BND-00208-U220"
+        "BND-530668ef64f8",
+        "BND-b19ba92d7c8b"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5359,7 +5359,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00208-U220"
+          "resource_id": "CLM-6dd4836cfe33"
         }
       ],
       "violated_invariants": [
@@ -5374,10 +5374,10 @@
       "injection_id": "INJ-00191",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00718",
+      "source_bundle_id": "BND-bbf500485d84",
       "target_bundle_ids": [
-        "BND-00718",
-        "BND-00718-U916"
+        "BND-bbf500485d84",
+        "BND-bdc9ede3cd45"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5389,7 +5389,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00718-U916"
+          "resource_id": "CLM-aaa459dcc103"
         }
       ],
       "violated_invariants": [
@@ -5404,10 +5404,10 @@
       "injection_id": "INJ-00192",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00167",
+      "source_bundle_id": "BND-6043bf0fafa4",
       "target_bundle_ids": [
-        "BND-00167",
-        "BND-00167-U128"
+        "BND-6043bf0fafa4",
+        "BND-5d0e6fd27f63"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5419,7 +5419,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00167-U128"
+          "resource_id": "CLM-e67860b71f98"
         }
       ],
       "violated_invariants": [
@@ -5434,10 +5434,10 @@
       "injection_id": "INJ-00193",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00909",
+      "source_bundle_id": "BND-75c37a4a302a",
       "target_bundle_ids": [
-        "BND-00909",
-        "BND-00909-U218"
+        "BND-75c37a4a302a",
+        "BND-4f331c5767f3"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5449,7 +5449,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00909-U218"
+          "resource_id": "CLM-cf16225c20bc"
         }
       ],
       "violated_invariants": [
@@ -5464,10 +5464,10 @@
       "injection_id": "INJ-00194",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00965",
+      "source_bundle_id": "BND-3e4455361156",
       "target_bundle_ids": [
-        "BND-00965",
-        "BND-00965-U020"
+        "BND-3e4455361156",
+        "BND-89117130f8ec"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5479,7 +5479,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00965-U020"
+          "resource_id": "CLM-7d43b75bcb44"
         }
       ],
       "violated_invariants": [
@@ -5494,10 +5494,10 @@
       "injection_id": "INJ-00195",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00261",
+      "source_bundle_id": "BND-b2509a986947",
       "target_bundle_ids": [
-        "BND-00261",
-        "BND-00261-U978"
+        "BND-b2509a986947",
+        "BND-416217a86868"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5509,7 +5509,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00261-U978"
+          "resource_id": "CLM-c19eb1f2d81e"
         }
       ],
       "violated_invariants": [
@@ -5524,10 +5524,10 @@
       "injection_id": "INJ-00196",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00819",
+      "source_bundle_id": "BND-e8febf4f3620",
       "target_bundle_ids": [
-        "BND-00819",
-        "BND-00819-U418"
+        "BND-e8febf4f3620",
+        "BND-dc3afb02adf8"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5539,7 +5539,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00819-U418"
+          "resource_id": "CLM-728525470bb1"
         }
       ],
       "violated_invariants": [
@@ -5554,10 +5554,10 @@
       "injection_id": "INJ-00197",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00553",
+      "source_bundle_id": "BND-b59b83628ee1",
       "target_bundle_ids": [
-        "BND-00553",
-        "BND-00553-U260"
+        "BND-b59b83628ee1",
+        "BND-f79d83bd93f8"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5569,7 +5569,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00553-U260"
+          "resource_id": "CLM-307cd0bf4dee"
         }
       ],
       "violated_invariants": [
@@ -5584,10 +5584,10 @@
       "injection_id": "INJ-00198",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00759",
+      "source_bundle_id": "BND-46510529f0ed",
       "target_bundle_ids": [
-        "BND-00759",
-        "BND-00759-U637"
+        "BND-46510529f0ed",
+        "BND-b2a1bad3ab3e"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5599,7 +5599,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00759-U637"
+          "resource_id": "CLM-26ffa2a3af15"
         }
       ],
       "violated_invariants": [
@@ -5614,10 +5614,10 @@
       "injection_id": "INJ-00199",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00698",
+      "source_bundle_id": "BND-51bb65dbc12f",
       "target_bundle_ids": [
-        "BND-00698",
-        "BND-00698-U548"
+        "BND-51bb65dbc12f",
+        "BND-d6e231f243a2"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5629,7 +5629,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00698-U548"
+          "resource_id": "CLM-142123425504"
         }
       ],
       "violated_invariants": [
@@ -5644,10 +5644,10 @@
       "injection_id": "INJ-00200",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00527",
+      "source_bundle_id": "BND-ebbf658fb4ee",
       "target_bundle_ids": [
-        "BND-00527",
-        "BND-00527-U210"
+        "BND-ebbf658fb4ee",
+        "BND-253cf0c474d2"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5659,7 +5659,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00527-U210"
+          "resource_id": "CLM-f81a430beaeb"
         }
       ],
       "violated_invariants": [
@@ -5674,10 +5674,10 @@
       "injection_id": "INJ-00201",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00008",
+      "source_bundle_id": "BND-a73f219735f7",
       "target_bundle_ids": [
-        "BND-00008",
-        "BND-00008-U798"
+        "BND-a73f219735f7",
+        "BND-d06df9b70ff5"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5689,7 +5689,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00008-U798"
+          "resource_id": "CLM-c4a6345ce3a0"
         }
       ],
       "violated_invariants": [
@@ -5704,10 +5704,10 @@
       "injection_id": "INJ-00202",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00661",
+      "source_bundle_id": "BND-c00e1b5a1b62",
       "target_bundle_ids": [
-        "BND-00661",
-        "BND-00661-U784"
+        "BND-c00e1b5a1b62",
+        "BND-ccf0d37d0b8c"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5719,7 +5719,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00661-U784"
+          "resource_id": "CLM-215dc37425f8"
         }
       ],
       "violated_invariants": [
@@ -5734,10 +5734,10 @@
       "injection_id": "INJ-00203",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00599",
+      "source_bundle_id": "BND-d8d95487487d",
       "target_bundle_ids": [
-        "BND-00599",
-        "BND-00599-U582"
+        "BND-d8d95487487d",
+        "BND-a49c7a5ef634"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5749,7 +5749,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00599-U582"
+          "resource_id": "CLM-aa2be75227e2"
         }
       ],
       "violated_invariants": [
@@ -5764,10 +5764,10 @@
       "injection_id": "INJ-00204",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00680",
+      "source_bundle_id": "BND-5588c3deb9b5",
       "target_bundle_ids": [
-        "BND-00680",
-        "BND-00680-U773"
+        "BND-5588c3deb9b5",
+        "BND-94a8b2f5551c"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5779,7 +5779,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00680-U773"
+          "resource_id": "CLM-471081e0b942"
         }
       ],
       "violated_invariants": [
@@ -5794,10 +5794,10 @@
       "injection_id": "INJ-00205",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00024",
+      "source_bundle_id": "BND-36cda3a7dd6f",
       "target_bundle_ids": [
-        "BND-00024",
-        "BND-00024-U029"
+        "BND-36cda3a7dd6f",
+        "BND-df55563b6c5d"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5809,7 +5809,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00024-U029"
+          "resource_id": "CLM-d1c8608a955e"
         }
       ],
       "violated_invariants": [
@@ -5824,10 +5824,10 @@
       "injection_id": "INJ-00206",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00059",
+      "source_bundle_id": "BND-f20c7dd8a4be",
       "target_bundle_ids": [
-        "BND-00059",
-        "BND-00059-U148"
+        "BND-f20c7dd8a4be",
+        "BND-748a3859536d"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5839,7 +5839,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00059-U148"
+          "resource_id": "CLM-f2efd868a74c"
         }
       ],
       "violated_invariants": [
@@ -5854,10 +5854,10 @@
       "injection_id": "INJ-00207",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00183",
+      "source_bundle_id": "BND-05e0676cbe06",
       "target_bundle_ids": [
-        "BND-00183",
-        "BND-00183-U690"
+        "BND-05e0676cbe06",
+        "BND-01794d20349d"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5869,7 +5869,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00183-U690"
+          "resource_id": "CLM-9a0a9f9d8da5"
         }
       ],
       "violated_invariants": [
@@ -5884,10 +5884,10 @@
       "injection_id": "INJ-00208",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00203",
+      "source_bundle_id": "BND-047f745a0bc0",
       "target_bundle_ids": [
-        "BND-00203",
-        "BND-00203-U337"
+        "BND-047f745a0bc0",
+        "BND-8bf21da4794d"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5899,7 +5899,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00203-U337"
+          "resource_id": "CLM-dc1c62870450"
         }
       ],
       "violated_invariants": [
@@ -5914,10 +5914,10 @@
       "injection_id": "INJ-00209",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00966",
+      "source_bundle_id": "BND-d59d2b7f073a",
       "target_bundle_ids": [
-        "BND-00966",
-        "BND-00966-U953"
+        "BND-d59d2b7f073a",
+        "BND-b74e2be78889"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5929,7 +5929,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00966-U953"
+          "resource_id": "CLM-0d3628a2ed40"
         }
       ],
       "violated_invariants": [
@@ -5944,10 +5944,10 @@
       "injection_id": "INJ-00210",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00964",
+      "source_bundle_id": "BND-46bb1b3b4fc5",
       "target_bundle_ids": [
-        "BND-00964",
-        "BND-00964-U435"
+        "BND-46bb1b3b4fc5",
+        "BND-64d81a1b45f7"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5959,7 +5959,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00964-U435"
+          "resource_id": "CLM-5eba873f45e5"
         }
       ],
       "violated_invariants": [
@@ -5974,10 +5974,10 @@
       "injection_id": "INJ-00211",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00776",
+      "source_bundle_id": "BND-8ae6ebbf1384",
       "target_bundle_ids": [
-        "BND-00776",
-        "BND-00776-U006"
+        "BND-8ae6ebbf1384",
+        "BND-a0883135a8ba"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -5989,7 +5989,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00776-U006"
+          "resource_id": "CLM-4398528ba32b"
         }
       ],
       "violated_invariants": [
@@ -6004,10 +6004,10 @@
       "injection_id": "INJ-00212",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00673",
+      "source_bundle_id": "BND-7ffe925d7461",
       "target_bundle_ids": [
-        "BND-00673",
-        "BND-00673-U286"
+        "BND-7ffe925d7461",
+        "BND-24cbb923c916"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6019,7 +6019,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00673-U286"
+          "resource_id": "CLM-e63e82d7a5a0"
         }
       ],
       "violated_invariants": [
@@ -6034,10 +6034,10 @@
       "injection_id": "INJ-00213",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00236",
+      "source_bundle_id": "BND-d9cebb3e5c5e",
       "target_bundle_ids": [
-        "BND-00236",
-        "BND-00236-U134"
+        "BND-d9cebb3e5c5e",
+        "BND-3483b4d62702"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6049,7 +6049,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00236-U134"
+          "resource_id": "CLM-5e17d0819b3a"
         }
       ],
       "violated_invariants": [
@@ -6064,10 +6064,10 @@
       "injection_id": "INJ-00214",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00624",
+      "source_bundle_id": "BND-0383ee7ed425",
       "target_bundle_ids": [
-        "BND-00624",
-        "BND-00624-U195"
+        "BND-0383ee7ed425",
+        "BND-16c8fe6c9217"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6079,7 +6079,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00624-U195"
+          "resource_id": "CLM-c8b94ec29e74"
         }
       ],
       "violated_invariants": [
@@ -6094,10 +6094,10 @@
       "injection_id": "INJ-00215",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00493",
+      "source_bundle_id": "BND-f7de2dba52cf",
       "target_bundle_ids": [
-        "BND-00493",
-        "BND-00493-U039"
+        "BND-f7de2dba52cf",
+        "BND-8f48a966084d"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6109,7 +6109,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00493-U039"
+          "resource_id": "CLM-856512f083ca"
         }
       ],
       "violated_invariants": [
@@ -6124,10 +6124,10 @@
       "injection_id": "INJ-00216",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00672",
+      "source_bundle_id": "BND-0506c508c057",
       "target_bundle_ids": [
-        "BND-00672",
-        "BND-00672-U014"
+        "BND-0506c508c057",
+        "BND-dc164014f073"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6139,7 +6139,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00672-U014"
+          "resource_id": "CLM-c25ed03df120"
         }
       ],
       "violated_invariants": [
@@ -6154,10 +6154,10 @@
       "injection_id": "INJ-00217",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00139",
+      "source_bundle_id": "BND-6dc3dfaaeec5",
       "target_bundle_ids": [
-        "BND-00139",
-        "BND-00139-U686"
+        "BND-6dc3dfaaeec5",
+        "BND-9406a8a0b590"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6169,7 +6169,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00139-U686"
+          "resource_id": "CLM-f8e04b4fd3ae"
         }
       ],
       "violated_invariants": [
@@ -6184,10 +6184,10 @@
       "injection_id": "INJ-00218",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00105",
+      "source_bundle_id": "BND-d8a1c253d056",
       "target_bundle_ids": [
-        "BND-00105",
-        "BND-00105-U279"
+        "BND-d8a1c253d056",
+        "BND-40bba7127233"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6199,7 +6199,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00105-U279"
+          "resource_id": "CLM-4ef70d58d97f"
         }
       ],
       "violated_invariants": [
@@ -6214,10 +6214,10 @@
       "injection_id": "INJ-00219",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00372",
+      "source_bundle_id": "BND-2992377e1e48",
       "target_bundle_ids": [
-        "BND-00372",
-        "BND-00372-U286"
+        "BND-2992377e1e48",
+        "BND-6eef5c86f659"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6229,7 +6229,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00372-U286"
+          "resource_id": "CLM-64bda0e1da69"
         }
       ],
       "violated_invariants": [
@@ -6244,10 +6244,10 @@
       "injection_id": "INJ-00220",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00625",
+      "source_bundle_id": "BND-3b2002c5c99f",
       "target_bundle_ids": [
-        "BND-00625",
-        "BND-00625-U723"
+        "BND-3b2002c5c99f",
+        "BND-cc9fbd1a599f"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6259,7 +6259,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00625-U723"
+          "resource_id": "CLM-e54f8520b722"
         }
       ],
       "violated_invariants": [
@@ -6274,10 +6274,10 @@
       "injection_id": "INJ-00221",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00839",
+      "source_bundle_id": "BND-0d5c8f116b2d",
       "target_bundle_ids": [
-        "BND-00839",
-        "BND-00839-U566"
+        "BND-0d5c8f116b2d",
+        "BND-21b95df02c00"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6289,7 +6289,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00839-U566"
+          "resource_id": "CLM-aee70dcfc13e"
         }
       ],
       "violated_invariants": [
@@ -6304,10 +6304,10 @@
       "injection_id": "INJ-00222",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00585",
+      "source_bundle_id": "BND-b7c6cbd905d2",
       "target_bundle_ids": [
-        "BND-00585",
-        "BND-00585-U035"
+        "BND-b7c6cbd905d2",
+        "BND-894f8af55858"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6319,7 +6319,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00585-U035"
+          "resource_id": "CLM-ad91c35c4672"
         }
       ],
       "violated_invariants": [
@@ -6334,10 +6334,10 @@
       "injection_id": "INJ-00223",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00556",
+      "source_bundle_id": "BND-00a39a8b8080",
       "target_bundle_ids": [
-        "BND-00556",
-        "BND-00556-U966"
+        "BND-00a39a8b8080",
+        "BND-0a1d576b1213"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6349,7 +6349,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00556-U966"
+          "resource_id": "CLM-c2812ebb2716"
         }
       ],
       "violated_invariants": [
@@ -6364,10 +6364,10 @@
       "injection_id": "INJ-00224",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00307",
+      "source_bundle_id": "BND-ad2a93375beb",
       "target_bundle_ids": [
-        "BND-00307",
-        "BND-00307-U999"
+        "BND-ad2a93375beb",
+        "BND-89e416778d0a"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6379,7 +6379,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00307-U999"
+          "resource_id": "CLM-dfb07f463514"
         }
       ],
       "violated_invariants": [
@@ -6394,10 +6394,10 @@
       "injection_id": "INJ-00225",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00527",
+      "source_bundle_id": "BND-ebbf658fb4ee",
       "target_bundle_ids": [
-        "BND-00527",
-        "BND-00527-U801"
+        "BND-ebbf658fb4ee",
+        "BND-b8454ef6951a"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6409,7 +6409,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00527-U801"
+          "resource_id": "CLM-1654e2e64629"
         }
       ],
       "violated_invariants": [
@@ -6424,10 +6424,10 @@
       "injection_id": "INJ-00226",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00992",
+      "source_bundle_id": "BND-1dd43d38ae90",
       "target_bundle_ids": [
-        "BND-00992",
-        "BND-00992-U557"
+        "BND-1dd43d38ae90",
+        "BND-60b5ee66fc2d"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6439,7 +6439,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00992-U557"
+          "resource_id": "CLM-ba43876866a2"
         }
       ],
       "violated_invariants": [
@@ -6454,10 +6454,10 @@
       "injection_id": "INJ-00227",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00641",
+      "source_bundle_id": "BND-6fca741516bf",
       "target_bundle_ids": [
-        "BND-00641",
-        "BND-00641-U314"
+        "BND-6fca741516bf",
+        "BND-6de619ba978e"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6469,7 +6469,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00641-U314"
+          "resource_id": "CLM-35a5756f9ab4"
         }
       ],
       "violated_invariants": [
@@ -6484,10 +6484,10 @@
       "injection_id": "INJ-00228",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00528",
+      "source_bundle_id": "BND-1cdc8bf96b7b",
       "target_bundle_ids": [
-        "BND-00528",
-        "BND-00528-U105"
+        "BND-1cdc8bf96b7b",
+        "BND-67b284f28018"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6499,7 +6499,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00528-U105"
+          "resource_id": "CLM-ced9e018dc47"
         }
       ],
       "violated_invariants": [
@@ -6514,10 +6514,10 @@
       "injection_id": "INJ-00229",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00754",
+      "source_bundle_id": "BND-e4c88bce4ce7",
       "target_bundle_ids": [
-        "BND-00754",
-        "BND-00754-U500"
+        "BND-e4c88bce4ce7",
+        "BND-9ca48edc5ec4"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6529,7 +6529,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00754-U500"
+          "resource_id": "CLM-0a6e13cbeba7"
         }
       ],
       "violated_invariants": [
@@ -6544,10 +6544,10 @@
       "injection_id": "INJ-00230",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00418",
+      "source_bundle_id": "BND-3a7ed449b71c",
       "target_bundle_ids": [
-        "BND-00418",
-        "BND-00418-U784"
+        "BND-3a7ed449b71c",
+        "BND-201d6e1bde72"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6559,7 +6559,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00418-U784"
+          "resource_id": "CLM-0c381fbfefe1"
         }
       ],
       "violated_invariants": [
@@ -6574,10 +6574,10 @@
       "injection_id": "INJ-00231",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00766",
+      "source_bundle_id": "BND-9e799aa1b0c8",
       "target_bundle_ids": [
-        "BND-00766",
-        "BND-00766-U708"
+        "BND-9e799aa1b0c8",
+        "BND-f1352f1e0253"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6589,7 +6589,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00766-U708"
+          "resource_id": "CLM-5b47682b8002"
         }
       ],
       "violated_invariants": [
@@ -6604,10 +6604,10 @@
       "injection_id": "INJ-00232",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00953",
+      "source_bundle_id": "BND-fec06f3232bf",
       "target_bundle_ids": [
-        "BND-00953",
-        "BND-00953-U449"
+        "BND-fec06f3232bf",
+        "BND-eaf734e5f40b"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6619,7 +6619,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00953-U449"
+          "resource_id": "CLM-ca2e423e6ab4"
         }
       ],
       "violated_invariants": [
@@ -6634,10 +6634,10 @@
       "injection_id": "INJ-00233",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00934",
+      "source_bundle_id": "BND-44e2cf7e6bc5",
       "target_bundle_ids": [
-        "BND-00934",
-        "BND-00934-U104"
+        "BND-44e2cf7e6bc5",
+        "BND-6b06f7bad647"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6649,7 +6649,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00934-U104"
+          "resource_id": "CLM-29b8af482e64"
         }
       ],
       "violated_invariants": [
@@ -6664,10 +6664,10 @@
       "injection_id": "INJ-00234",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00786-R266",
+      "source_bundle_id": "BND-2251e1c0015d",
       "target_bundle_ids": [
-        "BND-00786-R266",
-        "BND-00786-R266-U513"
+        "BND-2251e1c0015d",
+        "BND-cb5a0ddf1410"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6675,11 +6675,11 @@
       "expected_evidence_refs": [
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00786-R266"
+          "resource_id": "CLM-676db01024cf"
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00786-R266-U513"
+          "resource_id": "CLM-c218b4ffb7c3"
         }
       ],
       "violated_invariants": [
@@ -6694,10 +6694,10 @@
       "injection_id": "INJ-00235",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00311",
+      "source_bundle_id": "BND-acb6e2ddce2e",
       "target_bundle_ids": [
-        "BND-00311",
-        "BND-00311-U080"
+        "BND-acb6e2ddce2e",
+        "BND-08cc1f1e64fd"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6709,7 +6709,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00311-U080"
+          "resource_id": "CLM-d8d98665927b"
         }
       ],
       "violated_invariants": [
@@ -6724,10 +6724,10 @@
       "injection_id": "INJ-00236",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "subtle",
-      "source_bundle_id": "BND-00937",
+      "source_bundle_id": "BND-a3220106b6c0",
       "target_bundle_ids": [
-        "BND-00937",
-        "BND-00937-U660"
+        "BND-a3220106b6c0",
+        "BND-594eb4b73441"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6739,7 +6739,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00937-U660"
+          "resource_id": "CLM-0ca5186a0f88"
         }
       ],
       "violated_invariants": [
@@ -6754,10 +6754,10 @@
       "injection_id": "INJ-00237",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "moderate",
-      "source_bundle_id": "BND-00541",
+      "source_bundle_id": "BND-83ab223bdbd5",
       "target_bundle_ids": [
-        "BND-00541",
-        "BND-00541-U934"
+        "BND-83ab223bdbd5",
+        "BND-7ff9514c82b4"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6769,7 +6769,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00541-U934"
+          "resource_id": "CLM-952745c20856"
         }
       ],
       "violated_invariants": [
@@ -6784,10 +6784,10 @@
       "injection_id": "INJ-00238",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00617",
+      "source_bundle_id": "BND-36030576197c",
       "target_bundle_ids": [
-        "BND-00617",
-        "BND-00617-U698"
+        "BND-36030576197c",
+        "BND-ecd6de6d73fe"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6799,7 +6799,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00617-U698"
+          "resource_id": "CLM-1747259096c7"
         }
       ],
       "violated_invariants": [
@@ -6814,10 +6814,10 @@
       "injection_id": "INJ-00239",
       "mode": "UNBUNDLING_FRAGMENTATION",
       "difficulty": "obvious",
-      "source_bundle_id": "BND-00113",
+      "source_bundle_id": "BND-05560c33af1d",
       "target_bundle_ids": [
-        "BND-00113",
-        "BND-00113-U669"
+        "BND-05560c33af1d",
+        "BND-b2c8ffdd8ad0"
       ],
       "expected_reason_codes": [
         "EPISODE_SPLIT_ACROSS_CLAIMS"
@@ -6829,7 +6829,7 @@
         },
         {
           "resource_type": "Claim",
-          "resource_id": "CLM-00113-U669"
+          "resource_id": "CLM-3ea555896d02"
         }
       ],
       "violated_invariants": [

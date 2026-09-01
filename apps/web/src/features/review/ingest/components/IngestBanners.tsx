@@ -78,7 +78,7 @@ export function DuplicateBanner({
         variant="outline"
         size="sm"
         className="shrink-0"
-        onClick={() => navigate(`/cases/${caseId}`)}
+        onClick={() => navigate(`/cases/${encodeURIComponent(caseId)}`)}
       >
         Buka kasus
         <ArrowRight />
@@ -150,7 +150,7 @@ export function EvidenceRequestBanner({ caseId }: { readonly caseId: string }) {
         variant="outline"
         size="sm"
         className="shrink-0"
-        onClick={() => navigate(`/cases/${caseId}`)}
+        onClick={() => navigate(`/cases/${encodeURIComponent(caseId)}`)}
       >
         Buka kasus
         <ArrowRight />

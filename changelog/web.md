@@ -270,3 +270,21 @@ Append-only. Newest entry at the top.
 > participant's note, which cloning compares across and the service receives without the
 > submission behind it. Both are asserted in `ComparisonDrawer.test.tsx`.
 > Verified: web 107 passed (was 104) · tsc clean · playwright 17.
+
+### 2026-09-01 · Router advisory audited; one navigation site hardened · ✅ Done
+
+**Event:** `react-router-dom` 6.30.6 carries two moderate advisories; neither is exploitable here
+**Files:** `src/features/review/ingest/components/IngestBanners.tsx`, `docs/artifacts/router-advisory-audit.md`
+> The SSR `deserializeErrors` advisory does not apply: this app is a static client bundle with no
+> server render and no hydration. The open-redirect advisory needs attacker-controlled input to
+> reach a navigation target **as a path prefix**; every target here is either a literal or a
+> server-generated identifier. Full table in the audit.
+> **One site took raw user input.** `IngestBanners` navigates to `/cases/${caseId}` where `caseId`
+> comes from the `?case=` query string. Still not exploitable — the literal `/cases/` prefix means
+> the path can never *begin* with `\\` or `//` and so can never become protocol-relative — but it
+> now uses `encodeURIComponent`, matching what `CaseDetailPage` already did. One line, removes the
+> only vector, and stops the argument depending on router normalisation behaviour that could
+> change between versions.
+> **Recommendation: do not upgrade to v7 before G8.** It is breaking, it fixes nothing real here,
+> and it touches every route in the app days from a deadline. "Audited, does not apply, here is
+> why" beats a list quietly ignored.

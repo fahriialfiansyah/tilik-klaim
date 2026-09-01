@@ -85,6 +85,19 @@ def check_readiness() -> Readiness:
             "keadaannya bila proses dimulai ulang"
         )
 
+    if reachable and persistence != "postgres":
+        # The exact failure this check caught in the wild: the process started while the
+        # database was still coming up, chose the in-memory stores, and `use_database()` caches
+        # that answer for the life of the process — deliberately, so two stores can never
+        # disagree about where an ingestion lives. The consequence is that a seed script writing
+        # to Postgres and an API serving memory are two different worlds, and every screen looks
+        # plausibly wrong. Re-seeding does not help; only a restart does.
+        problems.append(
+            "basis data terjangkau tetapi proses ini memakai penyimpanan memori — ia dimulai "
+            "sebelum basis data siap. Mulai ulang API; menyemai ulang saja tidak menolong, "
+            "karena skrip menulis ke Postgres dan proses ini tidak membacanya"
+        )
+
     cases = get_case_store().list_all()
     untouched = [case for case in cases if case.state in READY_STATES]
     if len(cases) < EXPECTED_CASE_COUNT:

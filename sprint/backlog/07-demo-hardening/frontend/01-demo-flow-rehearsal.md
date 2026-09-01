@@ -30,8 +30,8 @@ seconds, and a recorded fallback exists for when the live demo fails.
 - [x] Screenshot: flagged case with its evidence path
 - [x] Screenshot: human disposition and the resulting audit event
 - [x] Screenshot: evaluation page with the limitations card visible
-- [ ] Case study: one true injected case
-- [ ] Case study: one false positive showing counter-evidence
+- [x] Case study: one true injected case — *draf di `docs/artifacts/case-studies.md`*
+- [x] Case study: one false positive showing counter-evidence — *draf di `docs/artifacts/case-studies.md`*
 - [ ] Recorded fallback that runs with the live application entirely down
 - [x] Verify the synthetic badge is visible in **every** captured screenshot
 - [x] Confirm no screenshot exposes anything resembling a real identifier
@@ -87,9 +87,13 @@ are why:
 
 - **Rehearse the three-minute flow** end to end with narration, on the presentation machine,
   offline. The Playwright run is not a rehearsal.
-- **Two written case studies** — one true injected case, one false positive with its
-  counter-evidence. The screenshots are captured; the writing is a judgement call.
+- ~~Two written case studies~~ — **drafted** in `docs/artifacts/case-studies.md`: the phantom
+  case the demo uses, and `BND-051b94e85142`, a clean claim flagged at similarity 0.889 by
+  templating. Paired deliberately, because the question after the first is always "and when it
+  is wrong?". Pending M3 validation.
+- ~~The six-frame screenshot PDF~~ — **generated** as `docs/artifacts/demo-fallback-6-frames.pdf`,
+  A4 landscape, each frame captioned with the presenter's line and carrying the synthetic badge.
 - **The recorded fallback**, at 1080p with the same narration and cursor path, rehearsed at
   least once with the application stopped. § 22 is explicit that the fallback is played, not
-  troubleshooted, so it has to exist before the day.
-- **The six-frame screenshot PDF** as the last fallback if video playback also fails.
+  troubleshooted, so it has to exist before the day. **This one genuinely needs a person** — a
+  screen recorder and a voice.

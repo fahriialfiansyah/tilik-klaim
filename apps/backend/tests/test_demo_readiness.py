@@ -117,3 +117,22 @@ def test_the_check_mode_exit_code_is_what_a_pre_demo_script_reads(seeded) -> Non
 
     get_case_store().clear()
     assert reset_script.report() == 1
+
+
+def test_a_process_on_memory_while_the_database_is_up_is_reported(monkeypatch) -> None:
+    """The failure this check actually caught: started before Postgres, cached that choice.
+
+    `use_database()` caches for the life of the process on purpose, so two stores can never
+    disagree about where an ingestion lives. The consequence is that a seed script writing to
+    Postgres and an API serving memory are two different worlds, and every screen looks
+    plausibly wrong. Re-seeding does not help; only a restart does, and the check must say so.
+    """
+    monkeypatch.setattr(demo_state, "use_database", lambda: False)
+    monkeypatch.setattr(demo_state, "is_database_available", lambda: True)
+
+    readiness = check_readiness()
+
+    assert readiness.ready is False
+    assert readiness.database_reachable is True
+    assert readiness.persistence == "in-memory"
+    assert any("Mulai ulang API" in problem for problem in readiness.problems)
