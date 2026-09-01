@@ -1,0 +1,33 @@
+# Konteks build adalah root repo, sementara image hanya butuh packages/domain + apps/backend.
+# Semua di bawah ini tidak pernah masuk image; membiarkannya lolos berarti mengunggah ratusan
+# MB ke Railway setiap deploy, dan `.venv` macOS di dalam image Linux justru merusaknya.
+
+.git
+.github
+.claude
+
+# Artefak lingkungan lokal — arsitektur/OS-nya salah untuk image ini.
+**/.venv
+**/node_modules
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.ruff_cache
+**/*.egg-info
+
+# Rahasia. Image tidak boleh membawa kredensial mesin siapa pun.
+**/.env
+**/.env.local
+
+# Web di-build Vercel, bukan di sini.
+apps/web
+
+# Dokumen dan artefak yang bisa dibuat ulang.
+docs
+design
+brief
+sprint
+changelog
+evaluation/artifacts
+data/generated
+.DS_Store
