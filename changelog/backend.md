@@ -403,3 +403,30 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 > someone already dispositioned is a different demo, and
 > `test_an_opened_demo_case_makes_the_system_not_ready` holds that line.
 > Verified: backend 330 passed (was 322) · ruff clean · playwright 17 passed in 12.6 s.
+
+### 2026-09-01 · Cleanups from [`docs/HANDOVER.md`](../docs/HANDOVER.md) § Owed · ✅ Done
+
+**Event:** The suite stopped wiping the dev database, and the comparison drawer got its link
+**Files:** `tests/conftest.py`, `tests/test_test_database_isolation.py`, `app/store/bundles.py`, `app/service/{case_sources,case_query}.py`, `app/router/cases.py`, `tests/test_case_detail.py`
+> **`uv run pytest` no longer empties the developer's database.** Every store is cleared around
+> every test and the stores are bound to whatever `DATABASE_URL` points at, so the suite had been
+> emptying seeded dev data as a side effect — an indirect and expensive failure: the seed looked
+> fine, the screens came up blank, and the cause was a test run somebody had done twenty minutes
+> earlier. `tests/conftest.py` now creates and migrates `tilik_klaim_test` in `pytest_configure`,
+> **before any test module is imported**, because several evaluate `skipif(not use_database())`
+> at *collection* time and redirecting later would leave those decisions made against the wrong
+> database. An unreachable server or a failed `CREATE DATABASE` changes nothing and the
+> integration tests skip exactly as before — running without a database is a supported
+> configuration, not a fault.
+> `test_test_database_isolation.py` is the alarm: a redirect that quietly stops working is worse
+> than none, because the trap returns without the warning that used to be in the handover.
+> **`ComparisonCandidate.candidate_case_id` is no longer always null.** `BundleStore` gained
+> `case_id_for_bundle`, which returns the identifier alone rather than the record — a drawer
+> needs a link, not another participant's submission, and an API that could hand back the whole
+> record is one somebody will eventually use that way. Only the repeat-billing pair is resolved:
+> its candidate is the same participant's earlier claim at the same facility, so opening it
+> crosses nothing. Two `null` cases are **correct and now asserted**: an accepted-but-never-
+> screened candidate has no case, and a clone candidate is another participant's note, which this
+> layer is handed without the submission behind it.
+> Verified: backend 337 passed (was 330) · web 107 (was 104) · ruff clean · playwright 17 · the
+> dev database survived a full `pytest` run with its five seeded cases intact.

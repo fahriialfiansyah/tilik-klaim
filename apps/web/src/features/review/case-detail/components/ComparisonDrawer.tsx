@@ -1,4 +1,5 @@
 import { AlertTriangle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { PerfectScrollArea } from '@/components/wrappers/PerfectScrollArea'
@@ -59,6 +60,32 @@ export function ComparisonDrawer({
                 </p>
               </div>
             ) : null}
+
+            {/*
+              The way in. The drawer names the candidate claim; without a route to its own case
+              a reviewer had to go back to the queue and find it by hand — on the screen that is
+              most expensive to misread. `candidate_case_id` is null when the candidate was
+              accepted but never screened, so there is genuinely no case to open, and when the
+              candidate is another participant's note: cloning crosses that boundary, and the
+              service is handed the note rather than the submission behind it.
+            */}
+            <p className="mb-[10px] flex flex-wrap items-baseline gap-x-2 gap-y-1 text-small">
+              <span className="font-mono text-micro font-semibold tracking-label text-ink-3">
+                KANDIDAT
+              </span>
+              <span className="font-mono text-ink">{shown.candidate_claim_id}</span>
+              {shown.candidate_case_id ? (
+                <Link
+                  to={`/cases/${shown.candidate_case_id}`}
+                  onClick={onClose}
+                  className="text-brand underline underline-offset-2"
+                >
+                  Buka kasus kandidat
+                </Link>
+              ) : (
+                <span className="text-ink-2">Belum ada kasus yang bisa dibuka untuk kandidat ini.</span>
+              )}
+            </p>
 
             <p className="mb-[10px] font-mono text-micro font-semibold tracking-label text-ink-3">
               BIDANG YANG DIBANDINGKAN

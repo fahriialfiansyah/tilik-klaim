@@ -10,6 +10,7 @@ list screen never does. A test asserts the serialised queue response contains no
 """
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import UTC, datetime
 from enum import StrEnum
 from statistics import median
@@ -326,6 +327,7 @@ def to_detail(
     ingestion: IngestionRecord | None,
     history: tuple[CanonicalBundle, ...] = (),
     peer_documents: tuple[DocumentRef, ...] = (),
+    case_id_for_bundle: Callable[[str], str | None] | None = None,
 ) -> CaseDetailResponse:
     """Everything needed to understand and disposition one case.
 
@@ -366,7 +368,9 @@ def to_detail(
         band=_band_explanation(case),
         lines=lines,
         timeline=timeline,
-        comparisons=build_comparisons(hits, bundle, history, peer_documents),
+        comparisons=build_comparisons(
+            hits, bundle, history, peer_documents, case_id_for_bundle
+        ),
         evidence_completeness=evidence_completeness(case, line_count),
         sources=build_source_index(hits, bundle, history, peer_documents, timeline_refs),
         suggested_action=str(result.suggested_action) if result.suggested_action else None,

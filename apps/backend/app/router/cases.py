@@ -139,4 +139,4 @@ def get_case(
     peer_documents = bundles.peer_documents_for(
         claim.provider_id, exclude_bundle_id=ingestion.bundle.bundle_id
     )
-    return to_detail(case, ingestion, history, peer_documents)
+    return to_detail(case, ingestion, history, peer_documents, bundles.case_id_for_bundle)

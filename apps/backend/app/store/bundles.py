@@ -72,6 +72,15 @@ class BundleStore(Protocol):
         """Record which case a screening produced, so a resubmission can point at it."""
         ...
 
+    def case_id_for_bundle(self, bundle_id: str) -> str | None:
+        """The case raised for one bundle, or `None` if it was never screened.
+
+        Returns the identifier alone rather than the record. A comparison drawer needs a link,
+        not another participant's submission, and an API that could hand back the whole record
+        is one somebody will eventually use that way.
+        """
+        ...
+
     def history_for(
         self, participant_id: str, provider_id: str, *, exclude_bundle_id: str
     ) -> tuple[CanonicalBundle, ...]:
@@ -129,6 +138,16 @@ class InMemoryBundleStore:
         updated = record.model_copy(update={"case_id": case_id})
         self._by_id[ingestion_id] = updated
         return updated
+
+    def case_id_for_bundle(self, bundle_id: str) -> str | None:
+        return next(
+            (
+                record.case_id
+                for record in self._by_id.values()
+                if record.bundle is not None and record.bundle.bundle_id == bundle_id
+            ),
+            None,
+        )
 
     def history_for(
         self, participant_id: str, provider_id: str, *, exclude_bundle_id: str
@@ -229,6 +248,14 @@ class SqlBundleStore:
                 .returning(ingestions)
             ).mappings().one_or_none()
         return _to_record(row) if row else None
+
+    def case_id_for_bundle(self, bundle_id: str) -> str | None:
+        with session_scope() as session:
+            return session.execute(
+                select(ingestions.c.case_id).where(
+                    ingestions.c.bundle_json["bundle_id"].astext == bundle_id
+                )
+            ).scalars().first()
 
     def history_for(
         self, participant_id: str, provider_id: str, *, exclude_bundle_id: str

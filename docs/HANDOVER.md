@@ -201,7 +201,7 @@ actions are enforced by the build rather than by review. Use the semantic names 
 
 | Trap | Fix |
 |---|---|
-| `uv run pytest` **empties the dev database** — fixtures call `clear()` on the same `DATABASE_URL` | re-seed with `scripts/seed_dev.py`; a separate test database is still owed |
+| ~~`uv run pytest` empties the dev database~~ — **fixed.** `tests/conftest.py` creates and migrates `tilik_klaim_test` in `pytest_configure`, before any module is imported (several evaluate `skipif(not use_database())` at collection time) | nothing to do; `test_test_database_isolation.py` fails loudly if the redirect ever regresses. No database reachable still means the integration tests skip |
 | Port 5432 gets stolen by **VS Code's automatic port forwarding**; symptom is a healthy container but *password authentication failed for user "tilik"* | `lsof -nP -iTCP:5432 -sTCP:LISTEN`; this machine uses `DB_PORT=55432` |
 | Orphaned dev servers hold :3000/:8000 after a terminal closes | `./scripts/dev.sh --free-ports` (the owner's uncommitted addition), or `pkill -f rsbuild` / `pkill -f "uvicorn app.main:app"` |
 | `ruff` B008 on `Depends()` in argument defaults | use `Annotated[T, Depends(f)]` |
@@ -261,13 +261,20 @@ governs). Do not fill `sqlalchemy.url` in `alembic.ini` — `migrations/env.py` 
    assumptions (never a savings claim); field user validation; and impact on underserved regions.
    The affected file is `docs/canonical/09_proposal_evidence_map.md`.
 
-**Owed cleanups**, none blocking: a separate test database so `pytest` stops wiping dev data;
-`app/service/evidence_graph.py` is 516 lines and `app/service/case_query.py` is 469 (both above
-the 200–400 typical, both within the 800 maximum); `ComparisonCandidate.candidate_case_id` is
-always `null` because resolving a candidate claim back to *its* case needs a bundle-id → ingestion
-lookup the store does not offer; `docs/` is gitignored but `docs/HANDOVER.md`, `docs/api/`,
-`docs/canonical/` and `docs/CONTINUE-PROMPT.md` are tracked from before that rule, so new files
-under `docs/` are invisible to git.
+**Owed cleanups**, none blocking: `app/service/evidence_graph.py` is 516 lines and
+`app/service/case_query.py` is 469 (both above the 200–400 typical, both within the 800 maximum);
+`docs/` is gitignored but `docs/HANDOVER.md`, `docs/api/`, `docs/canonical/` and
+`docs/CONTINUE-PROMPT.md` are tracked from before that rule, so new files under `docs/` are
+invisible to git.
+
+**Two of these were cleared on 1 Sep.** The suite now runs against its own database
+(`tilik_klaim_test`, created and migrated by `tests/conftest.py`), so `uv run pytest` no longer
+wipes seeded dev data. And `ComparisonCandidate.candidate_case_id` is populated for
+repeat-billing pairs via `BundleStore.case_id_for_bundle`, with the drawer rendering *Buka kasus
+kandidat*. It stays `null` in two cases that are **correct, not defects**: a candidate accepted
+but never screened has no case to open, and a cloned-documentation candidate is another
+participant's note — cloning crosses that boundary and the service is handed the note, never the
+submission behind it.
 
 ## 7. Blockers / decisions for the user
 

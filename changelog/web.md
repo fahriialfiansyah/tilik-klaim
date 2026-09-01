@@ -256,3 +256,17 @@ Append-only. Newest entry at the top.
 > **Still owed, and human:** the three-minute rehearsal with narration, two written case studies,
 > the recorded 1080p fallback, and the six-frame screenshot PDF.
 > Verified: web 104 passed · tsc clean · playwright 17 passed in 12.6 s.
+
+### 2026-09-01 · Comparison drawer: a route to the candidate · ✅ Done
+
+**Event:** The drawer named a candidate claim and offered no way to open it
+**Files:** `src/features/review/case-detail/components/ComparisonDrawer.{tsx,test.tsx}`
+> `candidate_case_id` arrived on the wire and was never rendered, so a reviewer comparing two
+> claims had to return to the queue and find the second one by hand — on the screen this project
+> treats as the most expensive to misread. The drawer now names the candidate claim and, when a
+> case exists, links to it.
+> **Two null cases read as "nothing to open", not as a dead link**, because neither is a defect:
+> a candidate accepted but never screened has no case, and a clone candidate is another
+> participant's note, which cloning compares across and the service receives without the
+> submission behind it. Both are asserted in `ComparisonDrawer.test.tsx`.
+> Verified: web 107 passed (was 104) · tsc clean · playwright 17.

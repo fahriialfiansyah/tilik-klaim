@@ -19,6 +19,7 @@ left to whichever screen renders it.
 """
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import datetime
 from decimal import Decimal
 
@@ -213,8 +214,20 @@ def build_comparisons(
     bundle: CanonicalBundle | None,
     history: tuple[CanonicalBundle, ...] = (),
     peer_documents: tuple[DocumentRef, ...] = (),
+    case_id_for_bundle: Callable[[str], str | None] | None = None,
 ) -> tuple[ComparisonCandidate, ...]:
-    """Side-by-side pairs for the two comparison-shaped modes."""
+    """Side-by-side pairs for the two comparison-shaped modes.
+
+    `case_id_for_bundle` resolves the prior claim back to its own case, so the drawer can offer
+    a way in rather than naming a claim the reviewer then has to find by hand. It is optional:
+    a caller with no store passes nothing and the link is simply absent.
+
+    Only the **repeat-billing** pair is resolved. Its candidate is the same participant's earlier
+    claim at the same facility, so opening it crosses nothing. A cloned-documentation pair is
+    another participant's note, and this layer is given the note alone — never the bundle it came
+    from. Resolving that would mean asking the store to walk a document back to somebody else's
+    submission, and the drawer does not need it badly enough to build that path.
+    """
     if bundle is None:
         return ()
 
@@ -225,7 +238,7 @@ def build_comparisons(
     candidates: list[ComparisonCandidate] = []
     for hit in hits:
         if hit.mode is RiskMode.REPEAT_BILLING:
-            candidate = _claim_comparison(hit, bundle, by_claim)
+            candidate = _claim_comparison(hit, bundle, by_claim, case_id_for_bundle)
         elif hit.mode is RiskMode.CLONED_DOCUMENTATION:
             candidate = _document_comparison(hit, own_documents, documents)
         else:
@@ -236,7 +249,10 @@ def build_comparisons(
 
 
 def _claim_comparison(
-    hit: ReasonHit, bundle: CanonicalBundle, by_claim: dict[str, CanonicalBundle]
+    hit: ReasonHit,
+    bundle: CanonicalBundle,
+    by_claim: dict[str, CanonicalBundle],
+    case_id_for_bundle: Callable[[str], str | None] | None = None,
 ) -> ComparisonCandidate | None:
     """This claim against the prior one the rule matched it to.
 
@@ -265,6 +281,9 @@ def _claim_comparison(
     )
     start, end = _overlap(bundle, past)
     return ComparisonCandidate(
+        candidate_case_id=(
+            case_id_for_bundle(past.bundle_id) if case_id_for_bundle is not None else None
+        ),
         candidate_claim_id=right.claim_id,
         fields=fields,
         overlap_start=start,
