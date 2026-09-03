@@ -38,7 +38,28 @@ export const PHANTOM_REASON: Reason = {
   ruleset_version: '0.1.0',
 }
 
+/** A repeat-billing reason that cites the other claim and no line of this one. */
+export const REPEAT_REASON: Reason = {
+  code: 'DUPLICATE_CLAIM_FINGERPRINT',
+  mode: 'REPEAT_BILLING',
+  sentence: 'Sidik klaim ini identik dengan klaim lain.',
+  deterministic: true,
+  expected_support: ['Claim'],
+  evidence: [{ resource_type: 'Claim', resource_id: 'CLM-PRIOR', label: 'Claim CLM-PRIOR' }],
+  counter_evidence: [],
+  counter_evidence_notes: [],
+  component_scores: { fingerprint_match: 1 },
+  ruleset_version: '0.1.0',
+}
+
 export const SOURCES: readonly SourceResource[] = [
+  {
+    resource_type: 'Claim',
+    resource_id: 'CLM-PRIOR',
+    label: 'Claim CLM-PRIOR',
+    availability: 'RELATED_BUNDLE',
+    fields: [{ name: 'submitted_at', value: '2026-06-28T09:00:00Z' }],
+  },
   {
     resource_type: 'ClaimLine',
     resource_id: 'LN-P2',

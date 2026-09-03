@@ -131,3 +131,116 @@ describe('draft survival', () => {
     expect(useCaseDetailStore.getState().drafts.case_other?.action).toBe('REJECT_SIGNAL')
   })
 })
+
+describe('workspace — one selection, one drawer', () => {
+  const SOURCE = { resource_type: 'Encounter', resource_id: 'ENC-1', label: 'Encounter ENC-1' } as const
+  const CANDIDATE = {
+    candidate_case_id: null,
+    candidate_claim_id: 'CLM-2',
+    fields: [],
+    overlap_start: null,
+    overlap_end: null,
+    similarity_components: {},
+    template_caveat: null,
+  } as const
+
+  function workspace() {
+    return useCaseDetailStore.getState().workspace
+  }
+
+  beforeEach(() => {
+    useCaseDetailStore
+      .getState()
+      .openCase(CASE_ID, { reasonCode: 'LINE_WITHOUT_COMPLETED_PROCEDURE', lineId: 'LN-P2' })
+  })
+
+  /**
+   * ADR-0004 § Decision 4: the two drawers become one discriminated union, so "both open" is
+   * unrepresentable rather than merely unlikely. Playwright's `getByRole('dialog')` is strict —
+   * two dialogs would already fail the a11y suite — but a type that cannot express the state
+   * is a stronger guarantee than a test that notices it.
+   */
+  test('opening a comparison while a source is open leaves only the comparison', () => {
+    const store = useCaseDetailStore.getState()
+    store.openSource(SOURCE)
+    store.openComparison(CANDIDATE)
+
+    expect(workspace().drawer).toEqual({ kind: 'comparison', candidate: CANDIDATE })
+  })
+
+  test('opening a source while a comparison is open leaves only the source', () => {
+    const store = useCaseDetailStore.getState()
+    store.openComparison(CANDIDATE)
+    store.openSource(SOURCE)
+
+    expect(workspace().drawer).toEqual({ kind: 'source', reference: SOURCE })
+  })
+
+  test('closing returns the drawer to none', () => {
+    const store = useCaseDetailStore.getState()
+    store.openSource(SOURCE)
+    store.closeDrawer()
+
+    expect(workspace().drawer).toEqual({ kind: 'none' })
+  })
+
+  test('selecting a different reason closes a drawer opened from the previous one', () => {
+    const store = useCaseDetailStore.getState()
+    store.openComparison(CANDIDATE)
+    store.selectReason('DUPLICATE_CLAIM_FINGERPRINT')
+
+    expect(workspace().reasonCode).toBe('DUPLICATE_CLAIM_FINGERPRINT')
+    expect(workspace().drawer).toEqual({ kind: 'none' })
+  })
+
+  test('selecting a line closes an open drawer', () => {
+    const store = useCaseDetailStore.getState()
+    store.openSource(SOURCE)
+    store.selectLine('LN-P1')
+
+    expect(workspace().lineId).toBe('LN-P1')
+    expect(workspace().drawer).toEqual({ kind: 'none' })
+  })
+
+  test('toggling the open reason closed keeps the line selection', () => {
+    useCaseDetailStore.getState().selectReason(null)
+
+    expect(workspace().reasonCode).toBeNull()
+    expect(workspace().lineId).toBe('LN-P2')
+  })
+
+  test('opening another case resets the selection and closes the drawer', () => {
+    const store = useCaseDetailStore.getState()
+    store.openSource(SOURCE)
+    store.openCase('case_other', { reasonCode: 'NEAR_DUPLICATE_DOCUMENTATION', lineId: null })
+
+    expect(workspace()).toEqual({
+      caseId: 'case_other',
+      reasonCode: 'NEAR_DUPLICATE_DOCUMENTATION',
+      lineId: null,
+      drawer: { kind: 'none' },
+    })
+  })
+
+  /**
+   * The draft survives a refused save (above); it must equally survive everything the reviewer
+   * does while *reading*. Opening a source, comparing a pair, and moving between reasons are all
+   * reading, and none of them may cost a half-written disposition.
+   */
+  test('no workspace action touches the disposition draft', () => {
+    const store = useCaseDetailStore.getState()
+    store.setAction(CASE_ID, 'REQUEST_EVIDENCE')
+    store.setStructuredReason(CASE_ID, 'Berkas pendukung belum lengkap')
+    store.setNote(CASE_ID, 'Setengah jalan.')
+    const before = draft()
+
+    store.openSource(SOURCE)
+    store.openComparison(CANDIDATE)
+    store.selectReason('DUPLICATE_CLAIM_FINGERPRINT')
+    store.selectLine('LN-P1')
+    store.closeDrawer()
+    store.openCase(CASE_ID, { reasonCode: null, lineId: null })
+
+    expect(draft()).toEqual(before)
+  })
+})

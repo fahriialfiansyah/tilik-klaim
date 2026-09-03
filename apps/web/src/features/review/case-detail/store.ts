@@ -1,6 +1,11 @@
 import { create } from 'zustand'
 
-import type { DispositionAction, ResourceType } from '@/features/review/case-detail/types'
+import type {
+  ComparisonCandidate,
+  DispositionAction,
+  EvidenceRef,
+  ResourceType,
+} from '@/features/review/case-detail/types'
 
 /** What the reviewer has typed and chosen, before it becomes a permanent record. */
 export type DispositionDraft = {
@@ -26,8 +31,46 @@ export const EMPTY_DRAFT: DispositionDraft = {
   evidenceSeeded: false,
 }
 
+/**
+ * Which side panel is open, if any.
+ *
+ * One union rather than two booleans, so that "source and comparison both open" is a state the
+ * type cannot express (ADR-0004 § Decision 4). Playwright's strict `getByRole('dialog')` would
+ * catch two dialogs at runtime; making it unrepresentable is the stronger guarantee.
+ */
+export type DrawerState =
+  | { readonly kind: 'none' }
+  | { readonly kind: 'source'; readonly reference: EvidenceRef }
+  | { readonly kind: 'comparison'; readonly candidate: ComparisonCandidate }
+
+/** What the reviewer is looking at. Ephemeral — reset whenever a different case opens. */
+export type Workspace = {
+  readonly caseId: string | null
+  readonly reasonCode: string | null
+  readonly lineId: string | null
+  readonly drawer: DrawerState
+}
+
+export type WorkspaceSeed = Pick<Workspace, 'reasonCode' | 'lineId'>
+
+const CLOSED: DrawerState = { kind: 'none' }
+
+export const EMPTY_WORKSPACE: Workspace = {
+  caseId: null,
+  reasonCode: null,
+  lineId: null,
+  drawer: CLOSED,
+}
+
 type CaseDetailStore = {
   readonly drafts: Readonly<Record<string, DispositionDraft>>
+  readonly workspace: Workspace
+  readonly openCase: (caseId: string, seed: WorkspaceSeed) => void
+  readonly selectReason: (reasonCode: string | null) => void
+  readonly selectLine: (lineId: string) => void
+  readonly openSource: (reference: EvidenceRef) => void
+  readonly openComparison: (candidate: ComparisonCandidate) => void
+  readonly closeDrawer: () => void
   readonly setAction: (caseId: string, action: DispositionAction) => void
   readonly setStructuredReason: (caseId: string, reason: string) => void
   readonly setNote: (caseId: string, note: string) => void
@@ -58,6 +101,40 @@ function update(
  */
 export const useCaseDetailStore = create<CaseDetailStore>((set) => ({
   drafts: {},
+  workspace: EMPTY_WORKSPACE,
+
+  // ---- workspace: selection and the one drawer -------------------------------------------
+  //
+  // Every action below returns a new `workspace` object and leaves `drafts` untouched by
+  // construction — a reviewer reading a source or comparing a pair is not editing a decision,
+  // and nothing here may cost them a half-written one.
+
+  openCase: (caseId, seed) =>
+    set(() => ({ workspace: { caseId, ...seed, drawer: CLOSED } })),
+
+  // Changing what is selected closes whatever the previous selection opened: a comparison
+  // drawer showing reason A's pair while reason B is selected would be a synchronised
+  // workspace in name only.
+  selectReason: (reasonCode) =>
+    set((current) => ({ workspace: { ...current.workspace, reasonCode, drawer: CLOSED } })),
+
+  selectLine: (lineId) =>
+    set((current) => ({ workspace: { ...current.workspace, lineId, drawer: CLOSED } })),
+
+  openSource: (reference) =>
+    set((current) => ({
+      workspace: { ...current.workspace, drawer: { kind: 'source', reference } },
+    })),
+
+  openComparison: (candidate) =>
+    set((current) => ({
+      workspace: { ...current.workspace, drawer: { kind: 'comparison', candidate } },
+    })),
+
+  closeDrawer: () =>
+    set((current) => ({ workspace: { ...current.workspace, drawer: CLOSED } })),
+
+  // ---- drafts: the reviewer's unsaved decision --------------------------------------------
 
   setAction: (caseId, action) =>
     set((current) => ({

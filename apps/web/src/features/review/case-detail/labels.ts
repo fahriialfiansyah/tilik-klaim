@@ -238,3 +238,37 @@ export function reasonStrength(reason: Reason): Strength {
 export function strengthLabel(reason: Reason): string {
   return STRENGTH_LABELS[reasonStrength(reason) - 1]
 }
+
+/**
+ * The Evidence Matrix's four cell states (ADR-0004). Each has words as well as a colour, and
+ * the words differ in kind: two describe the record, one describes a defect in the reference,
+ * and one says nothing was asked — which is not the same as nothing was found.
+ */
+export const MATRIX_CELL_LABELS = {
+  FOUND: 'ditemukan',
+  MISSING: 'tidak ditemukan',
+  UNRESOLVED: 'rujukan tidak terselesaikan',
+  NOT_EXPECTED: 'tidak diharapkan',
+} as const satisfies Record<string, string>
+
+export const MATRIX_CELL_MEANINGS = {
+  FOUND: 'Alasan yang merujuk baris ini mengutip sumber daya jenis ini, dan sumber dayanya dapat dibuka.',
+  MISSING: 'Alasan yang merujuk baris ini mengharapkan jenis bukti ini dan tidak menemukannya di bundel.',
+  UNRESOLVED:
+    'Ada rujukan ke jenis ini, tetapi menunjuk ke sumber daya yang tidak dapat diselesaikan. Ini cacat integritas bukti.',
+  NOT_EXPECTED:
+    'Tidak ada alasan yang mengharapkan jenis bukti ini pada baris ini. Kosong bukan berarti tidak ada.',
+} as const satisfies Record<string, string>
+
+/** Lane names for the episode swimlane. Unknown kinds fall through to the raw kind. */
+export const LANE_LABELS: Record<string, string> = {
+  encounter: 'Kunjungan',
+  procedure: 'Tindakan',
+  medication: 'Obat',
+  billing: 'Penagihan',
+  document: 'Catatan klinis',
+}
+
+export function laneLabel(kind: string): string {
+  return LANE_LABELS[kind] ?? kind
+}
