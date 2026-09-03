@@ -39,6 +39,7 @@ def _make_provider(settings: Settings) -> ChatProvider:
         max_output_tokens=settings.briefing_max_output_tokens,
         temperature=settings.briefing_temperature,
         max_retries=settings.briefing_max_retry,
+        enable_thinking=settings.briefing_enable_thinking,
     )
 
 
@@ -77,6 +78,7 @@ def build_briefing(detail: CaseDetailResponse, settings: Settings, emit: Emit | 
         model_id=settings.llm_model_vllm,
         max_tool_calls=settings.briefing_max_tool_calls,
         emit=send,
+        deadline_seconds=settings.briefing_deadline_seconds,
     )
 
 

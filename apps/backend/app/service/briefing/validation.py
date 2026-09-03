@@ -11,14 +11,59 @@ from app.dto.briefing import CaseBriefing
 from app.dto.cases import CaseDetailResponse
 from app.dto.common import Dto, EvidenceRefDto
 
-FORBIDDEN_TERMS: tuple[str, ...] = (
-    # the rules' own lexicon
-    "fraud", "curang", "palsu", "tolak", "sanksi",
-    # certainty or safety the system is not entitled to assert
-    "terbukti", "pasti", "bersih", "aman",
-    # payment
-    "bayar", "denda",
+# Two lists, because two different things are forbidden and a substring match cannot tell them
+# apart. Indonesian attaches affixes directly to the stem, so a bare `in` test on "bayar" also
+# rejects "pembayaran", on "aman" also rejects "keamanan", and on "pasti" also rejects
+# "memastikan" — ordinary words a factual briefing needs. Measured against the gateway: that
+# blunt rule rejected legitimate output on the repeat-billing and unbundling cases, the two
+# modes where billing vocabulary is unavoidable, and silently degraded them to the template.
+#
+# What the canon actually forbids is an **accusation** and a **directive** — not the noun.
+
+ACCUSATORY: tuple[str, ...] = (
+    # Any form of these is an accusation or an unwarranted certainty. Affixes included on
+    # purpose: "kecurangan" and "pemalsuan" are exactly as forbidden as their stems.
+    r"fraud",
+    r"\w*curang\w*",
+    # Nasal mutation: "pemalsuan" is pe+malsu+an, so the p-stem alone misses it.
+    r"\w*(palsu|malsu)\w*",
+    r"sanksi",
+    r"\w*denda\w*",
+    # Standalone only: the certainty sense is forbidden, the ordinary verb is not.
+    # `\bpasti\b` rejects "pasti" and leaves "memastikan"; `\baman\b` leaves "keamanan".
+    # Negated forms are masked out before this runs — see `_NEGATED`.
+    r"\bterbukti\b",
+    r"\bpasti\b",
+    r"\bbersih\b",
+    r"\baman\b",
 )
+
+_NEGATED = re.compile(
+    r"\b(tidak|belum|bukan|kurang|tanpa)\s+(dapat\s+|bisa\s+)?(pasti|terbukti|aman|bersih)\b",
+    re.IGNORECASE,
+)
+"""A negated certainty word is a **hedge**, and hedging is what this briefing is asked to do.
+
+Measured against the gateway: banning the bare word rejected "tidak pasti" and "belum terbukti"
+— the model expressing uncertainty correctly — and pushed good output to the template. The
+prohibition is on *asserting* certainty, so the negated forms are masked before the check.
+"""
+
+DIRECTIVE: tuple[str, ...] = (
+    # Telling anyone to move, withhold, or refuse money — or to reject the claim.
+    r"(harus|wajib|jangan|tidak boleh|sebaiknya|agar)\s+di(bayar|tolak)\w*",
+    r"(hentikan|tolak|batalkan|setop|tahan)\s+pembayaran",
+    r"klaim\s+\w*\s*ditolak",
+    r"menolak\s+klaim",
+    r"tolak\s+(sinyal|klaim)",
+)
+
+FORBIDDEN_PATTERNS: tuple[str, ...] = ACCUSATORY + DIRECTIVE
+
+FORBIDDEN_TERMS = FORBIDDEN_PATTERNS
+"""Kept as an alias: the template test parametrises over it."""
+
+_FORBIDDEN = tuple((pattern, re.compile(pattern, re.IGNORECASE)) for pattern in FORBIDDEN_PATTERNS)
 
 _NUMBER = re.compile(r"\d+(?:[.,]\d+)*")
 
@@ -61,11 +106,14 @@ def validate_briefing(
         if bad:
             return Verdict(accepted=False, reason=f"unsupported number: {', '.join(bad)}")
 
-    # 3. no forbidden term
-    lowered = " ".join([*sentences, briefing.uncertainty_note]).lower()
-    for word in FORBIDDEN_TERMS:
-        if word in lowered:
-            return Verdict(accepted=False, reason=f"forbidden term: {word}")
+    # 3. no accusation and no directive
+    joined = _NEGATED.sub("«hedge»", " ".join([*sentences, briefing.uncertainty_note]))
+    for pattern, matcher in _FORBIDDEN:
+        found = matcher.search(joined)
+        if found:
+            # Report what was written, not only the rule it broke — the rule alone sent one
+            # debugging session looking in the wrong place.
+            return Verdict(accepted=False, reason=f"forbidden term {found.group(0)!r} ({pattern})")
 
     # 4. caps and lengths are enforced by the schema; 5. the note must say something
     if not briefing.uncertainty_note.strip():

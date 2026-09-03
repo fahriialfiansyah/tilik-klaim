@@ -129,3 +129,34 @@ def test_no_committed_file_carries_a_gateway_address_or_a_key() -> None:
     assert re.search(r"^VLLM_API_KEY=\s*$", text, re.MULTILINE), "the key must be left empty"
     assert not re.search(r"VLLM_BASE_URL=\S", text), "no address may be committed"
     assert not re.search(r"\b\d{1,3}(\.\d{1,3}){3}\b", text), "no gateway IP may be committed"
+
+
+def test_the_llm_health_endpoint_never_prints_the_gateway_address(monkeypatch) -> None:
+    """This API is published to a public host.
+
+    `VLLM-SETUP.md` § 5 puts `base_url` in the health payload, which is fine for an internal
+    deployment and not fine here: an unauthenticated endpoint printing an internal address is a
+    free map of the network. Everything the operator needs to diagnose is still there.
+    """
+    from fastapi.testclient import TestClient
+
+    from app.config import get_settings
+    from app.main import app
+    from app.service.briefing import service as briefing_service
+
+    settings = get_settings()
+    monkeypatch.setattr(settings, "briefing_enabled", True)
+    monkeypatch.setattr(settings, "llm_model_vllm", "Qwen3.5-9B")
+    monkeypatch.setattr(settings, "vllm_base_url", "http://gateway.invalid:9999/v1")
+    monkeypatch.setattr(settings, "vllm_api_key", SecretStr("a-real-looking-key"))
+    monkeypatch.setattr(
+        briefing_service, "list_gateway_models", lambda _s: frozenset({"Qwen3.5-9B"})
+    )
+
+    body = TestClient(app).get("/health/llm")
+    raw = body.text
+    assert body.status_code == 200
+    assert "gateway.invalid" not in raw, "the address must not be published"
+    assert "a-real-looking-key" not in raw
+    assert body.json()["model_available"] is True
+    assert body.json()["model_count"] == 1

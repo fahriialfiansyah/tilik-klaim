@@ -14,7 +14,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 
 from app.config import Settings, get_settings
-from app.service.briefing.service import is_llm_configured, list_gateway_models
+from app.service.briefing import service as briefing_service
+from app.service.briefing.service import is_llm_configured
 from app.service.demo_state import check_readiness
 from app.service.llm_provider import LlmUnavailable
 
@@ -56,13 +57,17 @@ def health_llm(settings: Annotated[Settings, Depends(get_settings)]) -> dict[str
         }
 
     try:
-        available = list_gateway_models(settings)
+        available = briefing_service.list_gateway_models(settings)
     except LlmUnavailable as unreachable:
         raise HTTPException(status_code=503, detail=str(unreachable)) from unreachable
 
+    # The gateway address is deliberately **not** in the response. `VLLM-SETUP.md` § 5 puts it
+    # there, but that guide assumes an internal deployment; this API is published to a public
+    # host, and an unauthenticated endpoint that prints an internal address is a free map of the
+    # network. The operator reading this already has the address in their own `.env`, and none
+    # of the three answers below needs it.
     return {
         "configured": True,
-        "base_url": settings.vllm_base_url,
         "model": settings.llm_model_vllm,
         "model_available": settings.llm_model_vllm in available,
         "model_count": len(available),

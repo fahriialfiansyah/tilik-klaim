@@ -32,8 +32,23 @@ MAINTENANCE_DATABASE = "postgres"
 
 
 def pytest_configure(config: pytest.Config) -> None:
-    """Point the suite at its own database before a single test module is imported."""
+    """Point the suite at its own database and its own briefing configuration.
+
+    Both for the same reason: a test run must not depend on what the developer happens to have
+    in `.env`, and must not reach anything outside this process. Once someone enables the
+    briefing locally, an unpinned suite starts calling the real vLLM gateway — which turned a
+    12-second run into 109 seconds and made three tests fail on a machine where the feature was
+    switched on. Tests that exercise the enabled path monkeypatch it explicitly.
+    """
+    disable_briefing()
     redirect_to_test_database()
+
+
+def disable_briefing() -> None:
+    """Pin the briefing off, whatever `.env` says, before any settings object is built."""
+    os.environ["BRIEFING_ENABLED"] = "false"
+    for name in ("VLLM_BASE_URL", "VLLM_API_KEY", "LLM_MODEL_VLLM"):
+        os.environ.pop(name, None)
 
 
 def suite_database_url(configured: str) -> str:

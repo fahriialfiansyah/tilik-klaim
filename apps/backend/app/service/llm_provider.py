@@ -33,6 +33,11 @@ from app.dto.common import Dto
 
 logger = logging.getLogger(__name__)
 
+# No stop sequence on whitespace. Two were tried against the gateway and both cut objects open
+# mid-field: `"    \n    \n"` matches pretty-printed indentation, and even `"\t\t\t\t"` matches a
+# four-level-deep nesting when the model indents with tabs. The padding is instead made harmless
+# by parsing the object before the finish reason is judged — see `complete_structured`.
+
 
 class LlmUnavailable(RuntimeError):
     """The gateway could not answer. The message names which of the four fixes applies."""
@@ -110,8 +115,14 @@ class VllmProvider:
         max_output_tokens: int,
         temperature: float,
         max_retries: int,
+        enable_thinking: bool = False,
     ) -> None:
         self._model = model
+        # Passed on every request. vLLM hands `chat_template_kwargs` to the model's chat
+        # template; a template that does not use the flag ignores it.
+        self._extra_body: dict[str, Any] = {
+            "chat_template_kwargs": {"enable_thinking": enable_thinking}
+        }
         self._timeout = timeout_seconds
         self._max_output_tokens = max_output_tokens
         self._temperature = temperature
@@ -148,6 +159,7 @@ class VllmProvider:
                 tool_choice="auto",
                 temperature=self._temperature,
                 max_tokens=self._max_output_tokens,
+                extra_body=self._extra_body,
             )
         except BadRequestError as refused:
             # A gateway started without `--enable-auto-tool-choice` refuses the *request shape*,
@@ -182,6 +194,7 @@ class VllmProvider:
                     "type": "json_schema",
                     "json_schema": {"name": schema_name, "schema": schema, "strict": True},
                 },
+                extra_body=self._extra_body,
             )
         except Exception as failure:
             raise _fail(failure, self._timeout, self._model) from failure
@@ -193,9 +206,22 @@ class VllmProvider:
             raise LlmUnavailable(
                 f"the gateway returned no object (finish_reason={choice.finish_reason})"
             )
+        # **Parse before judging the finish reason.** A JSON grammar permits unlimited trailing
+        # whitespace, and this gateway's model closes the object and then pads with tabs until
+        # it hits the cap — so `finish_reason == "length"` arrives on answers that are complete.
+        # Treating that as truncation threw away four perfectly good briefings out of ten, and
+        # sent the diagnosis chasing the token budget instead. The object decides; the finish
+        # reason only explains a failure to parse.
         try:
             parsed = json.loads(content)
         except ValueError as malformed:
+            if choice.finish_reason == "length":
+                raise LlmUnavailable(
+                    f"the gateway ran out of output tokens after {self._max_output_tokens} "
+                    "with the object still open — raise BRIEFING_MAX_OUTPUT_TOKENS, or check "
+                    "that BRIEFING_ENABLE_THINKING is off, since hidden reasoning tokens are "
+                    "charged against the same budget"
+                ) from malformed
             raise LlmUnavailable("the gateway returned content that is not JSON") from malformed
         if not isinstance(parsed, dict):
             raise LlmUnavailable("the gateway returned JSON that is not an object")

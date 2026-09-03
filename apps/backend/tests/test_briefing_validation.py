@@ -8,7 +8,7 @@ from app.dto.briefing import BriefingObservation, BriefingQuestion
 from app.dto.cases import CaseDetailResponse
 from app.dto.common import EvidenceRefDto
 from app.service.briefing.template import template_briefing
-from app.service.briefing.validation import FORBIDDEN_TERMS, validate_briefing
+from app.service.briefing.validation import validate_briefing
 from tests.test_case_endpoints import ingest_and_screen
 
 
@@ -63,8 +63,10 @@ def test_a_number_present_in_the_supplied_text_is_allowed(detail) -> None:
     assert verdict.accepted, verdict.reason
 
 
-@pytest.mark.parametrize("word", FORBIDDEN_TERMS)
-def test_forbidden_terms_reject_the_briefing(detail, word: str) -> None:
+@pytest.mark.parametrize(
+    "word", ["fraud", "curang", "kecurangan", "palsu", "pemalsuan", "sanksi", "denda", "terbukti"]
+)
+def test_an_accusing_word_rejects_the_briefing(detail, word: str) -> None:
     loaded = BriefingObservation(
         statement=f"Klaim ini {word} menurut catatan.",
         kind="CORROBORATION",
@@ -95,3 +97,113 @@ def test_observation_and_question_caps_are_enforced_by_the_schema(detail) -> Non
 def test_an_observation_without_refs_cannot_be_constructed() -> None:
     with pytest.raises(ValueError):
         BriefingObservation(statement="x", kind="TIMELINE", source_refs=(), confidence="STATED")
+
+
+class TestTheLexiconIsPreciseEnoughToBeUsable:
+    """Indonesian attaches affixes to the stem, so a substring rule cannot tell an accusation
+    from an ordinary word.
+
+    Measured against the real gateway: matching the bare stem "bayar" rejected legitimate
+    factual output on the repeat-billing and unbundling cases — the two modes where billing
+    vocabulary is unavoidable — and silently degraded both to the template. What the canon
+    forbids is an accusation or a directive, not the noun.
+    """
+
+    @pytest.mark.parametrize(
+        "statement",
+        [
+            "Klaim ini diajukan untuk pembayaran layanan yang sama pada episode tersebut.",
+            "Kedua klaim memiliki total tagihan yang sama dan waktu pengiriman berbeda.",
+            "Diperlukan pemeriksaan untuk memastikan kelengkapan berkas pendukung.",
+            "Catatan keamanan sistem tidak termasuk dalam bundel ini.",
+            "Layanan tersebut sudah dibayarkan pada klaim sebelumnya menurut catatan.",
+        ],
+    )
+    def test_ordinary_factual_language_is_not_rejected(self, detail, statement: str) -> None:
+        observation = BriefingObservation(
+            statement=statement,
+            kind="COMPARISON",
+            source_refs=(_ref(detail),),
+            confidence="STATED",
+        )
+        verdict = validate_briefing(
+            _briefing(detail, observations=(observation,)), detail, supplied_text=statement
+        )
+        assert verdict.accepted, verdict.reason
+
+    @pytest.mark.parametrize(
+        "statement",
+        [
+            "Pola ini mengindikasikan kecurangan pada fasilitas tersebut.",
+            "Dokumen tersebut adalah hasil pemalsuan.",
+            "Klaim ini harus ditolak oleh peninjau.",
+            "Hentikan pembayaran untuk klaim ini.",
+            "Fasilitas ini sebaiknya dikenakan sanksi.",
+            "Sudah pasti bahwa layanan tidak diberikan.",
+            "Klaim ini bersih dan tidak perlu ditinjau.",
+            "Pembayaran klaim ini tidak boleh dibayarkan.",
+        ],
+    )
+    def test_an_accusation_or_a_directive_is_still_rejected(self, detail, statement: str) -> None:
+        observation = BriefingObservation(
+            statement=statement,
+            kind="COMPARISON",
+            source_refs=(_ref(detail),),
+            confidence="INFERRED",
+        )
+        verdict = validate_briefing(
+            _briefing(detail, observations=(observation,)), detail, supplied_text=statement
+        )
+        assert not verdict.accepted, f"allowed: {statement}"
+
+    def test_the_reason_quotes_what_was_written(self, detail) -> None:
+        observation = BriefingObservation(
+            statement="Pola ini mengindikasikan kecurangan.",
+            kind="COMPARISON",
+            source_refs=(_ref(detail),),
+            confidence="INFERRED",
+        )
+        verdict = validate_briefing(
+            _briefing(detail, observations=(observation,)), detail, supplied_text=""
+        )
+        assert "kecurangan" in (verdict.reason or "")
+
+
+class TestHedgingIsNotAnAssertion:
+    """The briefing is asked to state uncertainty. Banning the bare certainty word banned the
+    hedge along with the assertion — measured, and it pushed good output to the template."""
+
+    @pytest.mark.parametrize(
+        "statement",
+        [
+            "Belum pasti apakah layanan tersebut diberikan pada kunjungan itu.",
+            "Hal ini tidak terbukti dari bukti yang tersedia dalam bundel.",
+            "Kaitan antara kedua klaim tidak dapat dipastikan dari catatan ini.",
+            "Kelengkapan berkas belum terbukti dari sumber daya yang dirujuk.",
+        ],
+    )
+    def test_a_negated_certainty_word_is_allowed(self, detail, statement: str) -> None:
+        observation = BriefingObservation(
+            statement=statement, kind="COMPLETENESS", source_refs=(_ref(detail),), confidence="INFERRED"
+        )
+        verdict = validate_briefing(
+            _briefing(detail, observations=(observation,)), detail, supplied_text=statement
+        )
+        assert verdict.accepted, verdict.reason
+
+    @pytest.mark.parametrize(
+        "statement",
+        [
+            "Sudah pasti bahwa layanan tersebut tidak diberikan.",
+            "Hal ini terbukti dari catatan yang tersedia.",
+            "Klaim ini bersih menurut pemeriksaan.",
+        ],
+    )
+    def test_an_asserted_certainty_word_is_still_rejected(self, detail, statement: str) -> None:
+        observation = BriefingObservation(
+            statement=statement, kind="COMPLETENESS", source_refs=(_ref(detail),), confidence="STATED"
+        )
+        verdict = validate_briefing(
+            _briefing(detail, observations=(observation,)), detail, supplied_text=statement
+        )
+        assert not verdict.accepted, f"allowed: {statement}"

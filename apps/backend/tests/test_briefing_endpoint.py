@@ -75,15 +75,33 @@ def test_enabled_path_uses_the_provider_and_logs_tool_events(api, case_id, monke
     ref = detail["reasons"][0]["evidence"][0]
 
     class Fake:
+        """Reads once through a tool call, then answers the structured submission — the shape
+        the gateway was measured to have."""
+
+        def available_models(self):
+            return frozenset({"Qwen3.5-9B"})
+
         def complete(self, messages, tools):
             if not any(m["role"] == "tool" for m in messages):
-                return AssistantTurn(content=None, tool_calls=(ToolCall(id="1", name="list_reasons", arguments={}),))
-            return AssistantTurn(content=None, tool_calls=(ToolCall(id="2", name="submit_briefing", arguments={
-                "observations": [{"statement": "Baris tagihan yang dirujuk tidak punya catatan tindakan.", "kind": "EVIDENCE_GAP",
-                                  "source_refs": [ref], "confidence": "STATED"}],
+                return AssistantTurn(
+                    content=None,
+                    tool_calls=(ToolCall(id="1", name="list_reasons", arguments={}),),
+                )
+            return AssistantTurn(content="Cukup.", tool_calls=())
+
+        def complete_structured(self, messages, schema_name, schema):
+            return {
+                "observations": [
+                    {
+                        "statement": "Baris tagihan yang dirujuk tidak punya catatan tindakan.",
+                        "kind": "EVIDENCE_GAP",
+                        "source_ids": [ref["resource_id"]],
+                        "confidence": "STATED",
+                    }
+                ],
                 "open_questions": [],
                 "uncertainty_note": "Hanya dari bukti yang ikut terkirim.",
-            }),))
+            }, "Qwen3.5-9B"
 
     settings = get_settings()
     monkeypatch.setattr(settings, "briefing_enabled", True)

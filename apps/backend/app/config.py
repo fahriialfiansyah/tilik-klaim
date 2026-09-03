@@ -66,9 +66,27 @@ class Settings(BaseSettings):
     # healthy extraction on a larger model genuinely exceeds a shorter bound.
     briefing_timeout_seconds: float = 90.0
     briefing_max_tool_calls: int = 8
-    briefing_max_output_tokens: int = 900
+    # Room for the largest legal answer, plus the whitespace the model pads after closing the
+    # object. That padding is harmless — the provider parses before it judges the finish reason
+    # — but it is charged here, so this is deliberately generous. Measured: a real answer is
+    # 450–900 tokens; anything above that is padding, and cutting the budget to fit the content
+    # cut real objects open instead.
+    briefing_max_output_tokens: int = 3000
+    # **The single biggest lever measured on this gateway.** Qwen3.5 is a hybrid reasoning
+    # model: left on, it spent ~3,500 hidden thinking tokens that vLLM strips from the content
+    # but still charges against `max_tokens`, so a complete 2,300-character answer arrived
+    # truncated after 43s. Off, the same case answered in 6.5s using 456 tokens. Summarising
+    # already-gathered evidence under a schema is not a reasoning task.
+    briefing_enable_thinking: bool = False
     briefing_temperature: float = 0.1
-    briefing_max_retry: int = 2
+    # Zero, not the guide's two. **The template fallback is the retry.** With a 90-second
+    # timeout, two retries put one call at four and a half minutes, and this panel is on-demand
+    # in front of a reviewer — a briefing that arrives after the decision is worse than one that
+    # never came. Observed: a run stalled past three minutes in validation because of this.
+    briefing_max_retry: int = 0
+    # Wall-clock budget for the whole run, reads included. Any single call is bounded by the
+    # timeout above; without this, eight reads plus a submission are not bounded by anything.
+    briefing_deadline_seconds: float = 120.0
 
     @field_validator("vllm_base_url")
     @classmethod
