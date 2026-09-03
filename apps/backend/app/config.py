@@ -40,6 +40,18 @@ class Settings(BaseSettings):
     # request. Relative paths resolve against the repository root.
     evaluation_artifacts_dir: str = "evaluation/artifacts"
 
+    # The bounded, read-only Case Briefing (ADR-0005). **Off by default**: the demo runbook
+    # forbids depending on a remote LLM, and with this off — or with no key or model — the
+    # endpoint answers with the deterministic template, which is not an error. Any
+    # OpenAI-compatible chat-completions gateway works; OpenRouter is the default host.
+    briefing_enabled: bool = False
+    openrouter_base_url: str = "https://openrouter.ai/api/v1"
+    openrouter_model: str = ""
+    openrouter_api_key: str = ""
+    briefing_timeout_seconds: float = 20.0
+    briefing_max_tool_calls: int = 8
+    briefing_max_output_tokens: int = 900
+
     @field_validator("database_url")
     @classmethod
     def name_the_driver(cls, value: str) -> str:

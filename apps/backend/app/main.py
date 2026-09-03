@@ -5,12 +5,14 @@ Scope guard — this service must never:
   * decide medical necessity;
   * call an LLM anywhere in the risk decision path.
 See docs/canonical/01_product_decision.md and decisions/ADR-0002-no-llm-in-risk-score.md.
+The one LLM call that exists (`/v1/cases/{id}/briefing`, ADR-0005) is read-only, off by default,
+and imported by nothing in the risk path — `tests/test_briefing_isolation.py` asserts it.
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.router import bundles, cases, dispositions, evaluations, health
+from app.router import briefing, bundles, cases, dispositions, evaluations, health
 
 settings = get_settings()
 
@@ -42,3 +44,4 @@ app.include_router(evaluations.router)
 app.include_router(bundles.router)
 app.include_router(cases.router)
 app.include_router(dispositions.router)
+app.include_router(briefing.router)

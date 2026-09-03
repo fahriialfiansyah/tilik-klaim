@@ -17,6 +17,7 @@ from tilik_domain.versioning import EngineIdentity
 
 from app.dto.cases import CaseDetailResponse, CaseQueueResponse
 from app.errors import ErrorCode, ErrorResponse
+from app.service.case_loader import load_case_detail
 from app.service.case_query import (
     DEFAULT_PAGE_SIZE,
     MAX_PAGE_SIZE,
@@ -25,7 +26,6 @@ from app.service.case_query import (
     paginate,
     queue_metrics,
     sort_cases,
-    to_detail,
     to_summary,
 )
 from app.store.bundles import BundleStore
@@ -116,27 +116,12 @@ def get_case(
     case_id: str, cases: InjectedCases, bundles: InjectedBundles
 ) -> CaseDetailResponse | Response:
     """Claim lines, reasons with evidence and counter-evidence, timeline, and comparisons."""
-    case = cases.get(case_id)
-    if case is None:
+    detail = load_case_detail(case_id, cases, bundles)
+    if detail is None:
         envelope = ErrorResponse(code=ErrorCode.CASE_NOT_FOUND, detail=f"No case {case_id}")
         return Response(
             content=envelope.model_dump_json(),
             status_code=envelope.http_status,
             media_type="application/json",
         )
-
-    ingestion = bundles.get(case.ingestion_id)
-    if ingestion is None or ingestion.bundle is None:
-        return to_detail(case, ingestion)
-
-    # The other submissions the rules compared this one against. Without them a reference to a
-    # prior claim or a peer note resolves to nothing, and the screen would report a genuine
-    # comparison as an evidence-integrity defect.
-    claim = ingestion.bundle.claim
-    history = bundles.history_for(
-        claim.participant_id, claim.provider_id, exclude_bundle_id=ingestion.bundle.bundle_id
-    )
-    peer_documents = bundles.peer_documents_for(
-        claim.provider_id, exclude_bundle_id=ingestion.bundle.bundle_id
-    )
-    return to_detail(case, ingestion, history, peer_documents, bundles.case_id_for_bundle)
+    return detail

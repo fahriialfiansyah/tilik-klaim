@@ -49,6 +49,9 @@ class ErrorCode(StrEnum):
     # Access
     AUDIT_FORBIDDEN = "AUDIT_FORBIDDEN"
 
+    # Briefing — a genuinely broken service, never "disabled" (disabled is the template, a 200)
+    BRIEFING_UNAVAILABLE = "BRIEFING_UNAVAILABLE"
+
 
 STATUS_FOR_CODE: dict[ErrorCode, HTTPStatus] = {
     ErrorCode.BUNDLE_TOO_LARGE: HTTPStatus.REQUEST_ENTITY_TOO_LARGE,
@@ -69,6 +72,7 @@ STATUS_FOR_CODE: dict[ErrorCode, HTTPStatus] = {
     ErrorCode.CASE_VERSION_CONFLICT: HTTPStatus.CONFLICT,
     ErrorCode.DISPOSITION_INVALID_TRANSITION: HTTPStatus.CONFLICT,
     ErrorCode.AUDIT_FORBIDDEN: HTTPStatus.FORBIDDEN,
+    ErrorCode.BRIEFING_UNAVAILABLE: HTTPStatus.SERVICE_UNAVAILABLE,
 }
 
 
