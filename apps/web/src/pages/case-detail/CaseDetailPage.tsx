@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
+import { BriefingPanel } from '@/features/review/case-briefing/components/BriefingPanel'
 import { AuditTimeline } from '@/features/review/case-detail/components/AuditTimeline'
 import {
   SaveFailedBanner,
@@ -272,6 +273,13 @@ export function CaseDetailPage() {
             />
 
             <EpisodeSwimlane detail={detail} onOpenSource={openSource} />
+
+            {/*
+              Last in the column, collapsed, on demand (ADR-0005 § Decision 7). The reasons and
+              the evidence are always read first; the briefing is a footnote a reviewer may ask
+              for, never a headline the page volunteers.
+            */}
+            <BriefingPanel caseId={detail.case_id} sources={detail.sources} onOpenSource={openSource} />
           </div>
 
           <DispositionPanel
