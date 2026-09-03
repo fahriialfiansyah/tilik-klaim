@@ -26,6 +26,7 @@ Internal upload target is **18 September**; 19 September is emergency recovery o
 | Sprint 05 — ranking-models | Similarity and anomaly ranking that earns its place over rules-only, or is removed | ✅ Done | G6 | 12 Sep | M1 | 04 | [../brief/02_MESIN_BUKTI_DETEKSI.md](../brief/02_MESIN_BUKTI_DETEKSI.md) | [./backlog/05-ranking-models/](./backlog/05-ranking-models/) | 2026-08-30 | - | - |
 | Sprint 06 — evaluation-report | Reproducible baseline-versus-hybrid evidence with limitations, ready to cite | 🚧 In Progress | G6 | 12 Sep | M1 | 05 | [../brief/05_AUDIT_EVALUASI.md](../brief/05_AUDIT_EVALUASI.md) | [./backlog/06-evaluation-report/](./backlog/06-evaluation-report/) | 2026-08-30 | - | - |
 | Sprint 07 — demo-hardening | Seeded demo runs reliably offline, with a rehearsed fallback | 🚧 In Progress | G8 | 17 Sep | M2 | 06 | [../brief/00_OVERVIEW.md](../brief/00_OVERVIEW.md) | [./backlog/07-demo-hardening/](./backlog/07-demo-hardening/) | 2026-08-30 | - | - |
+| Sprint 08 — evidence-workspace | `/cases/:id` as an Evidence Workspace — matrix, swimlane, reason-focused map, one drawer host; no contract change | ✅ Done | G8 | 17 Sep | M2 | 04 | [../brief/04_DETAIL_KASUS_DISPOSISI.md](../brief/04_DETAIL_KASUS_DISPOSISI.md) | [./backlog/08-evidence-workspace/](./backlog/08-evidence-workspace/) | 2026-09-03 | 2026-09-03 | 2026-09-03 |
 
 **Status legend:** 📋 Planned · 🚧 In Progress · ✅ Done · ⏸ Paused · ❌ Cancelled
 

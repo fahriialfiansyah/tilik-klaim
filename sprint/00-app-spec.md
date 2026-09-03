@@ -113,9 +113,10 @@ Grafik agregat, tren nasional, peringkat fasilitas, angka "fraud dicegah", nilai
 | 11 | Bukti yang diharapkan | Daftar ringkas | Jenis sumber daya yang seharusnya mendukung | `04` § 2.3 |
 | 12 | Bukti yang ditemukan | Daftar ringkas dengan tautan yang dapat dibuka | Sumber daya yang benar-benar ada | `04` § 2.3 |
 | 13 | Bukti tandingan | Kartu terpisah dengan penanda berbeda | Rujukan yang melemahkan alasan | `04` § 2.3, `02` § 2.2 |
-| 14 | Linimasa episode | Timeline aktivitas | Urutan kunjungan, tindakan, penagihan | `04` § 2.3 |
-| 15 | Jalur bukti | Diagram hubungan kecil, satu jalur | Rantai klaim → baris → kunjungan → bukti klinis | `04` § 2.3, `02` § 2.1 |
-| 16 | Panel sumber asli | Drawer side panel yang bisa dibuka | Isi sumber daya apa adanya + versi aturan & model | `04` § 2.3 |
+| 14 | Linimasa episode | **Swimlane** — empat jalur (Kunjungan · Tindakan · Obat · Penagihan) pada satu sumbu waktu; jalur kosong tetap digambar dan diberi label | Urutan kunjungan, tindakan, obat dari `timeline`; jalur Penagihan diturunkan di klien dari `lines[].service_at` | `04` § 2.3, ADR-0004 |
+| 15 | Peta bukti | Diagram kecil **berfokus pada alasan yang terbuka**: satu batang (klaim → baris dirujuk) dengan simpul ujung per jenis bukti yang diharapkan, plus cabang bukti tandingan yang terpisah | Alasan terbuka + `expected_support` + `evidence` + `counter_evidence_notes` | `04` § 2.3, `02` § 2.1, ADR-0004 |
+| 16 | Panel sumber asli | Drawer side panel yang bisa dibuka; **berbagi satu host dengan widget 23** sehingga keduanya tidak pernah terbuka bersamaan | Isi sumber daya apa adanya + versi aturan & model | `04` § 2.3, ADR-0004 |
+| 28 | Matriks bukti | Tabel: baris tagihan × jenis bukti yang diharapkan; empat keadaan sel — ditemukan · tidak ditemukan · rujukan tidak terselesaikan · tidak diharapkan | `lines`, `reasons[].expected_support`, `reasons[].evidence`, `sources[].availability` — tanpa perubahan kontrak | `04` § 2.3, ADR-0004 |
 
 ### Widget — Kolom kanan (panel disposisi)
 
@@ -145,6 +146,7 @@ Grafik agregat, tren nasional, peringkat fasilitas, angka "fraud dicegah", nilai
 3. **Jalur bukti kecil dan terarah.** Widget 15 menampilkan satu jalur, bukan jaring hubungan. Bila mulai menyerupai jaring, rancangannya salah.
 4. **Rujukan bukti wajib dapat dibuka.** Widget 12 yang menunjuk ke sumber daya tidak ada adalah cacat, bukan tampilan kosong yang wajar.
 5. **Seluruh alur dapat diselesaikan dengan papan ketik**, termasuk membuka/menutup laci (widget 23).
+6. **Sel kosong bukan bukti yang absen.** Pada widget 28, keadaan `tidak diharapkan` tidak boleh tampak sama dengan `tidak ditemukan` — dalam kata maupun warna. Menyamakannya memproduksi temuan yang tidak dibuat oleh data (ADR-0004).
 
 ### Navigasi
 

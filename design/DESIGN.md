@@ -43,7 +43,7 @@ Dokumen ini sengaja **tidak lengkap**. Ia hanya mengunci arah yang sudah diputus
 | `design/tokens.css` | 35 token warna × 2 tema, plus tipografi, jarak, dan alias semantik | ✅ Masuk |
 | `apps/web/src/styles/tokens.css` | Salinan mentah `design/tokens.css` di dalam aplikasi. Disalin dengan `cp`, tidak diketik ulang | ✅ Terpasang |
 | `apps/web/src/styles/app.css` | Pengikatan Tailwind v4 (`@theme inline`) ke token di atas, plus nama yang dipakai shadcn | ✅ Terpasang |
-| Peta anotasi | Pemetaan setiap bidang di layar ke respons antarmuka | ⬜ Belum ada — `/` sudah terimplementasi tanpa peta ini, `/cases/:id` yang paling membutuhkannya |
+| Peta anotasi | Pemetaan setiap bidang di layar ke respons antarmuka | ⬜ Belum ada — `/` sudah terimplementasi tanpa peta ini, `/cases/:id` yang paling membutuhkannya. **3 Sep:** `/cases/:id` kini Evidence Workspace (ADR-0004: matriks bukti, swimlane, peta bukti berfokus alasan, satu host laci); tangkapan layar di `docs/qa/2026-09-03-evidence-workspace/` adalah bahan anotasinya |
 
 Keempat layar ada di dalam satu berkas `reference.html`, ditandai atribut
 `data-screen-label`: `Antrean Review`, `Detail Kasus`, `Ingest / Demo`, `Audit & Evaluasi`.

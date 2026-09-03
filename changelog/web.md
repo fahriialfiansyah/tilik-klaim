@@ -4,6 +4,33 @@ Append-only. Newest entry at the top.
 
 ---
 
+### 2026-09-03 · `/cases/:id` becomes an Evidence Workspace (Sprint 08, ADR-0004) · ✅ Done
+
+**Event:** Four coordinated views over one selection; no API, DTO, token, or contract-fixture change
+**Files:** `src/features/review/case-detail/{store,matrix,swimlanes,map}.ts` (+tests), `components/{EvidenceMatrix,EpisodeSwimlane,EvidenceMap,CaseDrawerHost}.tsx` (+tests), `components/{EvidencePath,EpisodeTimeline}.tsx` **deleted**, `labels.ts`, `src/pages/case-detail/CaseDetailPage.tsx`, `tests/e2e/evidence-workspace.spec.ts`, `sprint/00-app-spec.md` § 4
+> **Evidence Matrix (widget 28).** Lines × expected resource types, derived entirely from
+> `CaseDetailResponse`. Four cell states, each with words: `ditemukan`, `tidak ditemukan`,
+> `rujukan tidak terselesaikan` (display rule 4's defect), and `tidak diharapkan` — the one that
+> matters, because an empty cell that read as *absent* would manufacture a finding. Reasons that
+> cite no line (repeat, clone, unbundling) get a *Tingkat klaim* row instead of vanishing.
+> **Swimlane (widget 14).** Four lanes on one shared minute axis; the *Penagihan* lane is derived
+> in the client from `lines[].service_at`. An empty lane is drawn and says so.
+> **Evidence Map (widget 15).** Anchored on the open reason: one trunk (claim → cited line),
+> terminals per expected type and per cited reference, counter-evidence on a labelled dashed
+> branch *in addition to* the reason card. `assertSinglePath` fails in dev if a node ever gains two
+> parents — display rule 3 made mechanical.
+> **One drawer host.** Source and comparison are one discriminated union in the store, so "both
+> open" is unrepresentable. Selecting a different reason or line closes the drawer. Drafts are
+> untouched by every workspace action, asserted.
+> **Found by looking, not by tests:** the billing lane flagged un-cited line 89.7 as *cacat
+> integritas bukti* — the API indexes sources only for cited resources, so a client-derived
+> reference to an un-cited line is not a defect and now carries no reference. Noted in passing:
+> `case-detail-a11y.spec.ts`'s `toHaveCount(0)` on broken refs resolves before the detail
+> loads, so it would not have caught this; worth a `waitFor` on the matrix in a later pass.
+> Verified: web **168 passed** (was 107) · tsc clean · playwright **21 passed** (was 17) in 16.4 s ·
+> backend 338 · domain 23 · data 57 · model 71 · evaluation 47 — all unchanged.
+> Screenshots: `docs/qa/2026-09-03-evidence-workspace/` (13 frames, both themes, five states).
+
 ### 2026-09-01 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Task: [Ingest and seeded demo page](../sprint/backlog/04-review-slice/frontend/03-ingest-page.md) · ✅ Done
 
 **Event:** Task completed — sprint 04 frontend is finished
