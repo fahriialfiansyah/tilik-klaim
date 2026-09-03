@@ -29,7 +29,9 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: 0,
   reporter: process.env.CI ? 'line' : [['list']],
-  timeout: 30_000,
+  // 30s is right for a rendered page. The case-briefing spec calls a real LLM gateway when one
+  // is configured, and that is tens of seconds; its own assertions carry longer timeouts.
+  timeout: 240_000,
   expect: { timeout: 7_000 },
   use: {
     baseURL: BASE_URL,

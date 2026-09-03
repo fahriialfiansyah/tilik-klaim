@@ -6,10 +6,22 @@ import { expect, test } from '@playwright/test'
 import { findOpenCase } from './helpers'
 
 /**
- * The bounded, read-only Case Briefing (ADR-0005) against the real API with the LLM **off** —
- * which is the default, and the configuration the offline demo runs. What is asserted is the
- * template path end to end, through the dev proxy, streamed.
+ * The bounded, read-only Case Briefing (ADR-0005) against the real API, through the dev proxy,
+ * streamed.
+ *
+ * **Provenance is asserted as "one of the two", not as the template.** Whether a model answers
+ * is the developer's own `.env`, and a spec that pinned the template would fail on a machine
+ * where the gateway is configured — reporting a working feature as broken. What must hold on
+ * both paths is what the guarantees actually are: the panel says how it was produced, every
+ * observation carries an openable reference, and nothing accusatory appears.
+ *
+ * The briefing assertions carry their own timeout. A real gateway call takes tens of seconds —
+ * the suite's 7-second default is right for a rendered page and wrong for a model, and the
+ * failure it produces looks like a broken panel rather than a slow one.
  */
+
+/** Long enough for a real gateway round trip; the template path answers instantly. */
+const BRIEFING_TIMEOUT = 180_000
 
 test.beforeAll(() => {
   execFileSync('uv', ['run', 'python', 'scripts/demo_reset.py'], {
@@ -52,12 +64,13 @@ test('asking for a briefing streams the template, with provenance and openable r
   await page.getByRole('button', { name: 'Susun ringkasan' }).click()
 
   const panel = page.getByRole('region', { name: 'Ringkasan bukti' })
-  await expect(panel).toContainText('PENGAMATAN')
-  await expect(panel).toContainText('Templat deterministik')
+  await expect(panel).toContainText('PENGAMATAN', { timeout: BRIEFING_TIMEOUT })
   await expect(panel).toContainText('KETIDAKPASTIAN')
-  // The template reads the catalog sentence; nothing here says fraud.
-  await expect(panel).toContainText('tidak punya catatan tindakan')
-  await expect(panel).not.toContainText(/fraud/i)
+  // Always states how it was produced, whichever path answered.
+  await expect(panel).toContainText(/Templat deterministik|Model bahasa, tervalidasi/)
+  await expect(panel).not.toContainText(/fraud|curang|pemalsuan|sanksi/i)
+  // Every observation is source-bound, so at least one openable reference is on screen.
+  expect(await panel.getByRole('button', { name: /ENC-|LN-|CLM-|DOC-|PROC-/ }).count()).toBeGreaterThan(0)
   // Not the fallback path: the stream itself delivered it through the dev proxy.
   await expect(panel).not.toContainText('dimuat tanpa aliran')
 
@@ -78,7 +91,10 @@ test('the briefing never touches the disposition draft', async ({ page, request 
 
   await page.getByRole('button', { name: /Ringkasan bukti/ }).click()
   await page.getByRole('button', { name: 'Susun ringkasan' }).click()
-  await expect(page.getByRole('region', { name: 'Ringkasan bukti' })).toContainText('PENGAMATAN')
+  await expect(page.getByRole('region', { name: 'Ringkasan bukti' })).toContainText(
+    'PENGAMATAN',
+    { timeout: BRIEFING_TIMEOUT },
+  )
 
   await expect(page.getByRole('radio', { name: /Eskalasi/ })).toBeChecked()
   await expect(page.getByLabel('CATATAN BEBAS')).toHaveValue('Setengah jalan.')
