@@ -76,8 +76,8 @@ tune until something looks better.
 **Verified immediately before writing this:**
 
 ```
-backend 403 · domain 23 · data 57 · model 71 · evaluation 47 · web 184 · playwright 24
-tsc clean · ruff: All checks passed · alembic head d1a7c3e50f42     (re-measured 3 Sep 2026)
+backend 439 · domain 23 · data 57 · model 71 · evaluation 47 · web 184 · playwright 24
+tsc clean · ruff: All checks passed · alembic head d1a7c3e50f42     (re-measured 4 Sep 2026)
 ```
 
 **3 Sep:** two ADRs are drafted and one is landed. [ADR-0004](canonical/decisions/ADR-0004-evidence-workspace.md)
@@ -85,8 +85,16 @@ tsc clean · ruff: All checks passed · alembic head d1a7c3e50f42     (re-measur
 (bounded read-only Case Briefing, outside the risk path) is **implemented too**, on the owner's
 explicit approval, with its recorded deviation: sprint 06 still reads 🚧 while its three human
 sign-offs are outstanding — flip it when they land. **`BRIEFING_ENABLED` is `false`; no real
-model has been called from this repo.** Turning it on is `apps/backend/.env` (`OPENROUTER_*`)
-and a deliberate look at the result. The full plan for both is
+model has been called from this repo.** It is served by the **internal vLLM gateway**, not a
+third-party host. Turning it on means three values in `apps/backend/.env` — `LLM_MODEL_VLLM`,
+`VLLM_BASE_URL`, `VLLM_API_KEY` — then `curl localhost:8000/health/llm` to confirm the gateway
+answers and holds the model, then a deliberate look at a real briefing.
+**Neither the gateway address nor the key is in the repository**, by instruction: `.env.example`
+documents the names and leaves both empty, and `docs/VLLM-SETUP.md` (gitignored) has the address
+and the verification steps. `test_no_committed_file_carries_a_gateway_address_or_a_key` asserts
+it rather than trusting memory.
+**With the switch on, a missing or placeholder value stops the process at start-up** rather than
+at a reviewer's first click; with it off, nothing is required at all. The full plan for both is
 `docs/plans/2026-09-03-evidence-workspace-and-case-briefing.md`.
 **One environment trap found:** `uv sync` drops the editable `tilik-domain` (not declared in
 `apps/backend/pyproject.toml`; the README omits it). Restore with

@@ -4,6 +4,47 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 
 ---
 
+### 2026-09-04 · Case briefing moves to the internal vLLM gateway · ✅ Done
+
+**Event:** OpenRouter naming replaced by the internal vLLM gateway; no address or key in the repository
+**Files:** `app/config.py`, `app/service/llm_provider.py`, `app/service/briefing/{service,runner}.py`, `app/router/health.py`, `pyproject.toml`, `.env.example`, `tests/test_llm_{config,provider}.py`, `tests/test_briefing_{runner,endpoint}.py`, `docs/api/openapi.json`
+> Setup guide: `docs/VLLM-SETUP.md` (gitignored — it carries the gateway address). Three values,
+> `LLM_MODEL_VLLM` · `VLLM_BASE_URL` · `VLLM_API_KEY`, and **neither the address nor the key is
+> committed**: `.env.example` documents the names and leaves both empty, and a test asserts that
+> rather than trusting anyone to remember it.
+> **`SecretStr` and no defaults.** The key stays out of `repr`, `model_dump` and validation
+> errors — asserted. Removing the default address matters as much: an infrastructure address is
+> not a program constant, and a default means a misconfigured deployment starts anyway and
+> shoots at the wrong host.
+> **Start-up validation, scoped to the switch.** `VLLM-SETUP.md` § 3 wants failure at deploy
+> hour, not demo hour; ADR-0002 wants the MVP to run with no LLM at all. Both hold: off ⇒
+> nothing required, nothing checked; on ⇒ all three present and well formed or the process
+> refuses to start. `/v1` on the base URL is validated too, because without it the client's
+> appended `/chat/completions` 404s in a way that reads exactly like a missing model.
+> **Tool calling is no longer assumed, and that was the real risk.** vLLM serves it only with
+> `--enable-auto-tool-choice`, and the guide verifies guided decoding rather than tools — so a
+> tools-only implementation had a coin-flip chance of falling back to the template forever, with
+> nothing on screen to say why. A gateway that refuses the tool-calling *shape* is now told apart
+> from one that is *down*, and the briefing performs the same seven reads deterministically and
+> submits through guided decoding, where the server enforces the schema. Same tools, same five
+> gates, same template backstop; only the chooser changes.
+> **The model that answered is recorded, not the one requested** — the gateway substitutes models
+> silently (`Qwen2.5-7B` → `Qwen3.5-9B`, unwarned), and an audit reading configuration would
+> record something that did not happen. Substitution is logged as a warning.
+> **Four failures, four fixes.** 404 names `LLM_MODEL_VLLM`; 401 names `VLLM_API_KEY` and never
+> prints it; 429 says rate limit; timeout/connection says "did not answer within 90s" and names
+> `VLLM_BASE_URL` — a closed port on that host drops packets rather than refusing them, so it
+> hangs rather than failing fast, which is why the timeout is 90s and why the message says so.
+> **`GET /health/llm`** lists the roster: one call that tests network and credential together
+> without spending a token, and catches a mistyped model name before a demo does. Deliberately
+> *not* folded into `/healthz`, which the platform probes — an optional summariser must never be
+> able to restart the container.
+> Dependency: `httpx` → `openai>=1.60` at runtime; `httpx` stays a dev dependency because
+> Starlette's TestClient needs it and a transitive-only test dependency breaks quietly.
+> Verified: backend **439 passed** (was 403) · ruff clean · openapi regenerated.
+> **Still no real model call from this repository** — every test uses a constructed gateway
+> answer. Enabling it is the owner's deliberate step; `/health/llm` is the first thing to check.
+
 ### 2026-09-03 · Bounded, read-only Case Briefing outside the risk path (Sprint 09, ADR-0005) · ✅ Done
 
 **Event:** `GET /v1/cases/{case_id}/briefing` — the eighth endpoint; the seven frozen ones untouched

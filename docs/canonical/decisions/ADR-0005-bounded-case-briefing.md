@@ -69,6 +69,35 @@ Add **one bounded, read-only Case Briefing** to the backend, rendered as a colla
 - Its output has no path to a status transition. The disposition endpoint neither reads it nor
   accepts it.
 
+### The gateway, as implemented (4 Sep 2026)
+
+The briefing is served by the **internal vLLM gateway**, which speaks the OpenAI protocol, via
+the official `openai` package — no private wheel, no internal index, no third-party host. Setup
+is `docs/VLLM-SETUP.md` (gitignored, because it carries the gateway address).
+
+Three environment values, and **neither the address nor the key is ever committed**:
+`LLM_MODEL_VLLM`, `VLLM_BASE_URL`, `VLLM_API_KEY`. The key is a `SecretStr`, so it stays out of
+`repr`, tracebacks and error reporting; neither it nor the address has a default, so a
+deployment that forgot to configure one cannot start and quietly point at the wrong host.
+
+**Where start-up validation and the "no LLM required" rule meet.** `VLLM-SETUP.md` § 3 argues
+that a secret with a default moves failure from deploy hour to demo hour, so configuration must
+fail at start-up. ADR-0002 and § 22 argue the MVP must run with no LLM at all. Both hold, split
+on the switch: with `BRIEFING_ENABLED=false` nothing is required and nothing is checked; the
+moment it is `true`, all three values must be present and well formed or the process refuses to
+start.
+
+**Tool calling is not assumed.** vLLM serves it only when started with
+`--enable-auto-tool-choice`, and `VLLM-SETUP.md` verifies guided decoding rather than tools. A
+gateway that refuses the tool-calling request shape is told apart from one that is down, and the
+briefing then performs the same seven reads deterministically and submits through **guided
+decoding**, where the schema is enforced by the server. The tool surface, the five gates and the
+template backstop are identical on both paths; what changes is only who chooses the reads.
+
+**The model that answered is what gets recorded**, not the one requested — the gateway
+substitutes models silently (`VLLM-SETUP.md` § 8), and an audit trail that reports configuration
+reports something that did not happen.
+
 ### Naming, as implemented
 
 Code identifier `briefing` (`app/service/briefing/`, `features/review/case-briefing/`); UI label

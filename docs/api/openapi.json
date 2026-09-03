@@ -1901,6 +1901,30 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/health/llm": {
+      "get": {
+        "description": "Does the briefing gateway answer, and does it hold the model that was configured?\n\nDeliberately **not** part of `/healthz`: the platform probes that path, and a health check\nthat failed because an optional summariser was unreachable would restart the container over\na feature the product does not require.\n\nListing models tests the network and the credential at once without spending a token, and\n`model_available: false` catches a mistyped model name before a reviewer's first click\nrather than during a demo. The key is never in the response \u2014 `SecretStr` sees to that.",
+        "operationId": "health_llm_health_llm_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Health Llm Health Llm Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health Llm",
+        "tags": [
+          "health"
+        ]
+      }
+    },
     "/healthz": {
       "get": {
         "description": "Liveness, the engine identity the runbook quotes, and demo readiness.",
