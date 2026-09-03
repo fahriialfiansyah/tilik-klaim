@@ -11,22 +11,19 @@ import {
   CaseDetailFailed,
   CaseDetailLoading,
 } from '@/features/review/case-detail/components/CaseDetailPlaceholders'
+import { CaseDrawerHost } from '@/features/review/case-detail/components/CaseDrawerHost'
 import { CaseHeader } from '@/features/review/case-detail/components/CaseHeader'
 import { ClaimLineList } from '@/features/review/case-detail/components/ClaimLineList'
-import { ComparisonDrawer } from '@/features/review/case-detail/components/ComparisonDrawer'
 import { ConfirmAnomalyDialog } from '@/features/review/case-detail/components/ConfirmAnomalyDialog'
 import { DispositionPanel } from '@/features/review/case-detail/components/DispositionPanel'
-import { EpisodeTimeline } from '@/features/review/case-detail/components/EpisodeTimeline'
-import { EvidencePath } from '@/features/review/case-detail/components/EvidencePath'
+import { EpisodeSwimlane } from '@/features/review/case-detail/components/EpisodeSwimlane'
+import { EvidenceMap } from '@/features/review/case-detail/components/EvidenceMap'
+import { EvidenceMatrix } from '@/features/review/case-detail/components/EvidenceMatrix'
 import { ReasonCard } from '@/features/review/case-detail/components/ReasonCard'
-import { SourceDrawer } from '@/features/review/case-detail/components/SourceDrawer'
+import { buildEvidenceMatrix } from '@/features/review/case-detail/matrix'
 import { comparisonForReason, primaryLineId } from '@/features/review/case-detail/selectors'
 import { EMPTY_DRAFT, useCaseDetailStore } from '@/features/review/case-detail/store'
-import type {
-  ComparisonCandidate,
-  DispositionAction,
-  EvidenceRef,
-} from '@/features/review/case-detail/types'
+import type { DispositionAction } from '@/features/review/case-detail/types'
 import { useCaseDetail } from '@/features/review/case-detail/useCaseDetail'
 import { EvidenceMeter } from '@/features/review/shared/components/EvidenceMeter'
 import { cn } from '@/lib/utils'
@@ -34,15 +31,18 @@ import { cn } from '@/lib/utils'
 type Tab = 'evidence' | 'audit'
 
 /**
- * Page 2 — Case detail (`/cases/:id`). Widgets 1–27 per `sprint/00-app-spec.md` § 4.
+ * Page 2 — Case detail (`/cases/:id`), now an Evidence Workspace. Widgets 1–28 per
+ * `sprint/00-app-spec.md` § 4 and ADR-0004.
  *
- * Twenty-seven widgets on one screen is deliberate. The contract this workflow is built on is
+ * Twenty-eight widgets on one screen is deliberate. The contract this workflow is built on is
  * **one screen to resolve one reason**, and splitting the evidence away from the decision
  * breaks it: a reviewer who has to navigate to weigh counter-evidence will decide without it.
  *
- * Composition only lives here. Every piece is its own component under `components/`, and the
- * reviewer's unsaved decision lives in `store.ts` rather than in this tree — a refused save
- * re-renders the page, and a draft held in component state would be reconstructed empty.
+ * Composition only lives here. Every piece is its own component under `components/`. What the
+ * reviewer is looking at — the open reason, the selected line, the one drawer — lives in the
+ * store's `workspace` slice so the matrix, the map, the swimlane and the drawer read one
+ * selection; the reviewer's unsaved decision lives in the same store's `drafts`, untouched by
+ * any of that, so a refused save still re-renders with their input intact.
  */
 export function CaseDetailPage() {
   const { id = '' } = useParams()
@@ -63,30 +63,36 @@ export function CaseDetailPage() {
   const draft = useCaseDetailStore((state) => state.drafts[id]) ?? EMPTY_DRAFT
   const setAction = useCaseDetailStore((state) => state.setAction)
   const clearDraft = useCaseDetailStore((state) => state.clearDraft)
+  const workspace = useCaseDetailStore((state) => state.workspace)
+  const openCase = useCaseDetailStore((state) => state.openCase)
+  const selectReason = useCaseDetailStore((state) => state.selectReason)
+  const selectLine = useCaseDetailStore((state) => state.selectLine)
+  const openSource = useCaseDetailStore((state) => state.openSource)
+  const openComparison = useCaseDetailStore((state) => state.openComparison)
 
   const [tab, setTab] = useState<Tab>('evidence')
-  const [selectedLineId, setSelectedLineId] = useState<string | null>(null)
-  const [openReasonCode, setOpenReasonCode] = useState<string | null>(null)
-  const [openSource, setOpenSource] = useState<EvidenceRef | null>(null)
-  const [openComparison, setOpenComparison] = useState<ComparisonCandidate | null>(null)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
 
   // The screen opens on the strongest reason and on the line that raised it, rather than on a
   // general profile page — `brief/04_DETAIL_KASUS_DISPOSISI.md` § 1. The API already orders
-  // reasons strongest-first, so the first card is the one to open.
+  // reasons strongest-first, so the first card is the one to open. Re-seeded whenever the
+  // detail changes, which includes the reload after a version conflict.
   useEffect(() => {
     if (!detail) {
       return
     }
-    setSelectedLineId(primaryLineId(detail))
-    setOpenReasonCode(detail.reasons[0]?.code ?? null)
-  }, [detail])
+    openCase(detail.case_id, {
+      reasonCode: detail.reasons[0]?.code ?? null,
+      lineId: primaryLineId(detail),
+    })
+  }, [detail, openCase])
 
-  const selectedLine = useMemo(
-    () => detail?.lines.find((line) => line.line_id === selectedLineId) ?? null,
-    [detail, selectedLineId],
+  const openReason = useMemo(
+    () => detail?.reasons.find((reason) => reason.code === workspace.reasonCode) ?? null,
+    [detail, workspace.reasonCode],
   )
+  const matrix = useMemo(() => (detail ? buildEvidenceMatrix(detail) : null), [detail])
 
   const templateCaveat = detail?.comparisons.find((entry) => entry.template_caveat)
     ?.template_caveat
@@ -94,7 +100,7 @@ export function CaseDetailPage() {
   if (status === 'loading') {
     return <CaseDetailLoading />
   }
-  if (status === 'failed' || !detail) {
+  if (status === 'failed' || !detail || !matrix) {
     return <CaseDetailFailed error={error} onRetry={reload} />
   }
 
@@ -197,8 +203,8 @@ export function CaseDetailPage() {
           <div className="flex flex-col gap-[14px]">
             <ClaimLineList
               lines={detail.lines}
-              selectedLineId={selectedLineId}
-              onSelect={setSelectedLineId}
+              selectedLineId={workspace.lineId}
+              onSelect={selectLine}
             />
             <div className="rounded-lg border border-line bg-card p-[15px] shadow-panel">
               <p className="mb-[9px] font-mono text-micro font-semibold tracking-label text-ink-3">
@@ -214,6 +220,11 @@ export function CaseDetailPage() {
             </div>
           </div>
 
+          {/*
+            Reading order in the middle column is binding (display rule 1): the reason cards
+            come first, then the matrix, the map and the swimlane that explain them. None of the
+            three renders a numeric score.
+          */}
           <div className="flex min-w-0 flex-col gap-[14px]">
             {detail.reasons.length === 0 ? (
               <div className="rounded-lg border border-line bg-card p-[18px] shadow-panel">
@@ -233,32 +244,34 @@ export function CaseDetailPage() {
                 <ReasonCard
                   key={reason.code}
                   reason={reason}
-                  isOpen={openReasonCode === reason.code}
+                  isOpen={workspace.reasonCode === reason.code}
                   onToggle={() =>
-                    setOpenReasonCode((current) =>
-                      current === reason.code ? null : reason.code,
-                    )
+                    selectReason(workspace.reasonCode === reason.code ? null : reason.code)
                   }
                   sources={detail.sources}
-                  onOpenSource={setOpenSource}
-                  onCompare={comparison ? () => setOpenComparison(comparison) : null}
+                  onOpenSource={openSource}
+                  onCompare={comparison ? () => openComparison(comparison) : null}
                 />
               )
             })}
 
-            <EvidencePath
-              detail={detail}
-              line={selectedLine}
-              reason={detail.reasons.find((r) => r.code === openReasonCode) ?? null}
+            <EvidenceMatrix
+              matrix={matrix}
               sources={detail.sources}
-              onOpenSource={setOpenSource}
+              selectedLineId={workspace.lineId}
+              openReasonCode={workspace.reasonCode}
+              onSelectLine={selectLine}
+              onOpenSource={openSource}
             />
 
-            <EpisodeTimeline
-              events={detail.timeline}
-              sources={detail.sources}
-              onOpenSource={setOpenSource}
+            <EvidenceMap
+              detail={detail}
+              reason={openReason}
+              selectedLineId={workspace.lineId}
+              onOpenSource={openSource}
             />
+
+            <EpisodeSwimlane detail={detail} onOpenSource={openSource} />
           </div>
 
           <DispositionPanel
@@ -274,13 +287,7 @@ export function CaseDetailPage() {
         </div>
       )}
 
-      <SourceDrawer
-        reference={openSource}
-        sources={detail.sources}
-        versions={detail.versions}
-        onClose={() => setOpenSource(null)}
-      />
-      <ComparisonDrawer candidate={openComparison} onClose={() => setOpenComparison(null)} />
+      <CaseDrawerHost sources={detail.sources} versions={detail.versions} />
       <ConfirmAnomalyDialog
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
