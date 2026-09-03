@@ -70,13 +70,21 @@ tune until something looks better.
 | 05 — ranking-models | G6 · 12 Sep | ✅ **Done** | `packages/model` built, 71 tests; incremental value measured in 06 |
 | 06 — evaluation-report | G6 · 12 Sep | 🚧 **Official run done** | only the three sign-offs remain; **removal clause is live** |
 | 07 — demo-hardening | G8 · 17 Sep | 🚧 **Nearly done** | only the 1080p recording + 3-min rehearsal remain |
+| 08 — evidence-workspace | G8 · 17 Sep | ✅ **Done 3 Sep** | `/cases/:id` is an Evidence Workspace (ADR-0004); frontend-only, no contract change; 21 Playwright specs |
 
 **Verified immediately before writing this:**
 
 ```
-backend 338 · domain 23 · data 57 · model 71 · evaluation 47 · web 107 · playwright 17
-tsc clean · ruff: All checks passed · alembic head d1a7c3e50f42
+backend 338 · domain 23 · data 57 · model 71 · evaluation 47 · web 168 · playwright 21
+tsc clean · ruff: All checks passed · alembic head d1a7c3e50f42     (re-measured 3 Sep 2026)
 ```
+
+**3 Sep:** two ADRs are drafted and one is landed. [ADR-0004](canonical/decisions/ADR-0004-evidence-workspace.md)
+(Evidence Workspace) is **implemented**. [ADR-0005](canonical/decisions/ADR-0005-bounded-case-briefing.md)
+(bounded read-only Case Briefing, outside the risk path) is **proposed and held** — its own
+precondition is a formally signed-off Gate 6, and sprint 06 still reads 🚧. The full plan for
+both is `docs/plans/2026-09-03-evidence-workspace-and-case-briefing.md`. All three files sit
+under gitignored `docs/` and were `git add -f`'d, like ADR-0001..0003 before them.
 
 **A trap worth knowing before you debug anything.** If `/healthz` reports
 `database_reachable: true` with `persistence: "in-memory"`, the API started before Postgres was
