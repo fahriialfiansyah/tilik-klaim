@@ -160,10 +160,10 @@ Phase A landed and green.
 | `app/service/briefing/template.py` | **New.** The deterministic, LLM-free briefing. Pure functions over `CaseDetailResponse`. | 0.5 d |
 | `app/service/briefing/validation.py` | **New.** The five-gate validator of § B.4. | 0.5 d |
 | `app/service/briefing/loop.py` | **New.** Bounded tool-calling loop: ≤ 8 tool calls, wall-clock timeout, token cap, one terminal step. | 0.6 d |
-| `app/service/llm_provider.py` | **New.** One `httpx` POST to an OpenAI-compatible `/chat/completions`. No SDK, no streaming from the provider, no retries beyond one. The only place in the repo that talks to a model. | 0.4 d |
+| `app/service/llm_provider.py` | **New.** The only place in the repo that talks to a model. **Superseded 4 Sep:** the official `openai` SDK against the internal vLLM gateway, with typed error mapping and a guided-decoding path for gateways that do not serve tool calling. | 0.4 d |
 | `app/router/briefing.py` | **New.** `GET /v1/cases/{case_id}/briefing` — SSE, plus `?stream=false`. | 0.4 d |
 | `app/main.py` | **Edit.** One `include_router` line. | — |
-| `app/config.py` | **Edit.** `briefing_enabled=False`, `openrouter_base_url`, `openrouter_model`, `openrouter_api_key`, `briefing_timeout_seconds`, `briefing_max_tool_calls`. | 0.2 d |
+| `app/config.py` | **Edit.** `briefing_enabled=False`, plus the gateway values. **Superseded 4 Sep:** shipped against the internal vLLM gateway as `llm_model_vllm` / `vllm_base_url` / `vllm_api_key` (`SecretStr`, no defaults, start-up validation), not a third-party host. See ADR-0005 § *The gateway, as implemented*. | 0.2 d |
 | `app/errors.py` | **Edit.** Append `BRIEFING_UNAVAILABLE`. Existing codes untouched — appending is safe, repurposing is not. | 0.1 d |
 | `apps/backend/pyproject.toml` | **Edit.** Promote `httpx>=0.28` from `dev` to runtime. | — |
 | `apps/backend/.env.example` | **Edit.** The five new keys, all optional, key blank. | 0.1 d |
