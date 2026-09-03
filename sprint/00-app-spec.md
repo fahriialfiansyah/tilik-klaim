@@ -116,6 +116,7 @@ Grafik agregat, tren nasional, peringkat fasilitas, angka "fraud dicegah", nilai
 | 14 | Linimasa episode | **Swimlane** — empat jalur (Kunjungan · Tindakan · Obat · Penagihan) pada satu sumbu waktu; jalur kosong tetap digambar dan diberi label | Urutan kunjungan, tindakan, obat dari `timeline`; jalur Penagihan diturunkan di klien dari `lines[].service_at` | `04` § 2.3, ADR-0004 |
 | 15 | Peta bukti | Diagram kecil **berfokus pada alasan yang terbuka**: satu batang (klaim → baris dirujuk) dengan simpul ujung per jenis bukti yang diharapkan, plus cabang bukti tandingan yang terpisah | Alasan terbuka + `expected_support` + `evidence` + `counter_evidence_notes` | `04` § 2.3, `02` § 2.1, ADR-0004 |
 | 16 | Panel sumber asli | Drawer side panel yang bisa dibuka; **berbagi satu host dengan widget 23** sehingga keduanya tidak pernah terbuka bersamaan | Isi sumber daya apa adanya + versi aturan & model | `04` § 2.3, ADR-0004 |
+| 29 | Ringkasan bukti | Panel terlipat di **paling bawah** kolom tengah, dibuka atas permintaan; pengamatan ber-rujukan, pertanyaan terbuka, catatan ketidakpastian, lalu cara disusun. **Tanpa kontrol tindakan.** | `GET /v1/cases/{id}/briefing` (SSE; `?stream=false` sebagai cadangan). Bawaan: templat deterministik tanpa model | ADR-0005, `05_model_card` § Optional LLM guardrails |
 | 28 | Matriks bukti | Tabel: baris tagihan × jenis bukti yang diharapkan; empat keadaan sel — ditemukan · tidak ditemukan · rujukan tidak terselesaikan · tidak diharapkan | `lines`, `reasons[].expected_support`, `reasons[].evidence`, `sources[].availability` — tanpa perubahan kontrak | `04` § 2.3, ADR-0004 |
 
 ### Widget — Kolom kanan (panel disposisi)
@@ -146,6 +147,7 @@ Grafik agregat, tren nasional, peringkat fasilitas, angka "fraud dicegah", nilai
 3. **Jalur bukti kecil dan terarah.** Widget 15 menampilkan satu jalur, bukan jaring hubungan. Bila mulai menyerupai jaring, rancangannya salah.
 4. **Rujukan bukti wajib dapat dibuka.** Widget 12 yang menunjuk ke sumber daya tidak ada adalah cacat, bukan tampilan kosong yang wajar.
 5. **Seluruh alur dapat diselesaikan dengan papan ketik**, termasuk membuka/menutup laci (widget 23).
+7. **Ringkasan tidak pernah memimpin dan tidak pernah memutus.** Widget 29 berada di bawah widget 10–15 dan 28, terlipat, dan tidak boleh memilih tindakan, mengisi alasan, atau mencentang daftar bukti (ADR-0005).
 6. **Sel kosong bukan bukti yang absen.** Pada widget 28, keadaan `tidak diharapkan` tidak boleh tampak sama dengan `tidak ditemukan` — dalam kata maupun warna. Menyamakannya memproduksi temuan yang tidak dibuat oleh data (ADR-0004).
 
 ### Navigasi

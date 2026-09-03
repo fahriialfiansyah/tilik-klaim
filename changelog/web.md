@@ -4,6 +4,28 @@ Append-only. Newest entry at the top.
 
 ---
 
+### 2026-09-03 · "Ringkasan bukti" — the briefing panel (Sprint 09, ADR-0005) · ✅ Done
+
+**Event:** Collapsed, on-demand, non-authoritative panel at the bottom of the middle column
+**Files:** `src/features/review/case-briefing/**`, `src/pages/case-detail/CaseDetailPage.tsx`, `src/env.d.ts`, `tests/e2e/case-briefing.spec.ts`
+> Named for what it is, never for how it is made: no "agent", "AI", or "assistant" anywhere a
+> reviewer reads, because `01_product_decision.md` makes "readers call it an AI fraud detector /
+> chatbot" a kill criterion. Provenance ("Templat deterministik" · model id · prompt version) is
+> stated *after* the observations, questions and uncertainty note.
+> **Never volunteers.** Collapsed on mount; nothing is fetched until "Susun ringkasan" is
+> pressed (asserted with a `fetch` spy, and end-to-end with a request listener). Last in DOM
+> order after the swimlane (asserted with `compareDocumentPosition`).
+> **No path to the decision.** No action control, radio or checkbox; the feature imports nothing
+> from `case-detail/store` — asserted on the source via `?raw` imports, the frontend twin of the
+> backend's syntax-tree guard. End-to-end: a half-filled disposition survives a briefing run.
+> **Streaming via `fetch` + reader** on the relative `/v1` base, parsed by a pure frame parser
+> (`parseSseChunk`) and applied by a pure reducer (`applyEvent`), both unit-tested. If the stream
+> ends without a terminal event or fails, the `?stream=false` answer is fetched and the panel says
+> "dimuat tanpa aliran". Through the Rsbuild dev proxy the stream arrived intact — the e2e spec
+> asserts the fallback marker is *absent* — so risk #3 in the plan did not materialise.
+> Verified: web **184 passed** (was 168) · tsc clean · playwright **24 passed** (was 21) in 20.0 s.
+> Screenshots: `docs/qa/2026-09-03-case-briefing/` (five frames, both themes).
+
 ### 2026-09-03 · `/cases/:id` becomes an Evidence Workspace (Sprint 08, ADR-0004) · ✅ Done
 
 **Event:** Four coordinated views over one selection; no API, DTO, token, or contract-fixture change

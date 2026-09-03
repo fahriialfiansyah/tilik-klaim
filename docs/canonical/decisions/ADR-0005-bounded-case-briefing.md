@@ -1,8 +1,9 @@
-> Status: canonical — read-only once accepted. Perubahan hanya lewat ADR baru.
+> Status: canonical — read-only. Perubahan hanya lewat ADR baru.
 
 # ADR-0005 — A bounded, read-only Case Briefing outside the risk path
 
-- **Status:** Proposed — awaiting owner approval **and** formal Gate 6 sign-off
+- **Status:** Accepted — owner approval recorded 2026-09-03 ("continue approve phase B"); implemented the same day as Sprint 09.
+  **Recorded deviation:** precondition 1 below asked for sprint 06 to read ✅ before merge. The owner approved with it still reading 🚧 (its official run is done; three human sign-offs remain), and that is their call to make. The ADR does not pretend otherwise: flip sprint 06 when the sign-offs land, and this note stays as the record.
 - **Date:** 2026-09-03
 - **Scope:** One new service module inside `be_service` (`apps/backend/app/service/briefing/`), one additive endpoint, one collapsed panel on `/cases/:id`
 - **Owner section:** [05_model_card.md](../05_model_card.md) § Optional LLM guardrails
@@ -67,6 +68,14 @@ Add **one bounded, read-only Case Briefing** to the backend, rendered as a colla
   and *from* the screening result, never before or into it.
 - Its output has no path to a status transition. The disposition endpoint neither reads it nor
   accepts it.
+
+### Naming, as implemented
+
+Code identifier `briefing` (`app/service/briefing/`, `features/review/case-briefing/`); UI label
+**"Ringkasan bukti"**, subtitle "Bukan penilaian. Tidak mengubah pita, status, atau keputusan."
+Nothing user-facing says agent, AI, or assistant — the "AI fraud detector / chatbot" kill
+criterion in `01_product_decision.md` is why. Provenance ("Templat deterministik" or "Model
+bahasa, tervalidasi · model id") is stated *after* the content.
 
 ### 2. Its entire tool surface is a projection of the response the reviewer is already reading
 

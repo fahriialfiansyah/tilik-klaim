@@ -207,6 +207,173 @@
         "title": "BaselineMetrics",
         "type": "object"
       },
+      "BriefingObservation": {
+        "additionalProperties": false,
+        "properties": {
+          "confidence": {
+            "$ref": "#/components/schemas/Confidence"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/ObservationKind"
+          },
+          "reason_code": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReasonCode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_refs": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRefDto"
+            },
+            "minItems": 1,
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "statement": {
+            "maxLength": 240,
+            "minLength": 1,
+            "title": "Statement",
+            "type": "string"
+          }
+        },
+        "required": [
+          "statement",
+          "kind",
+          "source_refs",
+          "confidence"
+        ],
+        "title": "BriefingObservation",
+        "type": "object"
+      },
+      "BriefingQuestion": {
+        "additionalProperties": false,
+        "properties": {
+          "question": {
+            "maxLength": 240,
+            "minLength": 1,
+            "title": "Question",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRefDto"
+            },
+            "minItems": 1,
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "why_it_matters": {
+            "maxLength": 240,
+            "minLength": 1,
+            "title": "Why It Matters",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question",
+          "why_it_matters",
+          "source_refs"
+        ],
+        "title": "BriefingQuestion",
+        "type": "object"
+      },
+      "CaseBriefing": {
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "case_version": {
+            "minimum": 1.0,
+            "title": "Case Version",
+            "type": "integer"
+          },
+          "generated_by": {
+            "$ref": "#/components/schemas/GeneratedBy"
+          },
+          "model_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Id"
+          },
+          "observations": {
+            "items": {
+              "$ref": "#/components/schemas/BriefingObservation"
+            },
+            "maxItems": 5,
+            "title": "Observations",
+            "type": "array"
+          },
+          "open_questions": {
+            "items": {
+              "$ref": "#/components/schemas/BriefingQuestion"
+            },
+            "maxItems": 3,
+            "title": "Open Questions",
+            "type": "array"
+          },
+          "prompt_version": {
+            "title": "Prompt Version",
+            "type": "string"
+          },
+          "rejection_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rejection Reason"
+          },
+          "tool_calls": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ToolCallRecord"
+            },
+            "title": "Tool Calls",
+            "type": "array"
+          },
+          "uncertainty_note": {
+            "minLength": 1,
+            "title": "Uncertainty Note",
+            "type": "string"
+          },
+          "validation_rejected": {
+            "default": false,
+            "title": "Validation Rejected",
+            "type": "boolean"
+          },
+          "versions": {
+            "$ref": "#/components/schemas/VersionStamp"
+          }
+        },
+        "required": [
+          "case_id",
+          "case_version",
+          "observations",
+          "open_questions",
+          "uncertainty_note",
+          "generated_by",
+          "prompt_version",
+          "versions"
+        ],
+        "title": "CaseBriefing",
+        "type": "object"
+      },
       "CaseDetailResponse": {
         "additionalProperties": false,
         "description": "Everything needed to understand and disposition one case.",
@@ -617,6 +784,15 @@
         "title": "ComparisonField",
         "type": "object"
       },
+      "Confidence": {
+        "description": "Never a number. A numeric confidence beside a risk band is a second score.",
+        "enum": [
+          "STATED",
+          "INFERRED"
+        ],
+        "title": "Confidence",
+        "type": "string"
+      },
       "CounterEvidenceDto": {
         "additionalProperties": false,
         "description": "One fact that argues against the reason it accompanies, **in words**.\n\nThe refs alone were shipped for a while and it hollowed the feature out: a reviewer saw\n`Encounter ENC-PH-1` under a \"counter-evidence\" heading with nothing saying why it weakened\nanything. The sentence is the argument; the references are only where to look next.",
@@ -756,7 +932,8 @@
           "DISPOSITION_REASON_REQUIRED",
           "CASE_VERSION_CONFLICT",
           "DISPOSITION_INVALID_TRANSITION",
-          "AUDIT_FORBIDDEN"
+          "AUDIT_FORBIDDEN",
+          "BRIEFING_UNAVAILABLE"
         ],
         "title": "ErrorCode",
         "type": "string"
@@ -913,6 +1090,14 @@
         "title": "EvidenceRefDto",
         "type": "object"
       },
+      "GeneratedBy": {
+        "enum": [
+          "LLM",
+          "TEMPLATE"
+        ],
+        "title": "GeneratedBy",
+        "type": "string"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -1063,6 +1248,18 @@
         ],
         "title": "ModeMetrics",
         "type": "object"
+      },
+      "ObservationKind": {
+        "enum": [
+          "EVIDENCE_GAP",
+          "CORROBORATION",
+          "COUNTER_EVIDENCE",
+          "COMPARISON",
+          "TIMELINE",
+          "COMPLETENESS"
+        ],
+        "title": "ObservationKind",
+        "type": "string"
       },
       "PageInfo": {
         "additionalProperties": false,
@@ -1549,6 +1746,28 @@
           "label"
         ],
         "title": "TimelineEvent",
+        "type": "object"
+      },
+      "ToolCallRecord": {
+        "additionalProperties": false,
+        "description": "One function the briefing chose to read. The log *is* the transparency artifact.",
+        "properties": {
+          "arguments": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Arguments",
+            "type": "object"
+          },
+          "tool": {
+            "title": "Tool",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool"
+        ],
+        "title": "ToolCallRecord",
         "type": "object"
       },
       "ValidationError": {
@@ -2264,6 +2483,69 @@
         "summary": "Case history",
         "tags": [
           "dispositions"
+        ]
+      }
+    },
+    "/v1/cases/{case_id}/briefing": {
+      "get": {
+        "description": "Observations with source references, open questions, and an uncertainty note.\n\nNever a score, a band, or a state transition. Off by default; the deterministic template is\nthe answer when no model is configured.",
+        "operationId": "get_briefing_v1_cases__case_id__briefing_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "case_id",
+            "required": true,
+            "schema": {
+              "title": "Case Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "stream",
+            "required": false,
+            "schema": {
+              "default": true,
+              "title": "Stream",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseBriefing"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Read-only case briefing (non-authoritative)",
+        "tags": [
+          "briefing"
         ]
       }
     },

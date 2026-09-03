@@ -1,8 +1,8 @@
-> Status: canonical — read-only once accepted. Perubahan hanya lewat ADR baru.
+> Status: canonical — read-only. Perubahan hanya lewat ADR baru.
 
 # ADR-0004 — `/cases/:id` becomes an Evidence Workspace
 
-- **Status:** Proposed — awaiting owner approval
+- **Status:** Accepted — owner approval 2026-09-03; implemented as Sprint 08 the same day
 - **Date:** 2026-09-03
 - **Scope:** The case detail screen (`apps/web/src/pages/case-detail/`, `apps/web/src/features/review/case-detail/`). Presentation only.
 - **Owner section:** [`sprint/00-app-spec.md`](../../../sprint/00-app-spec.md) § 4

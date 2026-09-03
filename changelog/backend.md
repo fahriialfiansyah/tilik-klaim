@@ -4,6 +4,38 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 
 ---
 
+### 2026-09-03 · Bounded, read-only Case Briefing outside the risk path (Sprint 09, ADR-0005) · ✅ Done
+
+**Event:** `GET /v1/cases/{case_id}/briefing` — the eighth endpoint; the seven frozen ones untouched
+**Files:** `app/dto/briefing.py`, `app/service/case_loader.py`, `app/service/briefing/{tools,template,validation,runner,service,labels}.py`, `app/service/llm_provider.py`, `app/router/briefing.py`, `app/{main,config,errors}.py`, `pyproject.toml`, `.env.example`, `docs/api/openapi.json`, `tests/test_briefing_*.py`
+> **Outside the risk path, mechanically.** `test_briefing_isolation.py` walks the syntax trees of
+> `screening.py`, every rule, `disposition.py`, `case_query.py`, `case_sources.py`,
+> `evidence_graph.py` and every store: none imports the briefing or the provider. The briefing
+> package, in turn, imports no store, no rule, no screening — its whole input is the
+> `CaseDetailResponse` the router already returns, now built by `case_loader.load_case_detail`
+> and shared by both. A third guard forbids identifiers containing `band`, `score`, `priority`,
+> `disposition`, `state_after`, `payment`, `sanction` anywhere in the package.
+> **Seven read-only tools**, closed registry, each a slice of the detail; the overview omits the
+> band and the component scores on purpose. `RELATED_BUNDLE` redaction survives because it
+> happened upstream. Tool output ⊆ screen, asserted over all five gold scenarios.
+> **Five gates, whole-object rejection:** unresolvable ref · number not in supplied tool output ·
+> forbidden term (`fraud curang palsu tolak sanksi terbukti pasti bersih aman bayar denda`) ·
+> caps (schema) · uncertainty note. A rejected briefing falls back to the deterministic template
+> with `validation_rejected=true` and the reason. The template itself passes the same gates on
+> every scenario — otherwise the gate would be wrong.
+> **Off by default.** No key, no model, or `BRIEFING_ENABLED=false` → the template, as a 200.
+> `BRIEFING_UNAVAILABLE` (503) is reserved for a genuinely broken service. The offline demo path
+> never touches a network; `test_template_needs_no_network` monkeypatches sockets to prove it.
+> **SSE** with `X-Accel-Buffering: no`; `?stream=false` returns the identical object (asserted).
+> **Two of my own tests were wrong and the validator was right:** a fake model that submitted
+> "Baris 88.71 …" without having read a tool containing `88.71` was correctly rejected for an
+> unsupported number. The tests now submit digit-free statements.
+> `uv sync` silently dropped the editable `tilik-domain` install — it is not declared in
+> `pyproject.toml` and the README does not mention installing it. Restored with
+> `uv pip install -e ../../packages/domain`; **worth declaring properly** in a later pass.
+> Verified: backend **403 passed** (was 338) · ruff clean · openapi regenerated (9 paths incl. `/healthz`).
+> **No real model was called from this repository.** The LLM path ran only against a scripted provider.
+
 ### 2026-09-01 · [Sprint 04 — review-slice](../sprint/backlog/04-review-slice/sprint.md) · Task: [Ingest and seeded demo page](../sprint/backlog/04-review-slice/frontend/03-ingest-page.md) · ✅ Done
 
 **Event:** Gold scenarios exported as demo payloads, with a drift guard
