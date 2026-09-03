@@ -14,13 +14,16 @@ dependencies = [
     "networkx>=3.4",
     "scikit-learn>=1.5",
     "pandas>=2.2",
-    "httpx>=0.28",
+    "openai>=1.60",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.3",
     "pytest-cov>=6.0",
+    # Starlette's TestClient needs it. `openai` pulls it in too, but a test dependency that is
+    # only satisfied transitively breaks the day the runtime dependency changes.
+    "httpx>=0.28",
     "ruff>=0.8",
 ]
 

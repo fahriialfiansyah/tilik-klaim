@@ -24,24 +24,39 @@ from app.dto.briefing import (
 from app.dto.cases import CaseDetailResponse
 from app.service.briefing.runner import Emit, run_briefing
 from app.service.briefing.template import template_briefing
-from app.service.llm_provider import ChatProvider, OpenAICompatibleProvider
+from app.service.llm_provider import ChatProvider, VllmProvider
 
 _END = object()
 
 
 def _make_provider(settings: Settings) -> ChatProvider:
     """Replaced in tests. The one place a real network client is constructed."""
-    return OpenAICompatibleProvider(
-        base_url=settings.openrouter_base_url,
-        api_key=settings.openrouter_api_key,
-        model=settings.openrouter_model,
+    return VllmProvider(
+        base_url=settings.vllm_base_url,
+        api_key=settings.vllm_api_key.get_secret_value(),
+        model=settings.llm_model_vllm,
         timeout_seconds=settings.briefing_timeout_seconds,
         max_output_tokens=settings.briefing_max_output_tokens,
+        temperature=settings.briefing_temperature,
+        max_retries=settings.briefing_max_retry,
     )
 
 
+def list_gateway_models(settings: Settings) -> frozenset[str]:
+    """Model ids the gateway will serve. Used by `/health/llm`; costs no tokens."""
+    return _make_provider(settings).available_models()
+
+
 def is_llm_configured(settings: Settings) -> bool:
-    return bool(settings.briefing_enabled and settings.openrouter_api_key and settings.openrouter_model)
+    """`Settings` already refuses to build if the switch is on and anything is missing, so this
+    is a second, cheap reading of the same fact — and the one that keeps a half-set `.env` on a
+    developer's machine answering with the template instead of raising."""
+    return bool(
+        settings.briefing_enabled
+        and settings.vllm_api_key.get_secret_value()
+        and settings.llm_model_vllm
+        and settings.vllm_base_url
+    )
 
 
 def build_briefing(detail: CaseDetailResponse, settings: Settings, emit: Emit | None = None) -> CaseBriefing:
@@ -59,7 +74,7 @@ def build_briefing(detail: CaseDetailResponse, settings: Settings, emit: Emit | 
         detail,
         identity,
         _make_provider(settings),
-        model_id=settings.openrouter_model,
+        model_id=settings.llm_model_vllm,
         max_tool_calls=settings.briefing_max_tool_calls,
         emit=send,
     )

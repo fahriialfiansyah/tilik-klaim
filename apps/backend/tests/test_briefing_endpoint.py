@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 
 import pytest
+from pydantic import SecretStr
 
 from app.config import get_settings
 from app.dto.briefing import CaseBriefing
@@ -86,8 +87,9 @@ def test_enabled_path_uses_the_provider_and_logs_tool_events(api, case_id, monke
 
     settings = get_settings()
     monkeypatch.setattr(settings, "briefing_enabled", True)
-    monkeypatch.setattr(settings, "openrouter_api_key", "test")
-    monkeypatch.setattr(settings, "openrouter_model", "test-model")
+    monkeypatch.setattr(settings, "vllm_api_key", SecretStr("test"))
+    monkeypatch.setattr(settings, "vllm_base_url", "http://gateway.invalid:9999/v1")
+    monkeypatch.setattr(settings, "llm_model_vllm", "Qwen3.5-9B")
     monkeypatch.setattr(briefing_service, "_make_provider", lambda _settings: Fake())
 
     events = _events(api, case_id)

@@ -31,9 +31,9 @@ from app.dto.briefing import (
 from app.dto.cases import CaseDetailResponse
 from app.dto.common import Dto, VersionStamp
 from app.service.briefing.template import template_briefing
-from app.service.briefing.tools import ToolArgumentError, ToolRegistry, UnknownTool
+from app.service.briefing.tools import TOOL_NAMES, ToolArgumentError, ToolRegistry, UnknownTool
 from app.service.briefing.validation import validate_briefing
-from app.service.llm_provider import ChatProvider, LlmUnavailable
+from app.service.llm_provider import ChatProvider, LlmUnavailable, ToolCallsUnsupported
 
 PROMPT_VERSION = "briefing-1"
 SUBMIT_TOOL_NAME = "submit_briefing"
@@ -99,6 +99,7 @@ def _accept(
     log: list[ToolCallRecord],
     supplied: list[str],
 ) -> CaseBriefing | str:
+    """The model that actually served is recorded, never the one that was requested."""
     candidate = CaseBriefing(
         case_id=detail.case_id,
         case_version=detail.case_version,
@@ -138,9 +139,18 @@ def run_briefing(
     for _ in range(max_tool_calls + 1):
         try:
             turn = provider.complete(messages, tools)
+        except ToolCallsUnsupported:
+            # The gateway serves the model but not tool calling. The reads are done here
+            # instead — a narrower capability, not a lesser one: the briefing sees exactly the
+            # same seven projections, chosen deterministically rather than by the model.
+            emit(StatusEvent(phase=BriefingPhase.READING, detail="tanpa pemanggilan alat"))
+            return _finish(
+                _structured_pass(detail, identity, provider, registry, model_id, emit), emit
+            )
         except LlmUnavailable as failure:
             return _finish(_fallback(detail, identity, str(failure), log), emit)
 
+        served = turn.served_model or model_id
         if not turn.tool_calls:
             return _finish(_fallback(detail, identity, "model answered without calling submit_briefing", log), emit)
 
@@ -152,7 +162,7 @@ def run_briefing(
                     draft = DraftBriefing.model_validate(call.arguments)
                 except ValidationError as malformed:
                     return _finish(_fallback(detail, identity, f"malformed submission: {malformed.error_count()} error(s)", log), emit)
-                outcome = _accept(draft, detail, identity, model_id, log, supplied)
+                outcome = _accept(draft, detail, identity, served, log, supplied)
                 if isinstance(outcome, CaseBriefing):
                     return _finish(outcome, emit)
                 return _finish(_fallback(detail, identity, outcome, log), emit)
@@ -168,6 +178,65 @@ def run_briefing(
             messages.append({"role": "tool", "tool_call_id": call.id, "content": result_text})
 
     return _finish(_fallback(detail, identity, "step budget exhausted", log), emit)
+
+
+def _gather(registry: ToolRegistry, log: list[ToolCallRecord]) -> list[str]:
+    """Call every tool that has valid arguments on this case, in registry order."""
+    supplied: list[str] = []
+    for name in TOOL_NAMES:
+        arguments = registry.example_arguments(name)
+        if arguments is None:
+            continue  # nothing on this case for that tool to be asked about
+        supplied.append(f"{name}: {_read(registry, name, arguments)}")
+        log.append(ToolCallRecord(tool=name, arguments={k: str(v) for k, v in arguments.items()}))
+    return supplied
+
+
+def _structured_pass(
+    detail: CaseDetailResponse,
+    identity: EngineIdentity,
+    provider: ChatProvider,
+    registry: ToolRegistry,
+    model_id: str,
+    emit: Emit,
+) -> CaseBriefing:
+    """One guided-decoding call, for a gateway that does not serve tool calling.
+
+    The schema is enforced by the server rather than requested in a prompt, so a malformed
+    answer is impossible rather than merely unlikely. Every other guarantee is unchanged: the
+    same seven read-only projections are the only input, and the same five gates decide whether
+    the result is shown or the template is.
+    """
+    log: list[ToolCallRecord] = []
+    supplied = _gather(registry, log)
+    for record in log:
+        emit(ToolEvent(tool=record.tool, arguments=record.arguments))
+
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {
+            "role": "user",
+            "content": (
+                f"Bukti untuk kasus {detail.case_id}, hasil pembacaan alat:\n\n"
+                + "\n\n".join(supplied)
+            ),
+        },
+    ]
+    emit(StatusEvent(phase=BriefingPhase.VALIDATING, detail="memeriksa rujukan dan istilah"))
+    try:
+        payload, served = provider.complete_structured(
+            messages, "DraftBriefing", DraftBriefing.model_json_schema()
+        )
+    except LlmUnavailable as failure:
+        return _fallback(detail, identity, str(failure), log)
+
+    try:
+        draft = DraftBriefing.model_validate(payload)
+    except ValidationError as malformed:
+        return _fallback(detail, identity, f"malformed submission: {malformed.error_count()} error(s)", log)
+
+    outcome = _accept(draft, detail, identity, served or model_id, log, supplied)
+    return outcome if isinstance(outcome, CaseBriefing) else _fallback(detail, identity, outcome, log)
 
 
 def _read(registry: ToolRegistry, name: str, arguments: dict[str, Any]) -> str:

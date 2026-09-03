@@ -9,7 +9,12 @@ from tilik_domain.versioning import EngineIdentity
 from app.dto.briefing import DoneEvent, ObservationEvent, StatusEvent, ToolEvent
 from app.dto.cases import CaseDetailResponse
 from app.service.briefing.runner import SUBMIT_TOOL_NAME, run_briefing
-from app.service.llm_provider import AssistantTurn, LlmUnavailable, ToolCall
+from app.service.llm_provider import (
+    AssistantTurn,
+    LlmUnavailable,
+    ToolCall,
+    ToolCallsUnsupported,
+)
 from tests.test_case_endpoints import ingest_and_screen
 
 
@@ -178,3 +183,102 @@ def test_the_model_only_ever_sees_tool_output_and_the_fixed_prompt(detail) -> No
     roles = [m["role"] for m in provider.seen[-1]]
     assert roles[0] == "system"
     assert set(roles) <= {"system", "user", "assistant", "tool"}
+
+
+class NoToolsProvider:
+    """A gateway started without `--enable-auto-tool-choice`: serves the model, refuses tools."""
+
+    def __init__(self, payload: dict | None = None, served: str = "Qwen3.5-9B") -> None:
+        self.payload = payload
+        self.served = served
+        self.structured_calls: list[list[dict]] = []
+
+    def complete(self, messages, tools):
+        raise ToolCallsUnsupported("the gateway does not serve tool calling")
+
+    def complete_structured(self, messages, schema_name, schema):
+        self.structured_calls.append(list(messages))
+        if self.payload is None:
+            raise LlmUnavailable("gateway went away")
+        return self.payload, self.served
+
+
+def _draft(detail, **overrides):
+    ref = detail.reasons[0].evidence[0].model_dump(mode="json")
+    draft = {
+        "observations": [
+            {
+                "statement": "Baris tagihan yang dirujuk tidak punya catatan tindakan.",
+                "kind": "EVIDENCE_GAP",
+                "source_refs": [ref],
+                "reason_code": "LINE_WITHOUT_COMPLETED_PROCEDURE",
+                "confidence": "STATED",
+            }
+        ],
+        "open_questions": [],
+        "uncertainty_note": "Disusun dari bukti yang ikut terkirim saja.",
+    }
+    draft.update(overrides)
+    return draft
+
+
+class TestAGatewayWithoutToolCalling:
+    """vLLM only offers tool calling when started with `--enable-auto-tool-choice`.
+
+    Without it the briefing must still work: the seven reads happen deterministically and the
+    shape is enforced by the server through guided decoding. Every other guarantee is unchanged
+    — same projections in, same five gates out.
+    """
+
+    def test_the_reads_still_happen_and_are_reported(self, detail) -> None:
+        provider = NoToolsProvider(_draft(detail))
+        briefing, events = _run(detail, provider)
+
+        assert briefing.generated_by == "LLM"
+        assert briefing.validation_rejected is False
+        # Every tool that had valid arguments on this case was read, and each was announced.
+        assert {c.tool for c in briefing.tool_calls} >= {"get_case_overview", "list_reasons", "get_timeline"}
+        assert [e.tool for e in events if isinstance(e, ToolEvent)] == [c.tool for c in briefing.tool_calls]
+
+    def test_the_model_is_shown_only_tool_output_and_the_fixed_prompt(self, detail) -> None:
+        provider = NoToolsProvider(_draft(detail))
+        _run(detail, provider)
+
+        messages = provider.structured_calls[0]
+        assert [m["role"] for m in messages] == ["system", "user"]
+        assert "get_case_overview" in messages[1]["content"]
+
+    def test_the_served_model_is_recorded_not_the_requested_one(self, detail) -> None:
+        provider = NoToolsProvider(_draft(detail), served="Qwen3.6-27B")
+        briefing, _ = _run(detail, provider)
+        assert briefing.model_id == "Qwen3.6-27B"
+
+    def test_the_same_gates_apply_on_this_path(self, detail) -> None:
+        ghost = {"resource_type": "Procedure", "resource_id": "PROC-GHOST", "label": "x"}
+        provider = NoToolsProvider(
+            _draft(
+                detail,
+                observations=[
+                    {
+                        "statement": "Tindakan PROC-GHOST tercatat.",
+                        "kind": "CORROBORATION",
+                        "source_refs": [ghost],
+                        "confidence": "STATED",
+                    }
+                ],
+            )
+        )
+        briefing, _ = _run(detail, provider)
+        assert briefing.generated_by == "TEMPLATE"
+        assert "PROC-GHOST" in (briefing.rejection_reason or "")
+
+    def test_a_gateway_that_then_fails_falls_back_to_the_template(self, detail) -> None:
+        briefing, events = _run(detail, NoToolsProvider(None))
+        assert briefing.generated_by == "TEMPLATE"
+        assert "gateway went away" in (briefing.rejection_reason or "")
+        assert isinstance(events[-1], DoneEvent)
+
+    def test_a_malformed_object_falls_back_to_the_template(self, detail) -> None:
+        briefing, _ = _run(detail, NoToolsProvider({"observations": "not a list"}))
+        assert briefing.generated_by == "TEMPLATE"
+        assert "malformed" in (briefing.rejection_reason or "")
