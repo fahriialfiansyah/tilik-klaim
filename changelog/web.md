@@ -4,6 +4,20 @@ Append-only. Newest entry at the top.
 
 ---
 
+### 2026-09-04 · The briefing panel, driven by a real model · ✅ Done
+
+**Event:** First run of the panel against the live vLLM gateway rather than a fake provider
+**Files:** `tests/e2e/case-briefing.spec.ts`, `playwright.config.ts`
+> The panel needed no change — the streaming progress log, the kind chips, the openable
+> references and the provenance line all worked first time against a real model. Screenshot:
+> `docs/qa/2026-09-03-case-briefing/06-model-briefing-vllm.png`.
+> **Two test-only corrections.** The spec asserted "Templat deterministik", which fails on any
+> machine where the gateway *is* configured — reporting a working feature as broken. It now
+> asserts the guarantees that hold on both paths: provenance is stated, every observation carries
+> an openable reference, nothing accusatory appears. And the suite's 7-second assertion timeout is
+> right for a rendered page and wrong for a model, so the briefing assertions carry their own.
+> Verified: web 184 · tsc clean · playwright **24 passed**, briefing specs against the live model.
+
 ### 2026-09-03 · "Ringkasan bukti" — the briefing panel (Sprint 09, ADR-0005) · ✅ Done
 
 **Event:** Collapsed, on-demand, non-authoritative panel at the bottom of the middle column

@@ -71,12 +71,12 @@ tune until something looks better.
 | 06 — evaluation-report | G6 · 12 Sep | 🚧 **Official run done** | only the three sign-offs remain; **removal clause is live** |
 | 07 — demo-hardening | G8 · 17 Sep | 🚧 **Nearly done** | only the 1080p recording + 3-min rehearsal remain |
 | 08 — evidence-workspace | G8 · 17 Sep | ✅ **Done 3 Sep** | `/cases/:id` is an Evidence Workspace (ADR-0004); frontend-only, no contract change |
-| 09 — case-briefing | G8 · 17 Sep | ✅ **Done 3 Sep** | Bounded read-only briefing outside the risk path (ADR-0005); **off by default**; eighth endpoint; no real model called yet |
+| 09 — case-briefing | G8 · 17 Sep | ✅ **Done 3–4 Sep** | Bounded read-only briefing outside the risk path (ADR-0005); **off by default**; eighth endpoint. Verified against the live vLLM gateway 4 Sep: model path answers 9/15, median 23 s, rest fall back to the template |
 
 **Verified immediately before writing this:**
 
 ```
-backend 439 · domain 23 · data 57 · model 71 · evaluation 47 · web 184 · playwright 24
+backend 467 · domain 23 · data 57 · model 71 · evaluation 47 · web 184 · playwright 24
 tsc clean · ruff: All checks passed · alembic head d1a7c3e50f42     (re-measured 4 Sep 2026)
 ```
 
@@ -84,8 +84,15 @@ tsc clean · ruff: All checks passed · alembic head d1a7c3e50f42     (re-measur
 (Evidence Workspace) is **implemented**. [ADR-0005](canonical/decisions/ADR-0005-bounded-case-briefing.md)
 (bounded read-only Case Briefing, outside the risk path) is **implemented too**, on the owner's
 explicit approval, with its recorded deviation: sprint 06 still reads 🚧 while its three human
-sign-offs are outstanding — flip it when they land. **`BRIEFING_ENABLED` is `false`; no real
-model has been called from this repo.** It is served by the **internal vLLM gateway**, not a
+sign-offs are outstanding — flip it when they land. **`BRIEFING_ENABLED` is `false` in the committed default. It was switched on and exercised
+against the live gateway on 4 Sep** — 15 runs over the five gold scenarios: the model path
+answers **9 of 15**, median **23 s**, max **87 s**; the other six fall back to the template and
+say why in the panel. That is the designed behaviour.
+**The one lever left is not code:** the gateway pads with whitespace after closing the object
+instead of emitting EOS, so `BRIEFING_MAX_OUTPUT_TOKENS` sets both the latency floor and the
+truncation ceiling at once. A gateway configured to stop after guided JSON would fix both.
+**The suite never touches the gateway** — `tests/conftest.py` pins the briefing off, the way it
+already redirects the database. It is served by the **internal vLLM gateway**, not a
 third-party host. Turning it on means three values in `apps/backend/.env` — `LLM_MODEL_VLLM`,
 `VLLM_BASE_URL`, `VLLM_API_KEY` — then `curl localhost:8000/health/llm` to confirm the gateway
 answers and holds the model, then a deliberate look at a real briefing.

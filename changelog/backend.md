@@ -4,6 +4,57 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 
 ---
 
+### 2026-09-04 · The briefing runs on the real gateway — six defects only running it could find · ✅ Done
+
+**Event:** First real model calls. The LLM path works; every fix below came from output, not from reading code
+**Files:** `app/service/llm_provider.py`, `app/service/briefing/{runner,validation}.py`, `app/config.py`, `app/router/health.py`, `tests/conftest.py`, `tests/test_llm_{config,provider}.py`, `tests/test_briefing_{runner,validation,endpoint}.py`, `.env.example`
+> Gateway verified first, before any code: 49 models, `Qwen3.5-9B` present, 0.19 s. **Tool calling
+> is supported** (`finish_reason: tool_calls`, vLLM 0.24.0) — so the model chooses its own reads,
+> as the feature was specified to.
+> **1 · A nested tool schema comes back empty.** Asked to *call* `submit_briefing`, whose
+> parameters are a nested schema with `$ref`s, the model emitted `{}` every time. The same object
+> through `response_format` came back correct. Reads stay tool-driven; the submission is guided
+> decoding. `submit_briefing` is gone.
+> **2 · "malformed submission: 2 error(s)" is useless.** It cost an hour pointed the wrong way.
+> The rejection now names the fields.
+> **3 · The model cited `PRV-01`, the provider token** — visible in tool output, not an openable
+> resource. It now cites resource ids and the runner resolves them, with this case's ids injected
+> into the schema as an enum: the grammar cannot emit anything else. Unrepresentable, not caught.
+> **4 · Hidden reasoning tokens.** Qwen3.5 is a hybrid reasoning model. Left on, it spent ~3,500
+> thinking tokens that vLLM strips from the content but still charges against `max_tokens`: a
+> complete 2,300-character answer arrived truncated after 43 s. Off: **6.5 s, 456 tokens**.
+> `BRIEFING_ENABLE_THINKING=false` is the default and the single biggest lever here.
+> **5 · A padded object is not a truncated one.** A JSON grammar permits unlimited trailing
+> whitespace; the model closes the object and pads with tabs to the cap, so `finish_reason ==
+> "length"` arrives on complete answers. Judging the finish reason *before* parsing discarded
+> four good briefings in ten. The object decides now. Two whitespace stop sequences were tried to
+> cut the padding and **both cut objects open mid-field** — four spaces and a newline match
+> pretty-printed indentation, four tabs match a four-level nesting. Neither is used.
+> **6 · The forbidden lexicon was too blunt for Indonesian.** Substring matching on affixed stems
+> rejected "pembayaran" for `bayar`, "keamanan" for `aman`, "memastikan" for `pasti` — and, worst,
+> rejected *"tidak pasti"*, the hedge the briefing is asked to write. It now separates accusations
+> (any form of curang/palsu/fraud/sanksi/denda, including the nasal mutation in "pemalsuan") from
+> directives (telling anyone to pay, withhold, or reject), and masks negated certainty before
+> checking. `test_ordinary_factual_language_is_not_rejected` guards the precision.
+> **Two more, found the same way:** `/health/llm` published the internal gateway address on an
+> unauthenticated endpoint of a publicly deployed API — removed, with a test. And the test suite
+> read the developer's `.env`, so enabling the briefing locally made the suite call the live
+> gateway: 12 s became 109 s and three tests failed. `conftest.py` now pins it off, like the
+> database redirect beside it.
+> **Two more bounds, from a run that stalled past three minutes in front of the browser.** The
+> client retried twice on a 90-second timeout — 4.5 minutes for one call — so retries are now
+> **zero**: the deterministic template *is* the retry. And the whole run has a wall-clock
+> deadline; a call budget of eight alone bounds nothing useful against a slow gateway.
+> **Measured, 15 runs over the five gold scenarios:** the model path answers **9 of 15**, median
+> **23 s**, max **87 s**. The other six fall back to the template and say why — all six were the
+> object cut open at 3,000 tokens. That is the designed behaviour, not a failure: the reviewer
+> always gets a source-bound briefing.
+> **The one lever left is not code.** The gateway pads with whitespace after closing the object
+> instead of stopping, so `BRIEFING_MAX_OUTPUT_TOKENS` sets both the latency floor and the
+> truncation ceiling. A gateway that emits EOS after guided JSON would fix both at once.
+> Verified: backend **467 passed** in 13 s (network-free) · ruff clean · web 184 · playwright 24
+> (the briefing spec now runs against a real model and carries its own timeout).
+
 ### 2026-09-04 · Case briefing moves to the internal vLLM gateway · ✅ Done
 
 **Event:** OpenRouter naming replaced by the internal vLLM gateway; no address or key in the repository

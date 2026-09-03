@@ -87,12 +87,20 @@ on the switch: with `BRIEFING_ENABLED=false` nothing is required and nothing is 
 moment it is `true`, all three values must be present and well formed or the process refuses to
 start.
 
-**Tool calling is not assumed.** vLLM serves it only when started with
-`--enable-auto-tool-choice`, and `VLLM-SETUP.md` verifies guided decoding rather than tools. A
-gateway that refuses the tool-calling request shape is told apart from one that is down, and the
-briefing then performs the same seven reads deterministically and submits through **guided
-decoding**, where the schema is enforced by the server. The tool surface, the five gates and the
-template backstop are identical on both paths; what changes is only who chooses the reads.
+**Reads by tool call, submission by guided decoding.** Measured against the gateway on
+4 Sep 2026, and the split is not a preference. Tool calling works and the model chooses its
+reads sensibly — six to eight of the seven, in a sensible order. But asked to *call* a tool
+whose parameters are a nested schema with `$ref`s, it emitted the call with **empty arguments
+every time**; asked for the same object through `response_format`, the gateway held it to the
+schema. So each mechanism does the job it is good at. A gateway that refuses tool calling
+altogether is told apart from one that is down, and the reads then happen deterministically —
+the same seven projections, chosen by the runner rather than the model.
+
+**The model cites resource ids, not reference objects, and the schema names the ones it may
+cite.** The gateway compiles the schema into a grammar, so injecting this case's own resource
+ids as an enum makes a fabricated reference *unrepresentable* rather than merely rejected.
+Measured: without it the model cited the provider token, which appears in tool output and is
+not an openable resource. Same principle as the drawer union and the four matrix states.
 
 **The model that answered is what gets recorded**, not the one requested — the gateway
 substitutes models silently (`VLLM-SETUP.md` § 8), and an audit trail that reports configuration
