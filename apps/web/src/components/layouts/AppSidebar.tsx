@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 
+import { MENU_ICONS } from '@/components/layouts/MenuIcons'
 import { PerfectScrollArea } from '@/components/wrappers/PerfectScrollArea'
 import { menuForRole } from '@/config/menu/app-menu'
 import { ROLE_LABEL } from '@/features/auth/labels'
@@ -31,52 +32,41 @@ export function AppSidebar() {
           MENU
         </p>
         <ul className="flex flex-col gap-[3px]">
-          {entries.map((entry) => (
-            <li key={entry.id}>
-              <NavLink
-                to={entry.route}
-                end={entry.route === '/'}
-                className={({ isActive }) =>
-                  cn(
-                    'flex items-center gap-[11px] rounded-md border px-[10px] py-[9px] font-medium transition-colors',
-                    isActive
-                      ? 'border-brand-line bg-brand-soft text-brand'
-                      : 'border-transparent text-ink hover:bg-accent',
-                  )
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {/*
-                      Three uneven bars — the mark's motif at nav scale. Decorative, so it is
-                      hidden from assistive tech; the label beside it carries the meaning.
-                    */}
-                    <span aria-hidden className="flex w-4 shrink-0 flex-col gap-[2.5px]">
-                      <span
-                        className={cn(
-                          'block h-[2px] w-3 rounded-sm',
-                          isActive ? 'bg-brand' : 'bg-ink-3',
-                        )}
-                      />
-                      <span
-                        className={cn(
-                          'block h-[2px] w-4 rounded-sm',
-                          isActive ? 'bg-notice' : 'bg-ink-3',
-                        )}
-                      />
-                      <span
-                        className={cn(
-                          'block h-[2px] w-2 rounded-sm',
-                          isActive ? 'bg-brand' : 'bg-ink-3',
-                        )}
-                      />
-                    </span>
-                    <span className="min-w-0 flex-1 truncate">{entry.label}</span>
-                  </>
-                )}
-              </NavLink>
-            </li>
-          ))}
+          {entries.map((entry) => {
+            // One drawn mark per page, from `MenuIcons.tsx`. The three uneven bars that used to
+            // sit here were the same shape on every entry — decoration rather than a signpost.
+            const Icon = MENU_ICONS[entry.id]
+            return (
+              <li key={entry.id}>
+                <NavLink
+                  to={entry.route}
+                  end={entry.route === '/'}
+                  className={({ isActive }) =>
+                    cn(
+                      'flex items-center gap-[11px] rounded-md border px-[10px] py-[9px] font-medium transition-colors',
+                      isActive
+                        ? 'border-brand-line bg-brand-soft text-brand'
+                        : 'border-transparent text-ink hover:bg-accent',
+                    )
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {Icon ? (
+                        <Icon
+                          className={cn(
+                            'size-[18px] shrink-0',
+                            isActive ? 'text-brand' : 'text-ink-3',
+                          )}
+                        />
+                      ) : null}
+                      <span className="min-w-0 flex-1 truncate">{entry.label}</span>
+                    </>
+                  )}
+                </NavLink>
+              </li>
+            )
+          })}
         </ul>
       </PerfectScrollArea>
 

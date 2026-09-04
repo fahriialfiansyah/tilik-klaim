@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, test } from 'vitest'
 
@@ -52,46 +52,75 @@ describe('profile menu', () => {
     expect(trigger).toHaveFocus()
   })
 
-  test('signing out with no draft clears the session immediately', async () => {
+  test('Keluar opens a confirmation dialog rather than signing out on the spot', async () => {
+    await openMenu()
+
+    await userEvent.click(screen.getByRole('menuitem', { name: /Keluar/ }))
+
+    // Ending a session and discarding work are both undoable by nobody, so a single click is
+    // too cheap for the pair.
+    const dialog = await screen.findByRole('dialog')
+    expect(within(dialog).getByText('Keluar dari sesi ini?')).toBeInTheDocument()
+    expect(useSession.getState().user).not.toBeNull()
+  })
+
+  test('confirming in the dialog clears the session', async () => {
     await openMenu()
     await userEvent.click(screen.getByRole('menuitem', { name: /Keluar/ }))
+
+    const dialog = await screen.findByRole('dialog')
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Keluar' }))
+
     expect(useSession.getState().user).toBeNull()
   })
 
-  test('signing out with an unsaved draft warns before discarding it', async () => {
+  test('Batal closes the dialog and leaves the session alone', async () => {
+    await openMenu()
+    await userEvent.click(screen.getByRole('menuitem', { name: /Keluar/ }))
+
+    const dialog = await screen.findByRole('dialog')
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Batal' }))
+
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+    expect(useSession.getState().user).not.toBeNull()
+  })
+
+  test('Escape dismisses the dialog without signing out', async () => {
+    await openMenu()
+    await userEvent.click(screen.getByRole('menuitem', { name: /Keluar/ }))
+    await screen.findByRole('dialog')
+
+    await userEvent.keyboard('{Escape}')
+
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+    expect(useSession.getState().user).not.toBeNull()
+  })
+
+  test('with an unsaved draft the dialog names what is about to be lost', async () => {
     useCaseDetailStore.setState({
       drafts: { case_1: { ...EMPTY_DRAFT, structuredReason: 'Bukti belum dilampirkan.' } },
     })
     await openMenu()
-
     await userEvent.click(screen.getByRole('menuitem', { name: /Keluar/ }))
 
-    // Still signed in: the first press asks rather than acts. `store.ts` keeps drafts alive so
-    // a refused save costs nothing, and a silent sign-out would undo that from another angle.
-    expect(useSession.getState().user).not.toBeNull()
-    expect(screen.getByText(/belum tersimpan/)).toBeInTheDocument()
+    const dialog = await screen.findByRole('dialog')
+    // `store.ts` keeps drafts alive so a refused save costs nothing; a silent sign-out would
+    // undo that from the other direction, so the dialog says so instead of repeating itself.
+    expect(within(dialog).getByText(/belum tersimpan/)).toBeInTheDocument()
+    expect(within(dialog).getByRole('button', { name: 'Keluar dan buang draf' })).toBeInTheDocument()
 
-    await userEvent.click(screen.getByRole('menuitem', { name: /Keluar dan buang draf/ }))
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Keluar dan buang draf' }))
     expect(useSession.getState().user).toBeNull()
   })
 
-  test('a half-filled note counts as unsaved work', async () => {
-    useCaseDetailStore.setState({
-      drafts: { case_1: { ...EMPTY_DRAFT, note: 'Menunggu konfirmasi bagian rekam medis.' } },
-    })
+  test('a draft that only pre-ticked itself is not called unsaved work', async () => {
+    // `evidenceSeeded` is the system's doing, not the reviewer's — naming it would cry wolf.
+    useCaseDetailStore.setState({ drafts: { case_1: { ...EMPTY_DRAFT, evidenceSeeded: true } } })
     await openMenu()
     await userEvent.click(screen.getByRole('menuitem', { name: /Keluar/ }))
-    expect(useSession.getState().user).not.toBeNull()
-  })
 
-  test('a draft that only pre-ticked itself is not treated as the reviewer\'s work', async () => {
-    // `evidenceSeeded` is the system's doing, not the reviewer's — warning about it would cry
-    // wolf on a case nobody has touched.
-    useCaseDetailStore.setState({
-      drafts: { case_1: { ...EMPTY_DRAFT, evidenceSeeded: true } },
-    })
-    await openMenu()
-    await userEvent.click(screen.getByRole('menuitem', { name: /Keluar/ }))
-    expect(useSession.getState().user).toBeNull()
+    const dialog = await screen.findByRole('dialog')
+    expect(within(dialog).queryByText(/belum tersimpan/)).not.toBeInTheDocument()
+    expect(within(dialog).getByRole('button', { name: 'Keluar' })).toBeInTheDocument()
   })
 })

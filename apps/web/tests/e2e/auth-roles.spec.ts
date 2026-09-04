@@ -244,6 +244,18 @@ test.describe('user management', () => {
 })
 
 test.describe('signing out', () => {
+  test('Batal in the confirmation leaves the session alone', async ({ page }) => {
+    await signInAs(page, 'reviewer')
+    await page.goto('/')
+
+    await page.getByRole('button', { name: /Sari Wulandari/ }).click()
+    await page.getByRole('menuitem', { name: /Keluar/ }).click()
+    await page.getByRole('dialog').getByRole('button', { name: 'Batal' }).click()
+
+    await expect(page.getByRole('dialog')).toHaveCount(0)
+    await expect(page.getByRole('heading', { name: 'Antrean Review' })).toBeVisible()
+  })
+
   test('the profile menu closes on Escape and returns focus to its trigger', async ({ page }) => {
     await signInAs(page, 'reviewer')
     await page.goto('/')
@@ -266,6 +278,11 @@ test.describe('signing out', () => {
 
     await page.getByRole('button', { name: /Sari Wulandari/ }).click()
     await page.getByRole('menuitem', { name: /Keluar/ }).click()
+
+    // Signing out asks first: it ends the session and empties any draft, and neither is undoable.
+    const confirm = page.getByRole('dialog')
+    await expect(confirm.getByText('Keluar dari sesi ini?')).toBeVisible()
+    await confirm.getByRole('button', { name: 'Keluar' }).click()
 
     await expect(LOGIN_HEADING(page)).toBeVisible()
     // Going back to a guarded route does not resurrect the session.

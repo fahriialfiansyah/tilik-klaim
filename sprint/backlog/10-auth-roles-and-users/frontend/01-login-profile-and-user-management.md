@@ -42,7 +42,10 @@
 - [x] `X-Actor-Role` and `X-Actor-Id` from the session; `ACTOR_ROLE` constant deleted
 - [x] Favicon redrawn for 16 px, and guarded: the first one was unparseable XML and every
       browser silently showed its own globe (`favicon.test.ts`)
-- [x] 55 new vitest specs (239 total), 16 new Playwright specs (40 total), tsc clean
+- [x] Profile control last in the header; sign-out behind a confirmation dialog
+- [x] Icon-only theme switch (sun/moon), state and act still in the accessible name
+- [x] One drawn mark per menu entry — `src/components/layouts/MenuIcons.tsx`
+- [x] 57 new vitest specs (241 total), 17 new Playwright specs (41 total), tsc clean
 
 ## Rejected first attempt
 

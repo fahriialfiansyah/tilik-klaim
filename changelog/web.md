@@ -4,6 +4,35 @@ Append-only. Newest entry at the top.
 
 ---
 
+### 2026-09-04 · Shell polish: a real logout dialog, icon-only theme switch, drawn menu marks · ✅ Done
+
+**Event:** Four owner requests on the shell, and one of them removed a control that was too cheap for what it did
+**Files:** `src/components/layouts/{AppHeader,AppSidebar,MenuIcons}.tsx`, `src/modules/theme/ThemeToggle.tsx`, `src/features/auth/components/ProfileMenu.tsx`, `tests/e2e/auth-roles.spec.ts`
+> **The profile control moves to the far right**, where an account control is looked for — but
+> *after* the `DATA SINTETIK` badge, not before it. The badge is a governance statement about the
+> data and must not be pushed to the edge where a reader stops scanning.
+> **Signing out now asks.** It ends the session *and* empties whatever the reviewer had in
+> progress, and neither is undoable — a menu item doing both on one click is a menu item next to
+> which a mis-click is expensive. The dialog changes its own wording when a draft is unsaved, so
+> the draft case names what is about to be lost instead of repeating the generic question.
+> **The dialog content is rendered unconditionally inside `Dialog`.** Putting it behind a second
+> `{open ? … : null}` is the trap `lib/useLastPresent.ts` exists for: the content is torn out in
+> the same commit that flips `open`, Radix's close cleanup never runs, and focus lands on
+> `<body>`. This dialog has no payload to keep alive, so it simply stays mounted.
+> The corner X keeps its default name *Tutup* while the footer button is *Batal* — two controls
+> sharing one accessible name are two controls a screen reader cannot tell apart.
+> **The theme switch is a sun and a moon, drawn here** rather than imported, so the stroke weight
+> matches the product mark. The word beside it is gone from the surface but **not** from the
+> accessible name: `aria-pressed` carries the state and `aria-label` names the act, because a
+> control whose meaning lives only in a picture is one a screen reader cannot describe.
+> **Each menu entry gets its own mark.** The three uneven bars that used to sit there were the
+> same shape on every entry — decoration, not a signpost. Now: a work list with the queue's own
+> priority rail; a bundle arriving in a tray; three measured bars on a baseline, because a bar
+> without an axis is a shape rather than a measurement; and two people with a role band for the
+> roster. All `aria-hidden` — the label beside each carries the meaning, and an icon repeating it
+> would make every entry announce itself twice.
+> Verified: web **241** passed (was 239) · playwright **41** passed (was 40) · tsc clean.
+
 ### 2026-09-04 · The login page *is* the access matrix (Sprint 10, ADR-0006) · ✅ Done
 
 **Event:** `analis casemix` is gone; `/login` teaches the role model before anyone signs in, and a favicon finally exists

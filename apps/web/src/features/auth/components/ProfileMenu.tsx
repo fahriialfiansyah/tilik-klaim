@@ -2,6 +2,8 @@ import { LogOut, User } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,9 +22,14 @@ import { hasUnsavedDraft, useCaseDetailStore } from '@/features/review/case-deta
  * Replaces the hardcoded `analis casemix` constant, which matched no role in the code and no
  * role in `03_architecture.md` — it was the only role name a judge could actually see.
  *
- * **Signing out warns when a disposition draft is unsaved.** `store.ts` keeps drafts alive
- * precisely so a refused save does not cost the reviewer their work, and a sign-out that
- * silently discarded one would undo that guarantee from a different direction.
+ * **Signing out always asks.** It ends the session and empties whatever the reviewer had in
+ * progress, and neither is undoable — a menu item that did both on a single click is a menu item
+ * next to which a mis-click is expensive.
+ *
+ * The dialog changes its own wording when a disposition draft is unsaved: `store.ts` keeps drafts
+ * alive precisely so a refused save does not cost the reviewer their work, and a sign-out that
+ * silently discarded one would undo that guarantee from a different direction. So the draft case
+ * names what is about to be lost rather than repeating the generic question.
  */
 export function ProfileMenu() {
   const navigate = useNavigate()
@@ -38,24 +45,14 @@ export function ProfileMenu() {
   const unsaved = hasUnsavedDraft(drafts)
 
   function leave() {
+    setConfirming(false)
     signOut()
     navigate('/login', { replace: true })
   }
 
-  function onSignOut(event: Event) {
-    if (unsaved && !confirming) {
-      // Keep the menu open and ask once. A native `confirm()` would be dismissible by Escape
-      // in a way that reads as "cancelled" while some browsers treat it as "OK", and it cannot
-      // be styled or read by the same tests as the rest of the app.
-      event.preventDefault()
-      setConfirming(true)
-      return
-    }
-    leave()
-  }
-
   return (
-    <DropdownMenu onOpenChange={(open) => !open && setConfirming(false)}>
+    <>
+    <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-[9px] rounded-md border border-ink-inv/12 bg-ink-inv/6 py-[5px] pr-[10px] pl-[6px] text-left transition-colors hover:bg-ink-inv/14 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-inv">
         <span
           aria-hidden
@@ -90,20 +87,54 @@ export function ProfileMenu() {
 
         <DropdownMenuSeparator />
 
-        {confirming ? (
-          <p className="px-[10px] py-2 text-meta leading-[1.5] text-notice">
-            Ada disposisi yang belum tersimpan. Keluar sekarang akan membuangnya. Tekan
-            <strong className="font-semibold"> Keluar </strong>
-            sekali lagi untuk melanjutkan.
-          </p>
-        ) : null}
-
-        <DropdownMenuItem onSelect={onSignOut} className="text-ink">
+        <DropdownMenuItem
+          onSelect={() => setConfirming(true)}
+          className="text-ink"
+        >
           <LogOut aria-hidden className="size-4 text-ink-3" />
-          {confirming ? 'Keluar dan buang draf' : 'Keluar'}
+          Keluar
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+
+    {/*
+      `DialogContent` is rendered unconditionally inside `Dialog`, never behind a second
+      `{confirming ? … : null}`. Radix's portal already mounts only while open, and tearing the
+      content out in the same commit that flips `open` skips its close cleanup — which is how
+      focus ends up on `<body>` instead of back on the trigger. `lib/useLastPresent.ts` exists
+      because the case drawers hit exactly that; this dialog has no payload to keep alive, so it
+      simply stays mounted.
+    */}
+    <Dialog open={confirming} onOpenChange={setConfirming}>
+      {/*
+        The corner X keeps its default name "Tutup" while the footer button is "Batal": two
+        controls sharing one accessible name are two controls a screen reader cannot tell apart.
+      */}
+      <DialogContent
+        title="Keluar dari sesi ini?"
+        description={
+          unsaved
+            ? 'Ada disposisi yang belum tersimpan. Keluar sekarang akan membuangnya, dan itu tidak dapat dibatalkan.'
+            : 'Anda akan kembali ke halaman masuk dan perlu memilih peran lagi.'
+        }
+      >
+        <div className="px-5 py-4">
+          <p className="text-body text-ink-2 text-pretty">
+            Masuk sebagai <strong className="font-semibold text-ink">{user.full_name}</strong> (
+            {ROLE_LABEL[user.role]}).
+          </p>
+        </div>
+        <div className="flex items-center justify-end gap-[10px] border-t border-line px-5 py-4">
+          <Button type="button" variant="outline" onClick={() => setConfirming(false)}>
+            Batal
+          </Button>
+          <Button type="button" onClick={leave}>
+            {unsaved ? 'Keluar dan buang draf' : 'Keluar'}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+    </>
   )
 }
 

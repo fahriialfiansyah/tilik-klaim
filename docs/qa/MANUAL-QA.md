@@ -545,6 +545,28 @@ Tangkapan layar: [`2026-09-04-auth-roles/`](./2026-09-04-auth-roles/) · Keputus
 20. **Jalankan `demo_reset.py`.** Ketiga akun aktif kembali. Gladi berikutnya tidak boleh dimulai
     dari daftar yang seseorang lupa kembalikan.
 
+### Pemeriksaan cangkang aplikasi (ditambahkan setelah putaran perapian)
+
+Tangkapan layar: `15-logout-confirmation-modal.png` · `16-shell-icons-light.png` · `17-shell-icons-dark.png`
+
+21. **Lihat urutan di kanan atas.** Penanda versi → sakelar tema → **DATA SINTETIK** → profil.
+    Profil paling kanan; badge tata kelola **tidak** boleh terdorong ke tepi tempat mata berhenti
+    memindai.
+22. **Sakelar tema.** Hanya ikon — matahari di tema terang, bulan di tema gelap, tanpa teks.
+    Arahkan penunjuk: judulnya *Ganti tema*. Dengan pembaca layar, namanya harus menyebut keadaan
+    **dan** tindakannya; kontrol yang maknanya hanya ada di gambar adalah kontrol yang tidak bisa
+    dibacakan.
+23. **Tiga ikon menu harus berbeda satu sama lain**, dan masing-masing harus menggambarkan isi
+    halamannya: daftar kerja dengan rel prioritas · bundel masuk ke baki · tiga batang terukur di
+    atas garis dasar. Kalau ketiganya terasa sama, ikonnya hiasan, bukan penunjuk.
+24. **Tekan Keluar di menu profil.** Harus muncul **dialog konfirmasi**, bukan langsung keluar.
+    Tekan **Batal**: dialog tertutup, Anda masih masuk. Tekan **Escape**: sama.
+25. **Isi disposisi setengah jalan, lalu Keluar.** Dialognya berganti kalimat — menyebut draf yang
+    belum tersimpan — dan tombolnya berbunyi *Keluar dan buang draf*. Kalau kalimatnya sama saja
+    dengan keadaan tanpa draf, peringatannya tidak mengatakan apa-apa.
+26. **Tutup dialog dengan Escape lalu tekan Tab.** Fokus harus kembali ke pemicu menu profil,
+    bukan ke awal halaman. Ini jebakan yang sudah pernah dibayar sekali di laci kasus.
+
 ### Cacat yang ketahuan hanya karena halamannya dibuka
 
 - **Rancangan pertama menggulir.** Panel merek kiri + formulir kanan dengan tiga kartu akun

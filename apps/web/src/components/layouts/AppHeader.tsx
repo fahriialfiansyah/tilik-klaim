@@ -48,9 +48,6 @@ export function AppHeader() {
 
         <ThemeToggle />
 
-        {/* G4 — who is signed in, and the way out. Replaces the hardcoded role marker. */}
-        <ProfileMenu />
-
         {/*
           G1 — synthetic-data badge. `docs/canonical/07_privacy_threat_model.md` requires it on
           every page and forbids dismissing it, so it is plain markup with no close control and
@@ -59,6 +56,13 @@ export function AppHeader() {
         <span className="rounded-sm border border-notice-line bg-notice-bg px-[10px] py-[6px] text-meta font-bold tracking-[.07em] text-notice">
           DATA SINTETIK
         </span>
+
+        {/*
+          G4 — who is signed in, and the way out. Last in the row, where an account control is
+          looked for. It sits after the governance badge on purpose: the badge is a statement
+          about the data and must not be pushed to the edge where a reader stops scanning.
+        */}
+        <ProfileMenu />
       </div>
     </header>
   )
