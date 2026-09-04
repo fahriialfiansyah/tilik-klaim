@@ -54,7 +54,7 @@ Source: `docs/HEALTHKATHON_2026_WINNING_MASTER_PLAN.docx` § 20 *Important const
 
 ## Outcome
 
-Landed 4 Sep 2026. Verified: backend **505** (was 467) · web **236** (was 184) · playwright **40**
+Landed 4 Sep 2026. Verified: backend **505** (was 467) · web **239** (was 184) · playwright **40**
 (was 24) · tsc clean · ruff clean · domain 23 · data 57 · model 71 · evaluation 47 unchanged.
 Alembic head `f2b8e91c60a7`; `docs/api/openapi.json` regenerated (twelve `/v1` paths — the seven
 frozen, the briefing, and four additive). One existing test changed: the reopen case in

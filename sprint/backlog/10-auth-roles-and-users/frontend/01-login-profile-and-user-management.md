@@ -40,8 +40,9 @@
 - [x] `/admin/users`: real `<table>`, `<th scope>`, `PerfectScrollArea`, four states
 - [x] Self-row controls disabled and the reason said out loud, not left to a greyed box
 - [x] `X-Actor-Role` and `X-Actor-Id` from the session; `ACTOR_ROLE` constant deleted
-- [x] Favicon: the mark on the header navy, SVG, colours literal (browser chrome has no tokens)
-- [x] 52 new vitest specs (236 total), 16 new Playwright specs (40 total), tsc clean
+- [x] Favicon redrawn for 16 px, and guarded: the first one was unparseable XML and every
+      browser silently showed its own globe (`favicon.test.ts`)
+- [x] 55 new vitest specs (239 total), 16 new Playwright specs (40 total), tsc clean
 
 ## Rejected first attempt
 

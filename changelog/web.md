@@ -60,10 +60,20 @@ Append-only. Newest entry at the top.
 > **and says why** rather than sitting greyed out.
 > **`Button` gained `forwardRef`** and `TilikKlaimMark` gained `onSurface` — its solid stroke is
 > `--t-inv`, which is near-white and invisible on the page surface the mark now sits on.
-> **A favicon exists at last:** the mark on the header navy, SVG, with *literal* colours. Browser
-> chrome renders a favicon with no access to the page's custom properties, so the theme-following
-> component could not be reused; three bars became one, because at 16 px three resolve as a smudge.
-> Verified: web **236** passed (was 184) · playwright **40** passed (was 24) · tsc clean.
+> **A favicon exists at last — and its first version never rendered.** It explained itself in an
+> XML comment that named design tokens (`--t-inv`, `--logo-amb`); a double hyphen is illegal
+> inside an XML comment, so the file was unparseable and every browser fell back to its default
+> globe. Nothing failed: the build succeeded, the `<link rel="icon">` was present and correct, and
+> the tab looked *almost* right. Found by the owner looking at their own tab strip — the same way
+> every hard defect in this project has been found.
+> The notes now live in `<title>`/`<desc>`, and `favicon.test.ts` parses the file and refuses both
+> XML comments and `var(--…)`: a favicon is the one asset nothing else in the app renders, so
+> nothing else fails when it breaks.
+> **It was also redrawn for the size it is actually read at.** The full mark on navy resolved as a
+> smudge at 16 px, and a dark plate has nothing to sit against on a dark tab strip. It is now a
+> bold ring with a gap and one amber node on a white plate — the same idea, reduced rather than
+> shrunk, and legible on both a light and a dark chrome.
+> Verified: web **239** passed (was 184) · playwright **40** passed (was 24) · tsc clean.
 
 ### 2026-09-04 · The briefing panel, driven by a real model · ✅ Done
 
