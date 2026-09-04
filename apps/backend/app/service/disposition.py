@@ -24,6 +24,7 @@ from tilik_domain.reasons import ALLOWED_TRANSITIONS, CaseState, DispositionActi
 from tilik_domain.versioning import EngineIdentity
 
 from app.errors import ErrorCode
+from app.service.access import CAPABILITIES, Capability, has_capability
 from app.store.audit import AuditEventRecord, AuditStore, new_event_id, occurred_now
 from app.store.cases import CaseRecord, CaseStore
 
@@ -35,13 +36,19 @@ ACTION_TO_STATE: dict[DispositionAction, CaseState] = {
 }
 """Which state each action moves a case to. No action maps to anything outside the state model."""
 
-AUDIT_READER_ROLES: frozenset[str] = frozenset({"reviewer", "senior_reviewer", "auditor"})
+AUDIT_READER_ROLES: frozenset[str] = frozenset(
+    str(role) for role, caps in CAPABILITIES.items() if Capability.READ_CASE_AUDIT in caps
+)
 """Roles permitted to read a case's history.
 
 The audit trail names people and their decisions, so reading it is itself an access decision.
+Derived from the ADR-0006 § 2 matrix rather than restated, so the two cannot drift apart —
+`auditor` was retired there, and this set follows without needing to be edited again.
 """
 
-REOPEN_ROLES: frozenset[str] = frozenset({"senior_reviewer", "auditor"})
+REOPEN_ROLES: frozenset[str] = frozenset(
+    str(role) for role, caps in CAPABILITIES.items() if Capability.REOPEN_DISMISSED_CASE in caps
+)
 """Who may reopen a dismissed case. Reopening appends; it never erases the dismissal."""
 
 
@@ -152,9 +159,11 @@ def open_for_review(
     Reopening a *dismissed* case is the same transition and is restricted: it revisits someone
     else's recorded judgement. The dismissal is never erased — the reopen is appended beside it.
     """
-    if case.state is CaseState.DISMISSED and actor_role not in REOPEN_ROLES:
+    if case.state is CaseState.DISMISSED and not has_capability(
+        actor_role, Capability.REOPEN_DISMISSED_CASE
+    ):
         raise DispositionRefused(
-            ErrorCode.AUDIT_FORBIDDEN,
+            ErrorCode.CASE_REOPEN_FORBIDDEN,
             f"Role {actor_role!r} may not reopen a dismissed case.",
         )
     if CaseState.IN_REVIEW not in ALLOWED_TRANSITIONS.get(case.state, frozenset()):
@@ -184,4 +193,4 @@ def open_for_review(
 
 
 def may_read_audit(actor_role: str) -> bool:
-    return actor_role in AUDIT_READER_ROLES
+    return has_capability(actor_role, Capability.READ_CASE_AUDIT)

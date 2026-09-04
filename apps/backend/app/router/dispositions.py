@@ -22,6 +22,8 @@ from app.dto.dispositions import (
     DispositionResponse,
 )
 from app.errors import ErrorCode, ErrorResponse
+from app.router.guards import refuse_without
+from app.service.access import Capability
 from app.service.disposition import (
     DispositionRefused,
     apply_disposition,
@@ -82,6 +84,10 @@ def create_disposition(
     Nothing this endpoint does rejects a claim, releases or stops a payment, imposes a sanction,
     or alters a code. It moves a case's state and appends an event, and that is the whole of it.
     """
+    refused_role = refuse_without(x_actor_role, Capability.RECORD_DISPOSITION)
+    if refused_role is not None:
+        return refused_role
+
     case = cases.get(case_id)
     if case is None:
         return _error(ErrorCode.CASE_NOT_FOUND, f"No case {case_id}")

@@ -19,6 +19,8 @@ from fastapi import APIRouter, Depends, Response
 from app.config import Settings, get_settings
 from app.dto.evaluations import EvaluationResponse
 from app.errors import ErrorCode, ErrorResponse
+from app.router.guards import DEFAULT_ROLE, ActorRole, refuse_without
+from app.service.access import Capability
 from app.service.evaluation_artifacts import (
     EvaluationRunNotFound,
     artifacts_root,
@@ -29,7 +31,9 @@ from app.service.evaluation_artifacts import (
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/v1", tags=["evaluations"])
 
-ERROR_RESPONSES: dict[int | str, dict] = {404: {"model": ErrorResponse}}
+ERROR_RESPONSES: dict[int | str, dict] = {
+    code: {"model": ErrorResponse} for code in (403, 404)
+}
 
 
 @router.get(
@@ -39,9 +43,15 @@ ERROR_RESPONSES: dict[int | str, dict] = {404: {"model": ErrorResponse}}
     summary="Reproducible evaluation artifacts",
 )
 def get_evaluation(
-    run_id: str, settings: Annotated[Settings, Depends(get_settings)]
+    run_id: str,
+    settings: Annotated[Settings, Depends(get_settings)],
+    x_actor_role: ActorRole = DEFAULT_ROLE,
 ) -> EvaluationResponse | Response:
     """Read one run. The synthetic label travels with the payload, never as UI decoration."""
+    refused = refuse_without(x_actor_role, Capability.READ_EVALUATION)
+    if refused is not None:
+        return refused
+
     root = artifacts_root(settings.evaluation_artifacts_dir)
     try:
         return read_run(resolve_run(root, run_id))

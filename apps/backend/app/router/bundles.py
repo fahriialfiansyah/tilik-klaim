@@ -28,6 +28,8 @@ from app.dto.bundles import (
 )
 from app.dto.common import BandExplanation, EvidenceRefDto, ReasonDto, VersionStamp
 from app.errors import ErrorCode, ErrorResponse
+from app.router.guards import DEFAULT_ROLE, ActorRole, refuse_without
+from app.service.access import Capability
 from app.service.evidence_graph import build_evidence_graph
 from app.service.hashing import idempotency_key, input_hash
 from app.service.rules.registry import ReasonHit
@@ -48,7 +50,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/v1", tags=["bundles"])
 
 ERROR_RESPONSES: dict[int | str, dict] = {
-    code: {"model": ErrorResponse} for code in (400, 409, 413, 415, 422)
+    code: {"model": ErrorResponse} for code in (400, 403, 409, 413, 415, 422)
 }
 """Documented failure shapes, so a generated client handles them without guessing."""
 
@@ -67,9 +69,13 @@ InjectedStore = Annotated[BundleStore, Depends(bundle_store)]
     summary="Submit one synthetic bundle for validation",
 )
 async def ingest_bundle(
-    request: Request, store: InjectedStore
+    request: Request, store: InjectedStore, x_actor_role: ActorRole = DEFAULT_ROLE
 ) -> IngestBundleResponse | Response:
     """Validate a bundle and return counts, issues, and a deterministic input hash."""
+    refused = refuse_without(x_actor_role, Capability.INGEST_BUNDLE)
+    if refused is not None:
+        return refused
+
     settings = get_settings()
 
     try:
@@ -163,12 +169,17 @@ def screen_ingested_bundle(
     request: ScreenRequest,
     store: InjectedStore,
     cases: InjectedCases,
+    x_actor_role: ActorRole = DEFAULT_ROLE,
 ) -> ScreenResponse | Response:
     """Screen a validated bundle and return its reasons, band, and case.
 
     Idempotent for the same input hash and engine version: re-screening returns the existing
     case with its version bumped, rather than creating a second case for one claim.
     """
+    refused = refuse_without(x_actor_role, Capability.INGEST_BUNDLE)
+    if refused is not None:
+        return refused
+
     record = store.get(ingestion_id)
     if record is None:
         return _error(ErrorCode.INGESTION_NOT_FOUND, f"No ingestion {ingestion_id}")

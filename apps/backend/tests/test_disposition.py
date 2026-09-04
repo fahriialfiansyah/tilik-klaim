@@ -371,8 +371,9 @@ def test_reopening_a_dismissed_case_needs_an_authorised_role(api) -> None:
     with pytest.raises(DispositionRefused, match="may not reopen"):
         open_for_review(dismissed, actor_role="reviewer", case_store=cases, audit_store=audit)
 
+    # `auditor` was retired by ADR-0006 — its capability set was identical to this one's.
     reopened = open_for_review(
-        dismissed, actor_role="auditor", case_store=cases, audit_store=audit
+        dismissed, actor_role="senior_reviewer", case_store=cases, audit_store=audit
     )
     assert reopened.state is CaseState.IN_REVIEW
 

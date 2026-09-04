@@ -18,6 +18,7 @@ that would remove an edge an audit event still cites.
 from __future__ import annotations
 
 from sqlalchemy import (
+    Boolean,
     CheckConstraint,
     Column,
     DateTime,
@@ -157,6 +158,56 @@ audit_events = Table(
     Index("ix_audit_supersedes", "supersedes_event_id"),
 )
 
+
+users = Table(
+    "users",
+    metadata,
+    Column("user_id", String(ID_LENGTH), primary_key=True),
+    # Printed on the badge a reviewer wears; short enough to quote out loud during a handover.
+    Column("staff_token", String(32), nullable=False, unique=True),
+    Column("full_name", String(160), nullable=False),
+    Column("email", String(254), nullable=False, unique=True),
+    Column("role", String(32), nullable=False),
+    # Plain text, deliberately, and named so nobody mistakes it for a credential. The login
+    # screen prints this value beside the account it belongs to; hashing something displayed
+    # on screen would protect nothing and would tell a reader of this schema that a security
+    # boundary exists here. It does not. See ADR-0006 § 3.
+    Column("demo_passcode", String(64), nullable=False),
+    Column("is_active", Boolean, nullable=False, server_default="true"),
+    Column("last_signed_in_at", DateTime(timezone=True), nullable=True),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    Column("updated_at", DateTime(timezone=True), nullable=False),
+    CheckConstraint(
+        "role in ('reviewer', 'senior_reviewer', 'admin')",
+        name="ck_users_role",
+    ),
+    Index("ix_users_role", "role"),
+)
+
+
+user_audit_events = Table(
+    "user_audit_events",
+    metadata,
+    Column("event_id", String(ID_LENGTH), primary_key=True),
+    Column("event_kind", String(32), nullable=False),
+    # The role and id the request *claimed*. `X-Actor-Role` is forgeable by design (ADR-0006
+    # § 4); recording what was claimed is still the only way a change has a name against it.
+    Column("actor_user_id", String(ID_LENGTH), nullable=False),
+    Column("actor_role", String(32), nullable=False),
+    Column("target_user_id", String(ID_LENGTH), nullable=False),
+    Column("field", String(32), nullable=False),
+    Column("value_before", String(64), nullable=True),
+    Column("value_after", String(64), nullable=True),
+    Column("occurred_at", DateTime(timezone=True), nullable=False),
+    CheckConstraint(
+        "event_kind in ('USER_ROLE_CHANGED', 'USER_DEACTIVATED', 'USER_REACTIVATED')",
+        name="ck_user_audit_event_kind",
+    ),
+    Index("ix_user_audit_occurred_at", "occurred_at"),
+    Index("ix_user_audit_target", "target_user_id", "occurred_at"),
+)
+
+
 APPEND_ONLY_TRIGGER_SQL = """
 create or replace function tilik_audit_append_only() returns trigger as $$
 begin
@@ -174,6 +225,21 @@ create trigger audit_events_no_delete
     before delete on audit_events
     for each row execute function tilik_audit_append_only();
 """
+
+USER_AUDIT_APPEND_ONLY_TRIGGER_SQL = """
+create trigger user_audit_events_no_update
+    before update on user_audit_events
+    for each row execute function tilik_audit_append_only();
+
+create trigger user_audit_events_no_delete
+    before delete on user_audit_events
+    for each row execute function tilik_audit_append_only();
+"""
+"""The same refusal, applied to user management.
+
+A role change is a change to who may do what, so a history of role changes that can be edited
+is worth no more than a case history that can be edited. It reuses `tilik_audit_append_only()`
+rather than declaring a second identical function, so the two trails cannot drift apart."""
 """Append-only enforced in the database.
 
 A convention is not a control: anything with a connection could rewrite history, and an audit
@@ -187,3 +253,9 @@ drop trigger if exists audit_events_no_delete on audit_events;
 drop trigger if exists audit_events_no_update on audit_events;
 drop function if exists tilik_audit_append_only();
 """
+
+DROP_USER_AUDIT_APPEND_ONLY_TRIGGER_SQL = """
+drop trigger if exists user_audit_events_no_delete on user_audit_events;
+drop trigger if exists user_audit_events_no_update on user_audit_events;
+"""
+"""Drops only this table's triggers. The shared function stays — `audit_events` still uses it."""

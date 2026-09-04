@@ -12,7 +12,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.router import briefing, bundles, cases, dispositions, evaluations, health
+from app.router import briefing, bundles, cases, dispositions, evaluations, health, users
 
 settings = get_settings()
 
@@ -45,3 +45,4 @@ app.include_router(bundles.router)
 app.include_router(cases.router)
 app.include_router(dispositions.router)
 app.include_router(briefing.router)
+app.include_router(users.router)

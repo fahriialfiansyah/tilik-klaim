@@ -141,14 +141,34 @@ def clean_stores():
         get_bundle_store,
         get_case_store,
         get_edge_store,
+        get_user_store,
     )
 
-    stores = (get_bundle_store(), get_case_store(), get_audit_store(), get_edge_store())
+    stores = (
+        get_bundle_store(),
+        get_case_store(),
+        get_audit_store(),
+        get_edge_store(),
+        get_user_store(),
+    )
     for store in stores:
         store.clear()
     yield
     for store in stores:
         store.clear()
+
+
+@pytest.fixture
+def staff():
+    """The three seeded accounts, keyed by role, written fresh for the test that asks for them.
+
+    Not autouse: most tests have nothing to do with the roster, and seeding it for all of them
+    would hide a store that was never populated behind one that always is.
+    """
+    from app.store.registry import get_user_store
+    from app.store.seed_users import seed_users
+
+    return {record.role: record for record in seed_users(get_user_store())}
 
 
 @pytest.fixture

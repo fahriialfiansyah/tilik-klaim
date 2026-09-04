@@ -16,12 +16,16 @@ from app.config import Settings, get_settings
 from app.dto.briefing import EVENT_NAMES, BriefingEvent, CaseBriefing
 from app.errors import ErrorCode, ErrorResponse
 from app.router.cases import InjectedBundles, InjectedCases
+from app.router.guards import DEFAULT_ROLE, ActorRole, refuse_without
+from app.service.access import Capability
 from app.service.briefing.service import build_briefing, stream_briefing
 from app.service.case_loader import load_case_detail
 
 router = APIRouter(prefix="/v1", tags=["briefing"])
 
-ERROR_RESPONSES: dict[int | str, dict] = {404: {"model": ErrorResponse}}
+ERROR_RESPONSES: dict[int | str, dict] = {
+    code: {"model": ErrorResponse} for code in (403, 404)
+}
 
 SSE_HEADERS = {
     "Cache-Control": "no-cache",
@@ -47,12 +51,17 @@ def get_briefing(
     bundles: InjectedBundles,
     settings: Annotated[Settings, Depends(get_settings)],
     stream: bool = True,
+    x_actor_role: ActorRole = DEFAULT_ROLE,
 ) -> CaseBriefing | Response:
     """Observations with source references, open questions, and an uncertainty note.
 
     Never a score, a band, or a state transition. Off by default; the deterministic template is
     the answer when no model is configured.
     """
+    refused = refuse_without(x_actor_role, Capability.REQUEST_BRIEFING)
+    if refused is not None:
+        return refused
+
     detail = load_case_detail(case_id, cases, bundles)
     if detail is None:
         envelope = ErrorResponse(code=ErrorCode.CASE_NOT_FOUND, detail=f"No case {case_id}")

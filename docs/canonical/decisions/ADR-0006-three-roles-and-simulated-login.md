@@ -191,6 +191,12 @@ show its account cards would take the whole demo down with Postgres.
 The three seeded staff use the RFC 2606 reserved `.example` TLD (`…@rsud-demo.example`) so no
 address can ever resolve — the same discipline the vLLM tests apply with `gateway.invalid`.
 
+User-management events go to their own append-only table, `user_audit_events`, with the same
+UPDATE/DELETE-refusing trigger the case audit uses. They are not written into `audit_events`:
+that table's `case_id` is `NOT NULL` because every case event has a case, and relaxing a
+constraint on the case audit trail to make room for events that are not about a case would
+weaken the stronger of the two guarantees to accommodate the weaker one.
+
 ### 7. What is deliberately not done
 
 - **No fourth role.** Not `auditor`, not a read-only observer, not a superuser.

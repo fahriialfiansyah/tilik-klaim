@@ -40,7 +40,9 @@ from app.store.registry import (  # noqa: E402
     get_bundle_store,
     get_case_store,
     get_edge_store,
+    get_user_store,
 )
+from app.store.seed_users import seed_users  # noqa: E402
 from tests.fixtures import SCENARIOS, load  # noqa: E402
 
 SLOW_RESET_SECONDS = 15.0
@@ -54,6 +56,12 @@ def reset() -> tuple[int, float]:
     # Together, and bundles last: a case pointing at a deleted ingestion is worse than no case.
     for store in (get_case_store(), get_audit_store(), get_edge_store(), get_bundle_store()):
         store.clear()
+
+    # A demo that deactivated an account or moved someone's role has to come back clean, or the
+    # next rehearsal starts from a roster nobody remembers changing.
+    user_store = get_user_store()
+    user_store.clear()
+    seed_users(user_store)
 
     client = TestClient(app)
     seeded = 0

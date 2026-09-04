@@ -29,7 +29,9 @@ from app.store.registry import (  # noqa: E402
     get_bundle_store,
     get_case_store,
     get_edge_store,
+    get_user_store,
 )
+from app.store.seed_users import seed_users  # noqa: E402
 from tests.fixtures import SCENARIOS, load  # noqa: E402
 
 
@@ -45,6 +47,14 @@ def main() -> int:
     # screen with no claim lines on it, from data that looked seeded.
     for store in (get_case_store(), get_audit_store(), get_edge_store(), get_bundle_store()):
         store.clear()
+
+    # The three synthetic staff go in before anything else: without them the login screen has
+    # no account to accept, and a seeded database that cannot be signed into looks broken.
+    user_store = get_user_store()
+    user_store.clear()
+    for staff in seed_users(user_store):
+        print(f"  {staff.staff_token:8s} {staff.full_name:18s} {staff.role}")
+    print()
 
     client = TestClient(app)
     for scenario in SCENARIOS:

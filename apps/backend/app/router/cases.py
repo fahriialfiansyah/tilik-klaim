@@ -17,6 +17,8 @@ from tilik_domain.versioning import EngineIdentity
 
 from app.dto.cases import CaseDetailResponse, CaseQueueResponse
 from app.errors import ErrorCode, ErrorResponse
+from app.router.guards import DEFAULT_ROLE, ActorRole, refuse_without
+from app.service.access import Capability
 from app.service.case_loader import load_case_detail
 from app.service.case_query import (
     DEFAULT_PAGE_SIZE,
@@ -78,8 +80,13 @@ def list_cases(
     order: SortOrder = SortOrder.DESC,
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
-) -> CaseQueueResponse:
+    x_actor_role: ActorRole = DEFAULT_ROLE,
+) -> CaseQueueResponse | Response:
     """The ordered work list. Pseudonymous fields only; no narrative text."""
+    refused = refuse_without(x_actor_role, Capability.READ_CASES)
+    if refused is not None:
+        return refused
+
     everything = cases.list_all()
     matching = sort_cases(
         filter_cases(
@@ -113,9 +120,16 @@ def list_cases(
     summary="Case detail",
 )
 def get_case(
-    case_id: str, cases: InjectedCases, bundles: InjectedBundles
+    case_id: str,
+    cases: InjectedCases,
+    bundles: InjectedBundles,
+    x_actor_role: ActorRole = DEFAULT_ROLE,
 ) -> CaseDetailResponse | Response:
     """Claim lines, reasons with evidence and counter-evidence, timeline, and comparisons."""
+    refused = refuse_without(x_actor_role, Capability.READ_CASES)
+    if refused is not None:
+        return refused
+
     detail = load_case_detail(case_id, cases, bundles)
     if detail is None:
         envelope = ErrorResponse(code=ErrorCode.CASE_NOT_FOUND, detail=f"No case {case_id}")

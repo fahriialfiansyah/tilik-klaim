@@ -118,7 +118,37 @@ def test_enabled_path_uses_the_provider_and_logs_tool_events(api, case_id, monke
     assert done["tool_calls"] == [{"tool": "list_reasons", "arguments": {}}]
 
 
-def test_the_seven_frozen_paths_are_still_exactly_seven_plus_this_one(api) -> None:
+FROZEN_PATHS: frozenset[str] = frozenset(
+    {
+        "/v1/bundles",
+        "/v1/bundles/{ingestion_id}/screen",
+        "/v1/cases",
+        "/v1/cases/{case_id}",
+        "/v1/cases/{case_id}/dispositions",
+        "/v1/cases/{case_id}/audit",
+        "/v1/evaluations/{run_id}",
+    }
+)
+"""The seven from `03_architecture.md` § Minimal API contracts. These never move."""
+
+ADDITIVE_PATHS: frozenset[str] = frozenset(
+    {
+        "/v1/cases/{case_id}/briefing",  # ADR-0005
+        "/v1/auth/session",  # ADR-0006
+        "/v1/users",
+        "/v1/users/audit",
+        "/v1/users/{user_id}",
+    }
+)
+"""Everything added since, each named by the ADR that authorised it."""
+
+
+def test_the_seven_frozen_paths_are_untouched_and_every_addition_is_named(api) -> None:
+    """The count moved from 8 to 12; what matters is *which* paths, not how many.
+
+    Naming them makes an accidental route as loud as a missing one — an assertion on a number
+    would have passed if a frozen path had been renamed while a new one appeared beside it.
+    """
     paths = {path for path in api.app.openapi()["paths"] if path.startswith("/v1/")}
-    assert "/v1/cases/{case_id}/briefing" in paths
-    assert len(paths) == 8
+    assert FROZEN_PATHS <= paths, "a frozen endpoint moved or disappeared"
+    assert paths - FROZEN_PATHS == ADDITIVE_PATHS, "an unnamed endpoint appeared"

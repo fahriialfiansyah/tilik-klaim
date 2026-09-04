@@ -18,10 +18,13 @@ from tilik_domain.reasons import CaseState, ReasonCode
 
 from app.config import get_settings
 from app.store.engine import is_database_available
-from app.store.registry import get_case_store, use_database
+from app.store.registry import get_case_store, get_user_store, use_database
 
 EXPECTED_CASE_COUNT = 5
 """The five gold scenarios: clean, phantom, repeat, clone, unbundled."""
+
+EXPECTED_STAFF_COUNT = 3
+"""The synthetic roster (ADR-0006). Fixed: there is no create and no delete."""
 
 DEMO_REASON = ReasonCode.LINE_WITHOUT_COMPLETED_PROCEDURE
 """The reason the runbook's ideal case must raise — a billed line with no completed procedure."""
@@ -42,6 +45,8 @@ class Readiness:
     demo_case_present: bool
     """True when a case raising the runbook's ideal reason is screened and untouched."""
     untouched_cases: int
+    active_staff_count: int
+    """Signed-in-able accounts. A demo that deactivated one and never reset would start locked out."""
     problems: tuple[str, ...]
 
     engine_version: str
@@ -57,6 +62,7 @@ class Readiness:
             "expected_case_count": self.expected_case_count,
             "demo_case_present": self.demo_case_present,
             "untouched_cases": self.untouched_cases,
+            "active_staff_count": self.active_staff_count,
             "problems": list(self.problems),
         }
 
@@ -106,6 +112,14 @@ def check_readiness() -> Readiness:
             "jalankan scripts/demo_reset.py"
         )
 
+    staff = get_user_store().list_all()
+    active_staff = [person for person in staff if person.is_active]
+    if len(active_staff) < EXPECTED_STAFF_COUNT:
+        problems.append(
+            f"hanya {len(active_staff)} dari {EXPECTED_STAFF_COUNT} akun petugas aktif; "
+            "jalankan scripts/demo_reset.py agar semua peran dapat masuk"
+        )
+
     demo_case_present = any(
         reason.code is DEMO_REASON
         for case in untouched
@@ -125,6 +139,7 @@ def check_readiness() -> Readiness:
         expected_case_count=EXPECTED_CASE_COUNT,
         demo_case_present=demo_case_present,
         untouched_cases=len(untouched),
+        active_staff_count=len(active_staff),
         problems=tuple(problems),
         engine_version=settings.engine_version,
         ruleset_version=settings.ruleset_version,

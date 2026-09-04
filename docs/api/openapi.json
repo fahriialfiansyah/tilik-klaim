@@ -933,6 +933,14 @@
           "CASE_VERSION_CONFLICT",
           "DISPOSITION_INVALID_TRANSITION",
           "AUDIT_FORBIDDEN",
+          "CASE_ACCESS_FORBIDDEN",
+          "CASE_REOPEN_FORBIDDEN",
+          "USER_MANAGEMENT_FORBIDDEN",
+          "SESSION_INVALID_CREDENTIALS",
+          "SESSION_ACCOUNT_DEACTIVATED",
+          "USER_NOT_FOUND",
+          "USER_SELF_MODIFICATION_REFUSED",
+          "USER_NO_CHANGE_REQUESTED",
           "BRIEFING_UNAVAILABLE"
         ],
         "title": "ErrorCode",
@@ -1483,6 +1491,16 @@
         "title": "RiskMode",
         "type": "string"
       },
+      "Role": {
+        "description": "The three roles. There is no fourth, and adding one needs a new ADR.\n\n`auditor` was retired by ADR-0006: its capability set was identical to `senior_reviewer`'s,\nso keeping both names preserved an ambiguity with no behaviour behind it.",
+        "enum": [
+          "reviewer",
+          "senior_reviewer",
+          "admin"
+        ],
+        "title": "Role",
+        "type": "string"
+      },
       "RunManifest": {
         "additionalProperties": false,
         "description": "What makes a run reproducible.\n\nEvery field here is needed to rebuild the result from a clean environment and compare\nhashes. A metric without its manifest cannot be defended when a judge asks how it was\nproduced.",
@@ -1624,6 +1642,44 @@
           "latency_ms"
         ],
         "title": "ScreenResponse",
+        "type": "object"
+      },
+      "SessionRequest": {
+        "additionalProperties": false,
+        "description": "Credential-shaped, and checked \u2014 but this selects a persona, it does not authenticate.\n\nSee `docs/canonical/decisions/ADR-0006-three-roles-and-simulated-login.md` \u00a7 3. Nothing is\nissued on success: there is no token, no cookie, and no server-side session to invalidate.",
+        "properties": {
+          "email": {
+            "maxLength": 254,
+            "minLength": 3,
+            "title": "Email",
+            "type": "string"
+          },
+          "passcode": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Passcode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "passcode"
+        ],
+        "title": "SessionRequest",
+        "type": "object"
+      },
+      "SessionResponse": {
+        "additionalProperties": false,
+        "description": "The selected persona. The client stores this and sends the two actor headers from it.",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          }
+        },
+        "required": [
+          "user"
+        ],
+        "title": "SessionResponse",
         "type": "object"
       },
       "SortKey": {
@@ -1768,6 +1824,209 @@
           "tool"
         ],
         "title": "ToolCallRecord",
+        "type": "object"
+      },
+      "UserAuditEventDto": {
+        "additionalProperties": false,
+        "description": "One recorded change. Append-only: there is no endpoint that edits or removes one.",
+        "properties": {
+          "actor_role": {
+            "title": "Actor Role",
+            "type": "string"
+          },
+          "actor_user_id": {
+            "title": "Actor User Id",
+            "type": "string"
+          },
+          "event_id": {
+            "title": "Event Id",
+            "type": "string"
+          },
+          "event_kind": {
+            "title": "Event Kind",
+            "type": "string"
+          },
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "target_user_id": {
+            "title": "Target User Id",
+            "type": "string"
+          },
+          "value_after": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value After"
+          },
+          "value_before": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value Before"
+          }
+        },
+        "required": [
+          "event_id",
+          "event_kind",
+          "actor_user_id",
+          "actor_role",
+          "target_user_id",
+          "field",
+          "occurred_at"
+        ],
+        "title": "UserAuditEventDto",
+        "type": "object"
+      },
+      "UserAuditResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/UserAuditEventDto"
+            },
+            "title": "Events",
+            "type": "array"
+          }
+        },
+        "required": [
+          "events"
+        ],
+        "title": "UserAuditResponse",
+        "type": "object"
+      },
+      "UserDto": {
+        "additionalProperties": false,
+        "description": "One account as the UI sees it. Never carries the passcode.",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "full_name": {
+            "title": "Full Name",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "last_signed_in_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Signed In At"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "staff_token": {
+            "title": "Staff Token",
+            "type": "string"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id",
+          "staff_token",
+          "full_name",
+          "email",
+          "role",
+          "is_active"
+        ],
+        "title": "UserDto",
+        "type": "object"
+      },
+      "UserListResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserDto"
+            },
+            "title": "Users",
+            "type": "array"
+          }
+        },
+        "required": [
+          "users"
+        ],
+        "title": "UserListResponse",
+        "type": "object"
+      },
+      "UserUpdateRequest": {
+        "additionalProperties": false,
+        "description": "A role change, an active-flag change, or both. Omitted fields are left alone.\n\n`None` means *not requested* rather than *set to null* \u2014 there is no nullable field here to\nconfuse it with, and sending neither is refused rather than treated as a successful no-op.",
+        "properties": {
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Role"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "UserUpdateRequest",
+        "type": "object"
+      },
+      "UserUpdateResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/UserAuditEventDto"
+            },
+            "title": "Events",
+            "type": "array"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          }
+        },
+        "required": [
+          "user",
+          "events"
+        ],
+        "title": "UserUpdateResponse",
         "type": "object"
       },
       "ValidationError": {
@@ -1949,10 +2208,104 @@
         ]
       }
     },
+    "/v1/auth/session": {
+      "post": {
+        "description": "Check the demo credentials and return the account, or refuse and say which way it failed.\n\nNothing is issued: no token, no cookie, no server-side session. The client keeps the returned\naccount and sends the two actor headers from it. See ADR-0006 \u00a7 3.",
+        "operationId": "create_session_v1_auth_session_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Select a persona (simulated sign-in)",
+        "tags": [
+          "users"
+        ]
+      }
+    },
     "/v1/bundles": {
       "post": {
         "description": "Validate a bundle and return counts, issues, and a deterministic input hash.",
         "operationId": "ingest_bundle_v1_bundles_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
@@ -1973,6 +2326,16 @@
               }
             },
             "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
           },
           "409": {
             "content": {
@@ -2034,6 +2397,16 @@
               "title": "Ingestion Id",
               "type": "string"
             }
+          },
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -2066,6 +2439,16 @@
               }
             },
             "description": "Bad Request"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
           },
           "409": {
             "content": {
@@ -2274,6 +2657,16 @@
               "title": "Page Size",
               "type": "integer"
             }
+          },
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2355,6 +2748,16 @@
             "required": true,
             "schema": {
               "title": "Case Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
               "type": "string"
             }
           }
@@ -2533,6 +2936,16 @@
               "title": "Stream",
               "type": "boolean"
             }
+          },
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2545,6 +2958,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
           },
           "404": {
             "content": {
@@ -2679,6 +3102,16 @@
               "title": "Run Id",
               "type": "string"
             }
+          },
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2691,6 +3124,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
           },
           "404": {
             "content": {
@@ -2716,6 +3159,293 @@
         "summary": "Reproducible evaluation artifacts",
         "tags": [
           "evaluations"
+        ]
+      }
+    },
+    "/v1/users": {
+      "get": {
+        "description": "Admin only. A reviewer has no business reading who else may review.",
+        "operationId": "list_users_v1_users_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "The synthetic staff roster",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/v1/users/audit": {
+      "get": {
+        "description": "Newest first. Append-only \u2014 there is no endpoint that edits or removes an entry.",
+        "operationId": "get_user_audit_v1_users_audit_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAuditResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "User-management history",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/v1/users/{user_id}": {
+      "patch": {
+        "description": "Apply the change and append one event per field, or refuse and write nothing.",
+        "operationId": "patch_user_v1_users__user_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "title": "User Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Actor-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Actor-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserUpdateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Change a role, or activate/deactivate an account",
+        "tags": [
+          "users"
         ]
       }
     }
