@@ -5,9 +5,10 @@ Pair with [`sprint/01-sprint-planning.md`](../sprint/01-sprint-planning.md),
 `changelog/{backend,web}.md`, `docs/canonical/`, and [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md).
 
 - Repo: `/Users/fahrialfiansyah121gmail.com/Documents/HEALTHKATHON-2026/tilik-klaim`
-- Branch: `development` · 18 commits, HEAD `3c661e7`, tree clean except `scripts/dev.sh`
+- Branch: `development` · 40 commits, HEAD `1bee0fb` (4 Sep), tree clean except `scripts/dev.sh`
   (the owner's own in-progress `--free-ports` flag). **In sync with a PUBLIC GitHub remote**
-  (`github.com/fahriialfiansyah/tilik-klaim`) — do not push without asking.
+  (`github.com/fahriialfiansyah/tilik-klaim`) — do not push without asking; nothing since
+  sprint 07 has been pushed.
 - Companion: [`CONTINUE-PROMPT.md`](./CONTINUE-PROMPT.md) boots a fresh session into the next
   task; [`qa/MANUAL-QA.md`](./qa/MANUAL-QA.md) is what the owner checks by eye.
 - Goal: a claim-evidence integrity layer that screens synthetic SATUSEHAT-shaped JKN claim
@@ -49,14 +50,25 @@ notes cross, whole bundles never do.
 ADR); `brief/` is the product blueprint in Indonesian; `sprint/` holds plans and task files in
 English. Never restate a fact across layers.
 
-**No LLM anywhere in the risk path, and no agents** (ADR-0002). The Workforce Manifest holds only
-`be_service` and `fe_shell`. This binds sprint 05 directly: no LLM and no GNN in the score.
+**No LLM anywhere in the risk path, and no agent roles** (ADR-0002). The Workforce Manifest holds
+only `be_service` and `fe_shell`. No LLM and no GNN in the score.
 
-**Sprint 05's kill criterion is a designed outcome, not a failure mode.** If the hybrid adds no
-measurable value over rules-only, the ML layer is **removed** and TilikKlaim ships rules-only.
-`docs/canonical/01_product_decision.md` says so explicitly: *"this is not a product kill."*
-Reporting that honestly is stronger evidence of method than a marginal gain would be — so do not
-tune until something looks better.
+**There is now exactly one LLM in the repository, and it is outside that path.** The bounded,
+read-only Case Briefing ([ADR-0005](canonical/decisions/ADR-0005-bounded-case-briefing.md), sprint
+09) summarises evidence already on screen; it is off by default, cannot reach a store or a rule,
+and never touches a band, a score or a state. This is not a softening of ADR-0002 — it is the
+optional-summary clause ADR-0002 itself defines, and `tests/test_briefing_isolation.py` asserts
+the separation **in both directions** by walking syntax trees. **If that test fails, revert the
+feature; it is not something to fix in place.** It lives in `be_service`, not in an agent stack:
+no Agno, no MCP, no second actor.
+
+**Sprint 05's kill criterion was a designed outcome, and sprint 06 measured it.** The hybrid's
+per-mode metrics are **identical** to rules-only across all four modes — the statistical layer
+detects nothing the rules do not. What moves is ranking: PR-AUC 0.7122 → 0.8440, while
+precision@budget and recall@budget have overlapping intervals. The removal clause is therefore
+**live**, and deciding it is part of sprint 06's sign-off. `01_product_decision.md` is explicit
+that removal is *"not a product kill"*. Reporting that honestly is stronger evidence of method
+than a marginal gain would be — so do not tune until something looks better.
 
 ## 2. Done so far
 
@@ -165,10 +177,14 @@ actual payload, not the source you just wrote.**
 - **The backend runs with no database at all**, falling back to in-memory stores. That is a
   requirement, not a convenience: the demo runbook needs an offline run and the frontend team has
   no Docker. Without Postgres, 14 integration tests `skip` — they do not fail.
-- **ML dependencies are already declared.** `apps/backend/pyproject.toml` carries
-  `scikit-learn>=1.5` and `pandas>=2.2`. `packages/model/` is an empty placeholder holding only a
-  README; sprint 05 writes its `pyproject.toml` — copy the shape of `packages/data/pyproject.toml`,
-  which shows the `[tool.uv.sources]` editable-path pattern for depending on `tilik-domain`.
+- **`packages/model/` is built** — 71 tests, sprint 05. `apps/backend/pyproject.toml` carries
+  `scikit-learn>=1.5`, `pandas>=2.2` and, since 4 Sep, `openai>=1.60` for the briefing gateway.
+- **`uv sync` in `apps/backend` silently drops the editable `tilik-domain`.** It is not declared
+  in `pyproject.toml` and the README does not mention it, so the next `uv run pytest` fails with
+  `ModuleNotFoundError: No module named 'tilik_domain'` — which reads like broken code rather
+  than a missing install. Restore with:
+  `(cd apps/backend && uv pip install -e ".[dev]" -e ../../packages/domain)`. Worth declaring
+  properly at some point.
 
 ## 4. Build / run / test / verify
 
@@ -186,17 +202,22 @@ docker compose up -d db                       # ~10s to report healthy
 (cd apps/backend && uv run uvicorn app.main:app --reload --port 8000)
 (cd apps/web     && npm run dev)              # :3000, proxies /v1 to :8000
 
-# --- the six verify commands; run ALL after every change, and report the counts ---
-(cd apps/backend    && uv run pytest)                 # expect 312 passed
+# --- the eight verify commands; run ALL after every change, and report the counts ---
+(cd apps/backend    && uv run pytest)                 # expect 467 passed, ~14s
 (cd packages/domain && uv run pytest)                 # expect 23 passed
-(cd packages/data   && uv run pytest)                 # expect 47 passed
+(cd packages/data   && uv run pytest)                 # expect 57 passed
+(cd packages/model  && uv run pytest)                 # expect 71 passed
+(cd evaluation      && uv run pytest)                 # expect 47 passed
 (cd apps/web        && npx tsc --noEmit)              # expect silence
-(cd apps/web        && npm test)                      # expect 91 passed (vitest)
+(cd apps/web        && npm test)                      # expect 184 passed (vitest)
 (cd apps/backend    && uv run ruff check app tests)   # expect "All checks passed!"
 
 # --- end-to-end (needs API + web up and a FRESH seed) ---
 (cd apps/backend && uv run python scripts/seed_dev.py)
-(cd apps/web && npm run test:e2e)             # expect 14 passed, ~10s
+(cd apps/web && npm run test:e2e)             # expect 24 passed
+# The two case-briefing specs call a real model when apps/backend/.env has the gateway
+# configured, so that run is minutes rather than seconds. With BRIEFING_ENABLED=false it is
+# the template path and finishes in about 20s.
 
 # --- generated artifacts: regenerate after any change to what they describe ---
 (cd apps/backend && uv run python scripts/export_openapi.py)        # docs/api/openapi.json
@@ -258,129 +279,71 @@ governs). Do not fill `sqlalchemy.url` in `alembic.ini` — `migrations/env.py` 
 
 ## 6. Next steps
 
-1. **Fix the corpus/split artifact mismatch before anything else in sprint 05** — see § 7
-   blocker 1. Sprint 05's task declares a dependency on the frozen grouped split, and that split
-   currently cannot be joined to the published corpus at all. Small change, but everything
-   downstream rests on it, and one decision inside it is the owner's.
+**Every sprint's code is done.** Sprints 00–05 and 08–09 are `✅`; 06 and 07 are `🚧` and neither
+is waiting on an engineer. What remains is signatures, a rehearsal, a recording, and the
+proposal — and the clock, which is the real constraint.
 
-2. **Sprint 05 — ranking models** (G6, 12 Sep), one task:
-   [`sprint/backlog/05-ranking-models/backend/01-similarity-anomaly.md`](../sprint/backlog/05-ranking-models/backend/01-similarity-anomaly.md).
-   Autonomous, and long. It creates `packages/model/` from scratch: six feature families, a
-   TF-IDF character n-gram or MinHash similarity baseline, an Isolation Forest or LOF anomaly
-   baseline, band calibration **on validation data only**, and a model card.
+**Today is 4 September. Registration closes 14 September; the proposal closes 19 September, with
+18 September as the internal upload target.**
 
-   Read `docs/canonical/05_model_card.md` § Feature families and § Risk aggregation first — the
-   aggregation formula and all three caps are specified there verbatim, so they are not design
-   decisions to make. The formula is
-   `priority = max(deterministic_priority, calibrated_similarity, calibrated_anomaly)`, and the
-   three caps already exist in the rules layer and must survive: no high band from text
-   similarity alone; missing evidence plus an incomplete bundle lowers certainty toward *request
-   evidence*; an exact duplicate fingerprint is high priority and still human-reviewed.
-   **Store every component score and version, not just the aggregate.**
+1. **Sprint 06 — three sign-offs, and then flip the table.** Both tasks are `✅` and the official
+   run (`run-20260901T110000Z`) is in `evaluation/artifacts/`. The sprint stays `🚧` only because
+   the three signatures in its Sign-off table are open: experiment record (M1), claim
+   interpretation (M3), visuals (M2). They are separate deliberately — the person who produced a
+   number should not be the only one deciding what it is allowed to claim. M1 also still owes
+   validation of the drafted `docs/artifacts/failure-modes.md`.
 
-   Five tests carry the task and should be written first: group-split enforcement (training never
-   sees test participants or provider-time blocks), serialization round-trip (a saved model
-   reloads and reproduces identical predictions), feature-schema conformance, the **leakage
-   probe** (no injector metadata reachable from features), and threshold boundaries.
+   **This one gates more than itself.** [ADR-0005](canonical/decisions/ADR-0005-bounded-case-briefing.md)
+   names a recorded Gate 6 as its precondition, and the briefing shipped on the owner's approval
+   with it still open. Flipping sprint 06 to `✅` closes that gap, and it is the owner's
+   signature to give, not an agent's.
 
-   **Build so that removal is a clean revert.** Keep the model behind one call site and do not
-   let its scores reach a wire model until sprint 06 has measured that they earn it.
+2. **Sprint 07 — two things only a person can do.** Everything machine-checkable is `✅`: the
+   ninety-second path is timed by `demo-flow.spec.ts`, four proposal screenshots and the
+   six-frame fallback PDF are captured, both case studies are drafted.
 
-3. **Sprint 06 — evaluation report** (G6). The last 501 endpoint, plus the `/evaluation` screen.
-   The corpus, labels, frozen split and leakage report all live in `packages/data/build/`.
+   - **Rehearse the three-minute flow** with narration, on the presentation machine, offline. A
+     Playwright run is not a rehearsal — it does not narrate or move a cursor.
+   - **Record the 1080p fallback** with the application stopped. § 22 is explicit that the
+     fallback is *played*, not troubleshooted, so it has to exist before the day. **This is the
+     single most schedule-exposed item left**: it cannot be started on 17 September.
 
-4. **Sprint 07 — demo hardening** (G8, 17 Sep). Owns the demo/reset route and the offline
-   rehearsal; the ingest screen deliberately left that route to this sprint.
+3. **Proposal work — the largest remaining effort, and none of it is code.** Four gaps against
+   the competition guidance, tracked in `docs/canonical/09_proposal_evidence_map.md`:
+   payer/customer identification; the business case framed as a **cost model with stated
+   assumptions, never a savings claim**; field user validation; and impact on underserved
+   regions. Also § 7 item 2 below — the Synthea claim has to come out of slide 8.
 
-5. **Proposal work, unscheduled but real.** Four gaps against the competition guidance, none of
-   them code: payer/customer identification; the business case framed as a cost model with stated
-   assumptions (never a savings claim); field user validation; and impact on underserved regions.
-   The affected file is `docs/canonical/09_proposal_evidence_map.md`.
+4. **Optional, and the owner's call:** the briefing's LLM path answers 9 of 15 runs; the rest
+   fall back to the template and say why. Raising `BRIEFING_MAX_OUTPUT_TOKENS` trades latency for
+   a higher rate. The real fix is not in this repository — see § 7 item 6.
 
-**Owed cleanups**, none blocking: `app/service/evidence_graph.py` is 516 lines and
-`app/service/case_query.py` is 469 (both above the 200–400 typical, both within the 800 maximum);
-`docs/` is gitignored but `docs/HANDOVER.md`, `docs/api/`, `docs/canonical/` and
-`docs/CONTINUE-PROMPT.md` are tracked from before that rule, so new files under `docs/` are
-invisible to git.
+**Owed cleanups**, none blocking:
 
-**Two of these were cleared on 1 Sep.** The suite now runs against its own database
-(`tilik_klaim_test`, created and migrated by `tests/conftest.py`), so `uv run pytest` no longer
-wipes seeded dev data. And `ComparisonCandidate.candidate_case_id` is populated for
-repeat-billing pairs via `BundleStore.case_id_for_bundle`, with the drawer rendering *Buka kasus
-kandidat*. It stays `null` in two cases that are **correct, not defects**: a candidate accepted
-but never screened has no case to open, and a cloned-documentation candidate is another
-participant's note — cloning crosses that boundary and the service is handed the note, never the
-submission behind it.
+- `app/service/evidence_graph.py` is 543 lines and `app/service/case_query.py` 473 — both above
+  the 200–400 typical, both within the 800 maximum. `app/service/briefing/runner.py` is 412.
+- **`docs/` is gitignored.** `HANDOVER.md`, `CONTINUE-PROMPT.md`, `api/`, `canonical/` and
+  `plans/` are tracked only because they were force-added; **any new file under `docs/` needs
+  `git add -f` or it is invisible to git.** The QA screenshot folders are deliberately local.
+- `case-detail-a11y.spec.ts` asserts `toHaveCount(0)` on broken evidence references, and that
+  resolves before the detail finishes loading — so it would not have caught the billing-lane
+  defect found on 3 Sep by opening the page. It wants a `waitFor` on the matrix first.
 
 ## 7. Blockers / decisions for the user
 
-1. **`packages/data/build/` is internally inconsistent, and it blocks sprint 05.** Found while
-   preparing this handover; nothing consumes those files yet, so it has been latent since
-   sprint 01.
+1. **`react-router-dom` v6 carries two moderate advisories** (open redirect via backslash in
+   `<Link>`/`useNavigate`; constructor injection in SSR `deserializeErrors`). The SSR one does not
+   apply — this app is client-only. The audit is in `docs/artifacts/router-advisory-audit.md`,
+   and its recommendation stands: **do not upgrade to v7 before G8.** It is breaking, it fixes
+   nothing real here, and it touches every route days from a deadline.
 
-   `pipeline.write_artifacts()` writes `result.corpus.bundles` — the corpus **before**
-   `strip_injector_traces()` runs. Two consequences:
-
-   - **The published corpus still carries the injector tell.** 120 of 1,120 bundle ids look like
-     `BND-00008-U798` and `BND-00016-R141`, announcing both that a record was injected and which
-     injector did it. That is precisely what `strip_injector_traces` exists to remove. The
-     leakage probe reported `leakage_passed: true` because it ran on `cleaned`, which never
-     reached disk.
-   - **`split.json` cannot be joined to `corpus.json`.** The split was computed on the renamed
-     bundles, so its ids (`BND-0060398b8d24`) share **zero** overlap with the corpus ids
-     (`BND-00000`) or with the label ids. `manifest.corpus_hash` likewise hashes a corpus that
-     was never written.
-
-   Reproduce both in one command:
-
-   ```bash
-   cd packages/data && python3 -c "
-   import json
-   corpus = {b['bundle_id'] for b in json.load(open('build/corpus.json'))}
-   split  = json.load(open('build/split.json'))
-   ids    = set(split['train']) | set(split['validation']) | set(split['test'])
-   print('overlap:', len(corpus & ids))                     # prints 0
-   print('leaky ids:', sum('-' in i[4:] for i in corpus))   # prints 120
-   "
-   ```
-
-   **Status (1 Sep): the code and its tests are done; only the regeneration waits on you.**
-   `BuildResult` now carries only the scrubbed bundles and the labels renamed to match, so
-   reaching past the scrub is unrepresentable. `packages/data/tests/test_artifacts.py` asserts
-   on the files themselves. The scrub also turned out to be incomplete — it rewrote `bundle_id`
-   only, leaving `CLM-00008-U798` and `LN-00008-1-U798` inside the record, contradicting this
-   task's own note that it "regenerates every identifier"; it now rewrites every marked
-   identifier through one rename map.
-
-   **The decision is smaller than it looked. `test_set_digest` does not change.** Measured
-   against the real config: `ed903a4c39656e…` before and after, along with every partition
-   count, the split membership, the multi-label ratio, and the leakage margin. The frozen test
-   set is **not** re-frozen, so sprint 01's gate evidence survives intact. The only value that
-   moves is `corpus_hash` (`db694e6851c9…` → `1ff95898c696…`), and it moves because the current
-   one describes a corpus that was never written to disk. It is quoted in exactly one place,
-   `packages/data/build/DATA_CARD.md`, which the pipeline regenerates.
-
-   **What regenerating costs:** the four files under `packages/data/build/` are tracked in git,
-   so it produces a large diff (`corpus.json` is 4.6 MB). **What it unblocks:** sprint 05 cannot
-   fit a model on the published corpus until the artifacts join, and sprint 06 cannot score
-   against it. To do it:
-
-   ```bash
-   (cd packages/data && uv run python -m tilik_data.pipeline --out build)
-   ```
-
-2. **`react-router-dom` v6 carries two moderate advisories** (open redirect via backslash in
-   `<Link>`/`useNavigate`; constructor injection in SSR `deserializeErrors`). Both predate these
-   sessions. The SSR one does not apply — this app is client-only. Fixing them means a breaking
-   upgrade to v7, not taken mid-sprint without asking.
-
-3. **The proposal must drop its Synthea claim.** ADR-0003 replaced Synthea with a native
+2. **The proposal must drop its Synthea claim.** ADR-0003 replaced Synthea with a native
    generator, so slide 8 can no longer cite Synthea's Apache-2.0 licence as evidence of a
    recognised privacy-safe source. The honest replacement is narrower and still true: the corpus
    is wholly synthetic, generated by project code, seeded and reproducible, and no real patient
    record of any origin was involved.
 
-4. **`docs/Pedoman_Healthkathon_2026.docx` is unverified and probably not authentic.** Its
+3. **`docs/Pedoman_Healthkathon_2026.docx` is unverified and probably not authentic.** Its
    metadata is machine-generated (creator "Un-named", empty `app.xml`, created and modified 13 ms
    apart), and the data portal it cites — `slicedata.bpjs-kesehatan.go.id` — **does not resolve**.
    The real portal is `data.bpjs-kesehatan.go.id`, whose Data Sampel needs a CAPTCHA-gated account
@@ -389,6 +352,21 @@ submission behind it.
    judging criteria differ from the canonical six and should be handled as a **superset**, not a
    replacement.
 
-5. **The design team still owes the annotation map for `/cases/:id`** — 27 widgets, the page most
-   expensive to misread. The page is built and can be reviewed as it stands, so the map would
-   confirm intent rather than unblock anything.
+4. **The design team owes the annotation map for `/cases/:id`** — now **29 widgets** after
+   sprints 08 and 09, and still the page most expensive to misread. The page is built and can be
+   reviewed as it stands, so the map would confirm intent rather than unblock anything. The QA
+   screenshots in `qa/2026-09-03-evidence-workspace/` and `qa/2026-09-03-case-briefing/` are the
+   material to annotate.
+
+5. **`BRIEFING_ENABLED=true` is currently set in `apps/backend/.env`** — switched on 4 Sep to
+   test the gateway, and left on. **Set it to `false` before the offline demo rehearsal.**
+   § 22 forbids depending on a remote LLM, and the deterministic template is the path the demo
+   is meant to run. The committed `.env.example` default is already `false`.
+
+6. **The briefing's remaining limit is the gateway, not the code.** After guided decoding the
+   gateway pads with whitespace instead of emitting EOS, so `BRIEFING_MAX_OUTPUT_TOKENS` sets the
+   latency floor and the truncation ceiling at the same time: too low cuts objects open, too high
+   pays for padding on every call. Measured at 3000: **9 of 15 runs answer from the model**,
+   median 23 s, max 87 s; the other six fall back to the template and name the reason on screen.
+   A gateway configured to stop after guided JSON would remove both halves of the trade. Raising
+   the token budget is the only lever available from this side.
