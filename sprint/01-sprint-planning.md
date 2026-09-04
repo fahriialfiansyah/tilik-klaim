@@ -28,6 +28,7 @@ Internal upload target is **18 September**; 19 September is emergency recovery o
 | Sprint 07 — demo-hardening | Seeded demo runs reliably offline, with a rehearsed fallback | 🚧 In Progress | G8 | 17 Sep | M2 | 06 | [../brief/00_OVERVIEW.md](../brief/00_OVERVIEW.md) | [./backlog/07-demo-hardening/](./backlog/07-demo-hardening/) | 2026-08-30 | - | - |
 | Sprint 08 — evidence-workspace | `/cases/:id` as an Evidence Workspace — matrix, swimlane, reason-focused map, one drawer host; no contract change | ✅ Done | G8 | 17 Sep | M2 | 04 | [../brief/04_DETAIL_KASUS_DISPOSISI.md](../brief/04_DETAIL_KASUS_DISPOSISI.md) | [./backlog/08-evidence-workspace/](./backlog/08-evidence-workspace/) | 2026-09-03 | 2026-09-03 | 2026-09-03 |
 | Sprint 09 — case-briefing | Bounded, read-only Case Briefing outside the risk path (ADR-0005); off by default; SSE; template fallback | ✅ Done | G8 | 17 Sep | M1+M2 | 08 | [../brief/04_DETAIL_KASUS_DISPOSISI.md](../brief/04_DETAIL_KASUS_DISPOSISI.md) | [./backlog/09-case-briefing/](./backlog/09-case-briefing/) | 2026-09-03 | 2026-09-03 | 2026-09-03 |
+| Sprint 10 — auth-roles-and-users | Three enforced roles, a credential-shaped but simulated login, and one administrative page that never touches a case (ADR-0006) | ✅ Done | G8 | 17 Sep | M1+M2 | 09 | [../brief/00_OVERVIEW.md](../brief/00_OVERVIEW.md) | [./backlog/10-auth-roles-and-users/](./backlog/10-auth-roles-and-users/) | 2026-09-04 | 2026-09-04 | 2026-09-04 |
 
 **Status legend:** 📋 Planned · 🚧 In Progress · ✅ Done · ⏸ Paused · ❌ Cancelled
 

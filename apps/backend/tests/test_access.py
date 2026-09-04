@@ -62,6 +62,29 @@ def test_senior_reviewer_is_a_reviewer_plus_reopen() -> None:
     assert difference == {Capability.REOPEN_DISMISSED_CASE}
 
 
+def test_the_exported_access_matrix_matches_the_server() -> None:
+    """The login screen renders this matrix, so a stale copy is a page that lies.
+
+    The same discipline the demo samples follow: a generated artifact drifts the moment
+    regenerating becomes a step someone has to remember, so the drift is a failing test rather
+    than something a reviewer might notice.
+
+    Regenerate with:
+        cd apps/backend && uv run python scripts/export_access_matrix.py
+    """
+    import json
+    from pathlib import Path
+
+    import scripts.export_access_matrix as exporter
+
+    committed = Path(exporter.TARGET)
+    assert committed.exists(), f"{committed} is missing; run scripts/export_access_matrix.py"
+    assert json.loads(committed.read_text()) == exporter.payload(), (
+        "apps/web/src/features/auth/access-matrix.json is stale — "
+        "run: cd apps/backend && uv run python scripts/export_access_matrix.py"
+    )
+
+
 def test_an_unknown_role_is_refused_rather_than_treated_as_a_reviewer() -> None:
     """A caller claiming `superuser` has claimed something untrue. Answering it would hide that."""
     for capability in Capability:

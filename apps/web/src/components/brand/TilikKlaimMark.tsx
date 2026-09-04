@@ -15,16 +15,25 @@ import type { CSSProperties } from 'react'
  * design, and animating the offset of a dashed stroke slides the dashes along instead of
  * revealing them. It fades in behind the solid arc instead, which is the honest way to animate
  * a shape whose dashes carry meaning.
+ *
+ * `onSurface` swaps the solid stroke from `--t-inv` to `currentColor`. The default is built for
+ * the dark header, where inverse ink is correct; on a card or page surface that same value is
+ * near-white and the mark disappears. The amber stays amber in both — it is the one part of the
+ * mark that carries meaning rather than contrast.
  */
 export function TilikKlaimMark({
   className,
   drawn = true,
   drawMs = 700,
+  onSurface = false,
 }: {
   readonly className?: string
   readonly drawn?: boolean
   readonly drawMs?: number
+  /** Draw on a light card or page surface instead of the dark header. */
+  readonly onSurface?: boolean
 }) {
+  const ink = onSurface ? 'currentColor' : 'var(--t-inv)'
   const trunk: CSSProperties = {
     strokeDasharray: 100,
     strokeDashoffset: drawn ? 0 : 100,
@@ -46,7 +55,7 @@ export function TilikKlaimMark({
       <g fill="none" strokeLinecap="round">
         <path
           d="M64 12 A52 52 0 0 1 64 116"
-          stroke="var(--t-inv)"
+          stroke={ink}
           strokeWidth="6"
           pathLength={100}
           style={trunk}
@@ -60,9 +69,9 @@ export function TilikKlaimMark({
         />
       </g>
       <g style={settle(0.55)}>
-        <circle cx="64" cy="12" r="10" fill="var(--t-inv)" />
-        <circle cx="116" cy="64" r="10" fill="var(--t-inv)" />
-        <circle cx="64" cy="116" r="10" fill="var(--t-inv)" />
+        <circle cx="64" cy="12" r="10" fill={ink} />
+        <circle cx="116" cy="64" r="10" fill={ink} />
+        <circle cx="64" cy="116" r="10" fill={ink} />
         <circle
           cx="12"
           cy="64"
@@ -74,9 +83,9 @@ export function TilikKlaimMark({
         />
       </g>
       <g style={settle(0.85)}>
-        <rect x="47" y="46" width="34" height="8" rx="4" fill="var(--t-inv)" opacity="0.4" />
+        <rect x="47" y="46" width="34" height="8" rx="4" fill={ink} opacity="0.4" />
         <rect x="39" y="60" width="50" height="8" rx="4" fill="var(--logo-amb)" />
-        <rect x="51" y="74" width="26" height="8" rx="4" fill="var(--t-inv)" opacity="0.4" />
+        <rect x="51" y="74" width="26" height="8" rx="4" fill={ink} opacity="0.4" />
       </g>
     </svg>
   )

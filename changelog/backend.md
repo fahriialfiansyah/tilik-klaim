@@ -4,6 +4,48 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 
 ---
 
+### 2026-09-04 · Three roles, enforced on the server (Sprint 10, ADR-0006) · ✅ Done
+
+**Event:** Four disagreeing role lists became one matrix, and every ❌ in it became a refusal a test can see
+**Files:** `app/service/access.py`, `app/router/{guards,users}.py`, `app/store/{tables,users,seed_users,registry}.py`, `app/service/{users,disposition,demo_state}.py`, `app/dto/users.py`, `app/errors.py`, `migrations/versions/f2b8e91c60a7_*.py`, `scripts/{seed_dev,demo_reset}.py`, `tests/test_{access,users_endpoints}.py`
+> **The role model was a decoration.** `03_architecture.md` named `analyst` / `senior reviewer` /
+> `administrator`; the code used `reviewer` / `senior_reviewer` / `auditor`; the header displayed
+> a fourth, `analis casemix`, hardcoded and matching nothing — and it was the only one a judge
+> could actually see. `auditor` and `senior_reviewer` were the same role wearing two names: both
+> appeared in exactly two frozensets, with identical membership.
+> **`app/service/access.py` is now the one matrix**, and `disposition.py`'s `AUDIT_READER_ROLES`
+> and `REOPEN_ROLES` are *derived* from it rather than restated, so the two cannot drift.
+> `auditor` is retired; the one test that used it swaps in `senior_reviewer` and asserts exactly
+> what it asserted before.
+> **`admin` never touches a claim**, and that is checked as a property: `CAPABILITIES[ADMIN]`
+> must not intersect either reviewing role's set. It is refused the queue, case detail,
+> disposition, reopen, case audit, ingest, screen, evaluation and briefing — each with a stable
+> code, each asserted with a **forged** header, because that is what an attacker would send and
+> what this prototype cannot stop them sending.
+> **`X-Actor-Role` stays forgeable, and it is written down** in three places rather than hidden.
+> Production enforcement is a Bearer identity checked before the role is trusted; it is a stated
+> future requirement, not a shipped feature (ADR-0006 § 4). The no-header default stays
+> `reviewer` — a compatibility choice for the frozen endpoints, not a security one.
+> **`demo_passcode` is plain text and named for it.** The login page prints the value beside the
+> account it belongs to; hashing it would protect nothing, and `password_hash` on a value shown
+> on screen would be a lie told in a schema. Said in the column comment, the model docstring, and
+> the migration.
+> **User events get their own append-only table.** `audit_events.case_id` is `NOT NULL` because
+> every case event has a case; relaxing that to fit events which are not about a case would
+> weaken the stronger guarantee for the weaker one. `user_audit_events` shares the same
+> `tilik_audit_append_only()` trigger, so the two trails cannot drift in what they refuse.
+> **An admin cannot lock themselves out** — self-role-change and self-deactivation are refused
+> with `USER_SELF_MODIFICATION_REFUSED`, on the server, and a refused change writes no event.
+> **The frozen-path test now names paths instead of counting them.** It read `len(paths) == 8`;
+> a count would have passed if a frozen endpoint had been renamed while a new one appeared beside
+> it. It now asserts the seven frozen paths are present and that every addition is one this repo
+> has an ADR for.
+> Readiness gained `active_staff_count`: a rehearsal that deactivated an account and never reset
+> would otherwise start the next one locked out.
+> Verified: backend **504** passed (was 467) · alembic head `f2b8e91c60a7` (down-migration
+> round-tripped) · `docs/api/openapi.json` regenerated, twelve `/v1` paths · ruff clean ·
+> domain 23 · data 57 · model 71 · evaluation 47 unchanged.
+
 ### 2026-09-04 · The briefing runs on the real gateway — six defects only running it could find · ✅ Done
 
 **Event:** First real model calls. The LLM path works; every fix below came from output, not from reading code

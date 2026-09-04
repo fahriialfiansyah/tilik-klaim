@@ -50,7 +50,9 @@ const SESSION_KEY = 'tilik-session'
  * `auth-roles.spec.ts` signs in for real, through the form, so the path itself stays covered.
  *
  * `addInitScript` runs before any page script, so the store reads it on its very first render
- * and the guard never flashes the login page.
+ * and the guard never flashes the login page. **It also replays on every navigation** — which is
+ * what a spec that signs out must not use: clearing the session and navigating would write it
+ * straight back. Those specs sign in through the form, or open a second context.
  */
 export async function signInAs(page: Page, who: StaffKey = 'reviewer'): Promise<void> {
   const staff = STAFF[who]

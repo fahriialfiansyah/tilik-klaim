@@ -16,13 +16,21 @@ Dokumen ini **page-centric**: daftar halaman, rutenya, widget di dalamnya, dan p
 | 2 | Detail Kasus | `/cases/:id` | Detail page 3-kolom (shell) | Petugas casemix / anti-fraud | `04_DETAIL_KASUS_DISPOSISI`, `02_MESIN_BUKTI_DETEKSI` |
 | 3 | Ingest / Demo | `/ingest` | Form page (shell) | Petugas casemix + anggota tim demo | `01_INGEST_VALIDASI`, `06_DATA_SINTETIK` |
 | 4 | Audit & Evaluasi | `/evaluation` | Detail page (shell) | Peninjau senior + tim proposal | `05_AUDIT_EVALUASI` |
+| 5 | Masuk | `/login` | Split page (**di luar shell**) | Ketiga peran | Spec ini · [ADR-0006](../docs/canonical/decisions/ADR-0006-three-roles-and-simulated-login.md) |
+| 6 | Manajemen Pengguna | `/admin/users` | Detail page (shell) | Administrator saja | Spec ini · [ADR-0006](../docs/canonical/decisions/ADR-0006-three-roles-and-simulated-login.md) |
 
-**Empat halaman. Tidak lebih.** `docs/canonical/01_product_decision.md` menempatkan *many dashboards or dummy menus* di kolom OUT OF SCOPE. Menambah halaman kelima memerlukan perubahan pada canonical doc, bukan keputusan implementasi.
+**Enam halaman — naik dari empat pada 4 Sep 2026 lewat [ADR-0006](../docs/canonical/decisions/ADR-0006-three-roles-and-simulated-login.md).** Baris OUT OF SCOPE yang dijaga kalimat lama ("Empat halaman. Tidak lebih") berbunyi *many dashboards or dummy menus*, dan ujinya adalah apakah ada isi di baliknya:
+
+- `/login` **bukan entri menu sama sekali** — ia di luar `AppShell` dan merupakan satu-satunya jalan masuk ke lima halaman lain. Apa yang dipilih di sana mengubah apa yang dirender dan apa yang diterima API pada setiap halaman berikutnya.
+- `/admin/users` adalah satu-satunya halaman yang dapat dijangkau salah satu dari tiga peran, menulis peristiwa audit tambah-saja seperti disposisi kasus (ADR-0001), dan merupakan wujud konkret *Role/access matrix* yang sudah tercatat sebagai kewajiban tata kelola di `docs/canonical/07_privacy_threat_model.md` § Governance deliverables. Ia bukan dasbor: tidak ada satu pun agregat atau metrik di dalamnya.
+
+**Tidak ada halaman kelima untuk peninjau.** Aplikasi seorang peninjau tetap empat halaman yang sama.
 
 **Catatan layout:**
 - Riwayat audit per kasus adalah **tab di dalam** `/cases/:id`, bukan route tersendiri.
 - Laci perbandingan adalah **panel di dalam** `/cases/:id`, bukan route tersendiri.
-- Tidak ada halaman login. Peran disimulasikan; penegakan tingkat perusahaan didokumentasikan sebagai kebutuhan produksi, tidak dibangun sekarang.
+- **Halaman masuk memilih peran, bukan mengautentikasi siapa pun.** Kode demo tercetak di halaman yang sama dan disimpan apa adanya; penegakan akses tingkat perusahaan tetap didokumentasikan sebagai kebutuhan produksi dan **tidak** dibangun. `X-Actor-Role` tetap dapat dipalsukan secara desain — lihat ADR-0006 § 4.
+- Tiga peran, final: `reviewer` (Peninjau), `senior_reviewer` (Peninjau Senior), `admin` (Administrator). `auditor` dipensiunkan karena kemampuannya identik dengan `senior_reviewer`.
 
 ---
 
@@ -31,11 +39,16 @@ Dokumen ini **page-centric**: daftar halaman, rutenya, widget di dalamnya, dan p
 | # | Widget | Tipe | Data dari | Sumber Fitur |
 |---|--------|------|-----------|--------------|
 | G1 | Badge data sintetik | Indikator status warna, persisten | Penanda statis | `00_OVERVIEW` § 6.2 |
-| G2 | Navigasi utama | Tile menu (4 entri) | Daftar halaman | Spec ini |
+| G2 | Navigasi utama | Tile menu, **disaring menurut peran** | `src/config/menu/app-menu.ts` — setiap entri menyatakan peran yang boleh menjangkaunya | Spec ini · ADR-0006 § 2 |
 | G3 | Penanda versi mesin & data | Teks penanda yang bisa disalin | Versi aturan, model, kumpulan data aktif | `03_ANTREAN_REVIEW` § 2.1, `05_AUDIT_EVALUASI` § 2.2 |
-| G4 | Penanda peran aktif | Label | Peran simulasi: analis / peninjau senior / administrator | `00_OVERVIEW` § 6.2 |
+| G4 | Menu profil | Pemicu avatar + dropdown (Radix) | Sesi tersimpan: nama, email, peran, token petugas, tombol **Keluar** | Spec ini · ADR-0006 |
+| G5 | Badge akun simulasi | Indikator status, persisten | Penanda statis — **hanya di `/login`** | ADR-0006 § 3 |
 
-> **G1 tidak boleh dapat ditutup atau digulir keluar layar.** Ini kewajiban tata kelola dari `docs/canonical/07_privacy_threat_model.md`, bukan elemen dekoratif.
+> **G1 tidak boleh dapat ditutup atau digulir keluar layar.** Ini kewajiban tata kelola dari `docs/canonical/07_privacy_threat_model.md`, bukan elemen dekoratif. **G5 mengikuti aturan yang sama** di halaman tempat ia muncul.
+
+> **G2 disaring di klien sebagai kemudahan, bukan sebagai kendali akses.** Setiap ❌ pada matriks ADR-0006 § 2 ditolak oleh server dengan kode galat stabil, dan `apps/backend/tests/test_access.py` menegakkannya. Menyembunyikan tombol bukan kendali akses.
+
+> **G4 menggantikan penanda peran lama** (`analis casemix`, tertulis mati di `AppHeader.tsx`) — nama keempat untuk sebuah peran, yang tidak cocok dengan tiga nama di kode maupun tiga nama di `03_architecture.md`, dan satu-satunya yang benar-benar terlihat juri.
 
 ---
 
@@ -221,6 +234,78 @@ Wisaya konfigurasi apa pun. Tidak ada langkah pilih-detektor, pilih-ambang-batas
 
 - **Masuk dari:** `/` (klik penanda versi) · navigasi utama
 - **Keluar ke:** `/cases/:id` (dari entri riwayat menuju kasusnya) · `/` (navigasi utama)
+
+---
+
+## 6b. Page 5 — Masuk (`/login`)
+
+**Persona:** Ketiga peran
+**Layout:** Satu layar penuh **di luar shell** — pita atas, matriks peran di tengah, laras isian, baris konteks
+**Sumber:** [ADR-0006](../docs/canonical/decisions/ADR-0006-three-roles-and-simulated-login.md) § 2–3
+
+**Halaman ini *adalah* matriks hak akses.** Baris adalah orang, kolom adalah kemampuan, memilih baris
+berarti memilih peran. Siapa pun yang membacanya mengerti model peran — tiga peran, dan administrator
+yang tidak menyentuh kasus — sebelum masuk. Itulah pemisahan tugas yang disebut
+`docs/canonical/07_privacy_threat_model.md`, dibuat terlihat alih-alih dijelaskan.
+
+### Widget
+
+| # | Widget | Tipe | Data dari | Sumber Fitur |
+|---|--------|------|-----------|--------------|
+| 1 | Pita atas | Bar gelap: tanda, wordmark, sakelar tema, badge `AKUN SIMULASI`, badge `DATA SINTETIK` | Penanda statis | G1 · G5 · ADR-0006 § 3 |
+| 2 | Judul & penafian | Judul halaman + paragraf | Teks statis | ADR-0006 § 3 |
+| 3 | Tanda TilikKlaim | SVG 112 px, menggambar diri sekali saat muat | — | `design/DESIGN.md` |
+| 4 | **Matriks peran** | `<table>` dengan radiogroup di kolom pertama | `src/features/auth/access-matrix.json` — **dibangkitkan** dari `app/service/access.py` | ADR-0006 § 2 |
+| 5 | Laras isian | Email + kode demo + tombol masuk yang menyebut peran terpilih | Baris terpilih; keduanya tetap dapat disunting | ADR-0006 § 3 |
+| 6 | Salin kredensial | Tombol | `email · passcode` baris terpilih | ADR-0006 § 3 |
+| 7 | Baris konteks kompetisi | Teks | Nama lomba, kategori, penyangkalan produk resmi | `00_competition_brief.md` § Eligibility |
+| 8 | Latar tekstur klaim | SVG pattern, 24% opasitas | Dibangkitkan kode sendiri — tanpa lisensi pihak ketiga | ADR-0006 |
+
+### Aturan tampil (mengikat)
+
+1. **Muat satu layar.** `h-svh` + `overflow-hidden`; sebuah spesifikasi Playwright mengukur bahwa halaman tidak menggulir pada 1440×900.
+2. **Matriks dibangkitkan, bukan diketik ulang.** `scripts/export_access_matrix.py` menulis JSON-nya; `test_the_exported_access_matrix_matches_the_server` gagal saat berkas yang di-commit menyimpang. Halaman yang menyalin matriks dengan tangan adalah halaman yang bisa diam-diam berbohong tentang apa yang server izinkan.
+3. **Setiap sel berkata *Boleh* atau *Tidak* dengan kata.** Centang dan silang `aria-hidden`; warna tidak pernah menjadi satu-satunya pembawa makna.
+4. **Kedua badge tidak dapat ditutup** dan tidak dirender bersyarat.
+5. **Kode demo tercetak dan tidak disamarkan** (`type="text"`). Menyamarkan nilai yang tertera di halaman yang sama menyiratkan rahasia yang tidak ada.
+6. **Tidak ada klaim keamanan.** Kriteria penghentian pertama ADR-0006 adalah halaman ini terbaca sebagai klaim keamanan oleh pembaca non-domain.
+7. **Latar tidak memuat merek siapa pun.** Aturan orisinalitas lomba melarang memakai kekayaan intelektual yang bukan milik kita — termasuk milik penyelenggara.
+
+### Navigasi
+
+- **Masuk dari:** pemuatan pertama tanpa sesi · penjaga rute · tombol **Keluar** di menu profil
+- **Keluar ke:** `/` (peninjau & peninjau senior) · `/admin/users` (administrator)
+
+---
+
+## 6c. Page 6 — Manajemen Pengguna (`/admin/users`)
+
+**Persona:** Administrator saja
+**Layout:** Detail page (shell)
+**Sumber:** [ADR-0006](../docs/canonical/decisions/ADR-0006-three-roles-and-simulated-login.md) § 2 · § 7
+
+### Widget
+
+| # | Widget | Tipe | Data dari | Sumber Fitur |
+|---|--------|------|-----------|--------------|
+| 1 | Tabel petugas | `<table>` — nama, token, email, peran, status, terakhir masuk | `GET /v1/users` | ADR-0006 § 6 |
+| 2 | Pemilih peran | `<select>` per baris | `PATCH /v1/users/{id}` | ADR-0006 § 2 |
+| 3 | Sakelar aktif | Kotak centang per baris | `PATCH /v1/users/{id}` | ADR-0006 § 7 |
+| 4 | Banner penolakan | Alert | Kode galat stabil dari server | `app/errors.py` |
+| 5 | Riwayat manajemen pengguna | Daftar terurut, terbaru di atas | `GET /v1/users/audit` | ADR-0001 · ADR-0006 |
+| 6 | Empat keadaan | memuat · kosong · galat · nonaktif | Keadaan permintaan | `design/DESIGN.md` |
+
+### Aturan tampil (mengikat)
+
+1. **Administrator tidak dapat mengubah peran atau menonaktifkan dirinya sendiri.** Ditolak di server dengan `USER_SELF_MODIFICATION_REFUSED`; kontrol pada barisnya dinonaktifkan **dan menyebutkan alasannya**, bukan sekadar diabukan.
+2. **Tidak ada tambah dan tidak ada hapus.** Daftar tetap tiga (ADR-0006 § 7).
+3. **Riwayat bersifat tambah-saja.** Tidak ada kontrol yang menyunting atau menghapus entri, dan tidak ada endpoint yang bisa.
+4. **Gulir dibatasi lewat `PerfectScrollArea`**, sesuai `.claude/rules/architecture.md`.
+
+### Navigasi
+
+- **Masuk dari:** `/login` sebagai administrator · entri menu **Manajemen Pengguna**
+- **Keluar ke:** `/login` lewat **Keluar**. Tidak ada jalan ke kasus mana pun — itu bukan kekurangan, itu pemisahan tugasnya.
 
 ---
 

@@ -17,6 +17,26 @@ import { STAFF, signInAs } from './helpers'
  */
 const BACKEND = path.resolve(__dirname, '../../../backend')
 
+/**
+ * The page's own `<h1>`, not the audit panel's `<h2>` beneath it.
+ *
+ * Playwright matches an accessible name by substring, and "Riwayat manajemen pengguna" contains
+ * "Manajemen Pengguna" — so an inexact locator resolves to two headings and fails on strict mode.
+ */
+const ADMIN_HEADING = (page: import('@playwright/test').Page) =>
+  page.getByRole('heading', { name: 'Manajemen Pengguna', exact: true })
+
+const LOGIN_HEADING = (page: import('@playwright/test').Page) =>
+  page.getByRole('heading', { name: 'Pilih peran Anda hari ini' })
+
+/** The submit button names the role it is about to sign in as, so it moves with the selection. */
+const SUBMIT = (page: import('@playwright/test').Page, role: string) =>
+  page.getByRole('button', { name: `Masuk sebagai ${role}` })
+
+/** One row of the access matrix, found by the person named in it. */
+const ROW = (page: import('@playwright/test').Page, name: string) =>
+  page.getByRole('row').filter({ hasText: name })
+
 function resetDemo(): void {
   execFileSync('uv', ['run', 'python', 'scripts/demo_reset.py'], {
     cwd: BACKEND,
@@ -33,55 +53,93 @@ test.beforeAll(resetDemo)
 test.afterAll(resetDemo)
 
 test.describe('signing in', () => {
-  test('a reviewer signs in through the form and lands on the queue', async ({ page }) => {
+  test('the page opens on the reviewer row, already filled, and signs in', async ({ page }) => {
     await page.goto('/login')
 
-    await expect(page.getByText('AKUN SIMULASI')).toBeVisible()
-    await expect(page.getByText('DATA SINTETIK')).toBeVisible()
+    await expect(page.getByText('AKUN SIMULASI', { exact: true })).toBeVisible()
+    await expect(page.getByText('DATA SINTETIK', { exact: true })).toBeVisible()
 
-    await page.getByLabel('Email petugas').fill(STAFF.reviewer.email)
-    await page.getByLabel('Kode demo').fill(STAFF.reviewer.passcode)
-    await page.getByRole('button', { name: 'Masuk', exact: true }).click()
+    // The matrix is the control, so the fields arrive filled from the chosen row.
+    await expect(page.getByLabel('Email petugas')).toHaveValue(STAFF.reviewer.email)
+    await expect(page.getByLabel('Kode demo')).toHaveValue(STAFF.reviewer.passcode)
+
+    await SUBMIT(page, 'Peninjau').click()
 
     await expect(page.getByRole('heading', { name: 'Antrean Review' })).toBeVisible()
     await expect(page.getByRole('button', { name: /Sari Wulandari/ })).toBeVisible()
   })
 
-  test('Pakai fills the form, so a persona switch is one click and Enter', async ({ page }) => {
+  test('the matrix states the role model before anyone signs in', async ({ page }) => {
     await page.goto('/login')
 
-    const card = page.getByRole('listitem').filter({ hasText: 'Budi Santoso' })
-    await card.getByRole('button', { name: 'Pakai' }).click()
+    // The whole reason this page is the matrix: separation of duties, readable at a glance.
+    const adminRow = ROW(page, 'Rina Hartati')
+    await expect(adminRow.getByText('Tidak')).toHaveCount(5)
+    await expect(adminRow.getByText('Boleh')).toHaveCount(1)
+
+    await expect(ROW(page, 'Sari Wulandari').getByText('Tidak')).toHaveCount(2)
+    await expect(ROW(page, 'Budi Santoso').getByText('Tidak')).toHaveCount(1)
+  })
+
+  test('the page says it is not a security control, and not an official BPJS product', async ({
+    page,
+  }) => {
+    await page.goto('/login')
+    await expect(page.getByText(/tidak mengamankan apa pun/)).toBeVisible()
+    await expect(page.getByText(/bukan produk atau layanan resmi BPJS Kesehatan/)).toBeVisible()
+    await expect(page.getByText(/KATEGORI 2/)).toBeVisible()
+  })
+
+  test('the whole page fits one screen — no scrolling at 1440x900', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/login')
+    await expect(LOGIN_HEADING(page)).toBeVisible()
+
+    const overflows = await page.evaluate(
+      () => document.documentElement.scrollHeight > window.innerHeight + 1,
+    )
+    expect(overflows, 'the login page must not scroll').toBe(false)
+  })
+
+  test('choosing another row rewrites the fields and renames the button', async ({ page }) => {
+    await page.goto('/login')
+
+    await ROW(page, 'Budi Santoso').getByRole('radio').check()
 
     await expect(page.getByLabel('Email petugas')).toHaveValue(STAFF.senior_reviewer.email)
-    await page.keyboard.press('Enter')
+    await expect(SUBMIT(page, 'Peninjau Senior')).toBeVisible()
 
+    await SUBMIT(page, 'Peninjau Senior').click()
     await expect(page.getByRole('button', { name: /Budi Santoso/ })).toBeVisible()
   })
 
   test('the whole sign-in works from the keyboard alone', async ({ page }) => {
     await page.goto('/login')
 
-    await page.getByLabel('Email petugas').focus()
-    await page.keyboard.type(STAFF.admin.email)
-    await page.keyboard.press('Tab')
-    await page.keyboard.type(STAFF.admin.passcode)
-    await page.keyboard.press('Tab')
-    await expect(page.getByRole('button', { name: 'Masuk', exact: true })).toBeFocused()
+    // The three personas are one radio group, so arrow keys walk down the matrix.
+    await ROW(page, 'Sari Wulandari').getByRole('radio').focus()
+    await page.keyboard.press('ArrowDown')
+    await page.keyboard.press('ArrowDown')
+
+    await expect(page.getByLabel('Email petugas')).toHaveValue(STAFF.admin.email)
+    await expect(SUBMIT(page, 'Administrator')).toBeVisible()
+
+    await SUBMIT(page, 'Administrator').focus()
     await page.keyboard.press('Enter')
 
-    await expect(page.getByRole('heading', { name: 'Manajemen Pengguna' })).toBeVisible()
+    await expect(ADMIN_HEADING(page)).toBeVisible()
   })
 
   test('a wrong passcode is refused and the page never echoes it back', async ({ page }) => {
     await page.goto('/login')
 
-    await page.getByLabel('Email petugas').fill(STAFF.reviewer.email)
     await page.getByLabel('Kode demo').fill('kode-yang-salah')
-    await page.getByRole('button', { name: 'Masuk', exact: true }).click()
+    await SUBMIT(page, 'Peninjau').click()
 
     await expect(page.getByRole('alert')).toContainText('tidak cocok')
     await expect(page.getByRole('heading', { name: 'Antrean Review' })).toHaveCount(0)
+    // The refusal must not cost the operator what they typed.
+    await expect(page.getByLabel('Email petugas')).toHaveValue(STAFF.reviewer.email)
   })
 })
 
@@ -106,7 +164,7 @@ test.describe('what each role sees', () => {
 
     // Typing the queue's URL is redirected, not shown.
     await page.goto('/')
-    await expect(page.getByRole('heading', { name: 'Manajemen Pengguna' })).toBeVisible()
+    await expect(ADMIN_HEADING(page)).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Antrean Review' })).toHaveCount(0)
   })
 
@@ -154,22 +212,34 @@ test.describe('user management', () => {
 
   test('a deactivated account is refused at sign-in, with a sentence naming why', async ({
     page,
+    browser,
   }) => {
     await signInAs(page, 'admin')
     await page.goto('/admin/users')
 
+    // `click`, not `uncheck`: the checkbox is controlled by the server's answer, so its state
+    // changes when the PATCH returns rather than on the click. `uncheck` asserts the flip
+    // immediately and fails on a control that is honest about being asynchronous.
     const row = page.getByRole('row').filter({ hasText: 'Budi Santoso' })
-    await row.getByRole('checkbox').uncheck()
+    await row.getByRole('checkbox').click()
     await expect(page.getByText('Akun dinonaktifkan')).toBeVisible()
+    await expect(row.getByText('Nonaktif')).toBeVisible()
 
-    await page.evaluate(() => window.localStorage.removeItem('tilik-session'))
-    await page.goto('/login')
-    await page.getByLabel('Email petugas').fill(STAFF.senior_reviewer.email)
-    await page.getByLabel('Kode demo').fill(STAFF.senior_reviewer.passcode)
-    await page.getByRole('button', { name: 'Masuk', exact: true }).click()
+    // A second context, because `signInAs` replays its seed on every navigation in this one —
+    // clearing the session here would write it straight back before the guard ran.
+    const visitor = await browser.newContext()
+    const clean = await visitor.newPage()
+    await clean.goto('/login')
+    await ROW(clean, 'Budi Santoso').getByRole('radio').check()
+    await clean.getByRole('button', { name: 'Masuk sebagai Peninjau Senior' }).click()
 
-    await expect(page.getByRole('alert')).toContainText('dinonaktifkan')
-    await expect(page.getByRole('alert')).toContainText('PTG-02')
+    await expect(clean.getByRole('alert')).toContainText('dinonaktifkan')
+    await expect(clean.getByRole('alert')).toContainText('PTG-02')
+    await visitor.close()
+
+    // Put Budi back, so the next spec — and the next rehearsal — finds a roster it can use.
+    await row.getByRole('checkbox').click()
+    await expect(page.getByText('Akun diaktifkan kembali')).toBeVisible()
   })
 })
 
@@ -188,15 +258,18 @@ test.describe('signing out', () => {
   })
 
   test('Keluar clears the session and returns to the login page', async ({ page }) => {
-    await signInAs(page, 'reviewer')
-    await page.goto('/')
+    // Signed in through the form rather than seeded: `signInAs` replays its seed on every
+    // navigation, which would silently undo the sign-out this spec is about.
+    await page.goto('/login')
+    await SUBMIT(page, 'Peninjau').click()
+    await expect(page.getByRole('heading', { name: 'Antrean Review' })).toBeVisible()
 
     await page.getByRole('button', { name: /Sari Wulandari/ }).click()
     await page.getByRole('menuitem', { name: /Keluar/ }).click()
 
-    await expect(page.getByRole('heading', { name: 'Masuk' })).toBeVisible()
+    await expect(LOGIN_HEADING(page)).toBeVisible()
     // Going back to a guarded route does not resurrect the session.
     await page.goto('/')
-    await expect(page.getByRole('heading', { name: 'Masuk' })).toBeVisible()
+    await expect(LOGIN_HEADING(page)).toBeVisible()
   })
 })

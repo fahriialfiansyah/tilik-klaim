@@ -15,7 +15,7 @@ describe('demo accounts', () => {
     }
   })
 
-  test('the copied line carries both halves needed to sign in', () => {
+  test('the credential line carries both halves needed to sign in', () => {
     const line = credentialLine(DEMO_ACCOUNTS[0])
     expect(line).toContain(DEMO_ACCOUNTS[0].email)
     expect(line).toContain(DEMO_ACCOUNTS[0].passcode)

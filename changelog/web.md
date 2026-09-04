@@ -4,6 +4,67 @@ Append-only. Newest entry at the top.
 
 ---
 
+### 2026-09-04 · The login page *is* the access matrix (Sprint 10, ADR-0006) · ✅ Done
+
+**Event:** `analis casemix` is gone; `/login` teaches the role model before anyone signs in, and a favicon finally exists
+**Files:** `src/features/auth/**`, `src/features/admin/users/**`, `src/pages/{login,admin-users}/*`, `src/config/menu/app-menu.ts`, `src/App.tsx`, `src/lib/http.ts`, `src/components/layouts/{AppHeader,AppSidebar}.tsx`, `src/components/ui/{button,dropdown-menu}.tsx`, `src/components/brand/TilikKlaimMark.tsx`, `src/assets/favicon.svg`, `rsbuild.config.ts`, `apps/backend/scripts/export_access_matrix.py`
+> **The first design was rejected, correctly.** It was a brand panel on the left and a form on
+> the right — the layout every dashboard ships — and it scrolled, because three account cards
+> stacked under the form made the page ~1.240 px tall at 1440×900. The first thing a judge would
+> have seen was a login that does not fit on screen.
+> **What shipped instead: the page is the ADR-0006 § 2 access matrix.** Rows are the three
+> synthetic staff, columns are what each may do, and choosing a row chooses who signs in. Anyone
+> reading it learns in five seconds that there are three roles and that the administrator touches
+> no claim — which is the separation of duties `07_privacy_threat_model.md` names, made visible
+> rather than described. It also settles the "Role/access matrix" that § Governance deliverables
+> had listed as owed: it is now a live artefact instead of a table in a document.
+> **The matrix is generated, not retyped.** `scripts/export_access_matrix.py` writes
+> `access-matrix.json` from `app/service/access.py`, and
+> `test_the_exported_access_matrix_matches_the_server` fails when the committed file drifts —
+> the same discipline the demo samples already follow. It matters more here than anywhere else:
+> a hand-maintained copy would be a screen that quietly lies about what the server permits.
+> `matrix.test.ts` additionally asserts every displayed column exists in the generated file, so a
+> column can never be invented in the UI.
+> **Selection is a real radio group inside a real table.** Arrow keys walk the personas, the group
+> has one tab stop, and assistive technology announces the person and the column heading together.
+> A `<div role="radio">` would have given none of that for free.
+> **Colour never carries the answer.** Every cell says *Boleh* or *Tidak* in words; tick and cross
+> are `aria-hidden`.
+> **The background is generated from the product's own data shape** — claim lines, evidence
+> connectors, and rare amber gaps — at 24% opacity, clipped below the header band. The first
+> attempt ran over the navy band and read as dirt rather than texture. It carries no organisation's
+> marks: the competition's originality rule forbids using intellectual property that is not ours
+> (`00_competition_brief.md` § Eligibility, [PDF-PG pp. 4–5]), and the submission checklist wants
+> visual licences documented — a background this file draws answers that line in a sentence.
+> **The footer states the context and the limit**: Healthkathon 2026, Kategori 2, and *"bukan
+> produk atau layanan resmi BPJS Kesehatan"*. The disclaimer is the same stance that makes the
+> rest of the proposal credible.
+> **`h-svh` + `overflow-hidden`, and a Playwright spec asserts the page does not scroll** at
+> 1440×900 — measured, not promised.
+> **The profile menu replaces the hardcoded role constant.** Radix `DropdownMenu`, so focus,
+> Escape and click-outside are its. Unlike `dialog.tsx` it needs **no** manual focus return: that
+> file restores by hand because every drawer opens from an ordinary button and Radix's restore
+> aims at a `DialogTrigger` this app never uses — a dropdown always has one.
+> **Signing out warns when a disposition draft is unsaved.** `store.ts` keeps drafts alive so a
+> refused save costs the reviewer nothing; a sign-out that silently discarded one would undo that
+> guarantee from the other direction. `evidenceSeeded` deliberately does not count — that is the
+> system's pre-tick, not the reviewer's work.
+> **Navigation is role-aware from `src/config/menu/app-menu.ts` and nowhere else.** An
+> administrator's sidebar has one entry — thin on purpose, and the point. Hiding a link is a
+> courtesy; two Playwright specs check the API directly with a forged header so the UI and the
+> server cannot silently disagree.
+> **`ACTOR_ROLE = 'reviewer'` is deleted.** `X-Actor-Role` and a new `X-Actor-Id` now come from
+> the session, attached once in `src/lib/http.ts`.
+> **`/admin/users`** is a real `<table>` with `<th scope>`, bounded through `PerfectScrollArea`,
+> four states, and an append-only trail beneath it. The signed-in admin's own row is disabled
+> **and says why** rather than sitting greyed out.
+> **`Button` gained `forwardRef`** and `TilikKlaimMark` gained `onSurface` — its solid stroke is
+> `--t-inv`, which is near-white and invisible on the page surface the mark now sits on.
+> **A favicon exists at last:** the mark on the header navy, SVG, with *literal* colours. Browser
+> chrome renders a favicon with no access to the page's custom properties, so the theme-following
+> component could not be reused; three bars became one, because at 16 px three resolve as a smudge.
+> Verified: web **236** passed (was 184) · playwright **40** passed (was 24) · tsc clean.
+
 ### 2026-09-04 · The briefing panel, driven by a real model · ✅ Done
 
 **Event:** First run of the panel against the live vLLM gateway rather than a fake provider
