@@ -6,25 +6,19 @@ import type {
 } from '@/features/review/case-detail/types'
 import { request } from '@/lib/http'
 
-/**
- * The actor's role travels in a header.
- *
- * This is **role simulation for a prototype**, matching what the backend expects, and it is not
- * authentication — the demo has no login and `docs/canonical/01_product_decision.md` puts
- * enterprise IAM out of scope. Naming it plainly is deliberate: dressing it up as a token would
- * invite someone to mistake it for a security control.
+/*
+ * The actor headers used to be a hardcoded `ACTOR_ROLE = 'reviewer'` constant here, sent on
+ * every call whoever was looking at the screen. Since ADR-0006 they come from the signed-in
+ * persona and are attached by `src/lib/http.ts` for every request, so there is nothing left for
+ * this module to add.
  */
-export const ACTOR_ROLE = 'reviewer'
-const ACTOR_HEADER = { 'X-Actor-Role': ACTOR_ROLE }
 
 export async function fetchCaseDetail(caseId: string): Promise<CaseDetail> {
   return request<CaseDetail>(`/cases/${encodeURIComponent(caseId)}`)
 }
 
 export async function fetchAudit(caseId: string): Promise<AuditResponse> {
-  return request<AuditResponse>(`/cases/${encodeURIComponent(caseId)}/audit`, {
-    headers: ACTOR_HEADER,
-  })
+  return request<AuditResponse>(`/cases/${encodeURIComponent(caseId)}/audit`)
 }
 
 /**
@@ -42,7 +36,6 @@ export async function saveDisposition(
 ): Promise<DispositionResponse> {
   return request<DispositionResponse>(`/cases/${encodeURIComponent(caseId)}/dispositions`, {
     method: 'POST',
-    headers: ACTOR_HEADER,
     body: JSON.stringify(body),
   })
 }

@@ -1,5 +1,20 @@
 import { expect, test } from '@playwright/test'
 
+import { signInAs } from './helpers'
+
+/**
+ * Every spec below runs as a signed-in reviewer.
+ *
+ * The session is seeded into `localStorage` rather than typed into the login form: these specs
+ * are about the review flow, and walking three extra clicks at the top of each would test the
+ * same thing twenty times while adding a failure mode to specs that are not about it.
+ * `auth-roles.spec.ts` signs in for real, so the form itself stays covered.
+ */
+test.beforeEach(async ({ page }) => {
+  await signInAs(page)
+})
+
+
 /**
  * The ingest screen, against the real API.
  *

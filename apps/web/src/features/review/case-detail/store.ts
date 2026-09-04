@@ -184,6 +184,23 @@ export const useCaseDetailStore = create<CaseDetailStore>((set) => ({
     }),
 }))
 
+/**
+ * Has the reviewer typed or chosen anything that a sign-out would throw away?
+ *
+ * `evidenceSeeded` is deliberately not counted: it records that the checklist pre-ticked
+ * itself once, which is the system's doing rather than the reviewer's, and warning about it
+ * would cry wolf on a case nobody has touched.
+ */
+export function hasUnsavedDraft(drafts: Readonly<Record<string, DispositionDraft>>): boolean {
+  return Object.values(drafts).some(
+    (draft) =>
+      draft.action !== null ||
+      draft.structuredReason.trim() !== '' ||
+      draft.note.trim() !== '' ||
+      draft.requestedEvidence.length > 0,
+  )
+}
+
 /** A decision is savable only once an action **and** a reason are both present. */
 export function isSavable(draft: DispositionDraft): boolean {
   return draft.action !== null && draft.structuredReason.trim().length > 0

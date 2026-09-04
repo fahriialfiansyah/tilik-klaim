@@ -4,6 +4,7 @@ import {
   dispositionAsAnotherReviewer,
   fillDisposition,
   findOpenCase,
+  signInAs,
 } from './helpers'
 
 /**
@@ -14,6 +15,18 @@ import {
  * exist because a real server refused something — a version conflict, and an audit event that
  * was actually persisted — and against a mock both would pass with the write path broken.
  */
+
+/**
+ * Every spec below runs as a signed-in reviewer.
+ *
+ * The session is seeded into `localStorage` rather than typed into the login form: these specs
+ * are about the review flow, and walking three extra clicks at the top of each would test the
+ * same thing twenty times while adding a failure mode to specs that are not about it.
+ * `auth-roles.spec.ts` signs in for real, so the form itself stays covered.
+ */
+test.beforeEach(async ({ page }) => {
+  await signInAs(page)
+})
 
 test.describe('happy path — queue to disposition to audit', () => {
   test('a phantom case can be confirmed and the decision appears in its history', async ({

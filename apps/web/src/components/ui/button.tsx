@@ -1,6 +1,6 @@
 import { Slot } from '@radix-ui/react-slot'
 import { type VariantProps, cva } from 'class-variance-authority'
-import type { ComponentProps } from 'react'
+import { forwardRef, type ComponentProps } from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -40,15 +40,26 @@ type ButtonProps = ComponentProps<'button'> &
     readonly asChild?: boolean
   }
 
-export function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
+/**
+ * `forwardRef` because this app is on React 18, where `ref` is not an ordinary prop.
+ *
+ * The login form needs it: `Pakai` fills both fields and then moves focus to submit, so a
+ * reviewer switching persona mid-demo presses one button and Enter. Without a forwarded ref the
+ * focus call would silently do nothing — the kind of defect only a keyboard finds.
+ */
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  { className, variant, size, asChild = false, ...props },
+  ref,
+) {
   const Component = asChild ? Slot : 'button'
   return (
     <Component
+      ref={ref}
       data-slot="button"
       className={cn(buttonVariants({ variant, size }), className)}
       {...props}
     />
   )
-}
+})
 
 export { buttonVariants }

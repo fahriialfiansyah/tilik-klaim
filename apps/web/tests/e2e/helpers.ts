@@ -9,6 +9,68 @@ import { expect } from '@playwright/test'
  * refreshed" into a failing test that looks like a broken feature.
  */
 
+/** The three seeded personas, mirroring `apps/backend/app/store/seed_users.py`. */
+export const STAFF = {
+  reviewer: {
+    userId: 'usr_sari_wulandari',
+    staffToken: 'PTG-01',
+    fullName: 'Sari Wulandari',
+    email: 'sari.wulandari@rsud-demo.example',
+    passcode: 'demo-reviewer-2026',
+    role: 'reviewer',
+  },
+  senior_reviewer: {
+    userId: 'usr_budi_santoso',
+    staffToken: 'PTG-02',
+    fullName: 'Budi Santoso',
+    email: 'budi.santoso@rsud-demo.example',
+    passcode: 'demo-senior-2026',
+    role: 'senior_reviewer',
+  },
+  admin: {
+    userId: 'usr_rina_hartati',
+    staffToken: 'PTG-03',
+    fullName: 'Rina Hartati',
+    email: 'rina.hartati@rsud-demo.example',
+    passcode: 'demo-admin-2026',
+    role: 'admin',
+  },
+} as const
+
+export type StaffKey = keyof typeof STAFF
+
+const SESSION_KEY = 'tilik-session'
+
+/**
+ * Seed a persona into `localStorage` before the first navigation.
+ *
+ * Every spec except `auth-roles.spec.ts` uses this: they are about the review flow, not about
+ * signing in, and walking the login form at the top of each one would test the same three
+ * clicks twenty times while adding a failure mode to specs that are not about it.
+ * `auth-roles.spec.ts` signs in for real, through the form, so the path itself stays covered.
+ *
+ * `addInitScript` runs before any page script, so the store reads it on its very first render
+ * and the guard never flashes the login page.
+ */
+export async function signInAs(page: Page, who: StaffKey = 'reviewer'): Promise<void> {
+  const staff = STAFF[who]
+  await page.addInitScript(
+    ([key, value]) => window.localStorage.setItem(key, value),
+    [
+      SESSION_KEY,
+      JSON.stringify({
+        user_id: staff.userId,
+        staff_token: staff.staffToken,
+        full_name: staff.fullName,
+        email: staff.email,
+        role: staff.role,
+        is_active: true,
+        last_signed_in_at: null,
+      }),
+    ] as const,
+  )
+}
+
 export type RiskMode =
   | 'PHANTOM_OR_NO_PROCEDURE_EVIDENCE'
   | 'REPEAT_BILLING'
@@ -66,7 +128,10 @@ export async function dispositionAsAnotherReviewer(
   expectedVersion: number,
 ): Promise<void> {
   const response = await request.post(`/v1/cases/${caseId}/dispositions`, {
-    headers: { 'X-Actor-Role': 'senior_reviewer' },
+    headers: {
+      'X-Actor-Role': 'senior_reviewer',
+      'X-Actor-Id': STAFF.senior_reviewer.userId,
+    },
     data: {
       action: 'REQUEST_EVIDENCE',
       structured_reason: 'Berkas pendukung belum lengkap',

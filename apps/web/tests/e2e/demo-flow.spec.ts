@@ -3,7 +3,19 @@ import path from 'node:path'
 
 import { expect, test } from '@playwright/test'
 
-import { fillDisposition, findOpenCase } from './helpers'
+import { fillDisposition, findOpenCase, signInAs } from './helpers'
+
+/**
+ * Every spec below runs as a signed-in reviewer.
+ *
+ * The session is seeded into `localStorage` rather than typed into the login form: these specs
+ * are about the review flow, and walking three extra clicks at the top of each would test the
+ * same thing twenty times while adding a failure mode to specs that are not about it.
+ * `auth-roles.spec.ts` signs in for real, so the form itself stays covered.
+ */
+test.beforeEach(async ({ page }) => {
+  await signInAs(page)
+})
 
 /**
  * The ninety-second demo flow from `docs/canonical/08_demo_runbook.md` § 90-second flow, walked

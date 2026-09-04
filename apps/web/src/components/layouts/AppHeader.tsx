@@ -1,10 +1,14 @@
 import { useState } from 'react'
 import { TilikKlaimMark } from '@/components/brand/TilikKlaimMark'
+import { ProfileMenu } from '@/features/auth/components/ProfileMenu'
 import { copyStamp, shortStamp, useEngineVersion } from '@/modules/engine-version/useEngineVersion'
 import { ThemeToggle } from '@/modules/theme/ThemeToggle'
 
-/** Simulated role. There is no login — `sprint/00-app-spec.md` § 1 records this as A2. */
-const ACTIVE_ROLE = 'analis casemix'
+/*
+ * The role marker used to be a hardcoded `ACTIVE_ROLE = 'analis casemix'` constant here — a
+ * fourth name for a role, matching neither the code's three nor `03_architecture.md`'s three,
+ * and the only one a judge could actually see. ADR-0006 replaced it with the signed-in person.
+ */
 
 const COPY_FEEDBACK_MS = 1600
 
@@ -27,14 +31,6 @@ export function AppHeader() {
       <div className="flex min-w-0 items-center gap-[10px]">
         <TilikKlaimMark className="block size-[30px] shrink-0" />
         <span className="text-lead font-semibold tracking-[.11em] text-ink-inv">TILIKKLAIM</span>
-        <span aria-hidden className="h-5 w-px bg-ink-inv/16" />
-        <span className="flex items-center gap-[7px] font-mono text-meta text-ink-inv-2">
-          PERAN
-          {/* G4 — active role marker. */}
-          <span className="rounded-full bg-ink-inv/8 px-2 py-[2px] font-medium text-ink-inv">
-            {ACTIVE_ROLE}
-          </span>
-        </span>
       </div>
 
       <div className="flex items-center gap-[10px]">
@@ -51,6 +47,9 @@ export function AppHeader() {
         </button>
 
         <ThemeToggle />
+
+        {/* G4 — who is signed in, and the way out. Replaces the hardcoded role marker. */}
+        <ProfileMenu />
 
         {/*
           G1 — synthetic-data badge. `docs/canonical/07_privacy_threat_model.md` requires it on

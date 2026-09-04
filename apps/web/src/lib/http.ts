@@ -1,3 +1,5 @@
+import { currentUser } from '@/features/auth/useSession'
+
 /**
  * One problem the server found, pointed at a specific resource.
  *
@@ -55,6 +57,25 @@ export class NetworkError extends Error {
 const BASE = '/v1'
 
 /**
+ * The two headers every request carries, taken from the signed-in persona.
+ *
+ * **Both are forgeable, and that is documented rather than hidden** — ADR-0006 § 4. Anyone with
+ * `curl` can send any role; what the server does is refuse what the *claimed* role may not do
+ * and record the claim on every audit event. Verifying the claim is a production requirement
+ * this prototype states and does not meet.
+ *
+ * The role header replaces a hardcoded `ACTOR_ROLE = 'reviewer'` that used to live in one
+ * feature's api module and travel on every call regardless of who was looking at the screen.
+ */
+function actorHeaders(): Record<string, string> {
+  const user = currentUser()
+  if (!user) {
+    return {}
+  }
+  return { 'X-Actor-Role': user.role, 'X-Actor-Id': user.user_id }
+}
+
+/**
  * Same-origin JSON request. Paths are relative, so the Rsbuild dev proxy handles them in
  * development and a reverse proxy handles them in production — no origin is baked into the bundle.
  *
@@ -67,7 +88,7 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   try {
     response = await fetch(`${BASE}${path}`, {
       ...init,
-      headers: { 'content-type': 'application/json', ...init?.headers },
+      headers: { 'content-type': 'application/json', ...actorHeaders(), ...init?.headers },
     })
   } catch (cause) {
     throw new NetworkError(cause)

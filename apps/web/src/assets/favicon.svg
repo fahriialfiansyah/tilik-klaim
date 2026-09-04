@@ -1,0 +1,23 @@
+<!--
+  Browser-tab icon: the TilikKlaim mark on the header's navy.
+
+  Colours are literal here, unlike `src/components/brand/TilikKlaimMark.tsx`, which reads
+  `--t-inv` and `--logo-amb` so it follows the theme. A favicon is rendered by browser chrome
+  with no access to the page's custom properties, so the values are the light theme's
+  `--s-head` (#0b2530), `--t-inv` (#eef3f3) and `--logo-amb` (#e8a33d). The dark navy plate is
+  what keeps it legible against both a light and a dark tab strip.
+
+  Detail is reduced for 16 px: the three bars inside the loop become one, because at tab size
+  three would resolve as a smudge.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="TilikKlaim">
+  <rect width="128" height="128" rx="26" fill="#0b2530"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M64 22 A42 42 0 0 1 64 106" stroke="#eef3f3" stroke-width="9"/>
+    <path d="M64 106 A42 42 0 0 1 22 64" stroke="#e8a33d" stroke-width="9" stroke-dasharray="8 10"/>
+  </g>
+  <circle cx="64" cy="22" r="9" fill="#eef3f3"/>
+  <circle cx="106" cy="64" r="9" fill="#eef3f3"/>
+  <circle cx="64" cy="106" r="9" fill="#eef3f3"/>
+  <rect x="43" y="59" width="42" height="10" rx="5" fill="#e8a33d"/>
+</svg>
