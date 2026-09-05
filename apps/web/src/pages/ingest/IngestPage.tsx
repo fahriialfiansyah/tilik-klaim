@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
+import { PageHeader, PageShell } from '@/components/layouts/PageShell'
 import { Button } from '@/components/ui/button'
 import {
   CompletenessBanner,
@@ -46,22 +47,17 @@ export function IngestPage() {
   }
 
   return (
-    <section className="max-w-[1240px] px-[30px] pt-[26px] pb-[72px]">
-      <div className="mb-5 flex items-end justify-between gap-6">
-        <div>
-          <p className="mb-[5px] font-mono text-micro font-semibold tracking-label text-ink-3">
-            SATU BUNDEL · SATU LAPORAN VALIDASI
-          </p>
-          <h1 className="text-page font-semibold tracking-title">Ingest / Demo</h1>
-          <p className="mt-[6px] max-w-[620px] text-ink-2 text-pretty">
-            Tidak ada wisaya konfigurasi. Setelah validasi berhasil, tersedia satu tombol: saring
-            klaim.
-          </p>
-        </div>
-        <Button variant="outline" size="lg" className="shrink-0" onClick={() => navigate('/')}>
-          Kembali ke antrean
-        </Button>
-      </div>
+    <PageShell>
+      <PageHeader
+        eyebrow="SATU BUNDEL · SATU LAPORAN VALIDASI"
+        title="Ingest / Demo"
+        lede="Tidak ada wisaya konfigurasi. Setelah validasi berhasil, tersedia satu tombol: saring klaim."
+        action={
+          <Button variant="outline" size="lg" onClick={() => navigate('/')}>
+            Kembali ke antrean
+          </Button>
+        }
+      />
 
       {fromCase ? <EvidenceRequestBanner caseId={fromCase} /> : null}
 
@@ -132,6 +128,6 @@ export function IngestPage() {
         Seluruh data di layar ini sintetik dan dibangkitkan oleh kode proyek ini. Tidak ada rekam
         medis nyata yang pernah masuk ke sistem.
       </p>
-    </section>
+    </PageShell>
   )
 }

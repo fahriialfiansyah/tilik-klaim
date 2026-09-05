@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
+import { PageShell } from '@/components/layouts/PageShell'
 import { BriefingPanel } from '@/features/review/case-briefing/components/BriefingPanel'
 import { AuditTimeline } from '@/features/review/case-detail/components/AuditTimeline'
 import {
@@ -145,7 +146,7 @@ export function CaseDetailPage() {
   }
 
   return (
-    <section className="px-[30px] pt-5 pb-[72px]">
+    <PageShell width="full">
       <nav className="mb-[14px] flex items-center gap-[9px] text-meta text-ink-3">
         <Link to="/" className="text-brand underline underline-offset-2">
           Antrean Review
@@ -305,6 +306,6 @@ export function CaseDetailPage() {
           void commit()
         }}
       />
-    </section>
+    </PageShell>
   )
 }

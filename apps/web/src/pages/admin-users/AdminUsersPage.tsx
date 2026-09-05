@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { PerfectScrollArea } from '@/components/wrappers/PerfectScrollArea'
+import { PageHeader, PageShell } from '@/components/layouts/PageShell'
 import { UserAuditPanel } from '@/features/admin/users/components/UserAuditPanel'
 import { UserTable } from '@/features/admin/users/components/UserTable'
 import {
@@ -34,17 +34,14 @@ export function AdminUsersPage() {
     users.find((candidate) => candidate.user_id === userId)?.full_name ?? userId
 
   return (
-    <PerfectScrollArea className="h-full">
-      <div className="mx-auto max-w-[1100px] space-y-4 p-4">
-        <header>
-          <h1 className="text-title font-semibold text-ink">Manajemen Pengguna</h1>
-          <p className="max-w-[76ch] text-body-lg text-ink-2 text-pretty">
-            Tiga akun petugas sintetik. Peran dapat diubah dan akun dapat dinonaktifkan; tidak
-            ada penambahan dan tidak ada penghapusan. Setiap perubahan tercatat permanen di
-            riwayat di bawah.
-          </p>
-        </header>
+    <PageShell>
+      <PageHeader
+        eyebrow="DAFTAR PETUGAS · PERAN DAN STATUS"
+        title="Manajemen Pengguna"
+        lede="Tiga akun petugas sintetik. Peran dapat diubah dan akun dapat dinonaktifkan; tidak ada penambahan dan tidak ada penghapusan. Setiap perubahan tercatat permanen di riwayat di bawah."
+      />
 
+      <div className="space-y-4">
         {refusal ? (
           <p
             role="alert"
@@ -100,6 +97,6 @@ export function AdminUsersPage() {
           )}
         </section>
       </div>
-    </PerfectScrollArea>
+    </PageShell>
   )
 }

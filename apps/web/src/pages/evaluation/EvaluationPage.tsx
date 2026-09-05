@@ -18,7 +18,7 @@ import {
   precisionAtBudgetChartRows,
 } from '@/features/review/evaluation/selectors'
 import { useEvaluation } from '@/features/review/evaluation/useEvaluation'
-import { PerfectScrollArea } from '@/components/wrappers/PerfectScrollArea'
+import { PageHeader, PageShell } from '@/components/layouts/PageShell'
 
 /**
  * Page 4 — Audit & evaluation (`/evaluation`). Widgets 1–9 per `sprint/00-app-spec.md` § 6.
@@ -35,16 +35,14 @@ export function EvaluationPage() {
   const { status, data, reload } = useEvaluation()
 
   return (
-    <PerfectScrollArea className="h-full">
-      <div className="mx-auto max-w-[1100px] space-y-4 p-4">
-        <header>
-          <h1 className="text-title font-semibold text-ink">Audit &amp; Evaluasi</h1>
-          <p className="text-body-lg text-ink-2">
-            Bukti terukur dari artefak evaluasi, beserta keterbatasannya. Halaman ini hanya
-            membaca — tidak ada penyetelan ambang batas dan tidak ada eksperimen langsung.
-          </p>
-        </header>
+    <PageShell>
+      <PageHeader
+        eyebrow="ARTEFAK EVALUASI · HANYA BACA"
+        title="Audit & Evaluasi"
+        lede="Bukti terukur dari artefak evaluasi, beserta keterbatasannya. Halaman ini hanya membaca — tidak ada penyetelan ambang batas dan tidak ada eksperimen langsung."
+      />
 
+      <div className="space-y-4">
         {status === 'loading' ? <EvaluationLoading /> : null}
         {status === 'absent' ? <NoEvaluationRun /> : null}
         {status === 'failed' ? <EvaluationFailed onRetry={reload} /> : null}
@@ -108,6 +106,6 @@ export function EvaluationPage() {
           </>
         ) : null}
       </div>
-    </PerfectScrollArea>
+    </PageShell>
   )
 }

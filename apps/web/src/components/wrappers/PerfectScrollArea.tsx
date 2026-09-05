@@ -19,6 +19,13 @@ type PerfectScrollAreaProps = {
  *
  * The wrapper must have a bounded height for the library to measure; give the parent
  * `min-h-0` in a flex chain or the region will grow instead of scroll.
+ *
+ * **Never nest one of these around a whole routed page.** `AppShell` already wraps `<Outlet />`
+ * in the main column's scroller. An inner instance gets no bounded height — `<main>` is
+ * auto-height, so `h-full` resolves to `auto` — which puts it permanently at its own scroll
+ * bound, where `wheelPropagation: false` makes it `stopPropagation()` every wheel event before
+ * the shell can see it. The page then cannot be scrolled at all. Use it for regions that own a
+ * real height: drawers, panels, fixed-height lists.
  */
 export function PerfectScrollArea({ children, className, axis = 'y' }: PerfectScrollAreaProps) {
   return (

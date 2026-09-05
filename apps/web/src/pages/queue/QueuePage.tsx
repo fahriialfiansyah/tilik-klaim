@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
+import { PageHeader, PageShell } from '@/components/layouts/PageShell'
 import { Button } from '@/components/ui/button'
 import { QueueFilterBar } from '@/features/review/queue/components/QueueFilterBar'
 import { QueueMetricCards } from '@/features/review/queue/components/QueueMetricCards'
@@ -36,22 +37,17 @@ export function QueuePage() {
   const pageInfo = data?.page
 
   return (
-    <section className="max-w-[1560px] px-[30px] pt-[26px] pb-[72px]">
-      <div className="mb-[22px] flex items-end justify-between gap-6">
-        <div>
-          <p className="mb-[5px] font-mono text-micro font-semibold tracking-label text-ink-3">
-            DAFTAR KERJA · TERURUT PITA PRIORITAS
-          </p>
-          <h1 className="text-page font-semibold tracking-title">Antrean Review</h1>
-          <p className="mt-[6px] max-w-[640px] text-ink-2 text-pretty">
-            Setiap baris dibuka dengan kalimat alasannya. Skor, pita, dan nominal berada di
-            kanannya — bukan sebaliknya.
-          </p>
-        </div>
-        <Button size="lg" className="shrink-0" onClick={() => navigate('/ingest')}>
-          Masukkan bundel baru
-        </Button>
-      </div>
+    <PageShell width="wide">
+      <PageHeader
+        eyebrow="DAFTAR KERJA · TERURUT PITA PRIORITAS"
+        title="Antrean Review"
+        lede="Setiap baris dibuka dengan kalimat alasannya. Skor, pita, dan nominal berada di kanannya — bukan sebaliknya."
+        action={
+          <Button size="lg" onClick={() => navigate('/ingest')}>
+            Masukkan bundel baru
+          </Button>
+        }
+      />
 
       {data ? <QueueMetricCards metrics={data.metrics} /> : null}
 
@@ -113,6 +109,6 @@ export function QueuePage() {
         &ldquo;diselamatkan&rdquo;. Kasus tanpa sinyal tidak pernah dilabeli bersih — hanya
         &ldquo;tidak ada risiko teramati&rdquo;.
       </p>
-    </section>
+    </PageShell>
   )
 }
