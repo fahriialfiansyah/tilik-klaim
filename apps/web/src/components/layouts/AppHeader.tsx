@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { TilikKlaimMark } from '@/components/brand/TilikKlaimMark'
 import { ProfileMenu } from '@/features/auth/components/ProfileMenu'
 import { copyStamp, shortStamp, useEngineVersion } from '@/modules/engine-version/useEngineVersion'
 import { ThemeToggle } from '@/modules/theme/ThemeToggle'
@@ -26,13 +25,13 @@ export function AppHeader() {
     }
   }
 
+  /*
+   * The brand moved to the rail's head block (`AppSidebar.tsx`): the wordmark belongs to the
+   * column whose width it announces, so collapsing the rail leaves the mark alone. Both keep
+   * `bg-head` and `--header-h`, so the dark band still crosses the whole top of the app.
+   */
   return (
-    <header className="flex h-[var(--header-h)] shrink-0 items-center justify-between gap-4 bg-head px-4">
-      <div className="flex min-w-0 items-center gap-[10px]">
-        <TilikKlaimMark className="block size-[30px] shrink-0" />
-        <span className="text-lead font-semibold tracking-[.11em] text-ink-inv">TILIKKLAIM</span>
-      </div>
-
+    <header className="flex h-[var(--header-h)] shrink-0 items-center justify-end gap-4 bg-head px-4">
       <div className="flex items-center gap-[10px]">
         {/* G3 — engine and dataset stamp: copyable, and the way through to /evaluation. */}
         <button

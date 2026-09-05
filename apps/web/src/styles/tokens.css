@@ -253,6 +253,11 @@
   --radius-lg: 12px;
 
   --header-h: 56px;
+
+  /* Lebar rail navigasi. Dua nilai, karena rail bisa diciutkan jadi ikon saja dan
+   * lebarnya dipakai di dua tempat — rail itu sendiri dan blok merek di kepalanya. */
+  --rail-w: 220px;
+  --rail-w-min: 56px;
 }
 
 /* ---------------------------------------------------------------------------
