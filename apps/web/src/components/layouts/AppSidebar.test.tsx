@@ -9,7 +9,7 @@ import { renderWithRouter } from '@/test/render'
 function signedInAs(role: Role): StaffUser {
   return {
     user_id: `usr_${role}`,
-    staff_token: 'PTG-00',
+    staff_code: 'PTG-00',
     full_name: 'Petugas Uji',
     email: 'petugas.uji@rsud-demo.example',
     role,

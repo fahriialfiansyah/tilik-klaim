@@ -1,9 +1,9 @@
 import { PerfectScrollArea } from '@/components/wrappers/PerfectScrollArea'
-import { formatStamp } from '@/features/admin/users/format'
 import { EVENT_LABEL } from '@/features/admin/users/labels'
 import type { UserAuditEvent } from '@/features/admin/users/types'
 import { ROLE_LABEL } from '@/features/auth/labels'
 import { isRole } from '@/features/auth/types'
+import { formatDateTime } from '@/lib/datetime'
 
 /**
  * The user-management trail, newest first.
@@ -38,7 +38,7 @@ export function UserAuditPanel({
               </span>
               <span className="text-body text-ink-2">— {nameFor(event.target_user_id)}</span>
               <span data-numeric className="font-mono text-meta text-ink-3">
-                {formatStamp(event.occurred_at)}
+                {formatDateTime(event.occurred_at)}
               </span>
             </p>
             <p className="mt-[3px] text-meta text-ink-2">

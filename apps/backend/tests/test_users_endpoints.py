@@ -68,7 +68,7 @@ def test_a_valid_persona_can_be_selected(api, staff) -> None:
     )
     assert response.status_code == 200
     user = response.json()["user"]
-    assert user["staff_token"] == "PTG-01"
+    assert user["staff_code"] == "PTG-01"
     assert user["role"] == "reviewer"
 
 
@@ -245,5 +245,5 @@ def test_signing_in_records_the_time(api, staff) -> None:
     api.post("/v1/auth/session", json={"email": SARI_EMAIL, "passcode": SARI_PASSCODE})
 
     after = api.get("/v1/users", headers=headers).json()["users"]
-    sari = next(user for user in after if user["staff_token"] == "PTG-01")
+    sari = next(user for user in after if user["staff_code"] == "PTG-01")
     assert sari["last_signed_in_at"] is not None

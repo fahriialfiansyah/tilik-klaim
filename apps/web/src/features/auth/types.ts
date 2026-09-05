@@ -12,7 +12,7 @@ export type Role = (typeof ROLES)[number]
 /** One synthetic staff account. Never carries a passcode — the API does not return one. */
 export type StaffUser = {
   readonly user_id: string
-  readonly staff_token: string
+  readonly staff_code: string
   readonly full_name: string
   readonly email: string
   readonly role: Role

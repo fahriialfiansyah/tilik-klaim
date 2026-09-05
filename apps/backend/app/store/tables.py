@@ -164,7 +164,12 @@ users = Table(
     metadata,
     Column("user_id", String(ID_LENGTH), primary_key=True),
     # Printed on the badge a reviewer wears; short enough to quote out loud during a handover.
-    Column("staff_token", String(32), nullable=False, unique=True),
+    #
+    # Named `staff_code`, never `staff_token`. This project uses "token" for authentication
+    # material — `X-Internal-Token`, a Bearer JWT — and `PTG-01` is neither: it is an employee
+    # code that identifies a person, grants nothing, and is safe on screen. One word meaning
+    # two things in one codebase is how somebody eventually treats this column as a secret.
+    Column("staff_code", String(32), nullable=False, unique=True),
     Column("full_name", String(160), nullable=False),
     Column("email", String(254), nullable=False, unique=True),
     Column("role", String(32), nullable=False),

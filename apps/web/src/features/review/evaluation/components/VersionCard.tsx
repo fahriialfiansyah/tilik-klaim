@@ -1,4 +1,5 @@
 import type { EvaluationResponse } from '@/features/review/evaluation/types'
+import { formatDateTime } from '@/features/review/shared/format'
 
 /**
  * Widget 1 — the version card.
@@ -21,7 +22,7 @@ export function VersionCard({ evaluation }: { readonly evaluation: EvaluationRes
   const { manifest, versions } = evaluation
   const rows: readonly (readonly [string, string])[] = [
     ['Run', evaluation.run_id],
-    ['Selesai', new Date(evaluation.completed_at).toLocaleString('id-ID')],
+    ['Selesai', formatDateTime(evaluation.completed_at)],
     ['Sidik kumpulan data', manifest.dataset_hash],
     ['Versi generator', manifest.generator_version],
     ['Versi aturan', versions.ruleset_version],

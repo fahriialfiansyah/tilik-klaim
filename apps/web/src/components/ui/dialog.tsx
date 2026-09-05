@@ -1,6 +1,13 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
-import { createContext, useContext, useRef, type ComponentProps, type ReactNode } from 'react'
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  useRef,
+  type ComponentProps,
+  type ReactNode,
+} from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -60,14 +67,25 @@ export function Dialog({
   )
 }
 
-function DialogOverlay({ className, ...props }: ComponentProps<typeof DialogPrimitive.Overlay>) {
+/**
+ * `forwardRef`, because Radix gives this one a ref and React 18 has no other way to accept it.
+ *
+ * `Presence` clones the overlay to drive its mount/unmount, and a plain function component in
+ * between swallowed the ref — logging "Function components cannot be given refs" on every dialog
+ * this app opens, and leaving Radix without the node it measures.
+ */
+const DialogOverlay = forwardRef<
+  HTMLDivElement,
+  ComponentProps<typeof DialogPrimitive.Overlay>
+>(function DialogOverlay({ className, ...props }, ref) {
   return (
     <DialogPrimitive.Overlay
+      ref={ref}
       className={cn('fixed inset-0 z-40 bg-[rgba(9,20,26,0.45)]', className)}
       {...props}
     />
   )
-}
+})
 
 type DialogContentProps = ComponentProps<typeof DialogPrimitive.Content> & {
   /** `modal` centres; `drawer` slides in from the right and fills the height. */

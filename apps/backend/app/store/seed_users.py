@@ -42,7 +42,7 @@ SEEDED_STAFF: tuple[tuple[str, str, str, str, Role, str], ...] = (
         "demo-admin-2026",
     ),
 )
-"""`(user_id, staff_token, full_name, email, role, demo_passcode)` — the whole roster."""
+"""`(user_id, staff_code, full_name, email, role, demo_passcode)` — the whole roster."""
 
 
 def seed_users(store: UserStore) -> tuple[UserRecord, ...]:
@@ -55,7 +55,7 @@ def seed_users(store: UserStore) -> tuple[UserRecord, ...]:
     records = tuple(
         UserRecord(
             user_id=user_id,
-            staff_token=staff_token,
+            staff_code=staff_code,
             full_name=full_name,
             email=email,
             role=role,
@@ -65,7 +65,7 @@ def seed_users(store: UserStore) -> tuple[UserRecord, ...]:
             created_at=stamp,
             updated_at=stamp,
         )
-        for user_id, staff_token, full_name, email, role, passcode in SEEDED_STAFF
+        for user_id, staff_code, full_name, email, role, passcode in SEEDED_STAFF
     )
     for record in records:
         store.save(record)

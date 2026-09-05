@@ -17,7 +17,7 @@ import type { Role } from '@/features/auth/types'
  * Emails use the RFC 2606 reserved `.example` TLD, so no address can ever resolve.
  */
 export type DemoAccount = {
-  readonly staffToken: string
+  readonly staffCode: string
   readonly fullName: string
   readonly email: string
   readonly role: Role
@@ -26,21 +26,21 @@ export type DemoAccount = {
 
 export const DEMO_ACCOUNTS: readonly DemoAccount[] = [
   {
-    staffToken: 'PTG-01',
+    staffCode: 'PTG-01',
     fullName: 'Sari Wulandari',
     email: 'sari.wulandari@rsud-demo.example',
     role: 'reviewer',
     passcode: 'demo-reviewer-2026',
   },
   {
-    staffToken: 'PTG-02',
+    staffCode: 'PTG-02',
     fullName: 'Budi Santoso',
     email: 'budi.santoso@rsud-demo.example',
     role: 'senior_reviewer',
     passcode: 'demo-senior-2026',
   },
   {
-    staffToken: 'PTG-03',
+    staffCode: 'PTG-03',
     fullName: 'Rina Hartati',
     email: 'rina.hartati@rsud-demo.example',
     role: 'admin',

@@ -29,7 +29,7 @@ class UserDto(Dto):
     """One account as the UI sees it. Never carries the passcode."""
 
     user_id: str
-    staff_token: str
+    staff_code: str
     full_name: str
     email: str
     role: Role

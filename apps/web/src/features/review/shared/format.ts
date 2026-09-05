@@ -29,46 +29,14 @@ export function formatHours(hours: number): string {
   return hours < 1 ? '< 1' : String(Math.round(hours))
 }
 
-const DATE_TIME = new Intl.DateTimeFormat('id-ID', {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-})
+/**
+ * Timestamps live in `lib/datetime.ts` and are re-exported here so this module stays the one
+ * import a review screen needs. They are pinned to `Asia/Jakarta` and `formatDateTime` says WIB
+ * out loud — see that module for why the zone is not the viewer's.
+ */
+export { formatDate, formatDateTime, formatTime } from '@/lib/datetime'
 
-const DATE = new Intl.DateTimeFormat('id-ID', {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric',
-})
-
-const TIME = new Intl.DateTimeFormat('id-ID', { hour: '2-digit', minute: '2-digit' })
-
-/** An unparseable timestamp renders as an em dash rather than "Invalid Date". */
-function parse(isoTimestamp: string | null | undefined): Date | null {
-  if (!isoTimestamp) {
-    return null
-  }
-  const value = new Date(isoTimestamp)
-  return Number.isNaN(value.getTime()) ? null : value
-}
-
-export function formatDateTime(isoTimestamp: string | null | undefined): string {
-  const value = parse(isoTimestamp)
-  return value ? DATE_TIME.format(value) : '—'
-}
-
-export function formatDate(isoTimestamp: string | null | undefined): string {
-  const value = parse(isoTimestamp)
-  return value ? DATE.format(value) : '—'
-}
-
-export function formatTime(isoTimestamp: string | null | undefined): string {
-  const value = parse(isoTimestamp)
-  return value ? TIME.format(value) : '—'
-}
-
+import { ZONE_LABEL, formatDate, formatDateTime, formatTime, parseStamp } from '@/lib/datetime'
 /**
  * The encounter window.
  *
@@ -76,18 +44,19 @@ export function formatTime(isoTimestamp: string | null | undefined): string {
  * start — a zero-length visit is a claim the data does not make.
  */
 export function formatDateRange(start: string, end: string | null | undefined): string {
-  const from = parse(start)
-  if (!from) {
+  if (!parseStamp(start)) {
     return '—'
   }
-  const to = parse(end)
-  if (!to) {
-    return `${DATE_TIME.format(from)} — belum ditutup`
+  if (!parseStamp(end)) {
+    return `${formatDateTime(start)} — belum ditutup`
   }
-  const sameDay = from.toDateString() === to.toDateString()
+  // Compared through the formatter rather than `Date.toDateString()`, which answers in the
+  // *viewer's* zone: an episode from 23.00 to 01.00 WIB is one calendar day here and two on a
+  // laptop set to Manila, and the reader would get a different sentence for the same stay.
+  const sameDay = formatDate(start) === formatDate(end)
   return sameDay
-    ? `${DATE.format(from)} · ${TIME.format(from)}–${TIME.format(to)}`
-    : `${DATE_TIME.format(from)} — ${DATE_TIME.format(to)}`
+    ? `${formatDate(start)} · ${formatTime(start)}–${formatTime(end)} ${ZONE_LABEL}`
+    : `${formatDateTime(start)} — ${formatDateTime(end)}`
 }
 
 const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/

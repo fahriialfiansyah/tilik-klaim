@@ -63,7 +63,7 @@ def start_session(email: str, passcode: str, *, store: UserStore) -> UserRecord:
         raise UserActionRefused(
             ErrorCode.SESSION_ACCOUNT_DEACTIVATED,
             (
-                f"Akun {found.staff_token} dinonaktifkan, jadi tidak dapat masuk. "
+                f"Akun {found.staff_code} dinonaktifkan, jadi tidak dapat masuk. "
                 "Administrator dapat mengaktifkannya kembali di Manajemen Pengguna."
             ),
         )

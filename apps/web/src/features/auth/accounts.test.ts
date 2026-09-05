@@ -11,7 +11,7 @@ describe('demo accounts', () => {
 
   test('every email uses the reserved .example TLD so none can resolve', () => {
     for (const account of DEMO_ACCOUNTS) {
-      expect(account.email, account.staffToken).toMatch(/\.example$/)
+      expect(account.email, account.staffCode).toMatch(/\.example$/)
     }
   })
 

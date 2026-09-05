@@ -10,7 +10,7 @@ import { renderWithRouter } from '@/test/render'
 
 const SARI: StaffUser = {
   user_id: 'usr_sari_wulandari',
-  staff_token: 'PTG-01',
+  staff_code: 'PTG-01',
   full_name: 'Sari Wulandari',
   email: 'sari.wulandari@rsud-demo.example',
   role: 'reviewer',

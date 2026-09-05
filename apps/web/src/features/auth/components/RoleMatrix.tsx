@@ -62,10 +62,10 @@ export function RoleMatrix({
         </thead>
         <tbody>
           {DEMO_ACCOUNTS.map((account) => {
-            const isChosen = account.staffToken === chosen.staffToken
+            const isChosen = account.staffCode === chosen.staffCode
             return (
               <tr
-                key={account.staffToken}
+                key={account.staffCode}
                 className={cn('border-b border-line last:border-b-0', isChosen && 'bg-brand-soft')}
               >
                 <th scope="row" className="px-4 py-4 font-normal">
@@ -73,7 +73,7 @@ export function RoleMatrix({
                     <input
                       type="radio"
                       name="persona"
-                      value={account.staffToken}
+                      value={account.staffCode}
                       checked={isChosen}
                       onChange={() => onChoose(account)}
                       className="size-4 shrink-0 accent-[var(--a-1)]"
@@ -91,7 +91,7 @@ export function RoleMatrix({
                         {account.fullName}
                       </span>
                       <span data-numeric className="block font-mono text-meta text-ink-3">
-                        {account.staffToken}
+                        {account.staffCode}
                       </span>
                     </span>
                   </label>

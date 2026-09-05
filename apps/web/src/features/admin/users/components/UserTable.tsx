@@ -1,5 +1,5 @@
 import { PerfectScrollArea } from '@/components/wrappers/PerfectScrollArea'
-import { COLUMNS } from '@/features/admin/users/labels'
+import { COLUMNS, SELF_ROW_NOTE } from '@/features/admin/users/labels'
 import { formatSignedIn } from '@/features/admin/users/format'
 import { ROLE_LABEL } from '@/features/auth/labels'
 import { ROLES, type Role, type StaffUser } from '@/features/auth/types'
@@ -13,10 +13,16 @@ import { cn } from '@/lib/utils'
  * any of it. A visually hidden control styled to look like something else is a defect this
  * codebase has already paid for once.
  *
+ * **This table proposes; it does not commit.** Both handlers report an intent and the page
+ * decides whether to ask first. Because each control stays bound to `user.role` /
+ * `user.is_active`, a cancelled dialog needs no undo here — the control never left the value the
+ * server last confirmed, so React re-renders it back on its own.
+ *
  * `self` marks the signed-in administrator's own row. They may not change their own role or
  * deactivate themselves — refused on the server with `USER_SELF_MODIFICATION_REFUSED`; the
- * disabled controls here only save them the click, and the reason is said out loud rather than
- * left to a greyed-out box.
+ * disabled controls here only save them the click, and the reason is said out loud beside their
+ * name rather than left to a greyed-out box. It sits under the name and not in a column of its
+ * own: two of three rows would have had nothing to put there.
  */
 export function UserTable({
   users,
@@ -28,8 +34,8 @@ export function UserTable({
   readonly users: readonly StaffUser[]
   readonly selfId: string
   readonly pendingUserId: string | null
-  readonly onChangeRole: (userId: string, role: Role) => void
-  readonly onToggleActive: (userId: string, isActive: boolean) => void
+  readonly onChangeRole: (user: StaffUser, role: Role) => void
+  readonly onToggleActive: (user: StaffUser, isActive: boolean) => void
 }) {
   return (
     <PerfectScrollArea className="max-h-[520px]">
@@ -45,7 +51,7 @@ export function UserTable({
                 scope="col"
                 className="border-b border-line px-3 py-[10px] font-mono text-micro font-semibold tracking-label text-ink-3"
               >
-                {column === 'Tindakan' ? <span className="sr-only">{column}</span> : column}
+                {column}
               </th>
             ))}
           </tr>
@@ -55,17 +61,40 @@ export function UserTable({
             const isSelf = user.user_id === selfId
             const busy = pendingUserId === user.user_id
             return (
-              <tr key={user.user_id} className="border-b border-line last:border-b-0">
+              <tr
+                key={user.user_id}
+                aria-busy={busy || undefined}
+                className="border-b border-line last:border-b-0"
+              >
                 <th scope="row" className="px-3 py-[11px] text-body font-medium text-ink">
-                  {user.full_name}
+                  <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                    {user.full_name}
+                    {isSelf ? (
+                      <span className="rounded-sm bg-brand-soft px-[6px] py-[1px] text-micro font-semibold text-brand">
+                        ANDA
+                      </span>
+                    ) : null}
+                  </span>
+                  {/*
+                    Both notes live here rather than in a column, and only one can be true at a
+                    time: the own-account row has no control to be saving. `role="status"`
+                    announces the save without stealing focus from the control that started it.
+                  */}
                   {isSelf ? (
-                    <span className="ml-2 rounded-sm bg-brand-soft px-[6px] py-[1px] text-micro font-semibold text-brand">
-                      ANDA
+                    <span className="mt-[3px] block text-meta font-normal text-ink-3">
+                      {SELF_ROW_NOTE}
+                    </span>
+                  ) : busy ? (
+                    <span
+                      role="status"
+                      className="mt-[3px] block text-meta font-normal text-ink-3"
+                    >
+                      Menyimpan…
                     </span>
                   ) : null}
                 </th>
                 <td data-numeric className="px-3 py-[11px] font-mono text-meta text-ink-2">
-                  {user.staff_token}
+                  {user.staff_code}
                 </td>
                 <td data-numeric className="px-3 py-[11px] font-mono text-meta break-all text-ink-2">
                   {user.email}
@@ -78,7 +107,7 @@ export function UserTable({
                     id={`role-${user.user_id}`}
                     value={user.role}
                     disabled={isSelf || busy}
-                    onChange={(event) => onChangeRole(user.user_id, event.target.value as Role)}
+                    onChange={(event) => onChangeRole(user, event.target.value as Role)}
                     className="h-8 rounded-md border border-line bg-card px-2 text-small text-ink outline-none focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60"
                   >
                     {ROLES.map((role) => (
@@ -94,7 +123,7 @@ export function UserTable({
                       type="checkbox"
                       checked={user.is_active}
                       disabled={isSelf || busy}
-                      onChange={(event) => onToggleActive(user.user_id, event.target.checked)}
+                      onChange={(event) => onToggleActive(user, event.target.checked)}
                       className="size-4 accent-[var(--a-1)] disabled:opacity-60"
                     />
                     {/* Status is never colour alone — the word is the label. */}
@@ -110,9 +139,6 @@ export function UserTable({
                 </td>
                 <td data-numeric className="px-3 py-[11px] font-mono text-meta text-ink-2">
                   {formatSignedIn(user.last_signed_in_at)}
-                </td>
-                <td className="px-3 py-[11px] text-meta text-ink-3">
-                  {isSelf ? 'Akun sendiri tidak dapat diubah' : busy ? 'Menyimpan…' : null}
                 </td>
               </tr>
             )

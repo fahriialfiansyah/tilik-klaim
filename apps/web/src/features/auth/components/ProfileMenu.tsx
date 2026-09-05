@@ -80,7 +80,7 @@ export function ProfileMenu() {
             {ROLE_LABEL[user.role]}
             <span aria-hidden className="h-3 w-px bg-line" />
             <span data-numeric className="font-mono">
-              {user.staff_token}
+              {user.staff_code}
             </span>
           </span>
         </DropdownMenuLabel>

@@ -102,7 +102,7 @@ def create_session(request: SessionRequest, users: InjectedUsers) -> SessionResp
         logger.info("session refused: code=%s", refused.code)
         return _error(refused.code, refused.detail)
 
-    logger.info("session started: user=%s role=%s", user.staff_token, user.role)
+    logger.info("session started: user=%s role=%s", user.staff_code, user.role)
     return SessionResponse(user=_to_dto(user))
 
 
@@ -177,7 +177,7 @@ def patch_user(
     logger.info(
         "user updated: target=%s actor=%s events=%d",
         user_id,
-        actor.staff_token,
+        actor.staff_code,
         len(outcome.events),
     )
     return UserUpdateResponse(
@@ -189,7 +189,7 @@ def patch_user(
 def _to_dto(user: UserRecord) -> UserDto:
     return UserDto(
         user_id=user.user_id,
-        staff_token=user.staff_token,
+        staff_code=user.staff_code,
         full_name=user.full_name,
         email=user.email,
         role=user.role,

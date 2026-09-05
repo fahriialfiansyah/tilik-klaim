@@ -53,7 +53,7 @@ def main() -> int:
     user_store = get_user_store()
     user_store.clear()
     for staff in seed_users(user_store):
-        print(f"  {staff.staff_token:8s} {staff.full_name:18s} {staff.role}")
+        print(f"  {staff.staff_code:8s} {staff.full_name:18s} {staff.role}")
     print()
 
     client = TestClient(app)

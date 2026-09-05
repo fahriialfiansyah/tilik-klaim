@@ -37,7 +37,7 @@ class UserRecord(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     user_id: str
-    staff_token: str
+    staff_code: str
     full_name: str
     email: str
     role: Role
@@ -77,7 +77,7 @@ class UserStore(Protocol):
         ...
 
     def list_all(self) -> tuple[UserRecord, ...]:
-        """Every account, ordered by staff token so the table never reshuffles itself."""
+        """Every account, ordered by staff code so the table never reshuffles itself."""
         ...
 
     def append_event(self, event: UserAuditRecord) -> UserAuditRecord: ...
@@ -112,7 +112,7 @@ class InMemoryUserStore:
         )
 
     def list_all(self) -> tuple[UserRecord, ...]:
-        return tuple(sorted(self._by_id.values(), key=lambda user: user.staff_token))
+        return tuple(sorted(self._by_id.values(), key=lambda user: user.staff_code))
 
     def append_event(self, event: UserAuditRecord) -> UserAuditRecord:
         self._events.append(event)
@@ -162,7 +162,7 @@ class SqlUserStore:
     def list_all(self) -> tuple[UserRecord, ...]:
         with session_scope() as session:
             rows = session.execute(
-                select(users).order_by(users.c.staff_token)
+                select(users).order_by(users.c.staff_code)
             ).mappings().all()
         return tuple(_user_record(row) for row in rows)
 
@@ -197,7 +197,7 @@ class SqlUserStore:
 def _user_row(record: UserRecord) -> dict:
     return {
         "user_id": record.user_id,
-        "staff_token": record.staff_token,
+        "staff_code": record.staff_code,
         "full_name": record.full_name,
         "email": record.email,
         "role": str(record.role),
@@ -212,7 +212,7 @@ def _user_row(record: UserRecord) -> dict:
 def _user_record(row: Mapping) -> UserRecord:
     return UserRecord(
         user_id=row["user_id"],
-        staff_token=row["staff_token"],
+        staff_code=row["staff_code"],
         full_name=row["full_name"],
         email=row["email"],
         role=Role(row["role"]),
