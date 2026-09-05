@@ -1,5 +1,5 @@
 import { Check, Copy, Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { COUNT_ORDER, STATUS_LABELS, countLabel } from '@/features/review/ingest/labels'
@@ -148,8 +148,12 @@ export function ValidationReport({
             an unfilled slot renders as a grey block that reads like a broken cell.
           */}
           <dl className="grid grid-cols-2 gap-px bg-line sm:grid-cols-3">
-            {orderedCounts(report).map((count) => (
-              <div key={count.resource_type} className="bg-card px-[15px] py-[13px]">
+            {orderedCounts(report).map((count, index) => (
+              <div
+                key={count.resource_type}
+                style={{ '--tk-index': index } as CSSProperties}
+                className="tk-enter-fade bg-card px-[15px] py-[13px]"
+              >
                 <dt className="text-meta text-ink-3">{countLabel(count.resource_type)}</dt>
                 <dd
                   data-numeric

@@ -81,7 +81,13 @@ const DialogOverlay = forwardRef<
   return (
     <DialogPrimitive.Overlay
       ref={ref}
-      className={cn('fixed inset-0 z-40 bg-[rgba(9,20,26,0.45)]', className)}
+      className={cn(
+        'fixed inset-0 z-40 bg-[rgba(9,20,26,0.45)]',
+        'duration-[var(--motion-surface)] ease-[var(--ease-out)]',
+        'data-[state=open]:animate-in data-[state=open]:fade-in-0',
+        'data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
+        className,
+      )}
       {...props}
     />
   )
@@ -95,11 +101,35 @@ type DialogContentProps = ComponentProps<typeof DialogPrimitive.Content> & {
   readonly closeLabel?: string
 }
 
+/**
+ * Gerak masuk/keluar dua permukaan ini seluruhnya CSS — tidak ada JavaScript animasi di
+ * jalur ini. Radix `Presence` mendeteksi animasi CSS pada elemennya sendiri dan menunda
+ * pelepasan dari DOM sampai animasi keluar selesai, jadi tidak ada yang perlu dikoordinasi.
+ *
+ * Modal dipusatkan dengan properti CSS `translate`, **bukan** utility `-translate-x-1/2`.
+ * Keduanya terlihat sama, tapi utility itu menulis ke `transform` — properti yang sama
+ * yang dipakai keyframe `zoom-in-95`. Saat keduanya bertabrakan, bingkai pertama animasi
+ * membuang pemusatannya dan dialog melompat dari kanan-bawah titik tengah. `translate`
+ * adalah properti tersendiri yang disusun sebelum `transform`, sehingga keduanya hidup
+ * berdampingan.
+ */
+const ENTER_EXIT = 'duration-[var(--motion-surface)] ease-[var(--ease-out)]'
+
 const VARIANT_CLASSES = {
-  modal:
-    'fixed top-1/2 left-1/2 z-50 w-[min(560px,calc(100vw-32px))] -translate-x-1/2 -translate-y-1/2 rounded-lg border border-line bg-card shadow-panel',
-  drawer:
-    'fixed top-0 right-0 z-50 flex h-full w-[min(720px,calc(100vw-48px))] flex-col border-l border-line bg-card shadow-panel',
+  modal: cn(
+    'fixed top-1/2 left-1/2 z-50 w-[min(560px,calc(100vw-32px))] [translate:-50%_-50%]',
+    'rounded-lg border border-line bg-card shadow-panel',
+    ENTER_EXIT,
+    'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+    'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
+  ),
+  drawer: cn(
+    'fixed top-0 right-0 z-50 flex h-full w-[min(720px,calc(100vw-48px))] flex-col',
+    'border-l border-line bg-card shadow-panel',
+    ENTER_EXIT,
+    'data-[state=open]:animate-in data-[state=open]:slide-in-from-right',
+    'data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right',
+  ),
 } as const
 
 export function DialogContent({

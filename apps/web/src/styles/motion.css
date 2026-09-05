@@ -1,0 +1,130 @@
+/* TilikKlaim — lapisan gerak.
+ *
+ * Satu tempat untuk durasi, easing, dan keyframe. Alasannya sama dengan tokens.css:
+ * kalau durasi ditulis langsung di komponen, "gerak terasa lambat" jadi keluhan yang
+ * harus diperbaiki di dua puluh berkas.
+ *
+ * Nilai di sini dicerminkan di src/modules/motion/timing.ts untuk animasi yang
+ * dijalankan JavaScript. Kalau salah satu berubah, ubah keduanya — pengujian
+ * `timing.test.ts` membaca berkas ini dan gagal kalau keduanya berbeda.
+ *
+ * ATURAN DOMAIN (design/DESIGN.md):
+ *   - Merah TIDAK PERNAH beranimasi. Merah menandai konflik deterministik; badge merah
+ *     yang berdenyut terbaca sebagai alarm atau tuduhan, bukan sebagai penanda konflik.
+ *   - Badge DATA SINTETIK tidak bergerak. Ia penanda tata kelola yang wajib permanen,
+ *     bukan dekorasi yang boleh menarik perhatian lalu berhenti.
+ *   - Gerak tidak pernah jadi satu-satunya pembawa makna, mengikuti aturan yang sama
+ *     dengan warna: setiap status tetap punya label teks.
+ */
+
+:root {
+  /* Perubahan keadaan di tempat — warna, batas, latar. Di bawah 150ms terasa langsung. */
+  --motion-fast: 120ms;
+  /* Permukaan kecil masuk/keluar — tooltip, menu, baris. */
+  --motion-base: 180ms;
+  /* Permukaan besar — dialog, laci. Cukup untuk terbaca sebagai "datang dari kanan". */
+  --motion-surface: 240ms;
+  /* Tata letak dan pengisian meter. Batas atas untuk alat yang dipakai seharian. */
+  --motion-layout: 320ms;
+  /* Angka besar berdetak ke nilainya. Sengaja pendek: uji keterpahaman di
+   * design/DESIGN.md menuntut mata mendarat di kalimat alasan lebih dulu, bukan di skor. */
+  --motion-count: 300ms;
+  /* Jeda antar item dalam satu daftar bertahap. */
+  --motion-stagger: 40ms;
+
+  /* Keluar cepat lalu melambat: benda yang datang terasa mendarat, bukan meluncur. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes tk-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tk-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Masuk bertahap untuk daftar. Setiap item menetapkan --tk-index sendiri; jeda dihitung
+ * dari indeksnya, sehingga tidak ada penjadwal JavaScript yang perlu dijalankan.
+ *
+ * Dibatasi 12 item: setelah itu jeda kumulatifnya lebih panjang daripada waktu yang
+ * ditunggu pembaca, dan sisa daftar sebaiknya langsung ada. */
+.tk-enter {
+  animation: tk-rise var(--motion-base) var(--ease-out) backwards;
+  animation-delay: calc(min(var(--tk-index, 0), 12) * var(--motion-stagger));
+}
+
+.tk-enter-fade {
+  animation: tk-fade var(--motion-base) var(--ease-out) backwards;
+  animation-delay: calc(min(var(--tk-index, 0), 12) * var(--motion-stagger));
+}
+
+/* Tumbuh dari pangkal kiri. Dipakai bilah metrik dan garis penghubung peta bukti.
+ *
+ * Yang dianimasikan `transform`, **bukan** `width`. Lebar akhir tetap ditulis inline oleh
+ * komponen dan tidak pernah berubah, sehingga:
+ *   - tidak ada layout yang dihitung ulang per bingkai, dan
+ *   - angka yang tercetak di sebelah bilah tidak pernah bisa berbeda dari yang digambar,
+ *     yang oleh sprint/00-app-spec.md § 6 aturan 2 dihitung sebagai cacat integritas. */
+.tk-grow-x {
+  transform-origin: left center;
+  animation: tk-scale-x var(--motion-layout) var(--ease-out) backwards;
+  animation-delay: calc(min(var(--tk-index, 0), 12) * var(--motion-stagger));
+}
+
+.tk-grow-y {
+  transform-origin: top center;
+  animation: tk-scale-y var(--motion-surface) var(--ease-out) backwards;
+  animation-delay: calc(min(var(--tk-index, 0), 12) * var(--motion-stagger));
+}
+
+@keyframes tk-scale-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes tk-scale-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* Satu sakelar untuk seluruh gerak berbasis CSS.
+ *
+ * Diberlakukan menyeluruh dengan !important, bukan per komponen: satu komponen baru yang
+ * lupa dijaga sudah cukup untuk membuat janji aksesibilitas ini tidak benar. Animasi yang
+ * dijalankan Motion tidak lewat sini — itu ditangani <MotionConfig reducedMotion="user">
+ * di src/components/wrappers/MotionProvider.tsx.
+ *
+ * Pemuat yang berputar ikut berhenti. Itu disengaja dan bukan kehilangan informasi:
+ * setiap pemuat di aplikasi ini berdampingan dengan label teks keadaannya. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react'
+
 import { EvidenceRefButton } from '@/features/review/case-detail/components/EvidenceRefButton'
 import { MATRIX_CELL_LABELS, RESOURCE_LABELS } from '@/features/review/case-detail/labels'
 import {
@@ -62,9 +64,19 @@ function Terminals({
 }) {
   return (
     <ul aria-label="Bukti yang diharapkan" className="flex flex-col gap-2 border-s-2 border-line ps-4">
-      {model.terminals.map((node) => (
-        <li key={node.key} className="relative">
-          <span aria-hidden className="absolute -start-4 top-1/2 h-px w-4 bg-line" />
+      {model.terminals.map((node, index) => (
+        <li
+          key={node.key}
+          style={{ '--tk-index': index } as CSSProperties}
+          className="tk-enter-fade relative"
+        >
+          {/*
+            Setiap cabang tumbuh keluar dari batang, satu demi satu. Ini bukan hiasan:
+            yang digambar adalah rantai bukti yang terbentuk, dan itu persis yang
+            dikerjakan produk ini. Simpul yang hilang tetap tergambar dan tetap berhenti
+            di tempatnya — geraknya tidak pernah menyiratkan bukti yang tidak ada.
+          */}
+          <span aria-hidden className="tk-grow-x absolute -start-4 top-1/2 h-px w-4 bg-line" />
           <Node node={node} sources={sources} onOpenSource={onOpenSource} />
         </li>
       ))}
@@ -113,10 +125,14 @@ export function EvidenceMap({
         <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
           <ol aria-label="Jalur klaim" className="flex flex-col gap-2">
             {model.trunk.map((node, index) => (
-              <li key={node.key} className="relative">
+              <li
+                key={node.key}
+                style={{ '--tk-index': index } as CSSProperties}
+                className="tk-enter relative"
+              >
                 <Node node={node} sources={detail.sources} onOpenSource={onOpenSource} />
                 {index < model.trunk.length - 1 ? (
-                  <span aria-hidden className="mx-auto block h-3 w-px bg-line" />
+                  <span aria-hidden className="tk-grow-y mx-auto block h-3 w-px bg-line" />
                 ) : null}
               </li>
             ))}

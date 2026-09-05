@@ -1,4 +1,5 @@
 import { ArrowDown, ArrowUp } from 'lucide-react'
+import { motion } from 'motion/react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { type SortKey, useQueueStore } from '@/features/review/queue/store'
@@ -7,10 +8,18 @@ import { EvidenceMeter } from '@/features/review/shared/components/EvidenceMeter
 import { formatAge, formatAmount } from '@/features/review/shared/format'
 import { MODE_LABELS, STATE_LABELS } from '@/features/review/shared/labels'
 import type { CaseSummary } from '@/features/review/shared/types'
+import { EASE_OUT, MOTION, seconds } from '@/modules/motion/timing'
 import { cn } from '@/lib/utils'
 
 const HEAD_CLASS =
   'border-b border-line px-3 py-[9px] text-left font-mono text-micro font-semibold tracking-label text-ink-3'
+
+/**
+ * Baris ke-13 dan seterusnya masuk tanpa jeda tambahan. Setelah itu jeda kumulatifnya
+ * lebih panjang daripada waktu yang bersedia ditunggu pembaca, dan sisa daftar sebaiknya
+ * sudah ada di sana.
+ */
+const MAX_STAGGERED_ROWS = 12
 
 /**
  * The band column has one order and the server refuses to invert it, so it must not report a
@@ -112,11 +121,29 @@ export function QueueTable({ rows }: { readonly rows: readonly CaseSummary[] }) 
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
-              <tr
+          {rows.map((row, index) => (
+              /*
+                `layout="position"` menganimasikan perpindahan baris, bukan ukurannya.
+                Yang dilayani adalah penyortiran: menekan NOMINAL atau UMUR menyusun ulang
+                baris yang sama, dan baris yang meluncur ke tempat barunya memperlihatkan
+                bahwa daftar ini memang **terurut** — klaim utama halaman ini — alih-alih
+                sekadar berganti isi. Hanya posisi yang dianimasikan, sehingga tidak ada
+                koreksi skala yang bisa merusak isi sel.
+
+                Masuknya bertahap dari atas ke bawah, mengikuti urutan yang sama.
+              */
+              <motion.tr
                 key={row.case_id}
+                layout="position"
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: seconds(MOTION.base),
+                  ease: EASE_OUT,
+                  delay: Math.min(index, MAX_STAGGERED_ROWS) * seconds(MOTION.stagger),
+                }}
                 onClick={() => navigate(`/cases/${row.case_id}`)}
-                className="cursor-pointer border-b border-line hover:bg-sunk"
+                className="cursor-pointer border-b border-line transition-colors duration-[var(--motion-fast)] hover:bg-sunk"
               >
                 <td className="relative p-0">
                   <div className="flex items-start gap-[11px] py-[13px] pr-3 pl-4">
@@ -189,7 +216,7 @@ export function QueueTable({ rows }: { readonly rows: readonly CaseSummary[] }) 
                 <td className="px-3 py-[13px] align-top text-body text-ink-2">
                   {STATE_LABELS[row.state]}
                 </td>
-              </tr>
+              </motion.tr>
           ))}
         </tbody>
       </table>

@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react'
+
 import { NOT_MEASURED } from '@/features/review/evaluation/labels'
 import { barShare, formatMetric } from '@/features/review/evaluation/format'
 
@@ -37,16 +39,28 @@ export function MetricBarChart({
       <h3 className="text-body-lg font-semibold text-ink">{title}</h3>
       <p className="mb-3 text-micro text-ink-2">{subtitle}</p>
       <ul className="space-y-2">
-        {rows.map((row) => {
+        {rows.map((row, index) => {
           const rendered = formatMetric(row.value)
           return (
             <li key={row.key} className="grid grid-cols-[minmax(0,9rem)_1fr_auto] items-center gap-3">
               <span className="truncate text-small text-ink">{row.label}</span>
               <span className="h-4 rounded-sm bg-sunk" aria-hidden="true">
                 {row.value === null ? null : (
+                  /*
+                    Lebar tetap ditulis di sini dan tidak pernah berubah; yang dianimasikan
+                    `transform: scaleX` lewat .tk-grow-x. Bedanya bukan soal kehalusan:
+                    lebar akhir yang tidak pernah bergerak berarti bilah tidak bisa berselisih
+                    dengan angka yang tercetak di sebelahnya, dan aturan 2 di
+                    sprint/00-app-spec.md § 6 menghitung selisih itu sebagai cacat integritas.
+                  */
                   <span
-                    className="block h-4 rounded-sm bg-brand"
-                    style={{ width: `${barShare(row.value, ceiling) * PERCENT}%` }}
+                    className="tk-grow-x block h-4 rounded-sm bg-brand"
+                    style={
+                      {
+                        width: `${barShare(row.value, ceiling) * PERCENT}%`,
+                        '--tk-index': index,
+                      } as CSSProperties
+                    }
                   />
                 )}
               </span>

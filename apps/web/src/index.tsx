@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from '@/App'
+import { MotionProvider } from '@/components/wrappers/MotionProvider'
 import { initTheme } from '@/modules/theme/useTheme'
 import '@/styles/app.css'
 
@@ -19,7 +20,9 @@ createRoot(container).render(
     <BrowserRouter
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
     >
-      <App />
+      <MotionProvider>
+        <App />
+      </MotionProvider>
     </BrowserRouter>
   </StrictMode>,
 )

@@ -51,7 +51,22 @@ export function CaseHeader({
         className={cn('absolute inset-y-0 left-0 w-[4px]', BAND_RAIL[detail.band.band])}
       />
 
-      <div className="mb-4 flex flex-wrap items-center gap-x-[26px] gap-y-4 border-b border-line pb-4">
+      {/*
+        Fakta di kiri, tindakan di kanan, keduanya rata atas.
+
+        Sebelumnya tombol duduk di `ms-auto` **di dalam** baris fakta. Enam fakta ditambah
+        empat tombol tidak pernah muat dalam satu baris pada lebar mana pun yang wajar, jadi
+        tombol selalu terdorong ke baris kedua dan meninggalkan dua bidang kosong: di kanan
+        badge DATA SINTETIK, dan di kanan deretan tombol itu sendiri — pada layar yang justru
+        dipakai demo.
+
+        Kuncinya `flex-1 min-w-0` pada kelompok fakta: ia menyusut dan membungkus **di dalam
+        dirinya sendiri** alih-alih mendorong kelompok tombol turun. Tombol tetap di baris
+        pertama, rata kanan, dan kedua bidang kosong itu hilang tanpa mengubah urutan baca —
+        fakta tetap lebih dulu, kalimat alasan tetap di bawahnya.
+      */}
+      <div className="mb-4 flex flex-wrap items-start justify-between gap-x-6 gap-y-4 border-b border-line pb-4">
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-[26px] gap-y-4">
         <Fact label="PENGENAL KASUS">
           <span data-numeric className="font-mono text-body-lg">
             {detail.case_id.replace(/^case_/, '').slice(0, 14)}
@@ -79,14 +94,15 @@ export function CaseHeader({
         <span className="rounded-md border border-notice-line bg-notice-bg px-[10px] py-[3px] text-small font-semibold text-notice">
           DATA SINTETIK
         </span>
+        </div>
 
-        <div className="ms-auto flex flex-wrap gap-2">
+        <div className="flex shrink-0 flex-wrap justify-end gap-2">
           {DISPOSITION_ACTIONS.map((action) => (
             <button
               key={action}
               type="button"
               onClick={() => onPickAction(action)}
-              className="rounded-md border border-line bg-card px-[15px] py-[9px] text-small font-semibold hover:border-brand hover:text-brand"
+              className="rounded-md border border-line bg-card px-[15px] py-[9px] text-small font-semibold transition-colors duration-[var(--motion-fast)] hover:border-brand hover:text-brand"
             >
               {ACTION_LABELS[action]}
             </button>
@@ -119,7 +135,7 @@ export function CaseHeader({
       {basisOpen ? (
         <div
           id="dasar-keyakinan"
-          className="mt-[14px] max-w-[1000px] rounded-md border border-line bg-sunk px-[18px] py-4"
+          className="tk-enter mt-[14px] max-w-[1000px] rounded-md border border-line bg-sunk px-[18px] py-4"
         >
           <p className="mb-3 text-small leading-relaxed text-ink-2 text-pretty">
             {detail.band.basis} Pita ini menaikkan prioritas tinjauan — bukan menolak klaim dan
@@ -147,7 +163,7 @@ export function CaseHeader({
                   </span>
                   <span aria-hidden className="h-[4px] overflow-hidden rounded-sm bg-line">
                     <span
-                      className="block h-full bg-brand"
+                      className="tk-grow-x block h-full bg-brand"
                       style={{
                         width: `${Math.min(METER_MAX, Math.abs(value)) * 100}%`,
                       }}

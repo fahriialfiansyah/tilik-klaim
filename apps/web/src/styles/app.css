@@ -11,6 +11,10 @@
 
 @import 'tailwindcss';
 
+/* Utility animate-in / animate-out untuk permukaan Radix (dialog, laci, menu).
+ * Penerus tailwindcss-animate untuk Tailwind v4: tanpa JavaScript sama sekali. */
+@import 'tw-animate-css';
+
 /* Font ditumpangkan sendiri, bukan dari Google Fonts seperti di mockup:
  * brief/03 § 9.3 mewajibkan aplikasi berfungsi penuh tanpa jaringan eksternal,
  * dan runbook demo dijalankan luring. Tautan CDN akan gagal di sana. */
@@ -23,6 +27,7 @@
 @import '@fontsource/ibm-plex-mono/latin-600.css';
 
 @import './tokens.css';
+@import './motion.css';
 @import './components.css';
 
 @theme inline {

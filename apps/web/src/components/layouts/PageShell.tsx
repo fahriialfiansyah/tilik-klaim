@@ -33,7 +33,15 @@ type PageShellProps = {
  */
 export function PageShell({ children, width = 'default', className }: PageShellProps) {
   return (
-    <section className={cn('px-[30px] pt-[26px] pb-[72px]', COLUMN_WIDTHS[width], className)}>
+    /*
+      `tk-enter` di sini memberi setiap halaman satu isyarat kedatangan, sekali, tanpa
+      menyentuh router sama sekali. Transform-nya hanya hidup selama animasi berjalan dan
+      tidak meninggalkan blok penampung untuk `position: fixed` — dialog dan laci pun
+      lolos lewat Portal ke <body>, jadi tidak ada yang bisa terperangkap di dalamnya.
+    */
+    <section
+      className={cn('tk-enter px-[30px] pt-[26px] pb-[72px]', COLUMN_WIDTHS[width], className)}
+    >
       {children}
     </section>
   )
