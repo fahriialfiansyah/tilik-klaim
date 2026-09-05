@@ -39,7 +39,7 @@ export function EvaluationPage() {
       <PageHeader
         eyebrow="ARTEFAK EVALUASI · HANYA BACA"
         title="Audit & Evaluasi"
-        lede="Bukti terukur dari artefak evaluasi, beserta keterbatasannya. Halaman ini hanya membaca — tidak ada penyetelan ambang batas dan tidak ada eksperimen langsung."
+        lede="Bukti terukur dari artefak evaluasi, beserta keterbatasannya. Halaman ini hanya membaca: tidak ada penyetelan ambang batas dan tidak ada eksperimen langsung."
       />
 
       <div className="space-y-4">

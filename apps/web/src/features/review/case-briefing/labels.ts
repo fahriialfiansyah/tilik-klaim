@@ -11,7 +11,7 @@ import type { BriefingPhase, GeneratedBy, ObservationKind } from '@/features/rev
 
 export const PANEL_TITLE = 'Ringkasan bukti'
 export const PANEL_SUBTITLE =
-  'Bukan penilaian. Tidak mengubah pita, status, atau keputusan — alasan mentah di atas tetap menjadi acuan.'
+  'Bukan penilaian. Tidak mengubah pita, status, atau keputusan. Alasan mentah di atas tetap menjadi acuan.'
 export const START_LABEL = 'Susun ringkasan'
 export const RESTART_LABEL = 'Susun ulang'
 
@@ -37,7 +37,7 @@ export const PHASE_LABELS: Record<BriefingPhase, string> = {
 }
 
 export const GENERATED_BY_LABELS: Record<GeneratedBy, string> = {
-  TEMPLATE: 'Templat deterministik — tanpa model bahasa',
+  TEMPLATE: 'Templat deterministik, tanpa model bahasa',
   LLM: 'Model bahasa, tervalidasi',
 }
 

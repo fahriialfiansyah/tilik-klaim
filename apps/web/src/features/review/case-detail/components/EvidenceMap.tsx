@@ -145,7 +145,7 @@ export function EvidenceMap({
             </div>
 
             <div>
-              <p className={cn('mb-2 text-ink-2', MICRO_LABEL)}>BUKTI TANDINGAN — CABANG TERPISAH</p>
+              <p className={cn('mb-2 text-ink-2', MICRO_LABEL)}>BUKTI TANDINGAN: CABANG TERPISAH</p>
               <ul
                 aria-label="Bukti tandingan"
                 className="flex flex-col gap-2 border-s-2 border-dashed border-line-strong ps-4"

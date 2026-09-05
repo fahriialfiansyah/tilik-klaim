@@ -136,7 +136,7 @@ export function SignInForm() {
           }
         >
           <span className="font-semibold">
-            {status.deactivated ? 'Akun nonaktif — ' : 'Tidak dapat masuk — '}
+            {status.deactivated ? 'Akun nonaktif: ' : 'Tidak dapat masuk: '}
           </span>
           {status.message}
         </p>
@@ -146,7 +146,7 @@ export function SignInForm() {
         <p aria-live="polite" className="text-meta text-ink-3">
           {incomplete
             ? 'Isi email dan kode demo terlebih dahulu.'
-            : 'Kedua bidang tetap dapat disunting — baris di atas hanya jalan pintas.'}
+            : 'Kedua bidang tetap dapat disunting. Baris di atas hanya jalan pintas.'}
         </p>
         <Button type="button" variant="outline" size="sm" onClick={onCopy}>
           {copied ? 'Tersalin' : 'Salin kredensial'}
@@ -178,7 +178,7 @@ function describeFailure(failure: unknown): Status {
   if (failure instanceof NetworkError) {
     return {
       kind: 'refused',
-      message: 'Layanan tidak merespons. Ini bukan berarti kode demo salah — coba lagi.',
+      message: 'Layanan tidak merespons. Ini bukan berarti kode demo salah. Coba lagi.',
       deactivated: false,
     }
   }

@@ -70,7 +70,7 @@ describe('the three validation states are drawn distinctly', () => {
 
     expect(screenButton()).toBeDisabled()
     expect(screen.getByText(/tidak dapat disaring/)).toBeVisible()
-    expect(screen.getByText(/tidak ada penyaringan sebagian/)).toBeVisible()
+    expect(screen.getByText(/tidak ada penyaringan sebagian/i)).toBeVisible()
   })
 })
 

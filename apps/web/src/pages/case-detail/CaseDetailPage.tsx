@@ -216,7 +216,7 @@ export function CaseDetailPage() {
               {detail.evidence_completeness.missing_reference_count > 0 ? (
                 <p className="mt-2 text-meta text-band-conflict">
                   {detail.evidence_completeness.missing_reference_count} rujukan tidak dapat
-                  diselesaikan — cacat integritas bukti.
+                  diselesaikan: cacat integritas bukti.
                 </p>
               ) : null}
             </div>
@@ -235,7 +235,7 @@ export function CaseDetailPage() {
                 </p>
                 <p className="mt-2 text-small text-ink-2 text-pretty">
                   Tidak ada detektor yang menyala. Ini bukan pernyataan bahwa klaimnya bersih atau
-                  aman — hanya bahwa versi mesin ini tidak mengamati apa pun.
+                  aman, hanya bahwa versi mesin ini tidak mengamati apa pun.
                 </p>
               </div>
             ) : null}

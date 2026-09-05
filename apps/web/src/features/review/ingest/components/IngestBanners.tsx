@@ -24,7 +24,7 @@ export function CompletenessBanner({ notes }: { readonly notes: readonly string[
         <span>
           <span className="font-semibold text-notice">Catatan kelengkapan berkas. </span>
           Bentuk berkas sah; sebagian sumber daya pendukung memang tidak dikirim. Ketiadaannya
-          menurunkan tingkat keyakinan dan mengarah ke &ldquo;minta bukti tambahan&rdquo; —{' '}
+          menurunkan tingkat keyakinan dan mengarah ke &ldquo;minta bukti tambahan&rdquo;,{' '}
           <strong>bukan</strong> menaikkan sinyal risiko.
         </span>
       </p>
@@ -70,7 +70,7 @@ export function DuplicateBanner({
           <span data-numeric className="font-mono">
             sha256:{inputHash.slice(0, 12)}…
           </span>{' '}
-          sudah menghasilkan sebuah kasus. Menyaring ulang tidak membuat kasus kedua — ia
+          sudah menghasilkan sebuah kasus. Menyaring ulang tidak membuat kasus kedua; ia
           memperbarui kasus yang sudah ada.
         </p>
       </div>

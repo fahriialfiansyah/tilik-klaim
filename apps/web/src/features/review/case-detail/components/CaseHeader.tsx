@@ -138,7 +138,7 @@ export function CaseHeader({
           className="tk-enter mt-[14px] max-w-[1000px] rounded-md border border-line bg-sunk px-[18px] py-4"
         >
           <p className="mb-3 text-small leading-relaxed text-ink-2 text-pretty">
-            {detail.band.basis} Pita ini menaikkan prioritas tinjauan — bukan menolak klaim dan
+            {detail.band.basis} Pita ini menaikkan prioritas tinjauan, bukan menolak klaim dan
             bukan menyatakan fraud.
           </p>
           {detail.band.caps_applied.length > 0 ? (

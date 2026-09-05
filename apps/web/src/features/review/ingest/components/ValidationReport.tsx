@@ -129,7 +129,7 @@ export function ValidationReport({
             isEnabled={false}
             isScreening={false}
             onScreen={onScreen}
-            hint="Berkas ini tidak dapat disaring. Perbaiki sesuai kode di atas lalu kirim ulang — tidak ada penyaringan sebagian."
+            hint="Berkas ini tidak dapat disaring. Perbaiki sesuai kode di atas lalu kirim ulang. Tidak ada penyaringan sebagian."
           />
         </>
       ) : !report ? (
@@ -196,7 +196,7 @@ export function ValidationReport({
             hint={
               report.is_screenable
                 ? 'Tidak ada langkah konfigurasi. Penyaringan memakai aturan dan versi mesin yang sedang berlaku.'
-                : `Berkas berstatus "${STATUS_LABELS[report.status]}", sehingga tidak dapat disaring. Perbaiki sumber daya yang disebut di bawah lalu kirim ulang — tidak ada penyaringan sebagian.`
+                : `Berkas berstatus "${STATUS_LABELS[report.status]}", sehingga tidak dapat disaring. Perbaiki sumber daya yang disebut di bawah lalu kirim ulang. Tidak ada penyaringan sebagian.`
             }
           />
         </>

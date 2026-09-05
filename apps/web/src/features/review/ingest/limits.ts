@@ -43,7 +43,7 @@ export type FileRejection = {
  */
 export function rejectFile(file: File): FileRejection | null {
   if (file.size === 0) {
-    return { code: 'EMPTY', message: 'Berkas ini kosong — tidak ada isi untuk diperiksa.' }
+    return { code: 'EMPTY', message: 'Berkas ini kosong. Tidak ada isi untuk diperiksa.' }
   }
   if (file.size > MAX_BUNDLE_BYTES) {
     return {

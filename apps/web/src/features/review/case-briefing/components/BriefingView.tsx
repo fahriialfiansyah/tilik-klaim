@@ -161,8 +161,8 @@ export function BriefingView({
               </p>
               {briefing.validation_rejected ? (
                 <p className="mt-1 text-meta text-notice text-pretty">
-                  Keluaran model ditolak validator ({briefing.rejection_reason ?? 'tanpa alasan'}) —
-                  yang tampil adalah templat deterministik.
+                  Keluaran model ditolak validator ({briefing.rejection_reason ?? 'tanpa alasan'}).
+                  Yang tampil adalah templat deterministik.
                 </p>
               ) : null}
               <button

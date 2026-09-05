@@ -60,7 +60,7 @@ export function QueueEmpty() {
     <Placeholder
       icon={<Inbox className="size-8" />}
       title="Belum ada kasus sama sekali"
-      body="Tidak ada bundel yang sudah disaring. Mulai dengan memasukkan satu bundel — lima kasus contoh tersedia di layar Ingest."
+      body="Tidak ada bundel yang sudah disaring. Mulai dengan memasukkan satu bundel. Lima kasus contoh tersedia di layar Ingest."
       action={<Button onClick={() => navigate('/ingest')}>Masukkan bundel</Button>}
     />
   )
@@ -79,7 +79,7 @@ export function QueueFilteredEmpty({
     <Placeholder
       icon={<SlidersHorizontal className="size-8" />}
       title="Tidak ada kasus yang cocok dengan saringan ini"
-      body={`Saringan yang sedang aktif: ${named}. Data tetap ada — hanya tidak ada yang lolos kombinasi ini.`}
+      body={`Saringan yang sedang aktif: ${named}. Data tetap ada; hanya tidak ada yang lolos kombinasi ini.`}
       action={<Button onClick={onClear}>Bersihkan saringan</Button>}
     />
   )
@@ -97,7 +97,7 @@ export function QueueFailed({
     <Placeholder
       icon={<AlertTriangle className="size-8 text-band-conflict" />}
       title="Antrean tidak dapat dimuat"
-      body={`${withStop(error?.message ?? 'Layanan tidak merespons')} Ini bukan berarti tidak ada kasus — daftarnya memang tidak sampai ke layar ini.`}
+      body={`${withStop(error?.message ?? 'Layanan tidak merespons')} Ini bukan berarti tidak ada kasus; daftarnya memang tidak sampai ke layar ini.`}
       action={
         <Button onClick={onRetry}>
           <RotateCw />

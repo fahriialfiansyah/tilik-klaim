@@ -45,7 +45,7 @@ export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) 
             setFilter('state', (event.target.value || undefined) as QueueFilters['state'])
           }
         >
-          <option value="">Status — semua</option>
+          <option value="">Status: semua</option>
           {CASE_STATES.map((state) => (
             <option key={state} value={state}>
               {STATE_LABELS[state]}
@@ -63,7 +63,7 @@ export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) 
             setFilter('mode', (event.target.value || undefined) as QueueFilters['mode'])
           }
         >
-          <option value="">Mode risiko — semua</option>
+          <option value="">Mode risiko: semua</option>
           {RISK_MODES.map((mode) => (
             <option key={mode} value={mode}>
               {MODE_LABELS[mode]}
@@ -81,7 +81,7 @@ export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) 
             setFilter('band', (event.target.value || undefined) as QueueFilters['band'])
           }
         >
-          <option value="">Pita prioritas — semua</option>
+          <option value="">Pita prioritas: semua</option>
           {PRIORITY_BANDS.map((band) => (
             <option key={band} value={band}>
               {BAND_LABELS[band]}
@@ -161,12 +161,12 @@ export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) 
             >
               <X className="size-[9px]" />
             </span>
-            <span className="sr-only">— lepas saringan ini</span>
+            <span className="sr-only">, lepas saringan ini</span>
           </button>
         ))}
 
         {active.length === 0 ? (
-          <span className="text-small text-ink-3">tidak ada — seluruh antrean tampil</span>
+          <span className="text-small text-ink-3">tidak ada, seluruh antrean tampil</span>
         ) : (
           <button
             type="button"

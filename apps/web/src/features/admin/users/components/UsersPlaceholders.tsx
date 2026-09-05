@@ -34,7 +34,7 @@ export function UsersEmpty() {
       <p className="mb-2 text-lead font-semibold">Belum ada akun petugas</p>
       <p className="mx-auto max-w-[520px] text-body-lg text-ink-2 text-pretty">
         Basis data terjawab tetapi kosong. Tiga akun sintetik ditulis oleh{' '}
-        <code className="font-mono text-body">scripts/seed_dev.py</code> — jalankan itu, lalu
+        <code className="font-mono text-body">scripts/seed_dev.py</code>. Jalankan itu, lalu
         muat ulang halaman ini.
       </p>
     </div>

@@ -109,7 +109,7 @@ export function ClaimLineList({
                 >
                   {SUPPORT_LABELS[line.support_state]}
                 </span>
-                <span className="sr-only"> — {SUPPORT_MEANINGS[line.support_state]}</span>
+                <span className="sr-only">: {SUPPORT_MEANINGS[line.support_state]}</span>
               </button>
             </li>
           )

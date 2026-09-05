@@ -37,7 +37,7 @@ export function LoginPage() {
   const [drawn, setDrawn] = useState(false)
 
   useEffect(() => {
-    document.title = 'Masuk — TilikKlaim'
+    document.title = 'Masuk · TilikKlaim'
   }, [])
 
   useEffect(() => {
@@ -119,12 +119,12 @@ export function LoginPage() {
           <p className="font-mono text-micro tracking-label text-ink-3">
             HEALTHKATHON 2026 ·{' '}
             <span className="font-semibold text-ink-2">
-              KATEGORI 2 — EFISIENSI RISIKO PADA FASILITAS KESEHATAN
+              KATEGORI 2: EFISIENSI RISIKO PADA FASILITAS KESEHATAN
             </span>
           </p>
           <p className="text-meta text-ink-3">
             Kolom bertanda <strong className="font-semibold text-ink-2">Tidak</strong> ditolak oleh
-            server dengan kode galat tetap — menyembunyikan tombol bukan kendali akses. Matriks
+            server dengan kode galat tetap; menyembunyikan tombol bukan kendali akses. Matriks
             lengkap ada di ADR-0006 § 2. Prototipe fungsional dari tim peserta,{' '}
             <strong className="font-semibold text-ink-2">
               bukan produk atau layanan resmi BPJS Kesehatan.

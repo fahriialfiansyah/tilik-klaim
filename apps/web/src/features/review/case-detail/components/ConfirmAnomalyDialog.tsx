@@ -26,7 +26,7 @@ export function ConfirmAnomalyDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        title="Konfirmasi anomali — ini bukan temuan fraud"
+        title="Konfirmasi anomali: ini bukan temuan fraud"
         description="Bacalah penegasan ini sebelum keputusan dicatat permanen."
       >
         <div className="px-5 py-4">
@@ -50,7 +50,7 @@ export function ConfirmAnomalyDialog({
             <DialogClose asChild>
               <Button variant="outline">Batal</Button>
             </DialogClose>
-            <Button onClick={onConfirm}>Saya paham — catat konfirmasi</Button>
+            <Button onClick={onConfirm}>Saya paham, catat konfirmasi</Button>
           </div>
         </div>
       </DialogContent>

@@ -80,7 +80,7 @@ export const SUPPORT_MEANINGS: Record<SupportState, string> = {
   PARTIALLY_SUPPORTED: 'Sebagian bukti yang diharapkan ditemukan, sebagian belum.',
   UNSUPPORTED: 'Bukti yang diharapkan tidak ada, sementara berkasnya dinyatakan lengkap.',
   NOT_ASSESSABLE:
-    'Berkasnya belum lengkap, sehingga baris ini belum dapat dinilai — bukan berarti buktinya tidak ada.',
+    'Berkasnya belum lengkap, sehingga baris ini belum dapat dinilai, bukan berarti buktinya tidak ada.',
 }
 
 export const RESOURCE_LABELS: Record<ResourceType, string> = {

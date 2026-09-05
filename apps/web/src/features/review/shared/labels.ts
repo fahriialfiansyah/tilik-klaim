@@ -26,7 +26,7 @@ export const BAND_LABELS: Record<PriorityBand, string> = {
 /** Answers the queue's "why this band?" hover, in working language. */
 export const BAND_BASIS: Record<PriorityBand, string> = {
   DETERMINISTIC_CONFLICT:
-    'Sebuah aturan integritas dilanggar secara pasti. Merah menandai konflik itu — bukan kesalahan pihak mana pun.',
+    'Sebuah aturan integritas dilanggar secara pasti. Merah menandai konflik itu, bukan kesalahan pihak mana pun.',
   HIGH_PRIORITY_SIGNAL: 'Perlu ditinjau. Baca sinyal pendukung dan penentangnya sebelum memutuskan.',
   NEEDS_CONTEXT:
     'Bukti belum cukup untuk menilai. Kemungkinan yang diperlukan adalah meminta kelengkapan, bukan menyimpulkan.',

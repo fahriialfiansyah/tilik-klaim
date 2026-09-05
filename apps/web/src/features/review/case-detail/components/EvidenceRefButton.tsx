@@ -53,7 +53,7 @@ export function EvidenceRefButton({
         className="inline-flex items-center gap-[6px] rounded-sm border border-band-conflict-line bg-band-conflict-bg px-2 py-[2px] text-meta text-band-conflict"
       >
         <AlertTriangle aria-hidden className="size-3" />
-        {name} — cacat integritas bukti
+        {name}: cacat integritas bukti
         <span className="sr-only">. {AVAILABILITY_MEANINGS.MISSING}</span>
       </span>
     )

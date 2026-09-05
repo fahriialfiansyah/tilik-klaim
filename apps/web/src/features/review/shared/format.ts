@@ -10,7 +10,7 @@ const AMOUNT = new Intl.NumberFormat('id-ID', {
 /** Claim amounts are synthetic and illustrative; they still have to line up between rows. */
 export function formatAmount(amount: string): string {
   const value = Number(amount)
-  return Number.isFinite(value) ? AMOUNT.format(value) : '—'
+  return Number.isFinite(value) ? AMOUNT.format(value) : '-'
 }
 
 /** How long a case has been waiting, in working language. */
@@ -45,18 +45,18 @@ import { ZONE_LABEL, formatDate, formatDateTime, formatTime, parseStamp } from '
  */
 export function formatDateRange(start: string, end: string | null | undefined): string {
   if (!parseStamp(start)) {
-    return '—'
+    return '-'
   }
   if (!parseStamp(end)) {
-    return `${formatDateTime(start)} — belum ditutup`
+    return `${formatDateTime(start)}, belum ditutup`
   }
   // Compared through the formatter rather than `Date.toDateString()`, which answers in the
   // *viewer's* zone: an episode from 23.00 to 01.00 WIB is one calendar day here and two on a
   // laptop set to Manila, and the reader would get a different sentence for the same stay.
   const sameDay = formatDate(start) === formatDate(end)
   return sameDay
-    ? `${formatDate(start)} · ${formatTime(start)}–${formatTime(end)} ${ZONE_LABEL}`
-    : `${formatDateTime(start)} — ${formatDateTime(end)}`
+    ? `${formatDate(start)} · ${formatTime(start)}-${formatTime(end)} ${ZONE_LABEL}`
+    : `${formatDateTime(start)} s.d. ${formatDateTime(end)}`
 }
 
 const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/

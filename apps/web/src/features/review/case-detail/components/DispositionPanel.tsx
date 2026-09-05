@@ -163,7 +163,7 @@ export function DispositionPanel({
           ))}
         </select>
         <p className="mb-4 text-meta text-ink-3 text-pretty">
-          Alasan wajib dan tersimpan permanen. Sistem hanya menawarkan pilihan — tidak pernah
+          Alasan wajib dan tersimpan permanen. Sistem hanya menawarkan pilihan, tidak pernah
           memilihkan.
         </p>
 

@@ -52,7 +52,7 @@ export function AuditTimeline({
 
       {status === 'failed' ? (
         <p role="alert" className="text-small text-band-conflict">
-          Riwayat tidak dapat dimuat. Ini bukan berarti kasus ini tidak punya riwayat — daftarnya
+          Riwayat tidak dapat dimuat. Ini bukan berarti kasus ini tidak punya riwayat; daftarnya
           memang tidak sampai ke layar ini.
         </p>
       ) : null}
@@ -87,7 +87,7 @@ export function AuditTimeline({
               </span>
               <span className="mt-[3px] block text-small leading-relaxed text-ink-2 text-pretty">
                 {actorLabel(event.actor_role)}
-                {event.structured_reason ? ` — ${event.structured_reason}` : ''}
+                {event.structured_reason ? ` · ${event.structured_reason}` : ''}
                 {event.state_before && event.state_after
                   ? ` · ${STATE_LABELS[event.state_before]} → ${STATE_LABELS[event.state_after]}`
                   : ''}

@@ -156,10 +156,10 @@ export function AppSidebar() {
             {user ? (
               <>
                 Masuk sebagai <span className="font-medium text-ink-2">{ROLE_LABEL[user.role]}</span>
-                . Peran disimulasikan — bukan autentikasi.
+                . Peran disimulasikan, bukan autentikasi.
               </>
             ) : (
-              'Peran disimulasikan untuk demo — bukan autentikasi.'
+              'Peran disimulasikan untuk demo, bukan autentikasi.'
             )}
           </span>
         </p>
@@ -171,6 +171,6 @@ export function AppSidebar() {
 /** The same sentence the footer renders, flattened for a `title` attribute. */
 function noteText(role: string | null): string {
   return role
-    ? `Masuk sebagai ${role}. Peran disimulasikan — bukan autentikasi.`
-    : 'Peran disimulasikan untuk demo — bukan autentikasi.'
+    ? `Masuk sebagai ${role}. Peran disimulasikan, bukan autentikasi.`
+    : 'Peran disimulasikan untuk demo, bukan autentikasi.'
 }

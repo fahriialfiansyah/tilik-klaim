@@ -92,7 +92,7 @@ function RoleChangeBody({ user, role }: { readonly user: StaffUser; readonly rol
       </dl>
 
       <p className="mt-4 text-meta text-ink-3 text-pretty">
-        Daftar ini dibaca dari matriks akses yang dihasilkan dari server, bukan ditulis tangan —
+        Daftar ini dibaca dari matriks akses yang dihasilkan dari server, bukan ditulis tangan,
         sama dengan yang ditampilkan halaman masuk.
       </p>
     </>

@@ -47,7 +47,7 @@ export function BandBadge({
         band from reading as a verdict, so it is also rendered as text the reader announces
         rather than left to a hover the keyboard cannot reach.
       */}
-      <span className="sr-only"> — {BAND_BASIS[band]}</span>
+      <span className="sr-only">: {BAND_BASIS[band]}</span>
     </span>
   )
 }

@@ -79,7 +79,7 @@ export function IssueTable({ issues }: { readonly issues: readonly ValidationIss
                   data-numeric
                   className="px-[15px] py-[11px] font-mono text-meta text-ink-2 break-all"
                 >
-                  {issue.resource_id ?? '—'}
+                  {issue.resource_id ?? '-'}
                 </td>
                 <td className="px-[15px] py-[11px] text-small leading-relaxed text-pretty">
                   {issueExplanation(issue.code)}

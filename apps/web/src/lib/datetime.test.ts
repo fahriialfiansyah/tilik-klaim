@@ -29,11 +29,11 @@ describe('the app clock', () => {
     expect(formatTime(MORNING)).toBe('09.15')
   })
 
-  test('renders an em dash rather than the words Invalid Date', () => {
+  test('renders a hyphen rather than the words Invalid Date', () => {
     for (const bad of ['', 'not-a-date', null, undefined]) {
-      expect(formatDateTime(bad)).toBe('—')
-      expect(formatDate(bad)).toBe('—')
-      expect(formatTime(bad)).toBe('—')
+      expect(formatDateTime(bad)).toBe('-')
+      expect(formatDate(bad)).toBe('-')
+      expect(formatTime(bad)).toBe('-')
     }
   })
 

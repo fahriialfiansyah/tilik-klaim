@@ -41,7 +41,7 @@ export function AdminUsersPage() {
   const [pending, setPending] = useState<PendingChange | null>(null)
 
   useEffect(() => {
-    document.title = 'Manajemen Pengguna — TilikKlaim'
+    document.title = 'Manajemen Pengguna · TilikKlaim'
   }, [])
 
   const nameFor = (userId: string) =>
@@ -93,7 +93,7 @@ export function AdminUsersPage() {
             role="alert"
             className="rounded-md border border-notice-line bg-notice-bg px-4 py-3 text-body text-notice text-pretty"
           >
-            <span className="font-semibold">Perubahan ditolak — </span>
+            <span className="font-semibold">Perubahan ditolak: </span>
             {refusal.message}
           </p>
         ) : null}

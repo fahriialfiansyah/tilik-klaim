@@ -24,9 +24,9 @@ export const STATUS_LABELS: Record<ValidationStatus, string> = {
 export const STATUS_MEANINGS: Record<ValidationStatus, string> = {
   VALID: 'Bentuk berkas lolos pemeriksaan dan seluruh rujukan antar-sumber daya terselesaikan.',
   VALID_WITH_NOTES:
-    'Bentuk berkas sah. Sebagian sumber daya pendukung memang tidak dikirim — bukan rusak, memang tidak ada. Catatan ini ikut tersimpan bersama kasus dan menurunkan tingkat keyakinan; ia tidak pernah menaikkan sinyal risiko.',
+    'Bentuk berkas sah. Sebagian sumber daya pendukung memang tidak dikirim: bukan rusak, memang tidak ada. Catatan ini ikut tersimpan bersama kasus dan menurunkan tingkat keyakinan; ia tidak pernah menaikkan sinyal risiko.',
   INVALID:
-    'Berkas tidak dapat disaring. Perbaiki sumber daya yang disebut di bawah lalu kirim ulang — tidak ada penyaringan sebagian.',
+    'Berkas tidak dapat disaring. Perbaiki sumber daya yang disebut di bawah lalu kirim ulang. Tidak ada penyaringan sebagian.',
 }
 
 /**
@@ -43,7 +43,7 @@ export const ISSUE_EXPLANATIONS: Record<string, string> = {
   BUNDLE_DEPTH_EXCEEDED: 'Struktur berkas bersarang terlalu dalam.',
   BUNDLE_MALFORMED_JSON: 'Isi berkas bukan JSON yang sah dan tidak dapat dibaca sama sekali.',
   BUNDLE_SCHEMA_INVALID:
-    'Sebuah bidang tidak sesuai bentuk yang diharapkan — jenis datanya salah, atau bidang wajib tidak ada.',
+    'Sebuah bidang tidak sesuai bentuk yang diharapkan: jenis datanya salah, atau bidang wajib tidak ada.',
   BUNDLE_UNKNOWN_RESOURCE_TYPE:
     'Jenis sumber daya ini di luar bagian skema yang didokumentasikan sistem.',
   BUNDLE_DANGLING_REFERENCE:

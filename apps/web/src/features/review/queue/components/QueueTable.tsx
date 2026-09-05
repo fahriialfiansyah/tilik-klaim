@@ -172,7 +172,7 @@ export function QueueTable({ rows }: { readonly rows: readonly CaseSummary[] }) 
 
                 <td className="px-3 py-[13px] align-top">
                   {row.modes.length === 0 ? (
-                    <span className="text-small text-ink-3">—</span>
+                    <span className="text-small text-ink-3">-</span>
                   ) : (
                     <span className="flex flex-wrap gap-1">
                       {row.modes.map((mode) => (

@@ -28,7 +28,7 @@ export const useEngineVersion = create<EngineVersionStore>((set) => ({
 /** Compact one-line form for the header chip, e.g. `r1.4.2 · m0.9.1 · ds-2026-08-c`. */
 export function shortStamp(versions: VersionStamp | null): string {
   if (versions === null) {
-    return '—'
+    return '-'
   }
   return `r${versions.ruleset_version} · m${versions.engine_version} · ${versions.dataset_version}`
 }

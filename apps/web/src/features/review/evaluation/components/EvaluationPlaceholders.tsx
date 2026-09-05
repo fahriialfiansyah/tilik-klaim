@@ -36,7 +36,7 @@ export function NoEvaluationRun() {
       <p className="mb-2 text-lead font-semibold text-ink">Belum ada evaluasi yang dijalankan</p>
       <p className="mx-auto mb-5 max-w-[520px] text-body-lg text-ink-2 text-pretty">
         Halaman ini hanya menampilkan artefak yang sudah dihasilkan. Evaluasi dijalankan luring
-        oleh seorang teknisi terhadap partisi uji yang dibekukan — bukan dari halaman ini, dan
+        oleh seorang teknisi terhadap partisi uji yang dibekukan, bukan dari halaman ini dan
         bukan dari sebuah tombol.
       </p>
       <pre className="mx-auto max-w-[560px] overflow-x-auto rounded-md bg-sunk px-4 py-3 text-left text-small font-mono text-ink">

@@ -47,7 +47,7 @@ function Cell({
   if (cell.state === 'NOT_EXPECTED') {
     return (
       <td className="px-3 py-[9px] text-center text-meta text-ink-3" title={MATRIX_CELL_MEANINGS.NOT_EXPECTED}>
-        <span aria-hidden>—</span>
+        <span aria-hidden>-</span>
         <span className="sr-only">{MATRIX_CELL_LABELS.NOT_EXPECTED}</span>
       </td>
     )
@@ -154,7 +154,7 @@ export function EvidenceMatrix({
         <p className="text-small font-semibold">Matriks bukti</p>
         <p className="mt-[2px] text-meta text-ink-3">
           Baris tagihan terhadap jenis bukti yang diharapkan. Sel kosong berarti tidak ada yang
-          diharapkan — bukan tidak ada.
+          diharapkan, bukan tidak ada.
         </p>
       </div>
 

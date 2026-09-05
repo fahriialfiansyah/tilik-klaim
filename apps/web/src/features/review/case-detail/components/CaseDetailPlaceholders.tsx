@@ -52,7 +52,7 @@ export function CaseDetailFailed({
       <p className="mx-auto mb-5 max-w-[560px] text-body-lg text-ink-2 text-pretty">
         {notFound
           ? 'Pengenal kasus ini tidak ada dalam sistem. Kemungkinan tautannya sudah usang, atau basis data disaring ulang sejak tautan itu dibuat.'
-          : `${withStop(error?.message ?? 'Layanan tidak merespons')} Ini bukan berarti kasusnya tidak ada — detailnya memang tidak sampai ke layar ini.`}
+          : `${withStop(error?.message ?? 'Layanan tidak merespons')} Ini bukan berarti kasusnya tidak ada; detailnya memang tidak sampai ke layar ini.`}
       </p>
       {notFound ? (
         <Button onClick={() => navigate('/')}>Kembali ke antrean</Button>

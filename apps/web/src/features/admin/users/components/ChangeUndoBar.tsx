@@ -31,7 +31,7 @@ export function ChangeUndoBar({
       className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-md border border-line bg-sunk px-4 py-3"
     >
       <p className="min-w-0 flex-1 text-body text-ink text-pretty">
-        <span className="font-semibold">Tersimpan — </span>
+        <span className="font-semibold">Tersimpan: </span>
         {change.summary}{' '}
         <span className="text-meta text-ink-3">
           Mengurungkan akan mencatat perubahan balik; catatan aslinya tetap ada.

@@ -41,7 +41,7 @@ export function QueuePage() {
       <PageHeader
         eyebrow="DAFTAR KERJA · TERURUT PITA PRIORITAS"
         title="Antrean Review"
-        lede="Setiap baris dibuka dengan kalimat alasannya. Skor, pita, dan nominal berada di kanannya — bukan sebaliknya."
+        lede="Setiap baris dibuka dengan kalimat alasannya. Skor, pita, dan nominal berada di kanannya, bukan sebaliknya."
         action={
           <Button size="lg" onClick={() => navigate('/ingest')}>
             Masukkan bundel baru
@@ -106,7 +106,7 @@ export function QueuePage() {
 
       <p className="mt-4 max-w-[760px] text-small text-ink-3">
         Halaman ini sengaja tidak memuat grafik agregat, peringkat fasilitas, atau angka rupiah
-        &ldquo;diselamatkan&rdquo;. Kasus tanpa sinyal tidak pernah dilabeli bersih — hanya
+        &ldquo;diselamatkan&rdquo;. Kasus tanpa sinyal tidak pernah dilabeli bersih, hanya
         &ldquo;tidak ada risiko teramati&rdquo;.
       </p>
     </PageShell>

@@ -21,7 +21,7 @@ export function UserAuditPanel({
   if (events.length === 0) {
     return (
       <p className="px-4 py-6 text-body text-ink-2 text-pretty">
-        Belum ada perubahan pada daftar pengguna. Riwayat ini bersifat tambah-saja — sekali
+        Belum ada perubahan pada daftar pengguna. Riwayat ini bersifat tambah-saja: sekali
         tercatat, sebuah perubahan tidak dapat disunting atau dihapus.
       </p>
     )
@@ -36,7 +36,7 @@ export function UserAuditPanel({
               <span className="text-body font-medium text-ink">
                 {EVENT_LABEL[event.event_kind]}
               </span>
-              <span className="text-body text-ink-2">— {nameFor(event.target_user_id)}</span>
+              <span className="text-body text-ink-2">· {nameFor(event.target_user_id)}</span>
               <span data-numeric className="font-mono text-meta text-ink-3">
                 {formatDateTime(event.occurred_at)}
               </span>
@@ -58,7 +58,7 @@ export function UserAuditPanel({
 /** Raw stored values become working language; anything unrecognised is shown as it was stored. */
 function readable(value: string | null): string {
   if (value === null) {
-    return '—'
+    return '-'
   }
   if (value === 'true') {
     return 'Aktif'

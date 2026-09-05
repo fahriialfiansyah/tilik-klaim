@@ -47,7 +47,7 @@ const TIME = new Intl.DateTimeFormat('id-ID', {
 })
 
 /** An em dash for anything unreadable — never the string `Invalid Date`. */
-export const NO_STAMP = '—'
+export const NO_STAMP = '-'
 
 /** `null` for anything unreadable, so a caller can tell "absent" from "malformed". */
 export function parseStamp(isoTimestamp: string | null | undefined): Date | null {

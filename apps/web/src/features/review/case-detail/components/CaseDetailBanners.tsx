@@ -29,13 +29,13 @@ export function VersionConflictBanner({
       <AlertTriangle aria-hidden className="mt-[2px] size-[18px] shrink-0 text-notice" />
       <div className="min-w-0 flex-1">
         <p className="mb-[3px] font-semibold text-notice">
-          Versi kasus tidak cocok — kasus ini berubah sejak Anda membukanya
+          Versi kasus tidak cocok: kasus ini berubah sejak Anda membukanya
         </p>
         <p className="text-small leading-relaxed text-ink-2 text-pretty">
           {conflict.summary} Perubahan dicatat oleh{' '}
           <strong className="text-ink">{conflict.changedBy}</strong> pada {conflict.changedAt};
           versi kasus berpindah dari {conflict.seenVersion} ke {conflict.currentVersion}.{' '}
-          <strong className="text-ink">Isian disposisi Anda tetap dipertahankan</strong> — tidak
+          <strong className="text-ink">Isian disposisi Anda tetap dipertahankan</strong>: tidak
           ada yang ditimpa dan tidak ada yang tercatat.
         </p>
       </div>
@@ -65,7 +65,7 @@ export function SaveFailedBanner({
         <p className="mb-[3px] font-semibold text-band-conflict">Disposisi gagal disimpan</p>
         <p className="text-small leading-relaxed text-ink-2 text-pretty">
           {withStop(error?.message ?? 'Layanan tidak merespons')} Tidak ada kejadian audit yang tertulis
-          sebagian — kejadian ditulis utuh atau tidak sama sekali.{' '}
+          sebagian; kejadian ditulis utuh atau tidak sama sekali.{' '}
           <strong className="text-ink">Isian Anda masih utuh di layar.</strong>
         </p>
       </div>

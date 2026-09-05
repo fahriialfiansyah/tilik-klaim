@@ -110,7 +110,7 @@ export function ReasonCard({
       <div className="px-4 pb-4">
         <div className="rounded-md border border-dashed border-line-strong bg-sunk px-[15px] py-[13px]">
           <p className={cn('mb-[5px] text-ink-2', MICRO_LABEL)}>
-            BUKTI TANDINGAN — MELEMAHKAN ALASAN INI
+            BUKTI TANDINGAN: MELEMAHKAN ALASAN INI
           </p>
           {reason.counter_evidence_notes.length === 0 ? (
             <p className="text-small text-ink-2">

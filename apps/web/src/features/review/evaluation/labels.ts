@@ -24,7 +24,7 @@ export const BASELINE_HINT: Readonly<Record<BaselineId, string>> = {
 
 export const METRIC_LABEL = {
   macro_f1: 'F1 makro',
-  pr_auc: 'Luas kurva ketepatan–keterpanggilan',
+  pr_auc: 'Luas kurva ketepatan-keterpanggilan',
   precision_at_k: 'Ketepatan pada kapasitas review',
   recall_at_k: 'Keterpanggilan pada kapasitas review',
   false_positives_per_100_clean: 'Positif palsu per 100 klaim bersih',

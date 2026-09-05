@@ -183,7 +183,7 @@ async function describeConflict(
     seenVersion,
     currentVersion: seenVersion + 1,
     changedBy: 'Tidak diketahui',
-    changedAt: '—',
+    changedAt: '-',
     summary: 'Kasus ini berubah sejak Anda membukanya.',
   }
 
