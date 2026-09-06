@@ -160,10 +160,7 @@ export function EvidenceMatrix({
     >
       <div className="border-b border-line px-[15px] py-[13px]">
         <p className="text-small font-semibold">{t('matrixPanel.heading')}</p>
-        <p className="mt-[2px] text-meta text-ink-3">
-          Baris tagihan terhadap jenis bukti yang diharapkan. Sel kosong berarti tidak ada yang
-          diharapkan, bukan tidak ada.
-        </p>
+        <p className="mt-[2px] text-meta text-ink-3">{t('matrixPanel.lede')}</p>
       </div>
 
       {!hasLines ? (
@@ -172,8 +169,7 @@ export function EvidenceMatrix({
         </p>
       ) : !hasReasons ? (
         <p className="px-[15px] py-6 text-small text-ink-3 text-pretty">
-          Tidak ada risiko teramati pada versi mesin ini, sehingga tidak ada jenis bukti yang
-          diharapkan untuk dipetakan. Ini bukan pernyataan tentang klaimnya.
+          {t('matrixPanel.noReasons')}
         </p>
       ) : (
         <PerfectScrollArea axis="both" className="max-w-full">

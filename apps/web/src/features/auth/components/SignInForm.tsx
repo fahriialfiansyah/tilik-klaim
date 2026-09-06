@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { copyText } from '@/lib/clipboard'
 import { Button } from '@/components/ui/button'
 import { startSession } from '@/features/auth/api'
 import { DEMO_ACCOUNTS, credentialLine, type DemoAccount } from '@/features/auth/accounts'
@@ -58,7 +59,7 @@ export function SignInForm() {
     // Never report a copy that did not happen — the same rule `AppHeader.onCopy` follows. The
     // credentials stay on screen and selectable either way, so a failed copy costs nothing, but
     // a false "copied" would cost the demo a confused pause.
-    if (await writeClipboard(credentialLine(chosen))) {
+    if (await copyText(credentialLine(chosen))) {
       setCopied(true)
       window.setTimeout(() => setCopied(false), COPY_FEEDBACK_MS)
     }
@@ -156,16 +157,6 @@ export function SignInForm() {
       </div>
     </form>
   )
-}
-
-/** `false` when the browser refused the write — no clipboard API, or permission denied. */
-async function writeClipboard(text: string): Promise<boolean> {
-  try {
-    await navigator.clipboard.writeText(text)
-    return true
-  } catch {
-    return false
-  }
 }
 
 /** Turns a thrown failure into the sentence the operator reads, and which state drew it. */

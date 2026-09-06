@@ -94,5 +94,6 @@
     "commit": "Commit kode",
     "environment": "Sidik lingkungan",
     "thresholds": "Ambang batas pita ditetapkan dari kuantil distribusi skor pada partisi validasi saja, tidak pernah dari partisi latih maupun uji. Rumusan teknisnya tercatat pada <1>{{file}}</1> milik run ini."
-  }
+  },
+  "approachColumn": "Pendekatan"
 }

@@ -2,6 +2,7 @@ import { Copy } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { copyText } from '@/lib/clipboard'
 import { Button } from '@/components/ui/button'
 import { toReadable } from '@/features/review/evaluation/labels'
 import type { LimitationsCard as LimitationsCardData } from '@/features/review/evaluation/types'
@@ -44,11 +45,13 @@ export function LimitationsCard({ limitations }: { readonly limitations: Limitat
     ...doesNotDemonstrate.map((line) => `- ${line}`),
   ].join('\n')
 
-  const copy = () => {
-    void navigator.clipboard?.writeText(asText).then(() => {
+  const copy = async () => {
+    // Only ever reports a copy that actually happened; the clipboard API is absent entirely
+    // outside a secure context, which is how this app is usually demonstrated.
+    if (await copyText(asText)) {
       setCopied(true)
       setTimeout(() => setCopied(false), COPIED_MS)
-    })
+    }
   }
 
   return (
@@ -60,7 +63,7 @@ export function LimitationsCard({ limitations }: { readonly limitations: Limitat
         <h2 id="limitations-heading" className="text-lead font-semibold text-ink">
           {t('limitations.heading')}
         </h2>
-        <Button variant="outline" size="sm" onClick={copy}>
+        <Button variant="outline" size="sm" onClick={() => void copy()}>
           <Copy aria-hidden="true" className="mr-1 h-3 w-3" />
           {copied ? t('limitations.copied') : t('limitations.copy')}
         </Button>

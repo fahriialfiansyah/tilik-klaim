@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
+import { TechnicalDetails } from '@/features/review/ingest/components/TechnicalDetails'
 import { useIssueExplanation } from '@/features/review/ingest/labels'
 import type { ValidationIssue } from '@/features/review/ingest/types'
 import { useResourceLabel } from '@/features/review/case-detail/labels'
@@ -11,14 +12,16 @@ const HEAD_CLASS =
 /**
  * Widget 6 — every problem found, pointed at the resource that caused it.
  *
- * Four columns, and the last two are the point. `docs/canonical/` requires this report to be
- * *actionable*: a stable code an operator can search for, the resource type and identifier they
- * have to open, and an explanation of what the code means. "Berkas tidak valid" is a message a
- * person can only resubmit against and hope.
+ * `docs/canonical/` requires this report to be *actionable*: the reader has to learn which
+ * resource to open and what is wrong with it. So the three columns that survive are the ones a
+ * reviewer can act on — the resource type, its identifier, and an explanation in their own
+ * language.
  *
- * The explanation is this app's, in the reader's language; the server's own `detail` sits
- * beside it because it names the offending value precisely and is what an engineer would want
- * in a ticket. Neither replaces the other, and the server's half stays as it arrived.
+ * **The machine half is folded away rather than deleted.** A stable code and the service's own
+ * sentence are exactly what a support request needs to quote, but they are written for an
+ * engineer reading a log — the code names nothing a reviewer can do, and the service's `detail`
+ * arrives in English whatever language the interface is in. Leading with either buries the
+ * sentence that actually helps.
  */
 export function IssueTable({ issues }: { readonly issues: readonly ValidationIssue[] }) {
   const { t } = useTranslation('ingest')
@@ -45,16 +48,13 @@ export function IssueTable({ issues }: { readonly issues: readonly ValidationIss
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[720px] border-collapse">
+        <table className="w-full min-w-[560px] border-collapse">
           <thead>
             <tr className="bg-sunk">
-              <th scope="col" style={{ width: '230px' }} className={HEAD_CLASS}>
-                {t('issues.code')}
-              </th>
-              <th scope="col" style={{ width: '176px' }} className={HEAD_CLASS}>
+              <th scope="col" style={{ width: '188px' }} className={HEAD_CLASS}>
                 {t('issues.resourceType')}
               </th>
-              <th scope="col" style={{ width: '156px' }} className={HEAD_CLASS}>
+              <th scope="col" style={{ width: '168px' }} className={HEAD_CLASS}>
                 {t('issues.identifier')}
               </th>
               <th scope="col" className={HEAD_CLASS}>
@@ -68,14 +68,6 @@ export function IssueTable({ issues }: { readonly issues: readonly ValidationIss
                 key={`${issue.code}-${issue.resource_id ?? index}`}
                 className="border-b border-line align-top"
               >
-                <td className="px-[15px] py-[11px]">
-                  <span
-                    data-numeric
-                    className="inline-block rounded-sm border border-band-conflict-line bg-band-conflict-bg px-2 py-[2px] font-mono text-meta text-band-conflict"
-                  >
-                    {issue.code}
-                  </span>
-                </td>
                 <td className="px-[15px] py-[11px] text-small">
                   {resourceLabel(issue.resource_type)}
                 </td>
@@ -87,9 +79,7 @@ export function IssueTable({ issues }: { readonly issues: readonly ValidationIss
                 </td>
                 <td className="px-[15px] py-[11px] text-small leading-relaxed text-pretty">
                   {issueExplanation(issue.code)}
-                  <span className="mt-1 block font-mono text-micro text-ink-3 break-all">
-                    {issue.detail}
-                  </span>
+                  <TechnicalDetails code={issue.code} detail={issue.detail} />
                 </td>
               </tr>
             ))}

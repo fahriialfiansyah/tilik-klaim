@@ -125,7 +125,7 @@ export function EpisodeSwimlane({
             <thead>
               <tr className="bg-sunk">
                 <th scope="col" className={cn('px-3 py-2 text-left', MICRO_LABEL)}>
-                  JALUR
+                  {t('swimlane.laneColumn')}
                 </th>
                 {model.ticks.map((tick) => (
                   <th key={tick} scope="col" data-numeric className={cn('px-2 py-2 text-left font-mono', MICRO_LABEL)}>

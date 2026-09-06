@@ -254,7 +254,11 @@
     "amount": "CLAIM AMOUNT",
     "encounterRange": "ENCOUNTER RANGE",
     "primaryReason": "PRIMARY REASON",
-    "noRisk": "No risk observed at this engine version. This is not a statement that the claim is clean."
+    "noRisk": "No risk observed at this engine version. This is not a statement that the claim is clean.",
+    "bandCaveat": "{{basis}} This band raises review priority. It does not reject the claim, and it does not allege fraud.",
+    "status": "STATUS",
+    "participantProvider": "MEMBER · FACILITY",
+    "basisToggle": "Basis for confidence"
   },
   "auditPanel": {
     "sectionLabel": "Audit history",
@@ -263,19 +267,24 @@
     "empty": "No event has been recorded for this case yet.",
     "evidenceRequested": "Evidence requested: ",
     "versions": " · rules v{{ruleset}} · engine v{{engine}}",
-    "supersedes": " · supersedes {{event}}"
+    "supersedes": " · supersedes {{event}}",
+    "lede": "Every event records who acted, what they did, why, when, which evidence was cited, and the engine version. Entries are never deleted or overwritten.",
+    "failed": "The history could not be loaded. That does not mean this case has no history; the list simply did not reach this screen."
   },
   "swimlane": {
     "sectionLabel": "Episode timeline",
     "heading": "Episode timeline",
     "laneEmpty": "no events recorded",
-    "empty": "This bundle carries no events that can be ordered in time."
+    "empty": "This bundle carries no events that can be ordered in time.",
+    "laneColumn": "LANE"
   },
   "matrixPanel": {
     "sectionLabel": "Evidence matrix",
     "heading": "Evidence matrix",
     "empty": "This bundle carries no claim lines that can be shown.",
-    "lineColumn": "LINE"
+    "lineColumn": "LINE",
+    "lede": "Billed lines against the kinds of evidence expected of them. An empty cell means nothing was expected there, not that something is absent.",
+    "noReasons": "No risk was observed at this engine version, so there is no expected evidence to map. This is not a statement about the claim."
   },
   "reasonCard": {
     "counterHeading": "COUNTER-EVIDENCE: WHAT WEAKENS THIS REASON",
@@ -283,7 +292,9 @@
     "expectedHeading": "EVIDENCE EXPECTED",
     "expectedEmpty": "This rule does not specify a particular evidence type.",
     "foundHeading": "EVIDENCE FOUND",
-    "foundEmpty": "No supporting resource was found for this reason."
+    "foundEmpty": "No supporting resource was found for this reason.",
+    "strength": "strength",
+    "compare": "Compare the candidate pair"
   },
   "map": {
     "expectedLabel": "Expected evidence",
@@ -294,7 +305,8 @@
     "expectedHeading": "EVIDENCE EXPECTED BENEATH THIS LINE",
     "counterHeading": "COUNTER-EVIDENCE: A SEPARATE BRANCH",
     "counterLabel": "Counter-evidence",
-    "counterEmpty": "There is no counter-evidence for this reason."
+    "counterEmpty": "There is no counter-evidence for this reason.",
+    "footnote": "One path, not a web of relations. Leaf nodes are not connected to one another; a node with no supporting resource stops there."
   },
   "source": {
     "raw": "The resource's contents as they are, exactly as the system received them.",

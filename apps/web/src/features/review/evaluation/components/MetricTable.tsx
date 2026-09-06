@@ -44,7 +44,7 @@ export function MetricTable({
         <thead>
           <tr className="border-b border-line-strong text-left">
             <th scope="col" className="py-2 pr-3 font-semibold text-ink-2">
-              Pendekatan
+              {t('approachColumn')}
             </th>
             {columns.map((column) => (
               <th key={column.key} scope="col" className="py-2 pr-3 font-semibold text-ink-2">

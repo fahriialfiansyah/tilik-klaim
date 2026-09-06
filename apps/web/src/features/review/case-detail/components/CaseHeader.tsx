@@ -6,7 +6,7 @@ import { componentLabel, useActionLabel } from '@/features/review/case-detail/la
 import type { CaseDetail, DispositionAction } from '@/features/review/case-detail/types'
 import { DISPOSITION_ACTIONS } from '@/features/review/case-detail/types'
 import { BAND_RAIL, BandBadge } from '@/features/review/shared/components/BandBadge'
-import { formatAmount, formatDateRange } from '@/features/review/shared/format'
+import { formatAmount, formatDateRange, withStop } from '@/features/review/shared/format'
 import { useStateLabel } from '@/features/review/shared/labels'
 import { cn } from '@/lib/utils'
 
@@ -39,7 +39,7 @@ export function CaseHeader({
   readonly detail: CaseDetail
   readonly onPickAction: (action: DispositionAction) => void
 }) {
-  const { t } = useTranslation('caseDetail')
+  const { t } = useTranslation(['caseDetail', 'common'])
   const stateLabel = useStateLabel()
   const actionLabel = useActionLabel()
   const [basisOpen, setBasisOpen] = useState(false)
@@ -85,19 +85,19 @@ export function CaseHeader({
             {formatDateRange(detail.encounter_start, detail.encounter_end)}
           </span>
         </Fact>
-        <Fact label="PESERTA · FASILITAS">
+        <Fact label={t('header.participantProvider')}>
           <span data-numeric className="font-mono text-body">
             {detail.participant_token} · {detail.provider_token}
           </span>
         </Fact>
         <div>
-          <p className={cn('mb-[2px]', MICRO_LABEL)}>STATUS</p>
+          <p className={cn('mb-[2px]', MICRO_LABEL)}>{t('header.status')}</p>
           <span className="inline-block rounded-md border border-line bg-sunk px-[10px] py-[3px] text-small font-semibold">
             {stateLabel(detail.state)}
           </span>
         </div>
         <span className="rounded-md border border-notice-line bg-notice-bg px-[10px] py-[3px] text-small font-semibold text-notice">
-          DATA SINTETIK
+          {t('common:header.syntheticBadge')}
         </span>
         </div>
 
@@ -133,7 +133,7 @@ export function CaseHeader({
           aria-controls="dasar-keyakinan"
           className="rounded-md border border-line bg-sunk px-3 py-[6px] text-small font-medium text-brand hover:border-brand"
         >
-          Dasar keyakinan {basisOpen ? '▾' : '▸'}
+          {t('header.basisToggle')} {basisOpen ? '▾' : '▸'}
         </button>
       </div>
 
@@ -143,8 +143,7 @@ export function CaseHeader({
           className="tk-enter mt-[14px] max-w-[1000px] rounded-md border border-line bg-sunk px-[18px] py-4"
         >
           <p className="mb-3 text-small leading-relaxed text-ink-2 text-pretty">
-            {detail.band.basis} Pita ini menaikkan prioritas tinjauan, bukan menolak klaim dan
-            bukan menyatakan fraud.
+            {t('header.bandCaveat', { basis: withStop(detail.band.basis) })}
           </p>
           {detail.band.caps_applied.length > 0 ? (
             <ul className="mb-3 space-y-1">

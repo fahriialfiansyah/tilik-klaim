@@ -82,7 +82,7 @@ export function ReasonCard({
                 {reason.code} · aturan v{reason.ruleset_version}
               </span>
               <span className="flex items-center gap-[5px] text-meta text-ink-2">
-                kekuatan
+                {t('reasonCard.strength')}
                 <span aria-hidden className="flex gap-[2px]">
                   {Array.from({ length: STRENGTH_SEGMENTS }, (_, index) => (
                     <span
@@ -208,7 +208,7 @@ export function ReasonCard({
               onClick={onCompare}
               className="rounded-md border border-line-strong bg-card px-[15px] py-2 text-small font-semibold hover:border-brand hover:text-brand"
             >
-              Bandingkan pasangan kandidat
+              {t('reasonCard.compare')}
             </button>
           ) : null}
         </div>

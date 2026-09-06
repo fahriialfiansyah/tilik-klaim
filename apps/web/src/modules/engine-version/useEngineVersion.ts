@@ -1,3 +1,4 @@
+import { copyText } from '@/lib/clipboard'
 import { create } from 'zustand'
 
 /**
@@ -42,10 +43,5 @@ export function shortStamp(versions: VersionStamp | null): string {
  * not happen — the stamp is what an operator quotes when reporting a result.
  */
 export async function copyStamp(versions: VersionStamp | null): Promise<boolean> {
-  try {
-    await navigator.clipboard.writeText(shortStamp(versions))
-    return true
-  } catch {
-    return false
-  }
+  return copyText(shortStamp(versions))
 }

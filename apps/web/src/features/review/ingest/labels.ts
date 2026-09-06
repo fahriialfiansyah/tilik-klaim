@@ -49,25 +49,3 @@ export function useIssueExplanation(): (code: string) => string {
 export function countLabel(resourceType: string): string {
   return translateOr(`ingest:count.${resourceType}`, resourceType)
 }
-
-/**
- * The order the count cards are shown in.
- *
- * The API returns them alphabetically, which puts `Account` and `ChargeItem` — billing plumbing
- * — ahead of the claim and its lines. A reader checking that a submission arrived intact looks
- * for the claim first and the invoice last. The order lives here and not in the locale files:
- * a translator reordering a JSON object would reorder the cards.
- */
-export const COUNT_ORDER: readonly string[] = [
-  'Claim',
-  'ClaimLine',
-  'Encounter',
-  'Condition',
-  'Procedure',
-  'Medication',
-  'Diagnostic',
-  'Document',
-  'ChargeItem',
-  'Invoice',
-  'Account',
-]

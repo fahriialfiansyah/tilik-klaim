@@ -44,10 +44,7 @@ export function AuditTimeline({
           {caseId.replace(/^case_/, '').slice(0, 14)}
         </span>
       </p>
-      <p className="mb-[22px] text-small text-ink-2 text-pretty">
-        Setiap kejadian mencatat pelaku, tindakan, alasan, waktu, bukti yang dirujuk, dan versi
-        mesin. Entri tidak pernah dihapus atau ditimpa.
-      </p>
+      <p className="mb-[22px] text-small text-ink-2 text-pretty">{t('auditPanel.lede')}</p>
 
       {status === 'loading' ? (
         <p aria-busy="true" className="text-small text-ink-3">
@@ -57,8 +54,7 @@ export function AuditTimeline({
 
       {status === 'failed' ? (
         <p role="alert" className="text-small text-band-conflict">
-          Riwayat tidak dapat dimuat. Ini bukan berarti kasus ini tidak punya riwayat; daftarnya
-          memang tidak sampai ke layar ini.
+          {t('auditPanel.failed')}
         </p>
       ) : null}
 

@@ -4,6 +4,7 @@ import { AlertTriangle, ArrowRight, Info, RotateCw } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
+import { shortHash } from '@/features/review/ingest/hash'
 import { withStop } from '@/features/review/shared/format'
 
 /**
@@ -73,12 +74,12 @@ export function DuplicateBanner({
           {t('banner.duplicateTitle')}
         </p>
         <p className="text-small leading-relaxed text-ink-2 text-pretty">
-          Sidik{' '}
-          <span data-numeric className="font-mono">
-            sha256:{inputHash.slice(0, 12)}…
-          </span>{' '}
-          sudah menghasilkan sebuah kasus. Menyaring ulang tidak membuat kasus kedua; ia
-          memperbarui kasus yang sudah ada.
+          <Trans
+            i18nKey="banner.duplicateBody"
+            ns="ingest"
+            values={{ hash: shortHash(inputHash) }}
+            components={[<span key="0" data-numeric className="font-mono" />]}
+          />
         </p>
       </div>
       <Button
@@ -110,7 +111,7 @@ export function ServiceErrorBanner({
   readonly error: Error | null
   readonly onRetry: () => void
 }) {
-  const { t } = useTranslation('ingest')
+  const { t } = useTranslation(['ingest', 'common'])
   return (
     <div
       role="alert"
@@ -120,14 +121,14 @@ export function ServiceErrorBanner({
       <div className="min-w-0 flex-1">
         <p className="mb-[3px] font-semibold text-band-conflict">{title}</p>
         <p className="text-small leading-relaxed text-ink-2 text-pretty">
-          {t('banner.serviceBody', {
-            detail: withStop(error?.message ?? t('banner.serviceDown')),
+          {t('ingest:banner.serviceBody', {
+            detail: withStop(error?.message ?? t('ingest:banner.serviceDown')),
           })}
         </p>
       </div>
       <Button variant="outline" size="sm" className="shrink-0" onClick={onRetry}>
         <RotateCw />
-        Coba lagi
+        {t('common:action.retry')}
       </Button>
     </div>
   )

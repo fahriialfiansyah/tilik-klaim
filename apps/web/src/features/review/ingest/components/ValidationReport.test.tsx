@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react'
-import { describe, expect, test, vi } from 'vitest'
+import userEvent from '@testing-library/user-event'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 
 import { ValidationReport } from '@/features/review/ingest/components/ValidationReport'
 import type { BundleRejection } from '@/features/review/ingest/rejection'
@@ -42,6 +43,11 @@ function render(
 function screenButton() {
   return screen.getByRole('button', { name: 'Saring klaim' })
 }
+
+afterEach(() => {
+  Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true })
+  Object.defineProperty(document, 'execCommand', { value: undefined, configurable: true })
+})
 
 describe('the three validation states are drawn distinctly', () => {
   const cases: readonly [ValidationStatus, string][] = [
@@ -97,12 +103,20 @@ describe('a refused bundle', () => {
    * panel on "belum diperiksa" while an error sits above it would have two parts of the screen
    * disagreeing about whether anything was checked.
    */
-  test('is reported as invalid, with its stable code', () => {
+  test('is reported as invalid, in a sentence rather than a code', () => {
     render(null, refusal)
 
     expect(screen.getByText('Tidak sah')).toBeVisible()
-    expect(screen.getByText('BUNDLE_MALFORMED_JSON')).toBeVisible()
     expect(screen.getByText(refusal.message)).toBeVisible()
+  })
+
+  /** The machine token is reachable for a ticket, but it never leads the reading. */
+  test('keeps the stable code behind the technical disclosure', async () => {
+    render(null, refusal)
+
+    expect(screen.getByText('BUNDLE_MALFORMED_JSON')).not.toBeVisible()
+    await userEvent.click(screen.getByText('Detail teknis'))
+    expect(screen.getByText('BUNDLE_MALFORMED_JSON')).toBeVisible()
   })
 
   test('keeps the button in place, disabled, rather than removing it', () => {
@@ -117,11 +131,51 @@ describe('a refused bundle', () => {
 })
 
 describe('resource counts', () => {
-  test('a zero count is shown rather than omitted — absence is information', () => {
+  test('leads with the tally rather than eleven equal numbers', () => {
     render(makeReport())
 
-    const counts = screen.getByLabelText('Laporan validasi')
-    expect(counts).toHaveTextContent('Tindakan')
-    expect(counts).toHaveTextContent('0')
+    expect(screen.getByText('2 dari 3 jenis terkirim')).toBeVisible()
+  })
+
+  test('a zero count is shown rather than omitted — absence is information', async () => {
+    render(makeReport())
+
+    await userEvent.click(screen.getByText('Rincian per jenis'))
+    expect(screen.getByText('Tindakan')).toBeVisible()
+    expect(screen.getByText('tidak dikirim')).toBeVisible()
+  })
+})
+
+describe('the input hash', () => {
+  /** 64 characters wrapped onto two lines and dominated the panel; the prefix identifies it. */
+  test('is shown as a short prefix, with the whole value kept on the element', () => {
+    render(makeReport())
+
+    const shown = screen.getByText(`sha256:${'a'.repeat(12)}…`)
+    expect(shown).toBeVisible()
+    expect(shown).toHaveAttribute('title', 'a'.repeat(64))
+  })
+
+  test('copies the full hash, not the prefix that is on screen', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
+    render(makeReport())
+
+    await userEvent.click(screen.getByRole('button', { name: 'Salin' }))
+
+    expect(writeText).toHaveBeenCalledWith('a'.repeat(64))
+    expect(await screen.findByRole('button', { name: 'Tersalin' })).toBeVisible()
+  })
+
+  /**
+   * The demo is opened over plain HTTP on a LAN address, where `navigator.clipboard` does not
+   * exist. The old button swallowed that and looked broken; it has to say so.
+   */
+  test('reports a copy that did not happen instead of staying silent', async () => {
+    render(makeReport())
+
+    await userEvent.click(screen.getByRole('button', { name: 'Salin' }))
+
+    expect(await screen.findByRole('button', { name: 'Gagal menyalin' })).toBeVisible()
   })
 })

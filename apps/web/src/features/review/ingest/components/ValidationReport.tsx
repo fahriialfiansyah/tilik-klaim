@@ -1,13 +1,16 @@
-import { Check, Copy, Loader2 } from 'lucide-react'
-import { useState, type CSSProperties } from 'react'
-
-import { Button } from '@/components/ui/button'
+import { Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { COUNT_ORDER, countLabel, useStatusLabel } from '@/features/review/ingest/labels'
+import { Button } from '@/components/ui/button'
+import { ResourceSummary } from '@/features/review/ingest/components/ResourceSummary'
+import { TechnicalDetails } from '@/features/review/ingest/components/TechnicalDetails'
+import { shortHash } from '@/features/review/ingest/hash'
+import { useStatusLabel } from '@/features/review/ingest/labels'
 import type { BundleRejection } from '@/features/review/ingest/rejection'
 import type { IngestBundleResponse, ValidationStatus } from '@/features/review/ingest/types'
 import type { ScreenStatus } from '@/features/review/ingest/useIngest'
+import { CopyStateIcon } from '@/modules/clipboard/CopyStateIcon'
+import { useCopyState } from '@/modules/clipboard/useCopyState'
 import { cn } from '@/lib/utils'
 
 /**
@@ -24,28 +27,8 @@ const STATUS_CLASSES: Record<ValidationStatus, string> = {
   INVALID: 'border-band-conflict-line bg-band-conflict-bg text-band-conflict',
 }
 
-const HASH_PREFIX_LENGTH = 12
-
-/** Widest column count the grid uses; the narrow breakpoint divides it evenly. */
-const WIDE_COLUMNS = 3
-
-function fillerCells(shown: number): number {
-  return (WIDE_COLUMNS - (shown % WIDE_COLUMNS)) % WIDE_COLUMNS
-}
-
-/** Counts in reading order, with anything unrecognised kept rather than dropped. */
-function orderedCounts(report: IngestBundleResponse) {
-  const known = COUNT_ORDER.map((type) =>
-    report.resource_counts.find((count) => count.resource_type === type),
-  ).filter((count): count is NonNullable<typeof count> => Boolean(count))
-  const rest = report.resource_counts.filter(
-    (count) => !COUNT_ORDER.includes(count.resource_type),
-  )
-  return [...known, ...rest]
-}
-
 /**
- * Widgets 4, 5, 8 and 9 — status, resource counts, input hash, and the single screen button.
+ * Widgets 4, 5, 8 and 9 — status, resource summary, input hash, and the single screen button.
  *
  * The status is read **before** the error list, because it determines whether the detail needs
  * reading at all (`brief/01_INGEST_VALIDASI.md` § 2.2). And there is exactly one button: no
@@ -64,26 +47,11 @@ export function ValidationReport({
 }) {
   const { t } = useTranslation('ingest')
   const statusLabel = useStatusLabel()
-  const [copied, setCopied] = useState(false)
+  const [copyState, copy] = useCopyState()
   // A refused bundle is invalid whichever side refused it. The status badge says so rather than
   // leaving the panel on "not yet checked" while an error banner sits above it — two places
   // disagreeing about whether anything was checked.
   const status: ValidationStatus | null = rejection ? 'INVALID' : (report?.status ?? null)
-
-  const copyHash = async () => {
-    if (!report) {
-      return
-    }
-    try {
-      await navigator.clipboard.writeText(report.input_hash)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1600)
-    } catch {
-      // A denied clipboard permission is not worth an error banner: the hash is on screen and
-      // selectable, so the operator can still take it.
-      setCopied(false)
-    }
-  }
 
   return (
     <section
@@ -112,17 +80,16 @@ export function ValidationReport({
         <>
           <div className="px-4 py-5">
             <p className="mb-2 text-small leading-relaxed text-pretty">{rejection.message}</p>
-            <p
-              data-numeric
-              className="mb-4 inline-block rounded-sm border border-band-conflict-line bg-band-conflict-bg px-2 py-[2px] font-mono text-meta text-band-conflict"
-            >
-              {rejection.code}
-            </p>
             <p className="text-meta leading-relaxed text-ink-3 text-pretty">
               {rejection.source === 'client'
                 ? t('report.refusedClient')
                 : t('report.refusedServer')}
             </p>
+            {/*
+              The stable code is what a support request quotes, and nothing a reviewer can act
+              on. It stays reachable rather than prominent — see `TechnicalDetails`.
+            */}
+            <TechnicalDetails code={rejection.code} detail="" />
           </div>
           {/*
             Disabled rather than absent. Widget 9 says the button is disabled-with-a-reason
@@ -145,50 +112,25 @@ export function ValidationReport({
         </div>
       ) : (
         <>
-          {/*
-            The 1px gaps are the container's own background showing through, which is why the
-            last row is padded out: an 11-count grid in three columns leaves one slot empty, and
-            an unfilled slot renders as a grey block that reads like a broken cell.
-          */}
-          <dl className="grid grid-cols-2 gap-px bg-line sm:grid-cols-3">
-            {orderedCounts(report).map((count, index) => (
-              <div
-                key={count.resource_type}
-                style={{ '--tk-index': index } as CSSProperties}
-                className="tk-enter-fade bg-card px-[15px] py-[13px]"
-              >
-                <dt className="text-meta text-ink-3">{countLabel(count.resource_type)}</dt>
-                <dd
-                  data-numeric
-                  className={cn(
-                    'mt-[2px] text-lead font-semibold',
-                    count.count === 0 && 'text-ink-3',
-                  )}
-                >
-                  {count.count}
-                </dd>
-              </div>
-            ))}
-            {Array.from({ length: fillerCells(orderedCounts(report).length) }, (_, index) => (
-              <div key={`filler-${index}`} aria-hidden className="bg-card" />
-            ))}
-          </dl>
+          <ResourceSummary counts={report.resource_counts} />
 
           <div className="flex items-end justify-between gap-3 border-t border-line px-4 py-[14px]">
             <div className="min-w-0">
               <p className="mb-[3px] font-mono text-micro font-semibold tracking-label text-ink-3">
                 {t('report.hashHeading')}
               </p>
-              <p data-numeric className="font-mono text-meta break-all">
-                sha256:{report.input_hash.slice(0, HASH_PREFIX_LENGTH)}
-                <span className="text-ink-3">
-                  {report.input_hash.slice(HASH_PREFIX_LENGTH)}
-                </span>
+              <p data-numeric title={report.input_hash} className="font-mono text-meta">
+                {shortHash(report.input_hash)}
               </p>
             </div>
-            <Button variant="outline" size="sm" className="shrink-0" onClick={() => void copyHash()}>
-              {copied ? <Check /> : <Copy />}
-              {copied ? t('report.copied') : t('report.copy')}
+            <Button
+              variant="outline"
+              size="sm"
+              className="shrink-0"
+              onClick={() => void copy(report.input_hash)}
+            >
+              <CopyStateIcon state={copyState} />
+              {t(`copy.${copyState}` as 'copy.idle')}
             </Button>
           </div>
 

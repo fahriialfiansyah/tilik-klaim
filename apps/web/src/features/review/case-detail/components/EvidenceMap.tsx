@@ -183,10 +183,7 @@ export function EvidenceMap({
         </div>
       ) : null}
 
-      <p className="mt-[14px] text-meta text-ink-3 text-pretty">
-        Satu jalur, bukan jaring hubungan. Simpul ujung tidak saling terhubung; yang tidak punya
-        sumber daya pendukung berhenti di sana.
-      </p>
+      <p className="mt-[14px] text-meta text-ink-3 text-pretty">{t('map.footnote')}</p>
     </section>
   )
 }

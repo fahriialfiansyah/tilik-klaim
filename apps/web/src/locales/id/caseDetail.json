@@ -254,7 +254,11 @@
     "amount": "NOMINAL KLAIM",
     "encounterRange": "RENTANG KUNJUNGAN",
     "primaryReason": "ALASAN UTAMA",
-    "noRisk": "Tidak ada risiko teramati pada versi mesin ini. Ini bukan pernyataan bahwa klaimnya bersih."
+    "noRisk": "Tidak ada risiko teramati pada versi mesin ini. Ini bukan pernyataan bahwa klaimnya bersih.",
+    "bandCaveat": "{{basis}} Pita ini menaikkan prioritas tinjauan, bukan menolak klaim dan bukan menyatakan fraud.",
+    "status": "STATUS",
+    "participantProvider": "PESERTA · FASILITAS",
+    "basisToggle": "Dasar keyakinan"
   },
   "auditPanel": {
     "sectionLabel": "Riwayat audit",
@@ -263,19 +267,24 @@
     "empty": "Belum ada kejadian yang tercatat untuk kasus ini.",
     "evidenceRequested": "Bukti diminta: ",
     "versions": " · aturan v{{ruleset}} · mesin v{{engine}}",
-    "supersedes": " · menggantikan {{event}}"
+    "supersedes": " · menggantikan {{event}}",
+    "lede": "Setiap kejadian mencatat pelaku, tindakan, alasan, waktu, bukti yang dirujuk, dan versi mesin. Entri tidak pernah dihapus atau ditimpa.",
+    "failed": "Riwayat tidak dapat dimuat. Ini bukan berarti kasus ini tidak punya riwayat; daftarnya memang tidak sampai ke layar ini."
   },
   "swimlane": {
     "sectionLabel": "Linimasa episode",
     "heading": "Linimasa episode",
     "laneEmpty": "tidak ada kejadian tercatat",
-    "empty": "Bundel ini tidak memuat kejadian yang dapat diurutkan dalam waktu."
+    "empty": "Bundel ini tidak memuat kejadian yang dapat diurutkan dalam waktu.",
+    "laneColumn": "JALUR"
   },
   "matrixPanel": {
     "sectionLabel": "Matriks bukti",
     "heading": "Matriks bukti",
     "empty": "Bundel ini tidak memuat baris tagihan yang dapat ditampilkan.",
-    "lineColumn": "BARIS"
+    "lineColumn": "BARIS",
+    "lede": "Baris tagihan terhadap jenis bukti yang diharapkan. Sel kosong berarti tidak ada yang diharapkan, bukan tidak ada.",
+    "noReasons": "Tidak ada risiko teramati pada versi mesin ini, sehingga tidak ada jenis bukti yang diharapkan untuk dipetakan. Ini bukan pernyataan tentang klaimnya."
   },
   "reasonCard": {
     "counterHeading": "BUKTI TANDINGAN: MELEMAHKAN ALASAN INI",
@@ -283,7 +292,9 @@
     "expectedHeading": "BUKTI YANG DIHARAPKAN",
     "expectedEmpty": "Aturan ini tidak menetapkan jenis bukti tertentu.",
     "foundHeading": "BUKTI YANG DITEMUKAN",
-    "foundEmpty": "Tidak ada sumber daya pendukung yang ditemukan untuk alasan ini."
+    "foundEmpty": "Tidak ada sumber daya pendukung yang ditemukan untuk alasan ini.",
+    "strength": "kekuatan",
+    "compare": "Bandingkan pasangan kandidat"
   },
   "map": {
     "expectedLabel": "Bukti yang diharapkan",
@@ -294,7 +305,8 @@
     "expectedHeading": "BUKTI YANG DIHARAPKAN DI BAWAH BARIS INI",
     "counterHeading": "BUKTI TANDINGAN: CABANG TERPISAH",
     "counterLabel": "Bukti tandingan",
-    "counterEmpty": "Tidak ada bukti tandingan untuk alasan ini."
+    "counterEmpty": "Tidak ada bukti tandingan untuk alasan ini.",
+    "footnote": "Satu jalur, bukan jaring hubungan. Simpul ujung tidak saling terhubung; yang tidak punya sumber daya pendukung berhenti di sana."
   },
   "source": {
     "raw": "Isi sumber daya apa adanya, sebagaimana diterima sistem.",

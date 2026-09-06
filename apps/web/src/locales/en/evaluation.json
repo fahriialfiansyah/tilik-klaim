@@ -94,5 +94,6 @@
     "commit": "Code commit",
     "environment": "Environment digest",
     "thresholds": "Band thresholds are set from quantiles of the score distribution on the validation split alone — never on the train or test split. The technical formulation is recorded in this run's <1>{{file}}</1>."
-  }
+  },
+  "approachColumn": "Approach"
 }
