@@ -134,7 +134,7 @@ describe('resource counts', () => {
   test('leads with the tally rather than eleven equal numbers', () => {
     render(makeReport())
 
-    expect(screen.getByText('2 dari 3 jenis terkirim')).toBeVisible()
+    expect(screen.getByText(/jenis terkirim/)).toHaveTextContent('2 dari 3 jenis terkirim')
   })
 
   test('a zero count is shown rather than omitted — absence is information', async () => {

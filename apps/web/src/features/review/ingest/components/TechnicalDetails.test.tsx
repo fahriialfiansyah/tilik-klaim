@@ -71,6 +71,15 @@ describe('technical details', () => {
     expect(await screen.findByRole('button', { name: 'Gagal menyalin' })).toBeVisible()
   })
 
+  test('uses the same disclosure affordance as the rest of the panel', () => {
+    // Act
+    render(<TechnicalDetails code="BUNDLE_SCHEMA_INVALID" detail="Top level must be an object" />)
+    const toggle = screen.getByText('Detail teknis').closest('summary')
+
+    // Assert
+    expect(toggle?.querySelector('svg')).toBeTruthy()
+  })
+
   test('renders nothing when there is no code and no detail to show', () => {
     // Act
     const { container } = render(<TechnicalDetails code="" detail="" />)

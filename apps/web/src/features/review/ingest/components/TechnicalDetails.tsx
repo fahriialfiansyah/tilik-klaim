@@ -1,3 +1,4 @@
+import { ChevronRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
@@ -29,9 +30,13 @@ export function TechnicalDetails({
   }
 
   return (
-    <details className="mt-2">
+    <details className="group mt-2">
       <summary className="inline-flex cursor-pointer list-none items-center gap-[6px] text-meta text-ink-3 marker:hidden hover:text-ink-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
-        <span aria-hidden>›</span>
+        {/* The same disclosure idiom as the resource summary, so one gesture is learned once. */}
+        <ChevronRight
+          aria-hidden
+          className="size-[12px] shrink-0 transition-transform duration-[var(--motion-fast)] group-open:rotate-90"
+        />
         {t('technical.heading')}
       </summary>
 

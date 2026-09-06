@@ -26,8 +26,9 @@ describe('the coverage summary', () => {
     // Act
     render(<ResourceSummary counts={PHANTOM} />)
 
-    // Assert
-    expect(screen.getByText('8 dari 11 jenis terkirim')).toBeVisible()
+    // Assert — the numerals sit in their own mono spans, so the assertion is on the sentence
+    // the paragraph adds up to.
+    expect(screen.getByText(/jenis terkirim/)).toHaveTextContent('8 dari 11 jenis terkirim')
   })
 
   test('gives every group its own tally', () => {
@@ -57,6 +58,20 @@ describe('the per-type detail', () => {
     // Assert
     expect(screen.getByText('Rincian per jenis')).toBeVisible()
     expect(screen.getByText('Obat')).not.toBeVisible()
+  })
+
+  /**
+   * The row looked exactly like the group rows above it, so nothing said it could be opened.
+   * A disclosure whose only affordance is the cursor is a dead end for anyone not hovering.
+   */
+  test('announces itself as a disclosure rather than looking like another row', () => {
+    // Act
+    render(<ResourceSummary counts={PHANTOM} />)
+    const toggle = screen.getByText('Rincian per jenis').closest('summary')
+
+    // Assert — a chevron to see, and the count as a second cue to what is inside.
+    expect(toggle?.querySelector('svg')).toBeTruthy()
+    expect(toggle).toHaveTextContent('11')
   })
 
   test('opens on request', async () => {

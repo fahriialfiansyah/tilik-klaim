@@ -67,8 +67,8 @@
     "screen": "Saring klaim",
     "screenableHint": "Tidak ada langkah konfigurasi. Penyaringan memakai aturan dan versi mesin yang sedang berlaku.",
     "notScreenableHint": "Berkas berstatus “{{status}}”, sehingga tidak dapat disaring. Perbaiki sumber daya yang disebut di bawah lalu kirim ulang. Tidak ada penyaringan sebagian.",
-    "coverageHeading": "Kelengkapan bundel",
-    "coverageTally": "{{present}} dari {{total}} jenis terkirim",
+    "coverageHeading": "KELENGKAPAN BUNDEL",
+    "coverageTally": "<0>{{present}}</0> dari <1>{{total}}</1> jenis terkirim",
     "groupTally": "{{present}} / {{total}}",
     "detailToggle": "Rincian per jenis",
     "absent": "tidak dikirim"

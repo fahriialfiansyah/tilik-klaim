@@ -67,8 +67,8 @@
     "screen": "Screen the claim",
     "screenableHint": "There is no configuration step. Screening uses the rules and engine version currently in force.",
     "notScreenableHint": "The file is “{{status}}”, so it cannot be screened. Fix the resources named below and resubmit. There is no partial screening.",
-    "coverageHeading": "Bundle completeness",
-    "coverageTally": "{{present}} of {{total}} kinds submitted",
+    "coverageHeading": "BUNDLE COMPLETENESS",
+    "coverageTally": "<0>{{present}}</0> of <1>{{total}}</1> kinds submitted",
     "groupTally": "{{present}} / {{total}}",
     "detailToggle": "Detail by kind",
     "absent": "not submitted"
