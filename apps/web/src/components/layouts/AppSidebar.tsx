@@ -1,11 +1,12 @@
 import { ArrowLeft, ArrowRight, Info } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 
 import { TilikKlaimMark } from '@/components/brand/TilikKlaimMark'
 import { MENU_ICONS } from '@/components/layouts/MenuIcons'
 import { PerfectScrollArea } from '@/components/wrappers/PerfectScrollArea'
 import { menuForRole } from '@/config/menu/app-menu'
-import { ROLE_LABEL } from '@/features/auth/labels'
+import { useRoleLabel } from '@/features/auth/labels'
 import { useSession } from '@/features/auth/useSession'
 import { cn } from '@/lib/utils'
 import { useSidebarCollapsed } from '@/modules/sidebar/useSidebarCollapsed'
@@ -27,6 +28,8 @@ import { useSidebarCollapsed } from '@/modules/sidebar/useSidebarCollapsed'
  * so the dark band still reads as one strip across the top of the app.
  */
 export function AppSidebar() {
+  const { t } = useTranslation(['common', 'menu'])
+  const roleLabel = useRoleLabel()
   const user = useSession((state) => state.user)
   const collapsed = useSidebarCollapsed((state) => state.collapsed)
   const toggle = useSidebarCollapsed((state) => state.toggle)
@@ -35,7 +38,7 @@ export function AppSidebar() {
   return (
     <nav
       id="rail-navigasi"
-      aria-label="Navigasi utama"
+      aria-label={t('common:nav.primary')}
       className={cn(
         'flex shrink-0 flex-col overflow-hidden transition-[width] duration-[var(--motion-layout)] ease-[var(--ease-out)]',
         collapsed ? 'w-[var(--rail-w-min)]' : 'w-[var(--rail-w)]',
@@ -63,7 +66,7 @@ export function AppSidebar() {
         <PerfectScrollArea className={cn('flex-1 py-[14px]', collapsed ? 'px-[9px]' : 'px-2')}>
           {collapsed ? null : (
             <p className="mx-2 mb-2 font-mono text-micro font-semibold tracking-label text-ink-3">
-              MENU
+              {t('common:nav.menuHeading')}
             </p>
           )}
           <ul className="flex flex-col gap-[3px]">
@@ -71,6 +74,8 @@ export function AppSidebar() {
               // One drawn mark per page, from `MenuIcons.tsx`. The three uneven bars that used to
               // sit here were the same shape on every entry — decoration rather than a signpost.
               const Icon = MENU_ICONS[entry.id]
+              // `id` is the translation key — see `app-menu.ts`.
+              const label = t(`menu:${entry.id}` as 'menu:queue')
               return (
                 <li key={entry.id}>
                   <NavLink
@@ -78,7 +83,7 @@ export function AppSidebar() {
                     end={entry.route === '/'}
                     // Native `title` rather than a tooltip primitive: collapsed, the icon is the
                     // only thing on screen, and the label must still be readable by pointing at it.
-                    title={collapsed ? entry.label : undefined}
+                    title={collapsed ? label : undefined}
                     className={({ isActive }) =>
                       cn(
                         'flex items-center rounded-md border font-medium transition-colors',
@@ -106,7 +111,7 @@ export function AppSidebar() {
                           link with no name is a link a screen reader announces as its URL.
                         */}
                         <span className={cn('min-w-0 flex-1 truncate', collapsed && 'sr-only')}>
-                          {entry.label}
+                          {label}
                         </span>
                       </>
                     )}
@@ -122,8 +127,8 @@ export function AppSidebar() {
           onClick={toggle}
           aria-expanded={!collapsed}
           aria-controls="rail-navigasi"
-          aria-label={collapsed ? 'Bentangkan sidebar' : 'Ciutkan sidebar'}
-          title={collapsed ? 'Bentangkan sidebar' : 'Ciutkan sidebar'}
+          aria-label={collapsed ? t('common:nav.expand') : t('common:nav.collapse')}
+          title={collapsed ? t('common:nav.expand') : t('common:nav.collapse')}
           className={cn(
             'flex items-center border-t border-line py-[11px] text-meta font-medium text-ink-3 transition-colors hover:bg-accent hover:text-ink-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand',
             collapsed ? 'justify-center px-0' : 'gap-[11px] px-[14px]',
@@ -135,7 +140,7 @@ export function AppSidebar() {
             <>
               <ArrowLeft aria-hidden className="size-[18px] shrink-0" />
               <span aria-hidden className="truncate">
-                Ciutkan sidebar
+                {t('common:nav.collapse')}
               </span>
             </>
           )}
@@ -145,7 +150,13 @@ export function AppSidebar() {
           // Collapsed there is no room for the sentence, but the claim it makes — that this is a
           // simulated role and not authentication — is a governance statement, not a caption.
           // It stays in the accessible tree and stays reachable by pointing at the marker.
-          title={collapsed ? noteText(user ? ROLE_LABEL[user.role] : null) : undefined}
+          title={
+            collapsed
+              ? user
+                ? t('common:nav.signedInAsPlain', { role: roleLabel(user.role) })
+                : t('common:nav.simulatedRole')
+              : undefined
+          }
           className={cn(
             'border-t border-line py-3 text-meta leading-[1.45] text-ink-3',
             collapsed ? 'px-0 text-center' : 'px-[10px]',
@@ -154,12 +165,14 @@ export function AppSidebar() {
           {collapsed ? <Info aria-hidden className="mx-auto size-[18px]" /> : null}
           <span className={cn(collapsed && 'sr-only')}>
             {user ? (
-              <>
-                Masuk sebagai <span className="font-medium text-ink-2">{ROLE_LABEL[user.role]}</span>
-                . Peran disimulasikan, bukan autentikasi.
-              </>
+              <Trans
+                i18nKey="nav.signedInAs"
+                ns="common"
+                values={{ role: roleLabel(user.role) }}
+                components={[<span key="0" />, <span key="1" className="font-medium text-ink-2" />]}
+              />
             ) : (
-              'Peran disimulasikan untuk demo, bukan autentikasi.'
+              t('common:nav.simulatedRole')
             )}
           </span>
         </p>
@@ -168,9 +181,3 @@ export function AppSidebar() {
   )
 }
 
-/** The same sentence the footer renders, flattened for a `title` attribute. */
-function noteText(role: string | null): string {
-  return role
-    ? `Masuk sebagai ${role}. Peran disimulasikan, bukan autentikasi.`
-    : 'Peran disimulasikan untuk demo, bukan autentikasi.'
-}

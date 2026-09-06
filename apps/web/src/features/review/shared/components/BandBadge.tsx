@@ -1,4 +1,4 @@
-import { BAND_BASIS, BAND_LABELS } from '@/features/review/shared/labels'
+import { useBandBasis, useBandLabel } from '@/features/review/shared/labels'
 import type { PriorityBand } from '@/features/review/shared/types'
 import { cn } from '@/lib/utils'
 
@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
  *
  * `design/DESIGN.md` forbids conveying status by colour alone, so the label is part of the
  * component rather than something each caller remembers to add. The `title` answers the
- * "kenapa pita ini?" hover the queue spec requires.
+ * "why this band?" hover the queue spec requires.
  */
 const BAND_CLASSES: Record<PriorityBand, string> = {
   DETERMINISTIC_CONFLICT: 'bg-band-conflict-bg border-band-conflict-line text-band-conflict',
@@ -31,23 +31,26 @@ export function BandBadge({
   readonly band: PriorityBand
   readonly className?: string
 }) {
+  const bandLabel = useBandLabel()
+  const bandBasis = useBandBasis()
+
   return (
     <span
-      title={BAND_BASIS[band]}
+      title={bandBasis(band)}
       className={cn(
         'inline-block rounded-md border px-[10px] py-[3px] text-small font-semibold',
         BAND_CLASSES[band],
         className,
       )}
     >
-      {BAND_LABELS[band]}
+      {bandLabel(band)}
       {/*
         `title` reaches a mouse pointer and very little else — it is not focusable here and
         screen-reader support for it is inconsistent. The rationale is the part that keeps the
         band from reading as a verdict, so it is also rendered as text the reader announces
         rather than left to a hover the keyboard cannot reach.
       */}
-      <span className="sr-only">: {BAND_BASIS[band]}</span>
+      <span className="sr-only">: {bandBasis(band)}</span>
     </span>
   )
 }

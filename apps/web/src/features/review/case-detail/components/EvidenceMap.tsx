@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next'
+
 import type { CSSProperties } from 'react'
 
 import { EvidenceRefButton } from '@/features/review/case-detail/components/EvidenceRefButton'
-import { MATRIX_CELL_LABELS, RESOURCE_LABELS } from '@/features/review/case-detail/labels'
+import { useMatrixCellLabel, useResourceLabel } from '@/features/review/case-detail/labels'
 import {
   assertSinglePath,
   mapForReason,
@@ -19,10 +21,6 @@ const NODE_CLASSES: Record<MapNode['state'], string> = {
   UNRESOLVED: 'border-band-conflict-line bg-band-conflict-bg text-band-conflict',
 }
 
-function caption(node: MapNode): string {
-  return node.type === 'Claim' ? 'Klaim' : RESOURCE_LABELS[node.type]
-}
-
 function Node({
   node,
   sources,
@@ -32,9 +30,15 @@ function Node({
   readonly sources: CaseDetail['sources']
   readonly onOpenSource: (reference: EvidenceRef) => void
 }) {
+  const resourceLabel = useResourceLabel()
+  const cellLabel = useMatrixCellLabel()
+  // `Claim` and the resource catalog agree on this word, so the node reads the catalog rather
+  // than carrying a second name for the same thing.
+  const caption = resourceLabel(node.type)
+
   return (
     <span className={cn('block rounded-md border px-[13px] py-[9px] text-meta', NODE_CLASSES[node.state])}>
-      <span className={cn('block uppercase', MICRO_LABEL)}>{caption(node)}</span>
+      <span className={cn('block uppercase', MICRO_LABEL)}>{caption}</span>
       {node.reference ? (
         <>
           {/* The line node carries the billed description; a terminal's label is its id, which
@@ -46,7 +50,7 @@ function Node({
         </>
       ) : (
         <span className="block font-medium">
-          {node.state === 'MISSING' ? MATRIX_CELL_LABELS.MISSING : node.label}
+          {node.state === 'MISSING' ? cellLabel('MISSING') : node.label}
         </span>
       )}
     </span>
@@ -62,8 +66,9 @@ function Terminals({
   readonly sources: CaseDetail['sources']
   readonly onOpenSource: (reference: EvidenceRef) => void
 }) {
+  const { t } = useTranslation('caseDetail')
   return (
-    <ul aria-label="Bukti yang diharapkan" className="flex flex-col gap-2 border-s-2 border-line ps-4">
+    <ul aria-label={t('map.expectedLabel')} className="flex flex-col gap-2 border-s-2 border-line ps-4">
       {model.terminals.map((node, index) => (
         <li
           key={node.key}
@@ -107,23 +112,24 @@ export function EvidenceMap({
   readonly selectedLineId: string | null
   readonly onOpenSource: (reference: EvidenceRef) => void
 }) {
+  const { t } = useTranslation('caseDetail')
   const model = reason ? mapForReason(detail, reason, selectedLineId) : null
   if (model && import.meta.env.DEV) {
     assertSinglePath(model)
   }
 
   return (
-    <section aria-label="Peta bukti" className="rounded-lg border border-line bg-card p-[18px] shadow-panel">
-      <p className="mb-[3px] text-small font-semibold">Peta bukti</p>
+    <section aria-label={t('map.sectionLabel')} className="rounded-lg border border-line bg-card p-[18px] shadow-panel">
+      <p className="mb-[3px] text-small font-semibold">{t('map.heading')}</p>
       <p className="mb-[14px] text-meta text-ink-3 text-pretty">
         {reason
           ? `Untuk alasan: ${reason.sentence}`
-          : 'Belum ada alasan yang ditelusuri. Buka satu kartu alasan untuk melihat peta buktinya.'}
+          : t('map.empty')}
       </p>
 
       {model ? (
         <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-          <ol aria-label="Jalur klaim" className="flex flex-col gap-2">
+          <ol aria-label={t('map.claimPath')} className="flex flex-col gap-2">
             {model.trunk.map((node, index) => (
               <li
                 key={node.key}
@@ -140,18 +146,18 @@ export function EvidenceMap({
 
           <div className="flex flex-col gap-4">
             <div>
-              <p className={cn('mb-2', MICRO_LABEL)}>BUKTI YANG DIHARAPKAN DI BAWAH BARIS INI</p>
+              <p className={cn('mb-2', MICRO_LABEL)}>{t('map.expectedHeading')}</p>
               <Terminals model={model} sources={detail.sources} onOpenSource={onOpenSource} />
             </div>
 
             <div>
-              <p className={cn('mb-2 text-ink-2', MICRO_LABEL)}>BUKTI TANDINGAN: CABANG TERPISAH</p>
+              <p className={cn('mb-2 text-ink-2', MICRO_LABEL)}>{t('map.counterHeading')}</p>
               <ul
-                aria-label="Bukti tandingan"
+                aria-label={t('map.counterLabel')}
                 className="flex flex-col gap-2 border-s-2 border-dashed border-line-strong ps-4"
               >
                 {model.counter.length === 0 ? (
-                  <li className="text-meta text-ink-3">Tidak ada bukti tandingan untuk alasan ini.</li>
+                  <li className="text-meta text-ink-3">{t('map.counterEmpty')}</li>
                 ) : (
                   model.counter.map((note) => (
                     <li key={note.note} className="rounded-md border border-dashed border-line-strong bg-sunk px-[13px] py-[9px]">

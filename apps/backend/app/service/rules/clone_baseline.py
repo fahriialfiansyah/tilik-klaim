@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from tilik_domain.canonical import ResourceRef, ResourceType
 from tilik_domain.edges import EdgeType
+from tilik_domain.notes import NoteCode
 from tilik_domain.reasons import ReasonCode, RiskMode
 
 from app.service.evidence_graph import SIMILARITY_CANDIDATE_FLOOR
@@ -65,19 +66,11 @@ class CloneBaselineRule:
             rule_id=self.rule_id,
             evidence=(source, target, encounter_ref),
             counter_evidence=(
-                CounterEvidence(
-                    note_id=(
-                        "Formulir dan templat catatan yang dipakai bersama menghasilkan "
-                        "kemiripan tinggi tanpa ada yang disalin."
-                    ),
+                CounterEvidence.of(
+                    NoteCode.SHARED_TEMPLATES_EXPLAIN_SIMILARITY,
                     refs=(target,),
                 ),
-                CounterEvidence(
-                    note_id=(
-                        "Keluhan yang berulang pada pasien yang sama wajar menghasilkan "
-                        "catatan yang hampir sama."
-                    ),
-                ),
+                CounterEvidence.of(NoteCode.RECURRING_COMPLAINT_EXPLAINS_SIMILARITY),
             ),
             component_scores=(
                 ("text_similarity", score),

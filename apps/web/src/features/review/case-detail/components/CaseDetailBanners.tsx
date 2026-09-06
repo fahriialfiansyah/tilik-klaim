@@ -1,4 +1,5 @@
 import { AlertTriangle, RotateCw } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 import type { VersionConflict } from '@/features/review/case-detail/useCaseDetail'
@@ -21,6 +22,8 @@ export function VersionConflictBanner({
   readonly conflict: VersionConflict
   readonly onReload: () => void
 }) {
+  const { t } = useTranslation('caseDetail')
+
   return (
     <div
       role="alert"
@@ -28,20 +31,30 @@ export function VersionConflictBanner({
     >
       <AlertTriangle aria-hidden className="mt-[2px] size-[18px] shrink-0 text-notice" />
       <div className="min-w-0 flex-1">
-        <p className="mb-[3px] font-semibold text-notice">
-          Versi kasus tidak cocok: kasus ini berubah sejak Anda membukanya
-        </p>
+        <p className="mb-[3px] font-semibold text-notice">{t('banner.conflictTitle')}</p>
         <p className="text-small leading-relaxed text-ink-2 text-pretty">
-          {conflict.summary} Perubahan dicatat oleh{' '}
-          <strong className="text-ink">{conflict.changedBy}</strong> pada {conflict.changedAt};
-          versi kasus berpindah dari {conflict.seenVersion} ke {conflict.currentVersion}.{' '}
-          <strong className="text-ink">Isian disposisi Anda tetap dipertahankan</strong>: tidak
-          ada yang ditimpa dan tidak ada yang tercatat.
+          <Trans
+            i18nKey="banner.conflictBody"
+            ns="caseDetail"
+            values={{
+              summary: conflict.summary,
+              by: conflict.changedBy,
+              at: conflict.changedAt,
+              seen: conflict.seenVersion,
+              current: conflict.currentVersion,
+            }}
+            components={[
+              <span key="0" />,
+              <strong key="1" className="text-ink" />,
+              <span key="2" />,
+              <strong key="3" className="text-ink" />,
+            ]}
+          />
         </p>
       </div>
       <Button variant="outline" size="sm" className="shrink-0" onClick={onReload}>
         <RotateCw />
-        Muat ulang
+        {t('banner.reload')}
       </Button>
     </div>
   )
@@ -55,6 +68,8 @@ export function SaveFailedBanner({
   readonly error: Error | null
   readonly onRetry: () => void
 }) {
+  const { t } = useTranslation(['caseDetail', 'common'])
+
   return (
     <div
       role="alert"
@@ -62,16 +77,23 @@ export function SaveFailedBanner({
     >
       <AlertTriangle aria-hidden className="mt-[2px] size-[18px] shrink-0 text-band-conflict" />
       <div className="min-w-0 flex-1">
-        <p className="mb-[3px] font-semibold text-band-conflict">Disposisi gagal disimpan</p>
+        <p className="mb-[3px] font-semibold text-band-conflict">
+          {t('caseDetail:banner.saveFailedTitle')}
+        </p>
         <p className="text-small leading-relaxed text-ink-2 text-pretty">
-          {withStop(error?.message ?? 'Layanan tidak merespons')} Tidak ada kejadian audit yang tertulis
-          sebagian; kejadian ditulis utuh atau tidak sama sekali.{' '}
-          <strong className="text-ink">Isian Anda masih utuh di layar.</strong>
+          <Trans
+            i18nKey="banner.saveFailedBody"
+            ns="caseDetail"
+            values={{
+              detail: withStop(error?.message ?? t('caseDetail:banner.serviceDown')),
+            }}
+            components={[<span key="0" />, <strong key="1" className="text-ink" />]}
+          />
         </p>
       </div>
       <Button variant="outline" size="sm" className="shrink-0" onClick={onRetry}>
         <RotateCw />
-        Coba lagi
+        {t('common:action.retry')}
       </Button>
     </div>
   )
@@ -82,9 +104,11 @@ export function SaveFailedBanner({
  *
  * `brief/04_DETAIL_KASUS_DISPOSISI.md` § 2.4 requires it to be readable *before* a reviewer
  * reaches for an action. The drawer carries it too, but a caveat only inside a panel nobody is
- * obliged to open is a caveat that can be skipped past on the way to "konfirmasi anomali".
+ * obliged to open is a caveat that can be skipped past on the way to confirming an anomaly.
  */
 export function TemplateCaveatBanner({ caveat }: { readonly caveat: string }) {
+  const { t } = useTranslation('caseDetail')
+
   return (
     <div
       role="note"
@@ -92,7 +116,7 @@ export function TemplateCaveatBanner({ caveat }: { readonly caveat: string }) {
     >
       <AlertTriangle aria-hidden className="mt-[2px] size-[18px] shrink-0 text-notice" />
       <p className="text-small leading-relaxed text-pretty">
-        <span className="font-semibold text-notice">Peringatan templat. </span>
+        <span className="font-semibold text-notice">{t('banner.templateCaveat')}</span>
         {caveat}
       </p>
     </div>

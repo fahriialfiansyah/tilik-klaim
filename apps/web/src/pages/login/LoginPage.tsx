@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { TilikKlaimMark } from '@/components/brand/TilikKlaimMark'
@@ -6,6 +7,7 @@ import { ClaimTexture } from '@/features/auth/components/ClaimTexture'
 import { SignInForm } from '@/features/auth/components/SignInForm'
 import { LANDING_ROUTE } from '@/features/auth/permissions'
 import { useSession } from '@/features/auth/useSession'
+import { LanguageSwitcher } from '@/modules/i18n'
 import { ThemeToggle } from '@/modules/theme/ThemeToggle'
 
 const MARK_DRAW_MS = 700
@@ -32,13 +34,16 @@ const MARK_DRAW_MS = 700
  * first thing a judge sees not fitting on screen.
  */
 export function LoginPage() {
+  const { t, i18n } = useTranslation(['auth', 'common'])
   const navigate = useNavigate()
   const user = useSession((state) => state.user)
   const [drawn, setDrawn] = useState(false)
 
   useEffect(() => {
-    document.title = 'Masuk · TilikKlaim'
-  }, [])
+    // Re-run on a language change: the tab title is the one label that is not re-rendered by
+    // React, so without the dependency it would keep the language the page first loaded in.
+    document.title = t('auth:login.documentTitle')
+  }, [t, i18n.language])
 
   useEffect(() => {
     // The mark strokes itself in once: an evidence chain closing into a loop, which is what the
@@ -69,6 +74,9 @@ export function LoginPage() {
           <span className="text-lead font-semibold tracking-[.11em] text-ink-inv">TILIKKLAIM</span>
         </div>
         <div className="flex items-center gap-[10px]">
+          {/* Before the badges, and before signing in: whoever cannot read the page needs this first. */}
+          <LanguageSwitcher />
+
           <ThemeToggle />
           {/*
             Neither badge has a close control and neither is conditionally rendered: there is no
@@ -80,10 +88,10 @@ export function LoginPage() {
             disclaimer rather than two separate facts.
           */}
           <span className="rounded-sm border border-brand-line bg-brand-soft px-[10px] py-[6px] text-meta font-bold tracking-[.07em] text-brand">
-            AKUN SIMULASI
+            {t('auth:login.simulatedBadge')}
           </span>
           <span className="rounded-sm border border-notice-line bg-notice-bg px-[10px] py-[6px] text-meta font-bold tracking-[.07em] text-notice">
-            DATA SINTETIK
+            {t('common:header.syntheticBadge')}
           </span>
         </div>
       </header>
@@ -94,13 +102,14 @@ export function LoginPage() {
         <div className="relative flex items-end justify-between gap-8">
           <div>
             <h1 className="text-page font-semibold tracking-title text-ink text-pretty">
-              Pilih peran Anda hari ini
+              {t('auth:login.heading')}
             </h1>
             <p className="mt-2 max-w-[62ch] text-body leading-[1.6] text-ink-2 text-pretty">
-              Halaman ini <strong className="font-semibold text-ink">memilih peran</strong> untuk
-              prototipe. Ia tidak mengamankan apa pun: kode demo tertera di bawah dan disimpan apa
-              adanya. Penegakan akses tingkat perusahaan tercatat sebagai kebutuhan produksi, bukan
-              fitur yang sudah dibangun.
+              <Trans
+                i18nKey="login.lede"
+                ns="auth"
+                components={[<span key="0" />, <strong key="1" className="font-semibold text-ink" />]}
+              />
             </p>
           </div>
           <TilikKlaimMark
@@ -118,17 +127,19 @@ export function LoginPage() {
         <div className="relative flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
           <p className="font-mono text-micro tracking-label text-ink-3">
             HEALTHKATHON 2026 ·{' '}
-            <span className="font-semibold text-ink-2">
-              KATEGORI 2: EFISIENSI RISIKO PADA FASILITAS KESEHATAN
-            </span>
+            <span className="font-semibold text-ink-2">{t('auth:login.category')}</span>
           </p>
           <p className="text-meta text-ink-3">
-            Kolom bertanda <strong className="font-semibold text-ink-2">Tidak</strong> ditolak oleh
-            server dengan kode galat tetap; menyembunyikan tombol bukan kendali akses. Matriks
-            lengkap ada di ADR-0006 § 2. Prototipe fungsional dari tim peserta,{' '}
-            <strong className="font-semibold text-ink-2">
-              bukan produk atau layanan resmi BPJS Kesehatan.
-            </strong>
+            <Trans
+              i18nKey="login.footnote"
+              ns="auth"
+              components={[
+                <span key="0" />,
+                <strong key="1" className="font-semibold text-ink-2" />,
+                <span key="2" />,
+                <strong key="3" className="font-semibold text-ink-2" />,
+              ]}
+            />
           </p>
         </div>
       </main>

@@ -14,6 +14,8 @@
  * fails.
  */
 
+import i18n from '@/modules/i18n/config'
+
 const BYTES_PER_MIB = 1024 * 1024
 
 /** `Settings.max_bundle_bytes` — 8 MiB. */
@@ -43,14 +45,15 @@ export type FileRejection = {
  */
 export function rejectFile(file: File): FileRejection | null {
   if (file.size === 0) {
-    return { code: 'EMPTY', message: 'Berkas ini kosong. Tidak ada isi untuk diperiksa.' }
+    return { code: 'EMPTY', message: i18n.t('ingest:limit.empty') }
   }
   if (file.size > MAX_BUNDLE_BYTES) {
     return {
       code: 'TOO_LARGE',
-      message: `Berkas berukuran ${formatBytes(file.size)}, melampaui batas ${formatBytes(
-        MAX_BUNDLE_BYTES,
-      )}. Berkas tidak dikirim.`,
+      message: i18n.t('ingest:limit.tooLarge', {
+        size: formatBytes(file.size),
+        limit: formatBytes(MAX_BUNDLE_BYTES),
+      }),
     }
   }
   const isJson =
@@ -59,7 +62,9 @@ export function rejectFile(file: File): FileRejection | null {
   if (!isJson) {
     return {
       code: 'WRONG_TYPE',
-      message: `Tipe berkas tidak diterima. Kirim satu berkas ${ACCEPTED_EXTENSIONS.join(' atau ')}.`,
+      message: i18n.t('ingest:limit.wrongType', {
+        extensions: ACCEPTED_EXTENSIONS.join(i18n.t('ingest:limit.extensionJoin')),
+      }),
     }
   }
   return null

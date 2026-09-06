@@ -2,14 +2,16 @@ import { describe, expect, test } from 'vitest'
 
 import {
   ALL_CAPABILITIES,
-  CAPABILITY_LABEL,
-  MATRIX_COLUMNS,
+  CAPABILITY_KEYS,
   MATRIX_ROLES,
   allows,
   capabilityChange,
   capabilityLabel,
+  matrixColumns,
 } from '@/features/auth/matrix'
 import { ROLES } from '@/features/auth/types'
+import i18n from '@/modules/i18n/config'
+import { LOCALES } from '@/modules/i18n/locales'
 
 describe('the matrix the login screen renders', () => {
   test('lists every role the server knows, and no others', () => {
@@ -19,7 +21,7 @@ describe('the matrix the login screen renders', () => {
   test('every displayed column is a real capability, never an invented one', () => {
     // The page *is* the matrix. A column that exists only in the UI would be the screen
     // claiming the server enforces something it has never heard of.
-    for (const column of MATRIX_COLUMNS) {
+    for (const column of matrixColumns()) {
       expect(ALL_CAPABILITIES, column.key).toContain(column.key)
     }
   })
@@ -34,7 +36,7 @@ describe('the matrix the login screen renders', () => {
 
   test('an administrator is refused every reviewing column', () => {
     // Separation of duties, asserted as a property rather than six separate lines.
-    const reviewing = MATRIX_COLUMNS.filter((column) => column.key !== 'MANAGE_USERS')
+    const reviewing = matrixColumns().filter((column) => column.key !== 'MANAGE_USERS')
     for (const column of reviewing) {
       expect(allows('admin', column.key), column.key).toBe(false)
     }
@@ -43,7 +45,7 @@ describe('the matrix the login screen renders', () => {
 
 describe('what a role change actually moves', () => {
   test('names the one capability that separates a reviewer from a senior one', () => {
-    // The dropdown says "Peninjau Senior". This is what choosing it hands over.
+    // The dropdown says "Peninjau Senior" / "Senior Reviewer". This is what choosing it hands over.
     const { granted, revoked } = capabilityChange('reviewer', 'senior_reviewer')
     expect(granted).toEqual(['REOPEN_DISMISSED_CASE'])
     expect(revoked).toEqual([])
@@ -73,12 +75,23 @@ describe('what a role change actually moves', () => {
     // A capability the server grows but this app has not named would render as a blank line in
     // the confirmation dialog — a change described by saying nothing about it.
     for (const capability of ALL_CAPABILITIES) {
-      expect(CAPABILITY_LABEL, capability).toHaveProperty(capability)
-      expect(capabilityLabel(capability), capability).not.toBe('')
+      expect(CAPABILITY_KEYS, capability).toContain(capability)
+      expect(capabilityLabel(capability), capability).not.toBe(capability)
     }
   })
 
   test('an unknown capability falls back to its key rather than vanishing', () => {
     expect(capabilityLabel('SOMETHING_NEW')).toBe('SOMETHING_NEW')
+  })
+})
+
+describe('every capability is named in both languages', () => {
+  test.each(LOCALES)('%s names all nine', async (locale) => {
+    // A capability added to `app/service/access.py` and translated in only one language would
+    // render as its raw key in front of whichever administrator reads the other one.
+    await i18n.changeLanguage(locale)
+    for (const capability of ALL_CAPABILITIES) {
+      expect(capabilityLabel(capability), `${locale}/${capability}`).not.toBe(capability)
+    }
   })
 })

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { cn } from '@/lib/utils'
 import type { EvidenceCompleteness } from '@/features/review/shared/types'
 
@@ -18,16 +20,17 @@ const SEGMENTS = 3
  *   - otherwise → n of m billed lines carried support.
  */
 export function EvidenceMeter({ completeness }: { readonly completeness: EvidenceCompleteness }) {
+  const { t } = useTranslation('review')
   const { supported_lines, total_lines, bundle_complete } = completeness
 
   const assessable = bundle_complete && total_lines > 0
   const filled = assessable ? Math.round((supported_lines / total_lines) * SEGMENTS) : 0
 
   const label = !bundle_complete
-    ? 'Berkas belum lengkap'
+    ? t('evidenceMeter.incomplete')
     : total_lines === 0
-      ? 'Tidak ada baris tertagih'
-      : `${supported_lines}/${total_lines} baris didukung`
+      ? t('evidenceMeter.noLines')
+      : t('evidenceMeter.supported', { supported: supported_lines, total: total_lines })
 
   return (
     <span className={cn('flex items-center gap-[7px] text-small', assessable ? 'text-ink-2' : 'text-ink-3')}>

@@ -1,0 +1,94 @@
+{
+  "column": {
+    "name": "Nama",
+    "staffCode": "ID Petugas",
+    "email": "Email",
+    "role": "Peran",
+    "status": "Status",
+    "lastSignIn": "Terakhir masuk"
+  },
+  "event": {
+    "USER_ROLE_CHANGED": "Peran diubah",
+    "USER_DEACTIVATED": "Akun dinonaktifkan",
+    "USER_REACTIVATED": "Akun diaktifkan kembali"
+  },
+  "neverSignedIn": "Belum pernah",
+  "selfRowNote": "Akun sendiri tidak dapat diubah",
+  "undo": {
+    "savedPrefix": "Tersimpan: ",
+    "appendNote": "Mengurungkan akan mencatat perubahan balik; catatan aslinya tetap ada.",
+    "action": "Urungkan",
+    "dismiss": "Tutup pemberitahuan",
+    "roleBecame": "peran menjadi {{role}}",
+    "reactivated": "akun diaktifkan kembali",
+    "deactivated": "akun dinonaktifkan",
+    "summary": "{{name}}: {{changes}}."
+  },
+  "refusal": {
+    "withCause": "Perubahan tidak tersimpan: {{cause}}",
+    "plain": "Perubahan tidak tersimpan."
+  },
+  "table": {
+    "caption": "Daftar petugas sintetik, perannya, dan statusnya.",
+    "you": "ANDA",
+    "saving": "Menyimpan…",
+    "roleFor": "Peran untuk {{name}}"
+  },
+  "audit": {
+    "empty": "Belum ada perubahan pada daftar pengguna. Riwayat ini bersifat tambah-saja: sekali tercatat, sebuah perubahan tidak dapat disunting atau dihapus.",
+    "by": " · oleh {{name}} ({{role}})"
+  },
+  "confirm": {
+    "roleTitle": "Ubah peran {{name}}?",
+    "deactivateTitle": "Nonaktifkan akun {{name}}?",
+    "roleDescription": "Perubahan ini mengubah apa yang boleh dilakukan orang ini, dan tercatat permanen di riwayat.",
+    "deactivateDescription": "Akun tetap ada beserta riwayatnya; yang berubah hanya kemampuannya untuk masuk.",
+    "confirmRole": "Ubah peran",
+    "confirmDeactivate": "Nonaktifkan",
+    "granted": "Kemampuan yang diberikan",
+    "grantedEmpty": "Tidak ada kemampuan baru.",
+    "revoked": "Kemampuan yang dicabut",
+    "revokedEmpty": "Tidak ada kemampuan yang dicabut.",
+    "generatedNote": "Daftar ini dibaca dari matriks akses yang dihasilkan dari server, bukan ditulis tangan, sama dengan yang ditampilkan halaman masuk.",
+    "deactivateLede": "<1>{{name}}</1> tidak akan dapat masuk lagi. Percobaan masuk berikutnya ditolak dengan alasan yang menyebut akun ini dinonaktifkan.",
+    "deactivatePoint1": "Disposisi yang sudah dicatat tetap tercatat atas namanya dan tidak berubah.",
+    "deactivatePoint2": "Tidak ada kasus yang dialihkan atau ditutup oleh tindakan ini.",
+    "deactivatePoint3": "Anda dapat mengaktifkannya kembali kapan saja; keduanya tercatat di riwayat."
+  },
+  "csv": {
+    "header": {
+      "occurredAt": "Waktu",
+      "event": "Kejadian",
+      "target": "Petugas",
+      "field": "Bidang",
+      "before": "Sebelum",
+      "after": "Sesudah",
+      "actor": "Pelaku",
+      "actorRole": "Peran pelaku",
+      "eventId": "ID kejadian"
+    },
+    "field": {
+      "role": "Peran",
+      "is_active": "Status aktif"
+    }
+  },
+  "page": {
+    "documentTitle": "Manajemen Pengguna · TilikKlaim",
+    "eyebrow": "DAFTAR PETUGAS · PERAN DAN STATUS",
+    "title": "Manajemen Pengguna",
+    "lede": "Tiga akun petugas sintetik. Peran dapat diubah dan akun dapat dinonaktifkan; tidak ada penambahan dan tidak ada penghapusan. Setiap perubahan tercatat permanen di riwayat di bawah.",
+    "refusedPrefix": "Perubahan ditolak: ",
+    "rosterHeading": "Daftar petugas",
+    "auditHeading": "Riwayat manajemen pengguna",
+    "auditNewestFirst": "terbaru di atas",
+    "downloadCsv": "Unduh CSV",
+    "auditPending": "Riwayat dimuat bersama daftar petugas."
+  },
+  "placeholder": {
+    "loading": "Memuat daftar pengguna…",
+    "emptyTitle": "Belum ada akun petugas",
+    "emptyBody": "Basis data terjawab tetapi kosong. Tiga akun sintetik ditulis oleh <1>{{script}}</1>. Jalankan itu, lalu muat ulang halaman ini.",
+    "failedTitle": "Daftar pengguna tidak dapat dimuat",
+    "failedBody": "Ini bukan berarti tidak ada pengguna. Layanan tidak menjawab, atau menolak permintaan ini."
+  }
+}

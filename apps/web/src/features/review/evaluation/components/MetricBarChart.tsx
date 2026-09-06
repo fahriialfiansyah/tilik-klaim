@@ -1,6 +1,7 @@
+import { useTranslation } from 'react-i18next'
+
 import type { CSSProperties } from 'react'
 
-import { NOT_MEASURED } from '@/features/review/evaluation/labels'
 import { barShare, formatMetric } from '@/features/review/evaluation/format'
 
 export type ChartRow = {
@@ -31,6 +32,7 @@ export function MetricBarChart({
   readonly subtitle: string
   readonly rows: readonly ChartRow[]
 }) {
+  const { t } = useTranslation('evaluation')
   const measured = rows.map((row) => row.value).filter((value): value is number => value !== null)
   const ceiling = measured.length > 0 ? Math.max(...measured) : 0
 
@@ -65,7 +67,7 @@ export function MetricBarChart({
                 )}
               </span>
               <span className="font-mono text-small tabular-nums text-ink">
-                {rendered ?? <span className="font-sans italic text-ink-2">{NOT_MEASURED}</span>}
+                {rendered ?? <span className="font-sans italic text-ink-2">{t('notMeasured')}</span>}
               </span>
             </li>
           )

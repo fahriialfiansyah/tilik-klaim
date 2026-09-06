@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { PerfectScrollArea } from '@/components/wrappers/PerfectScrollArea'
 import { EvidenceRefButton } from '@/features/review/case-detail/components/EvidenceRefButton'
 import { laneLabel } from '@/features/review/case-detail/labels'
@@ -46,6 +48,7 @@ function LaneRow({
   readonly sources: CaseDetail['sources']
   readonly onOpenSource: (reference: EvidenceRef) => void
 }) {
+  const { t } = useTranslation('caseDetail')
   const isEmpty = lane.events.length === 0
   return (
     <tr className="border-t border-line">
@@ -56,7 +59,7 @@ function LaneRow({
             <span className="block text-small font-medium">{laneLabel(lane.kind)}</span>
             {/* Drawn and said in words: an empty lane is the finding, not a rendering gap. */}
             {isEmpty ? (
-              <span className="block text-meta text-ink-3">tidak ada kejadian tercatat</span>
+              <span className="block text-meta text-ink-3">{t('swimlane.laneEmpty')}</span>
             ) : null}
           </span>
         </span>
@@ -94,17 +97,18 @@ export function EpisodeSwimlane({
   readonly detail: CaseDetail
   readonly onOpenSource: (reference: EvidenceRef) => void
 }) {
+  const { t } = useTranslation('caseDetail')
   const model = swimlanes(detail)
   const dates = [...new Set(model.ticks.map((tick) => formatDate(tick)))]
   const showDate = dates.length > 1
 
   return (
     <section
-      aria-label="Linimasa episode"
+      aria-label={t('swimlane.sectionLabel')}
       className="overflow-hidden rounded-lg border border-line bg-card shadow-panel"
     >
       <div className="border-b border-line px-[15px] py-[13px]">
-        <p className="text-small font-semibold">Linimasa episode</p>
+        <p className="text-small font-semibold">{t('swimlane.heading')}</p>
         <p className="mt-[2px] text-meta text-ink-3">
           Empat jalur pada satu sumbu waktu{showDate ? '' : ` · ${dates[0] ?? ''}`}. Jalur kosong
           tetap digambar.
@@ -113,11 +117,11 @@ export function EpisodeSwimlane({
 
       {model.ticks.length === 0 ? (
         <p className="px-[15px] py-6 text-small text-ink-3">
-          Bundel ini tidak memuat kejadian yang dapat diurutkan dalam waktu.
+          {t('swimlane.empty')}
         </p>
       ) : (
         <PerfectScrollArea axis="both" className="max-w-full">
-          <table aria-label="Linimasa episode" className="w-full border-collapse text-small">
+          <table aria-label={t('swimlane.sectionLabel')} className="w-full border-collapse text-small">
             <thead>
               <tr className="bg-sunk">
                 <th scope="col" className={cn('px-3 py-2 text-left', MICRO_LABEL)}>

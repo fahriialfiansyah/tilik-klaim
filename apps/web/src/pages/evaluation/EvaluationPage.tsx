@@ -10,14 +10,15 @@ import {
   NoEvaluationRun,
 } from '@/features/review/evaluation/components/EvaluationPlaceholders'
 import {
-  BASELINE_COLUMNS,
-  MODE_COLUMNS,
+  baselineColumns,
   baselineRows,
+  modeColumns,
   falsePositiveChartRows,
   modeRows,
   precisionAtBudgetChartRows,
 } from '@/features/review/evaluation/selectors'
 import { useEvaluation } from '@/features/review/evaluation/useEvaluation'
+import { useTranslation } from 'react-i18next'
 import { PageHeader, PageShell } from '@/components/layouts/PageShell'
 
 /**
@@ -32,14 +33,15 @@ import { PageHeader, PageShell } from '@/components/layouts/PageShell'
  * number without it (rule 3).
  */
 export function EvaluationPage() {
+  const { t } = useTranslation('evaluation')
   const { status, data, reload } = useEvaluation()
 
   return (
     <PageShell>
       <PageHeader
-        eyebrow="ARTEFAK EVALUASI · HANYA BACA"
-        title="Audit & Evaluasi"
-        lede="Bukti terukur dari artefak evaluasi, beserta keterbatasannya. Halaman ini hanya membaca: tidak ada penyetelan ambang batas dan tidak ada eksperimen langsung."
+        eyebrow={t('page.eyebrow')}
+        title={t('page.title')}
+        lede={t('page.lede')}
       />
 
       <div className="space-y-4">
@@ -57,15 +59,12 @@ export function EvaluationPage() {
               className="rounded-md border border-line bg-card p-4"
             >
               <h2 id="baselines-heading" className="mb-1 text-lead font-semibold text-ink">
-                Perbandingan baseline
+                {t('page.baselinesHeading')}
               </h2>
-              <p className="mb-3 text-micro text-ink-2">
-                Empat pendekatan pada partisi uji yang sama. Lapisan statistik hanya layak
-                dipertahankan bila memberi peningkatan terukur atas pendekatan aturan saja.
-              </p>
+              <p className="mb-3 text-micro text-ink-2">{t('page.baselinesBody')}</p>
               <MetricTable
-                caption="Perbandingan empat baseline"
-                columns={BASELINE_COLUMNS}
+                caption={t('page.baselinesCaption')}
+                columns={baselineColumns()}
                 rows={baselineRows(data)}
               />
             </section>
@@ -75,28 +74,25 @@ export function EvaluationPage() {
               className="rounded-md border border-line bg-card p-4"
             >
               <h2 id="per-mode-heading" className="mb-1 text-lead font-semibold text-ink">
-                Metrik per mode risiko
+                {t('page.perModeHeading')}
               </h2>
-              <p className="mb-3 text-micro text-ink-2">
-                Angka pendekatan hibrida untuk keempat mode. Mode tanpa contoh pada partisi uji
-                ditandai tidak terukur, bukan nol.
-              </p>
+              <p className="mb-3 text-micro text-ink-2">{t('page.perModeBody')}</p>
               <MetricTable
-                caption="Ketepatan, keterpanggilan, dan F1 per mode risiko"
-                columns={MODE_COLUMNS}
+                caption={t('page.perModeCaption')}
+                columns={modeColumns()}
                 rows={modeRows(data)}
               />
             </section>
 
             <div className="grid gap-4 lg:grid-cols-2">
               <MetricBarChart
-                title="Positif palsu per 100 klaim bersih"
-                subtitle="Semakin rendah, semakin sedikit beban tinjauan yang terbuang"
+                title={t('page.falsePositiveTitle')}
+                subtitle={t('page.falsePositiveSubtitle')}
                 rows={falsePositiveChartRows(data)}
               />
               <MetricBarChart
-                title="Ketepatan pada kapasitas review"
-                subtitle="Bagian kasus yang ditinjau yang benar-benar memuat pola yang disuntikkan"
+                title={t('page.precisionTitle')}
+                subtitle={t('page.precisionSubtitle')}
                 rows={precisionAtBudgetChartRows(data)}
               />
             </div>

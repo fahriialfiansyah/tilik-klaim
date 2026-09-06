@@ -17,6 +17,7 @@ from enum import StrEnum
 from pydantic import BaseModel, ConfigDict
 
 from tilik_domain.canonical import ResourceType
+from tilik_domain.locale import DEFAULT_LOCALE, Locale
 from tilik_domain.versioning import RULESET_VERSION
 
 
@@ -110,7 +111,21 @@ class ReasonDefinition(BaseModel):
     code: ReasonCode
     mode: RiskMode
     sentence_id: str
-    """Working-language sentence the reviewer reads. No model jargon, no accusation."""
+    """Working-language sentence the reviewer reads. No model jargon, no accusation.
+
+    The `_id` suffix is the Indonesian locale tag, not an identifier — the field holds the
+    sentence itself. `ReasonCode` is what identifies a reason, and it is the only thing rules,
+    stores, and tests key on.
+    """
+    sentence_en: str
+    """The same finding in English. A rendering of one reason, never a second reason.
+
+    It carries the same two constraints as the Indonesian: it reports risk or an anomaly
+    requiring review and never states fraud, and it says what was *searched for and missing*
+    rather than what someone did. English makes the second easy to get wrong — "the procedure
+    was not performed" is an accusation, "no completed procedure record" is an observation —
+    so the wording here is deliberately about the record, not the act.
+    """
     required_evidence: tuple[ResourceType, ...]
     """Resource types that must accompany this reason for it to be valid.
 
@@ -132,6 +147,16 @@ class ReasonDefinition(BaseModel):
     """True when a versioned invariant is violated outright, rather than inferred."""
     ruleset_version: str = RULESET_VERSION
 
+    def sentence(self, locale: Locale = DEFAULT_LOCALE) -> str:
+        """This reason's sentence in one language.
+
+        Callers serialising a stored hit should resolve through here rather than reading the
+        hit's own `sentence_id`: the stored text was frozen in Indonesian at screening time,
+        and re-resolving by code is what lets an existing case be read in English without
+        re-screening it — which would answer a different question under a newer ruleset.
+        """
+        return self.sentence_en if locale is Locale.EN else self.sentence_id
+
 
 def _build_catalog() -> dict[ReasonCode, ReasonDefinition]:
     definitions = (
@@ -139,6 +164,7 @@ def _build_catalog() -> dict[ReasonCode, ReasonDefinition]:
             code=ReasonCode.LINE_WITHOUT_COMPLETED_PROCEDURE,
             mode=RiskMode.PHANTOM_OR_NO_PROCEDURE_EVIDENCE,
             sentence_id="Baris tindakan ini tidak punya catatan tindakan yang selesai.",
+            sentence_en="This procedure line has no completed procedure record.",
             required_evidence=(ResourceType.CLAIM_LINE, ResourceType.ENCOUNTER),
             expected_support=(ResourceType.PROCEDURE, ResourceType.ENCOUNTER),
             deterministic=True,
@@ -147,6 +173,7 @@ def _build_catalog() -> dict[ReasonCode, ReasonDefinition]:
             code=ReasonCode.LINE_WITHOUT_MEDICATION_DISPENSE,
             mode=RiskMode.PHANTOM_OR_NO_PROCEDURE_EVIDENCE,
             sentence_id="Baris obat ini tidak punya catatan penyerahan obat.",
+            sentence_en="This medication line has no dispense record.",
             required_evidence=(ResourceType.CLAIM_LINE, ResourceType.ENCOUNTER),
             expected_support=(ResourceType.MEDICATION, ResourceType.ENCOUNTER),
             deterministic=True,
@@ -155,6 +182,7 @@ def _build_catalog() -> dict[ReasonCode, ReasonDefinition]:
             code=ReasonCode.SUPPORTING_EVIDENCE_ENTERED_IN_ERROR,
             mode=RiskMode.PHANTOM_OR_NO_PROCEDURE_EVIDENCE,
             sentence_id="Bukti pendukung baris ini ditandai keliru-input.",
+            sentence_en="The supporting evidence for this line is marked entered-in-error.",
             required_evidence=(ResourceType.CLAIM_LINE, ResourceType.PROCEDURE),
             deterministic=True,
         ),
@@ -162,6 +190,7 @@ def _build_catalog() -> dict[ReasonCode, ReasonDefinition]:
             code=ReasonCode.OVERLAPPING_CLAIM_SAME_EPISODE,
             mode=RiskMode.REPEAT_BILLING,
             sentence_id="Klaim lain pada episode yang sama memuat baris yang bertumpang tindih.",
+            sentence_en="Another claim in the same episode contains overlapping lines.",
             required_evidence=(ResourceType.CLAIM, ResourceType.CLAIM_LINE),
             deterministic=True,
         ),
@@ -169,6 +198,7 @@ def _build_catalog() -> dict[ReasonCode, ReasonDefinition]:
             code=ReasonCode.DUPLICATE_CLAIM_FINGERPRINT,
             mode=RiskMode.REPEAT_BILLING,
             sentence_id="Sidik klaim ini identik dengan klaim lain.",
+            sentence_en="This claim's fingerprint is identical to another claim's.",
             required_evidence=(ResourceType.CLAIM,),
             deterministic=True,
         ),
@@ -176,6 +206,7 @@ def _build_catalog() -> dict[ReasonCode, ReasonDefinition]:
             code=ReasonCode.NEAR_DUPLICATE_DOCUMENTATION,
             mode=RiskMode.CLONED_DOCUMENTATION,
             sentence_id="Dokumentasi kunjungan ini sangat mirip dengan kunjungan lain.",
+            sentence_en="This encounter's documentation closely resembles another encounter's.",
             required_evidence=(ResourceType.DOCUMENT, ResourceType.ENCOUNTER),
             deterministic=False,
         ),
@@ -183,6 +214,7 @@ def _build_catalog() -> dict[ReasonCode, ReasonDefinition]:
             code=ReasonCode.EPISODE_SPLIT_ACROSS_CLAIMS,
             mode=RiskMode.UNBUNDLING_FRAGMENTATION,
             sentence_id="Layanan satu episode tampak terpecah ke beberapa klaim berdekatan.",
+            sentence_en="Services from one episode appear split across several nearby claims.",
             required_evidence=(ResourceType.CLAIM, ResourceType.ENCOUNTER),
             deterministic=True,
         ),

@@ -1,0 +1,43 @@
+{
+  "language": {
+    "heading": "Language",
+    "menu": "Choose a language",
+    "title": "Change language",
+    "switch": "Current language: {{language}}. Change language."
+  },
+  "theme": {
+    "title": "Change theme",
+    "dark": "Dark theme active. Switch to light.",
+    "light": "Light theme active. Switch to dark."
+  },
+  "header": {
+    "copyStamp": "Copy the version stamp",
+    "copy": "copy",
+    "copied": "copied",
+    "syntheticBadge": "SYNTHETIC DATA"
+  },
+  "nav": {
+    "primary": "Main navigation",
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar",
+    "menuHeading": "MENU",
+    "signedInAs": "Signed in as <1>{{role}}</1>. The role is simulated, not authentication.",
+    "signedInAsPlain": "Signed in as {{role}}. The role is simulated, not authentication.",
+    "simulatedRole": "The role is simulated for the demo, not authentication."
+  },
+  "action": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "copy": "Copy",
+    "retry": "Try again",
+    "back": "Back",
+    "undo": "Undo"
+  },
+  "state": {
+    "loading": "Loading…",
+    "empty": "No data",
+    "error": "Something went wrong",
+    "serviceDown": "The service did not respond."
+  }
+}

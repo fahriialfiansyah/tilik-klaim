@@ -1,3 +1,4 @@
+import i18n from '@/modules/i18n/config'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { fetchBriefing, streamBriefing } from '@/features/review/case-briefing/api'
@@ -66,7 +67,8 @@ export function useCaseBriefing(caseId: string): {
         try {
           setState(fromBriefing(await fetchBriefing(caseId), true))
         } catch {
-          const message = cause instanceof Error ? cause.message : 'Layanan tidak merespons.'
+          const message =
+            cause instanceof Error ? cause.message : i18n.t('common:state.serviceDown')
           setState((current) => ({ ...current, status: 'failed', error: message }))
         }
       })

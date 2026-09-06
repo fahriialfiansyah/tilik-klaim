@@ -13,16 +13,22 @@ export function formatAmount(amount: string): string {
   return Number.isFinite(value) ? AMOUNT.format(value) : '-'
 }
 
-/** How long a case has been waiting, in working language. */
+/**
+ * How long a case has been waiting.
+ *
+ * Rendered through the running i18next instance rather than a hook: this is a formatter called
+ * from table cells and sort comparators, not a component. The unit is abbreviated in English
+ * (`4 h`, not `4 hours`) because it sits in a narrow, right-aligned column beside the amount.
+ */
 export function formatAge(isoTimestamp: string): string {
   const hours = (Date.now() - new Date(isoTimestamp).getTime()) / MS_PER_HOUR
   if (hours < 1) {
-    return '< 1 jam'
+    return i18n.t('review:age.underHour')
   }
   if (hours < HOURS_PER_DAY) {
-    return `${Math.floor(hours)} jam`
+    return i18n.t('review:age.hours', { count: Math.floor(hours) })
   }
-  return `${Math.floor(hours / HOURS_PER_DAY)} hari`
+  return i18n.t('review:age.days', { count: Math.floor(hours / HOURS_PER_DAY) })
 }
 
 export function formatHours(hours: number): string {
@@ -36,6 +42,7 @@ export function formatHours(hours: number): string {
  */
 export { formatDate, formatDateTime, formatTime } from '@/lib/datetime'
 
+import i18n from '@/modules/i18n/config'
 import { ZONE_LABEL, formatDate, formatDateTime, formatTime, parseStamp } from '@/lib/datetime'
 /**
  * The encounter window.

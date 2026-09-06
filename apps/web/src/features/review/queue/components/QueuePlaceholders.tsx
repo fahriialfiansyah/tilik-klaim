@@ -1,5 +1,6 @@
 import { AlertTriangle, Inbox, RotateCw, SlidersHorizontal } from 'lucide-react'
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
@@ -17,9 +18,11 @@ import { withStop } from '@/features/review/shared/format'
 const SKELETON_ROWS = 6
 
 export function QueueLoading() {
+  const { t } = useTranslation('queue')
+
   return (
     <div className="p-4" aria-busy="true" aria-live="polite">
-      <span className="sr-only">Memuat antrean…</span>
+      <span className="sr-only">{t('placeholder.loading')}</span>
       {Array.from({ length: SKELETON_ROWS }, (_, index) => (
         <div key={index} className="flex items-center gap-3 border-b border-line py-[15px]">
           <span className="h-[34px] w-[3px] shrink-0 rounded-sm bg-line" />
@@ -55,13 +58,17 @@ function Placeholder({
 
 /** Nothing has ever been screened. The next step is Ingest, so say so. */
 export function QueueEmpty() {
+  const { t } = useTranslation('queue')
   const navigate = useNavigate()
+
   return (
     <Placeholder
       icon={<Inbox className="size-8" />}
-      title="Belum ada kasus sama sekali"
-      body="Tidak ada bundel yang sudah disaring. Mulai dengan memasukkan satu bundel. Lima kasus contoh tersedia di layar Ingest."
-      action={<Button onClick={() => navigate('/ingest')}>Masukkan bundel</Button>}
+      title={t('placeholder.emptyTitle')}
+      body={t('placeholder.emptyBody')}
+      action={
+        <Button onClick={() => navigate('/ingest')}>{t('placeholder.emptyAction')}</Button>
+      }
     />
   )
 }
@@ -74,13 +81,14 @@ export function QueueFilteredEmpty({
   readonly activeFilters: readonly string[]
   readonly onClear: () => void
 }) {
-  const named = activeFilters.join(' + ')
+  const { t } = useTranslation('queue')
+
   return (
     <Placeholder
       icon={<SlidersHorizontal className="size-8" />}
-      title="Tidak ada kasus yang cocok dengan saringan ini"
-      body={`Saringan yang sedang aktif: ${named}. Data tetap ada; hanya tidak ada yang lolos kombinasi ini.`}
-      action={<Button onClick={onClear}>Bersihkan saringan</Button>}
+      title={t('placeholder.filteredTitle')}
+      body={t('placeholder.filteredBody', { filters: activeFilters.join(' + ') })}
+      action={<Button onClick={onClear}>{t('placeholder.filteredAction')}</Button>}
     />
   )
 }
@@ -93,15 +101,19 @@ export function QueueFailed({
   readonly error: Error | null
   readonly onRetry: () => void
 }) {
+  const { t } = useTranslation(['queue', 'common'])
+
   return (
     <Placeholder
       icon={<AlertTriangle className="size-8 text-band-conflict" />}
-      title="Antrean tidak dapat dimuat"
-      body={`${withStop(error?.message ?? 'Layanan tidak merespons')} Ini bukan berarti tidak ada kasus; daftarnya memang tidak sampai ke layar ini.`}
+      title={t('queue:placeholder.failedTitle')}
+      body={t('queue:placeholder.failedBody', {
+        detail: withStop(error?.message ?? t('queue:placeholder.failedFallback')),
+      })}
       action={
         <Button onClick={onRetry}>
           <RotateCw />
-          Coba lagi
+          {t('common:action.retry')}
         </Button>
       }
     />

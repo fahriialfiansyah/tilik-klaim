@@ -1,8 +1,9 @@
 import { Copy } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
-import { MANDATORY_STATEMENT_ID, toWorkingLanguage } from '@/features/review/evaluation/labels'
+import { toReadable } from '@/features/review/evaluation/labels'
 import type { LimitationsCard as LimitationsCardData } from '@/features/review/evaluation/types'
 
 const COPIED_MS = 2000
@@ -19,24 +20,27 @@ const COPIED_MS = 2000
  * limitation is a limitation that quietly loses a clause.
  *
  * The canonical rows are stated in English in `docs/canonical/06_evaluation_plan.md` and the
- * artifact carries them verbatim. The page shows the Indonesian rendering, and keeps the
- * mandatory sentence in both — the canonical data card requires that exact sentence, and a
- * reader here needs it in the language they are reading.
+ * artifact carries them verbatim. The page renders them in the reader's language, and keeps the
+ * artifact's own `mandatory_statement` beside the translated one — the canonical data card
+ * requires that exact sentence, and a reader needs it in the language they are reading. In
+ * English the two now match word for word, which is the point rather than a coincidence.
  */
 export function LimitationsCard({ limitations }: { readonly limitations: LimitationsCardData }) {
+  const { t } = useTranslation('evaluation')
   const [copied, setCopied] = useState(false)
 
-  const demonstrates = limitations.demonstrates.map(toWorkingLanguage)
-  const doesNotDemonstrate = limitations.does_not_demonstrate.map(toWorkingLanguage)
+  const demonstrates = limitations.demonstrates.map(toReadable)
+  const doesNotDemonstrate = limitations.does_not_demonstrate.map(toReadable)
+  const mandatory = t('mandatoryStatement')
 
   const asText = [
-    MANDATORY_STATEMENT_ID,
+    mandatory,
     limitations.mandatory_statement,
     '',
-    'Yang ditunjukkan:',
+    t('limitations.demonstratesColon'),
     ...demonstrates.map((line) => `- ${line}`),
     '',
-    'Yang tidak ditunjukkan:',
+    t('limitations.doesNotColon'),
     ...doesNotDemonstrate.map((line) => `- ${line}`),
   ].join('\n')
 
@@ -54,20 +58,22 @@ export function LimitationsCard({ limitations }: { readonly limitations: Limitat
     >
       <div className="mb-3 flex items-start justify-between gap-3">
         <h2 id="limitations-heading" className="text-lead font-semibold text-ink">
-          Keterbatasan
+          {t('limitations.heading')}
         </h2>
         <Button variant="outline" size="sm" onClick={copy}>
           <Copy aria-hidden="true" className="mr-1 h-3 w-3" />
-          {copied ? 'Tersalin' : 'Salin'}
+          {copied ? t('limitations.copied') : t('limitations.copy')}
         </Button>
       </div>
 
-      <p className="mb-1 text-body-lg text-ink">{MANDATORY_STATEMENT_ID}</p>
+      <p className="mb-1 text-body-lg text-ink">{mandatory}</p>
       <p className="mb-4 text-micro text-ink-2 italic">{limitations.mandatory_statement}</p>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <h3 className="mb-1 text-small font-semibold text-ink">Yang ditunjukkan</h3>
+          <h3 className="mb-1 text-small font-semibold text-ink">
+            {t('limitations.demonstrates')}
+          </h3>
           <ul className="list-disc space-y-1 pl-5 text-small text-ink-2">
             {demonstrates.map((line) => (
               <li key={line}>{line}</li>
@@ -75,7 +81,9 @@ export function LimitationsCard({ limitations }: { readonly limitations: Limitat
           </ul>
         </div>
         <div>
-          <h3 className="mb-1 text-small font-semibold text-ink">Yang tidak ditunjukkan</h3>
+          <h3 className="mb-1 text-small font-semibold text-ink">
+            {t('limitations.doesNot')}
+          </h3>
           <ul className="list-disc space-y-1 pl-5 text-small text-ink-2">
             {doesNotDemonstrate.map((line) => (
               <li key={line}>{line}</li>

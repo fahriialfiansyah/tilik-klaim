@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
@@ -49,13 +50,14 @@ type MetricCardModel = {
  * penghitungnya sendiri.
  */
 function MetricCard({ card, index }: { readonly card: MetricCardModel; readonly index: number }) {
+  const { t } = useTranslation('queue')
   const counted = useCountUp(card.count ?? 0)
 
   return (
     <button
       type="button"
       onClick={card.onClick}
-      title="Terapkan saringan ini"
+      title={t('metric.applyFilter')}
       style={{ '--tk-index': index } as CSSProperties}
       className={cn(
         'tk-enter relative flex flex-col gap-[2px] overflow-hidden rounded-lg border px-4 pt-[15px] pb-[14px] text-left',
@@ -95,6 +97,7 @@ function MetricCard({ card, index }: { readonly card: MetricCardModel; readonly 
  * projections. Those are not omissions to fill in later.
  */
 export function QueueMetricCards({ metrics }: { readonly metrics: QueueMetrics }) {
+  const { t } = useTranslation('queue')
   const navigate = useNavigate()
   const setFilter = useQueueStore((state) => state.setFilter)
   const clearAllFilters = useQueueStore((state) => state.clearAllFilters)
@@ -102,11 +105,11 @@ export function QueueMetricCards({ metrics }: { readonly metrics: QueueMetrics }
   const cards: readonly MetricCardModel[] = [
     {
       key: 'awaiting',
-      label: 'Kasus menunggu ditinjau',
+      label: t('metric.awaiting.label'),
       count: metrics.awaiting_review,
-      unit: 'kasus',
+      unit: t('metric.unitCase'),
       accent: 'bg-brand',
-      hint: 'Sudah tersaring, belum diambil siapa pun',
+      hint: t('metric.awaiting.hint'),
       tier: 'action',
       onClick: () => {
         clearAllFilters()
@@ -115,14 +118,14 @@ export function QueueMetricCards({ metrics }: { readonly metrics: QueueMetrics }
     },
     {
       key: 'conflicts',
-      label: 'Konflik deterministik prioritas tinggi',
+      label: t('metric.conflicts.label'),
       count: metrics.deterministic_conflicts,
-      unit: 'kasus',
+      unit: t('metric.unitCase'),
       accent: 'bg-band-conflict',
       // Satu-satunya kartu yang batasnya diwarnai: aturan integritas yang dilanggar
       // secara pasti adalah yang paling menentukan urutan kerja hari itu.
       border: 'border-band-conflict-line',
-      hint: 'Aturan integritas dilanggar secara pasti',
+      hint: t('metric.conflicts.hint'),
       tier: 'action',
       onClick: () => {
         clearAllFilters()
@@ -131,11 +134,11 @@ export function QueueMetricCards({ metrics }: { readonly metrics: QueueMetrics }
     },
     {
       key: 'evidence',
-      label: 'Kasus menunggu bukti tambahan',
+      label: t('metric.evidence.label'),
       count: metrics.evidence_requested,
-      unit: 'kasus',
+      unit: t('metric.unitCase'),
       accent: 'bg-band-context',
-      hint: 'Kelengkapan sudah diminta ke fasilitas',
+      hint: t('metric.evidence.hint'),
       tier: 'action',
       onClick: () => {
         clearAllFilters()
@@ -144,12 +147,12 @@ export function QueueMetricCards({ metrics }: { readonly metrics: QueueMetrics }
     },
     {
       key: 'median',
-      label: 'Waktu tengah dalam antrean',
+      label: t('metric.median.label'),
       count: null,
       text: formatHours(metrics.median_time_in_queue_hours),
-      unit: 'jam',
+      unit: t('metric.unitHour'),
       accent: 'bg-ink-3',
-      hint: 'Sebaran lama tunggu, bukan target kinerja',
+      hint: t('metric.median.hint'),
       tier: 'reference',
       onClick: clearAllFilters,
     },
@@ -167,14 +170,14 @@ export function QueueMetricCards({ metrics }: { readonly metrics: QueueMetrics }
         className="tk-enter flex flex-col gap-2 rounded-lg border border-line bg-sunk px-4 py-[15px]"
       >
         <span className="font-mono text-micro font-semibold tracking-label text-ink-3">
-          VERSI MESIN &amp; DATA
+          {t('metric.stamp.heading')}
         </span>
         <span data-numeric className="font-mono text-small leading-[1.55]">
-          aturan v{metrics.versions.ruleset_version}
+          {t('metric.stamp.ruleset', { version: metrics.versions.ruleset_version })}
           <br />
-          model v{metrics.versions.engine_version}
+          {t('metric.stamp.engine', { version: metrics.versions.engine_version })}
           <br />
-          data {metrics.versions.dataset_version}
+          {t('metric.stamp.dataset', { version: metrics.versions.dataset_version })}
         </span>
         <div className="mt-auto flex gap-[6px]">
           <Button
@@ -183,7 +186,7 @@ export function QueueMetricCards({ metrics }: { readonly metrics: QueueMetrics }
             className="flex-1 px-0"
             onClick={() => void copyStamp(metrics.versions)}
           >
-            Salin
+            {t('metric.stamp.copy')}
           </Button>
           <Button
             variant="outline"
@@ -191,7 +194,7 @@ export function QueueMetricCards({ metrics }: { readonly metrics: QueueMetrics }
             className="flex-1 px-0"
             onClick={() => navigate('/evaluation')}
           >
-            Evaluasi
+            {t('metric.stamp.evaluation')}
           </Button>
         </div>
       </div>

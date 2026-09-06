@@ -16,6 +16,7 @@ from decimal import Decimal
 
 from tilik_domain.canonical import CanonicalBundle, ResourceRef, ResourceType
 from tilik_domain.edges import EdgeType
+from tilik_domain.notes import NoteCode
 from tilik_domain.reasons import ReasonCode, RiskMode
 
 from app.service.rules.registry import CounterEvidence, ReasonHit, RuleContext, make_hit
@@ -74,11 +75,8 @@ class RepeatBillingRule:
                 rule_id=self.rule_id,
                 evidence=(current_ref, past_ref),
                 counter_evidence=(
-                    CounterEvidence(
-                        note_id=(
-                            "Sidik identik juga muncul saat klaim dikirim ulang "
-                            "setelah koreksi administratif."
-                        ),
+                    CounterEvidence.of(
+                        NoteCode.RESUBMISSION_AFTER_CORRECTION,
                         refs=(past_ref,),
                     ),
                 ),
@@ -108,23 +106,19 @@ def _overlap_counter_evidence(
     notes: list[CounterEvidence] = []
     if gap > FOLLOW_UP_GRACE:
         notes.append(
-            CounterEvidence(
-                note_id=(
-                    f"Kedua klaim terpisah {gap.days} hari, jarak yang lazim "
-                    "untuk kunjungan ulang yang sah."
-                ),
+            CounterEvidence.of(
+                NoteCode.CLAIMS_SEPARATED_BY_DAYS,
                 refs=(_claim_ref(past.claim.claim_id),),
+                days=gap.days,
             )
         )
     differing = _differing_fields(bundle, past)
     if differing:
         notes.append(
-            CounterEvidence(
-                note_id=(
-                    "Bidang berikut berbeda antara kedua klaim, sehingga keduanya "
-                    f"mungkin memang layanan terpisah: {', '.join(differing)}."
-                ),
+            CounterEvidence.of(
+                NoteCode.DIFFERING_FIELDS_SUGGEST_SEPARATE_SERVICES,
                 refs=(_claim_ref(past.claim.claim_id),),
+                fields=", ".join(differing),
             )
         )
     return tuple(notes)

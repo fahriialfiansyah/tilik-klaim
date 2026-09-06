@@ -1,12 +1,14 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 import { startSession } from '@/features/auth/api'
 import { DEMO_ACCOUNTS, credentialLine, type DemoAccount } from '@/features/auth/accounts'
 import { RoleMatrix } from '@/features/auth/components/RoleMatrix'
-import { ROLE_LABEL } from '@/features/auth/labels'
+import { useRoleLabel } from '@/features/auth/labels'
 import { useSession } from '@/features/auth/useSession'
 import { ApiError, NetworkError } from '@/lib/http'
+import i18n from '@/modules/i18n/config'
 
 /**
  * Choose a row in the matrix, then sign in as that person.
@@ -32,6 +34,8 @@ const FIELD_CLASSES =
   'h-10 w-full rounded-md border border-line bg-card px-3 font-mono text-small text-ink outline-none placeholder:text-ink-3 focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-ring/40'
 
 export function SignInForm() {
+  const { t } = useTranslation('auth')
+  const roleLabel = useRoleLabel()
   const signIn = useSession((state) => state.signIn)
   const [chosen, setChosen] = useState<DemoAccount>(DEMO_ACCOUNTS[0])
   const [email, setEmail] = useState(DEMO_ACCOUNTS[0].email)
@@ -53,7 +57,7 @@ export function SignInForm() {
   async function onCopy() {
     // Never report a copy that did not happen — the same rule `AppHeader.onCopy` follows. The
     // credentials stay on screen and selectable either way, so a failed copy costs nothing, but
-    // a false "tersalin" would cost the demo a confused pause.
+    // a false "copied" would cost the demo a confused pause.
     if (await writeClipboard(credentialLine(chosen))) {
       setCopied(true)
       window.setTimeout(() => setCopied(false), COPY_FEEDBACK_MS)
@@ -78,14 +82,14 @@ export function SignInForm() {
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-3" noValidate>
       <fieldset className="m-0 min-w-0 border-0 p-0">
-        <legend className="sr-only">Pilih akun contoh</legend>
+        <legend className="sr-only">{t('signIn.legend')}</legend>
         <RoleMatrix chosen={chosen} onChoose={setChosen} />
       </fieldset>
 
       <div className="grid grid-cols-1 items-end gap-4 rounded-md border border-brand-line bg-brand-soft px-4 py-[14px] md:grid-cols-[1fr_1fr_auto]">
         <div className="flex flex-col gap-[6px]">
           <label htmlFor="signin-email" className="text-small font-medium text-ink">
-            Email petugas
+            {t('signIn.emailLabel')}
           </label>
           <input
             id="signin-email"
@@ -93,7 +97,7 @@ export function SignInForm() {
             autoComplete="username"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            placeholder="nama@rsud-demo.example"
+            placeholder={t('signIn.emailPlaceholder')}
             className={FIELD_CLASSES}
             data-numeric
           />
@@ -101,7 +105,7 @@ export function SignInForm() {
 
         <div className="flex flex-col gap-[6px]">
           <label htmlFor="signin-passcode" className="text-small font-medium text-ink">
-            Kode demo
+            {t('signIn.passcodeLabel')}
           </label>
           <input
             id="signin-passcode"
@@ -115,14 +119,14 @@ export function SignInForm() {
             spellCheck={false}
             value={passcode}
             onChange={(event) => setPasscode(event.target.value)}
-            placeholder="demo-…-2026"
+            placeholder={t('signIn.passcodePlaceholder')}
             className={FIELD_CLASSES}
             data-numeric
           />
         </div>
 
         <Button type="submit" size="lg" disabled={incomplete || busy}>
-          {busy ? 'Memeriksa…' : `Masuk sebagai ${ROLE_LABEL[chosen.role]}`}
+          {busy ? t('signIn.submitting') : t('signIn.submit', { role: roleLabel(chosen.role) })}
         </Button>
       </div>
 
@@ -136,7 +140,7 @@ export function SignInForm() {
           }
         >
           <span className="font-semibold">
-            {status.deactivated ? 'Akun nonaktif: ' : 'Tidak dapat masuk: '}
+            {status.deactivated ? t('signIn.deactivatedPrefix') : t('signIn.refusedPrefix')}
           </span>
           {status.message}
         </p>
@@ -144,12 +148,10 @@ export function SignInForm() {
 
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <p aria-live="polite" className="text-meta text-ink-3">
-          {incomplete
-            ? 'Isi email dan kode demo terlebih dahulu.'
-            : 'Kedua bidang tetap dapat disunting. Baris di atas hanya jalan pintas.'}
+          {incomplete ? t('signIn.incomplete') : t('signIn.editable')}
         </p>
         <Button type="button" variant="outline" size="sm" onClick={onCopy}>
-          {copied ? 'Tersalin' : 'Salin kredensial'}
+          {copied ? t('signIn.copied') : t('signIn.copyCredentials')}
         </Button>
       </div>
     </form>
@@ -178,13 +180,13 @@ function describeFailure(failure: unknown): Status {
   if (failure instanceof NetworkError) {
     return {
       kind: 'refused',
-      message: 'Layanan tidak merespons. Ini bukan berarti kode demo salah. Coba lagi.',
+      message: i18n.t('auth:signIn.networkError'),
       deactivated: false,
     }
   }
   return {
     kind: 'refused',
-    message: 'Terjadi kegagalan yang tidak dikenali. Coba lagi.',
+    message: i18n.t('auth:signIn.unknownError'),
     deactivated: false,
   }
 }

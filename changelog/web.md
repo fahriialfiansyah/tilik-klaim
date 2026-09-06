@@ -4,6 +4,43 @@ Append-only. Newest entry at the top.
 
 ---
 
+### 2026-09-06 · A language switch, and every label that had to stop being a constant · ✅ Done
+
+**Event:** Owner asked for an ID/EN switch in the topbar; the interesting half was what the app had to stop doing to make it work
+**Files:** `src/modules/i18n/*`, `src/locales/{id,en}/*`, seven `labels.ts` modules, every component carrying user-facing text, `src/lib/http.ts`, `src/config/menu/app-menu.ts`
+> **The switch was the easy part. The label layer was the work.** Every screen read its words
+> from module-level constants — `MODE_LABELS`, `BAND_LABELS`, `ACTION_LABELS`, and twenty more.
+> A constant is read **once**, at module load, so a language switch would have changed the
+> header's own words and left every table, badge, meter and dialog in the language the bundle
+> happened to start in. All of them became hooks. `language-switch.test.tsx` renders a component,
+> switches the language, and asserts the rendered text changed — so nobody can turn one back.
+> **The trigger shows the language you are in, not the one it would switch to.** With two
+> languages there is no arrow to disambiguate, and a control naming its destination reads as
+> "you are in EN" to half the people who see it. Each entry is written in its own language, so
+> someone who cannot read the surrounding screen can still find their way out of it.
+> **`app-menu.ts` lost its `label` field.** The entry `id` *is* the translation key now. A label
+> written in the config would have been a second name for a page that only exists in one
+> language — the one entry that had one would go untranslated while every other followed.
+> **Non-components read the running instance rather than a hook.** `csv.ts` builds a governance
+> export and `useUsers.ts` composes a live-region sentence; neither may call a hook, and a CSV
+> downloaded from an English screen should be an English file rather than a bilingual one
+> nobody can hand on.
+> **`key-parity.test.ts` earned its place before it was committed.** A batch edit replaced the
+> whole of `admin.undo` instead of merging into it and took four keys with it. Nothing else in
+> the suite noticed — a missing key does not throw, it renders *as the key*, so four screens
+> would have shown `undo.roleBecame` where a sentence belongs. The test asserts identical keys
+> in both directions, matching `{{placeholders}}`, and no blank values.
+> **The governance guards got stronger in the move.** `/login`'s "claims no security" test used
+> to scan the component source for one Indonesian sentence. The copy now lives in the locale
+> files, so the test reads those — and asserts the disclaimer in **both** languages. A
+> disclaimer that held in Indonesian and quietly went missing from English would be exactly the
+> ADR-0006 kill criterion, in front of exactly the reader most likely to misread the page.
+> `NO_OBSERVED_RISK` is still never named "clean" or "safe" — asserted per-locale now, and the
+> rationale beside it still *denies* the clean reading rather than avoiding the word.
+> 42 files / 333 specs green, tsc clean.
+
+---
+
 ### 2026-09-04 · Shell polish: a real logout dialog, icon-only theme switch, drawn menu marks · ✅ Done
 
 **Event:** Four owner requests on the shell, and one of them removed a control that was too cheap for what it did

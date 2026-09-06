@@ -1,46 +1,38 @@
+import { useTranslation } from 'react-i18next'
+
 import type { CaseState, PriorityBand, RiskMode } from '@/features/review/shared/types'
 
 /**
- * Working-language labels for the wire enums.
+ * Labels for the wire enums, in the reader's language.
  *
  * Reason *sentences* are never composed here — they come from the backend's reason catalog so
- * the queue and the case detail cannot disagree about why a case was raised. These maps cover
- * only the enum values, which have no sentence of their own.
+ * the queue and the case detail cannot disagree about why a case was raised, and so both
+ * languages render one finding rather than two. These hooks cover only the enum values, which
+ * have no sentence of their own.
+ *
+ * Each is a hook rather than a constant record because a record is read once at module load: it
+ * would keep whichever language was active when the bundle first evaluated, and go on rendering
+ * it after the header switch.
  */
 
-export const MODE_LABELS: Record<RiskMode, string> = {
-  PHANTOM_OR_NO_PROCEDURE_EVIDENCE: 'Tagihan tanpa bukti',
-  REPEAT_BILLING: 'Tagihan berulang',
-  CLONED_DOCUMENTATION: 'Dokumentasi salinan',
-  UNBUNDLING_FRAGMENTATION: 'Episode terpecah',
+export function useModeLabel(): (mode: RiskMode) => string {
+  const { t } = useTranslation('review')
+  return (mode) => t(`mode.${mode}` as 'mode.REPEAT_BILLING')
 }
 
-export const BAND_LABELS: Record<PriorityBand, string> = {
-  DETERMINISTIC_CONFLICT: 'Konflik deterministik',
-  HIGH_PRIORITY_SIGNAL: 'Sinyal prioritas tinggi',
-  NEEDS_CONTEXT: 'Perlu konteks',
-  // Never "bersih" and never "aman". The system observed nothing; that is not a clearance.
-  NO_OBSERVED_RISK: 'Tidak ada risiko teramati',
+export function useBandLabel(): (band: PriorityBand) => string {
+  const { t } = useTranslation('review')
+  // Never "bersih" and never "clean". The system observed nothing; that is not a clearance.
+  return (band) => t(`band.${band}` as 'band.NEEDS_CONTEXT')
 }
 
-/** Answers the queue's "why this band?" hover, in working language. */
-export const BAND_BASIS: Record<PriorityBand, string> = {
-  DETERMINISTIC_CONFLICT:
-    'Sebuah aturan integritas dilanggar secara pasti. Merah menandai konflik itu, bukan kesalahan pihak mana pun.',
-  HIGH_PRIORITY_SIGNAL: 'Perlu ditinjau. Baca sinyal pendukung dan penentangnya sebelum memutuskan.',
-  NEEDS_CONTEXT:
-    'Bukti belum cukup untuk menilai. Kemungkinan yang diperlukan adalah meminta kelengkapan, bukan menyimpulkan.',
-  NO_OBSERVED_RISK:
-    'Tidak ada detektor yang menyala pada versi mesin ini. Ini bukan pernyataan bahwa klaimnya bersih.',
+/** Answers the queue's "why this band?" hover. */
+export function useBandBasis(): (band: PriorityBand) => string {
+  const { t } = useTranslation('review')
+  return (band) => t(`bandBasis.${band}` as 'bandBasis.NEEDS_CONTEXT')
 }
 
-export const STATE_LABELS: Record<CaseState, string> = {
-  NEW: 'Baru',
-  SCREENED: 'Tersaring',
-  IN_REVIEW: 'Sedang ditinjau',
-  EVIDENCE_REQUESTED: 'Menunggu bukti',
-  DISMISSED: 'Sinyal ditolak',
-  CONFIRMED_ANOMALY: 'Anomali dikonfirmasi',
-  ESCALATED: 'Dieskalasi',
-  INVALID_INPUT: 'Masukan tidak sah',
+export function useStateLabel(): (state: CaseState) => string {
+  const { t } = useTranslation('review')
+  return (state) => t(`state.${state}` as 'state.SCREENED')
 }

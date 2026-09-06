@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { fetchUserAudit, fetchUsers, updateUser } from '@/features/admin/users/api'
 import type { UserAuditEvent } from '@/features/admin/users/types'
-import { ROLE_LABEL } from '@/features/auth/labels'
+import { roleLabel } from '@/features/auth/labels'
+import i18n from '@/modules/i18n/config'
 import { isRole, type Role, type StaffUser } from '@/features/auth/types'
 import { ApiError } from '@/lib/http'
 
@@ -165,11 +166,13 @@ function describeUndo(
   for (const event of events) {
     if (event.field === 'role' && event.value_before && isRole(event.value_before)) {
       patch = { ...patch, role: event.value_before }
-      said.push(`peran menjadi ${ROLE_LABEL[user.role]}`)
+      said.push(i18n.t('admin:undo.roleBecame', { role: roleLabel(user.role) }))
     }
     if (event.field === 'is_active' && event.value_before !== null) {
       patch = { ...patch, is_active: event.value_before === 'true' }
-      said.push(user.is_active ? 'akun diaktifkan kembali' : 'akun dinonaktifkan')
+      said.push(
+        user.is_active ? i18n.t('admin:undo.reactivated') : i18n.t('admin:undo.deactivated'),
+      )
     }
   }
 
@@ -179,7 +182,10 @@ function describeUndo(
   return {
     userId: user.user_id,
     patch,
-    summary: `${user.full_name}: ${said.join(', ')}.`,
+    summary: i18n.t('admin:undo.summary', {
+      name: user.full_name,
+      changes: said.join(', '),
+    }),
   }
 }
 
@@ -191,7 +197,7 @@ function describeRefusal(cause: unknown): Refusal {
     code: 'UNEXPECTED',
     message:
       cause instanceof Error
-        ? `Perubahan tidak tersimpan: ${cause.message}`
-        : 'Perubahan tidak tersimpan.',
+        ? i18n.t('admin:refusal.withCause', { cause: cause.message })
+        : i18n.t('admin:refusal.plain'),
   }
 }

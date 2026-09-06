@@ -1,0 +1,321 @@
+{
+  "page": {
+    "breadcrumb": "Review Queue",
+    "tablist": "Case detail sections",
+    "tabEvidence": "Evidence & disposition",
+    "tabAudit": "Audit history",
+    "completenessHeading": "EVIDENCE COMPLETENESS",
+    "unresolvedRefs": "{{count}} references could not be resolved: an evidence-integrity defect.",
+    "noRiskTitle": "No risk observed at this engine version.",
+    "noRiskBody": "No detector fired. This is not a statement that the claim is clean or safe, only that this engine version observed nothing."
+  },
+  "action": {
+    "REJECT_SIGNAL": "Reject signal",
+    "REQUEST_EVIDENCE": "Request more evidence",
+    "CONFIRM_ANOMALY": "Confirm anomaly",
+    "ESCALATE": "Escalate"
+  },
+  "actionMeaning": {
+    "REJECT_SIGNAL": "The case is closed with a reason. An authorised reviewer can still reopen it.",
+    "REQUEST_EVIDENCE": "The case moves to awaiting evidence. Deferring with a recorded reason is a legitimate decision.",
+    "CONFIRM_ANOMALY": "You are confirming an inconsistency that needs following up. This is not a finding of fraud.",
+    "ESCALATE": "The case is flagged for authorised investigation. No sanction, payment, or notification follows automatically."
+  },
+  "structuredReason": {
+    "REJECT_SIGNAL": [
+      "Supporting evidence was found outside this bundle",
+      "A legitimate follow-up, not repeat billing",
+      "Legitimate template-based documentation",
+      "Staged care that was genuinely planned",
+      "The entered-in-error marking has been corrected"
+    ],
+    "REQUEST_EVIDENCE": [
+      "The supporting file is incomplete",
+      "The procedure record has not been sent",
+      "A written explanation from the facility is needed",
+      "An evidence reference could not be resolved"
+    ],
+    "CONFIRM_ANOMALY": [
+      "A line billed with no evidence of a completed service",
+      "Overlapping claims in the same episode",
+      "One episode split across several claims",
+      "Documentation copied with no reasonable explanation"
+    ],
+    "ESCALATE": [
+      "Needs investigation by an authorised unit",
+      "A recurring pattern at this facility",
+      "Value and impact beyond a reviewer's authority"
+    ]
+  },
+  "support": {
+    "SUPPORTED": "Supported",
+    "PARTIALLY_SUPPORTED": "Partly supported",
+    "UNSUPPORTED": "Unsupported",
+    "NOT_ASSESSABLE": "Not assessable"
+  },
+  "supportMeaning": {
+    "SUPPORTED": "The expected supporting evidence was found in this bundle.",
+    "PARTIALLY_SUPPORTED": "Some of the expected evidence was found, some was not.",
+    "UNSUPPORTED": "The expected evidence is absent while the file is declared complete.",
+    "NOT_ASSESSABLE": "The file is incomplete, so this line cannot be judged yet — which is not the same as the evidence being absent."
+  },
+  "resource": {
+    "Claim": "Claim",
+    "ClaimLine": "Claim line",
+    "Encounter": "Encounter",
+    "Condition": "Diagnosis",
+    "Procedure": "Procedure",
+    "Medication": "Medication",
+    "Diagnostic": "Diagnostic test",
+    "Document": "Clinical note",
+    "Account": "Billing account",
+    "ChargeItem": "Charge item",
+    "Invoice": "Invoice",
+    "Episode": "Episode",
+    "Practitioner": "Practitioner"
+  },
+  "availability": {
+    "PRESENT": "In this bundle",
+    "RELATED_BUNDLE": "From the comparison bundle",
+    "NOT_STORED": "Referenced by identity",
+    "MISSING": "Cannot be opened"
+  },
+  "availabilityMeaning": {
+    "PRESENT": "This resource was sent with the claim and is shown as it arrived.",
+    "RELATED_BUNDLE": "This resource comes from another submission being compared. Only fields that do not reveal another participant's identity are shown.",
+    "NOT_STORED": "Episodes and practitioners are referenced by identity and are deliberately not stored as resources of their own. This is not a defect.",
+    "MISSING": "This reference points at a resource that could not be resolved. That is an evidence-integrity defect, not a normal empty view."
+  },
+  "sourceField": {
+    "account_id": "Account ID",
+    "authored_at": "Authored",
+    "author_id": "Author",
+    "care_type": "Care type",
+    "class_code": "Encounter class",
+    "claim_id": "Claim ID",
+    "code": "Code",
+    "code_system": "Code system",
+    "currency": "Currency",
+    "description": "Description",
+    "document_id": "Document ID",
+    "effective_at": "Effective",
+    "encounter_id": "Encounter ID",
+    "end_at": "Ended",
+    "episode_id": "Episode ID",
+    "kind": "Kind",
+    "line_amount": "Line amount",
+    "line_id": "Line ID",
+    "occurred_at": "Occurred",
+    "onset_at": "Onset",
+    "participant_id": "Participant (pseudonym)",
+    "performed_at": "Performed",
+    "performer_id": "Performer",
+    "location_id": "Location",
+    "issued_at": "Issued",
+    "charge_item_id": "Charge item ID",
+    "condition_id": "Condition ID",
+    "diagnostic_id": "Diagnostic ID",
+    "invoice_id": "Invoice ID",
+    "medication_id": "Medication ID",
+    "procedure_id": "Procedure ID",
+    "provider_id": "Facility",
+    "quantity": "Quantity",
+    "recorded_at": "Recorded",
+    "result_at": "Result",
+    "service_at": "Service time",
+    "start_at": "Started",
+    "status": "Status",
+    "submitted_at": "Submitted",
+    "text": "Note text",
+    "text_digest": "Text digest",
+    "text_hash": "Text digest",
+    "text_length": "Text length",
+    "total_amount": "Total",
+    "unit_price": "Unit price",
+    "verification_status": "Verification status"
+  },
+  "component": {
+    "candidate_floor": "Candidate floor",
+    "fingerprint_match": "Claim fingerprint match",
+    "hours_apart": "Hours apart",
+    "reporting_threshold": "Reporting threshold",
+    "shared_code_count": "Shared service codes",
+    "supporting_refs_found": "Supporting references found",
+    "text_similarity": "Text similarity"
+  },
+  "auditKind": {
+    "CREATED": "Case created",
+    "SCREENED": "Case screened",
+    "RESCREENED": "Case re-screened",
+    "OPENED": "Case opened for review",
+    "DISPOSITION": "Disposition recorded",
+    "SUPERSEDE": "Disposition corrected"
+  },
+  "actor": {
+    "reviewer": "Reviewing officer",
+    "senior_reviewer": "Senior reviewer",
+    "auditor": "Auditor",
+    "system": "System"
+  },
+  "strength": {
+    "1": "weak",
+    "2": "moderate",
+    "3": "strong"
+  },
+  "matrixCell": {
+    "FOUND": "found",
+    "MISSING": "not found",
+    "UNRESOLVED": "reference unresolved",
+    "NOT_EXPECTED": "not expected"
+  },
+  "matrixCellMeaning": {
+    "FOUND": "A reason citing this line points at a resource of this type, and that resource can be opened.",
+    "MISSING": "A reason citing this line expected evidence of this type and did not find it in the bundle.",
+    "UNRESOLVED": "There is a reference of this type, but it points at a resource that could not be resolved. That is an evidence-integrity defect.",
+    "NOT_EXPECTED": "No reason expects evidence of this type on this line. Empty does not mean absent."
+  },
+  "lane": {
+    "encounter": "Encounter",
+    "procedure": "Procedure",
+    "medication": "Medication",
+    "billing": "Billing",
+    "document": "Clinical note"
+  },
+  "conflict": {
+    "withReason": "The case moved to “{{state}}” with the reason “{{reason}}”.",
+    "stateOnly": "The case moved to “{{state}}”.",
+    "generic": "This case changed after you opened it."
+  },
+  "audit": {
+    "transition": " · {{before}} → {{after}}"
+  },
+  "lines": {
+    "sectionLabel": "Claim line list",
+    "heading": "Claim lines",
+    "hint": "Choose a line to load its evidence trail",
+    "empty": "This bundle carries no claim lines that can be shown."
+  },
+  "ref": {
+    "integrityDefect": "{{name}}: evidence-integrity defect",
+    "relatedBundle": " · comparison bundle",
+    "notStored": " · referenced by identity"
+  },
+  "matrix": {
+    "reasonCount": "{{count}} reasons",
+    "claimLevel": "Claim level"
+  },
+  "disposition": {
+    "panelLabel": "Disposition panel",
+    "heading": "Disposition",
+    "actionLegend": "ACTION",
+    "reasonLabel": "STRUCTURED REASON",
+    "pickReason": "Choose a reason…",
+    "pickActionFirst": "Choose an action first",
+    "reasonNote": "A reason is required and is stored permanently. The system only offers options; it never chooses for you.",
+    "evidenceLegend": "EVIDENCE REQUESTED",
+    "evidenceNote": "Ticked automatically from the resources that are missing; add or remove as needed.",
+    "noteLabel": "FREE-TEXT NOTE",
+    "notePlaceholder": "Further explanation for the audit trail",
+    "versions": "case version {{case}} · rules v{{ruleset}} · engine v{{engine}}",
+    "save": "Save the disposition",
+    "permanent": "This decision is recorded permanently along with who made it, when, why, and the engine version."
+  },
+  "banner": {
+    "conflictTitle": "Case version mismatch: this case changed after you opened it",
+    "conflictBody": "{{summary}} The change was recorded by <1>{{by}}</1> at {{at}}; the case version moved from {{seen}} to {{current}}. <3>Your disposition entries have been kept</3>: nothing was overwritten and nothing was recorded.",
+    "reload": "Reload",
+    "saveFailedTitle": "The disposition could not be saved",
+    "saveFailedBody": "{{detail}} No audit event was partly written; an event is written whole or not at all. <1>Your entries are still intact on screen.</1>",
+    "serviceDown": "The service did not respond",
+    "templateCaveat": "Template caveat. "
+  },
+  "placeholder": {
+    "loading": "Loading the case detail…",
+    "notFoundTitle": "This case was not found",
+    "notFoundBody": "This case identifier does not exist in the system. The link may be out of date, or the database may have been re-screened since it was made.",
+    "failedTitle": "The case detail could not be loaded",
+    "failedBody": "{{detail}} This does not mean the case is absent; its detail simply did not reach this screen.",
+    "backToQueue": "Back to the queue"
+  },
+  "confirmAnomaly": {
+    "title": "Confirm anomaly: this is not a fraud finding",
+    "description": "Read this statement before the decision is recorded permanently.",
+    "lede": "Confirming means you agree there is <1>an inconsistency that needs following up</1>. That is all. This action is <3>not</3> a statement of fraud, not a legal finding, and not an accusation against anyone.",
+    "point1": "· The claim is not rejected.",
+    "point2": "· Payment is neither stopped nor changed.",
+    "point3": "· No sanction is imposed.",
+    "point4": "· No code is changed.",
+    "reasonRecorded": "The reason to be recorded: ",
+    "confirm": "I understand, record the confirmation"
+  },
+  "header": {
+    "sectionLabel": "Case header",
+    "caseId": "CASE IDENTIFIER",
+    "amount": "CLAIM AMOUNT",
+    "encounterRange": "ENCOUNTER RANGE",
+    "primaryReason": "PRIMARY REASON",
+    "noRisk": "No risk observed at this engine version. This is not a statement that the claim is clean."
+  },
+  "auditPanel": {
+    "sectionLabel": "Audit history",
+    "heading": "Case audit history",
+    "loading": "Loading the history…",
+    "empty": "No event has been recorded for this case yet.",
+    "evidenceRequested": "Evidence requested: ",
+    "versions": " · rules v{{ruleset}} · engine v{{engine}}",
+    "supersedes": " · supersedes {{event}}"
+  },
+  "swimlane": {
+    "sectionLabel": "Episode timeline",
+    "heading": "Episode timeline",
+    "laneEmpty": "no events recorded",
+    "empty": "This bundle carries no events that can be ordered in time."
+  },
+  "matrixPanel": {
+    "sectionLabel": "Evidence matrix",
+    "heading": "Evidence matrix",
+    "empty": "This bundle carries no claim lines that can be shown.",
+    "lineColumn": "LINE"
+  },
+  "reasonCard": {
+    "counterHeading": "COUNTER-EVIDENCE: WHAT WEAKENS THIS REASON",
+    "counterEmpty": "No counter-evidence for this reason was found in the available bundle.",
+    "expectedHeading": "EVIDENCE EXPECTED",
+    "expectedEmpty": "This rule does not specify a particular evidence type.",
+    "foundHeading": "EVIDENCE FOUND",
+    "foundEmpty": "No supporting resource was found for this reason."
+  },
+  "map": {
+    "expectedLabel": "Expected evidence",
+    "sectionLabel": "Evidence map",
+    "heading": "Evidence map",
+    "empty": "No reason is being traced yet. Open a reason card to see its evidence map.",
+    "claimPath": "Claim path",
+    "expectedHeading": "EVIDENCE EXPECTED BENEATH THIS LINE",
+    "counterHeading": "COUNTER-EVIDENCE: A SEPARATE BRANCH",
+    "counterLabel": "Counter-evidence",
+    "counterEmpty": "There is no counter-evidence for this reason."
+  },
+  "source": {
+    "raw": "The resource's contents as they are, exactly as the system received them.",
+    "screenedVersions": "ENGINE VERSION WHEN THE CASE WAS SCREENED"
+  },
+  "comparison": {
+    "title": "Candidate pair comparison",
+    "description": "This case on the left, the comparison candidate on the right. Only the relevant excerpts are shown.",
+    "candidate": "CANDIDATE",
+    "openCandidate": "Open the candidate case",
+    "noCandidateCase": "There is no case to open for this candidate yet.",
+    "fieldsHeading": "FIELDS COMPARED",
+    "field": "FIELD",
+    "thisCase": "THIS CASE",
+    "state": "STATE",
+    "overlapHeading": "OVERLAP RANGE",
+    "noOverlap": "No part of the two overlaps in time. The absence of an overlap in fact weakens a repeat-billing reading.",
+    "similarityHeading": "SIMILARITY COMPONENTS"
+  },
+  "draft": {
+    "pickAction": "Choose an action first.",
+    "pickReason": "Choose a structured reason. There is no disposition without one."
+  }
+}

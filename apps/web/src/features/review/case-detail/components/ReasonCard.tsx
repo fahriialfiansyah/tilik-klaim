@@ -1,11 +1,13 @@
+import { useTranslation } from 'react-i18next'
+
 import {
-  RESOURCE_LABELS,
+  useResourceLabel,
   reasonStrength,
-  strengthLabel,
+  useStrengthLabel,
 } from '@/features/review/case-detail/labels'
 import type { EvidenceRef, Reason, SourceResource } from '@/features/review/case-detail/types'
 import { EvidenceRefButton } from '@/features/review/case-detail/components/EvidenceRefButton'
-import { MODE_LABELS } from '@/features/review/shared/labels'
+import { useModeLabel } from '@/features/review/shared/labels'
 import { cn } from '@/lib/utils'
 
 const MICRO_LABEL = 'font-mono text-micro font-semibold tracking-label text-ink-3'
@@ -45,6 +47,10 @@ export function ReasonCard({
   readonly onOpenSource: (ref: EvidenceRef) => void
   readonly onCompare: (() => void) | null
 }) {
+  const { t } = useTranslation('caseDetail')
+  const modeLabel = useModeLabel()
+  const resourceLabel = useResourceLabel()
+  const strengthLabel = useStrengthLabel()
   const strength = reasonStrength(reason)
   const found = foundTypes(reason)
   const bodyId = `alasan-${reason.code}`
@@ -70,7 +76,7 @@ export function ReasonCard({
           <span className="min-w-0 flex-1">
             <span className="mb-[7px] flex flex-wrap items-center gap-[9px]">
               <span className="rounded-full border border-line bg-sunk px-[9px] py-[2px] text-meta">
-                {MODE_LABELS[reason.mode]}
+                {modeLabel(reason.mode)}
               </span>
               <span data-numeric className="font-mono text-micro text-ink-3">
                 {reason.code} · aturan v{reason.ruleset_version}
@@ -110,11 +116,11 @@ export function ReasonCard({
       <div className="px-4 pb-4">
         <div className="rounded-md border border-dashed border-line-strong bg-sunk px-[15px] py-[13px]">
           <p className={cn('mb-[5px] text-ink-2', MICRO_LABEL)}>
-            BUKTI TANDINGAN: MELEMAHKAN ALASAN INI
+            {t('reasonCard.counterHeading')}
           </p>
           {reason.counter_evidence_notes.length === 0 ? (
             <p className="text-small text-ink-2">
-              Tidak ditemukan bukti tandingan untuk alasan ini pada bundel yang tersedia.
+              {t('reasonCard.counterEmpty')}
             </p>
           ) : (
             <ul className="space-y-[10px]">
@@ -144,10 +150,10 @@ export function ReasonCard({
         <div id={bodyId} className="px-4 pb-4">
           <div className="mb-[14px] grid gap-[18px] sm:grid-cols-2">
             <div>
-              <p className={cn('mb-[7px]', MICRO_LABEL)}>BUKTI YANG DIHARAPKAN</p>
+              <p className={cn('mb-[7px]', MICRO_LABEL)}>{t('reasonCard.expectedHeading')}</p>
               {reason.expected_support.length === 0 ? (
                 <p className="text-small text-ink-3">
-                  Aturan ini tidak menetapkan jenis bukti tertentu.
+                  {t('reasonCard.expectedEmpty')}
                 </p>
               ) : (
                 <ul>
@@ -156,7 +162,7 @@ export function ReasonCard({
                       key={type}
                       className="flex items-center justify-between gap-2 border-t border-line py-[7px] text-small text-ink-2"
                     >
-                      {RESOURCE_LABELS[type]}
+                      {resourceLabel(type)}
                       <span
                         className={cn(
                           'text-meta',
@@ -172,10 +178,10 @@ export function ReasonCard({
             </div>
 
             <div>
-              <p className={cn('mb-[7px]', MICRO_LABEL)}>BUKTI YANG DITEMUKAN</p>
+              <p className={cn('mb-[7px]', MICRO_LABEL)}>{t('reasonCard.foundHeading')}</p>
               {reason.evidence.length === 0 ? (
                 <p className="text-small text-ink-3">
-                  Tidak ada sumber daya pendukung yang ditemukan untuk alasan ini.
+                  {t('reasonCard.foundEmpty')}
                 </p>
               ) : (
                 <ul>

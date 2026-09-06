@@ -1,8 +1,9 @@
 import { Check, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { DEMO_ACCOUNTS, type DemoAccount } from '@/features/auth/accounts'
-import { ROLE_LABEL } from '@/features/auth/labels'
-import { MATRIX_COLUMNS, allows } from '@/features/auth/matrix'
+import { useRoleLabel } from '@/features/auth/labels'
+import { allows, matrixColumns } from '@/features/auth/matrix'
 import type { Role } from '@/features/auth/types'
 import { cn } from '@/lib/utils'
 
@@ -19,8 +20,9 @@ import { cn } from '@/lib/utils'
  * group has one tab stop, and assistive technology announces both the person and the cell
  * headings — none of which a `<div>` with `role="radio"` would give for free.
  *
- * **Colour never carries the answer alone.** Every cell says *Boleh* or *Tidak* in words; the
- * tick and cross are decorative and hidden from assistive technology, which reads the word.
+ * **Colour never carries the answer alone.** Every cell says yes or no *in words*; the tick and
+ * cross are decorative and hidden from assistive technology, which reads the word. That holds in
+ * either language — the word is translated, the meaning is not.
  */
 const ROLE_ACCENT: Readonly<Record<Role, string>> = {
   reviewer: 'bg-band-context-bg border-band-context-line text-band-context',
@@ -35,21 +37,23 @@ export function RoleMatrix({
   readonly chosen: DemoAccount
   readonly onChoose: (account: DemoAccount) => void
 }) {
+  const { t } = useTranslation('auth')
+  const roleLabel = useRoleLabel()
+  const columns = matrixColumns()
+
   return (
     <div className="overflow-hidden rounded-md border border-line bg-card">
       <table className="w-full border-collapse text-left">
-        <caption className="sr-only">
-          Akun contoh dan kemampuan tiap peran. Pilih satu baris untuk masuk sebagai orang itu.
-        </caption>
+        <caption className="sr-only">{t('matrix.caption')}</caption>
         <thead>
           <tr className="bg-sunk">
             <th
               scope="col"
               className="border-b border-line px-4 py-[10px] font-mono text-micro font-semibold uppercase tracking-label text-ink-3"
             >
-              Akun contoh
+              {t('matrix.accountsColumn')}
             </th>
-            {MATRIX_COLUMNS.map((column) => (
+            {columns.map((column) => (
               <th
                 key={column.key}
                 scope="col"
@@ -84,7 +88,7 @@ export function RoleMatrix({
                         ROLE_ACCENT[account.role],
                       )}
                     >
-                      {ROLE_LABEL[account.role]}
+                      {roleLabel(account.role)}
                     </span>
                     <span className="min-w-0">
                       <span className="block truncate text-body font-semibold text-ink">
@@ -97,7 +101,7 @@ export function RoleMatrix({
                   </label>
                 </th>
 
-                {MATRIX_COLUMNS.map((column) => {
+                {columns.map((column) => {
                   const permitted = allows(account.role, column.key)
                   return (
                     <td key={column.key} className="px-2 py-4 text-center">
@@ -112,7 +116,7 @@ export function RoleMatrix({
                         ) : (
                           <X aria-hidden className="size-[13px]" />
                         )}
-                        {permitted ? 'Boleh' : 'Tidak'}
+                        {permitted ? t('matrix.allowed') : t('matrix.denied')}
                       </span>
                     </td>
                   )

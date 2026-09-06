@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { PageHeader, PageShell } from '@/components/layouts/PageShell'
@@ -17,6 +18,7 @@ import { useIngest } from '@/features/review/ingest/useIngest'
 
 /** Page 3 — Ingest / Demo (`/ingest`). Widgets 1–11 per `sprint/00-app-spec.md` § 5. */
 export function IngestPage() {
+  const { t } = useTranslation('ingest')
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const fromCase = params.get('case')
@@ -49,12 +51,12 @@ export function IngestPage() {
   return (
     <PageShell>
       <PageHeader
-        eyebrow="SATU BUNDEL · SATU LAPORAN VALIDASI"
-        title="Ingest / Demo"
-        lede="Tidak ada wisaya konfigurasi. Setelah validasi berhasil, tersedia satu tombol: saring klaim."
+        eyebrow={t('page.eyebrow')}
+        title={t('page.title')}
+        lede={t('page.lede')}
         action={
           <Button variant="outline" size="lg" onClick={() => navigate('/')}>
-            Kembali ke antrean
+            {t('page.backToQueue')}
           </Button>
         }
       />
@@ -67,7 +69,7 @@ export function IngestPage() {
 
       {status === 'failed' ? (
         <ServiceErrorBanner
-          title="Bundel tidak dapat diperiksa"
+          title={t('page.checkFailed')}
           error={error}
           onRetry={retry}
         />
@@ -75,7 +77,7 @@ export function IngestPage() {
 
       {screenStatus === 'failed' ? (
         <ServiceErrorBanner
-          title="Penyaringan gagal dijalankan"
+          title={t('page.screenFailed')}
           error={screenError}
           onRetry={() => void runScreen()}
         />
@@ -102,7 +104,7 @@ export function IngestPage() {
         <div>
           {submission ? (
             <p className="mb-2 text-meta text-ink-3">
-              Berkas yang diperiksa: <strong className="text-ink">{submission.label}</strong> ·{' '}
+              {t('page.inspected')} <strong className="text-ink">{submission.label}</strong> ·{' '}
               {submission.detail}
             </p>
           ) : null}
@@ -124,10 +126,7 @@ export function IngestPage() {
         <IssueTable issues={rejection.issues} />
       ) : null}
 
-      <p className="mt-4 max-w-[760px] text-small text-ink-3">
-        Seluruh data di layar ini sintetik dan dibangkitkan oleh kode proyek ini. Tidak ada rekam
-        medis nyata yang pernah masuk ke sistem.
-      </p>
+      <p className="mt-4 max-w-[760px] text-small text-ink-3">{t('page.footnote')}</p>
     </PageShell>
   )
 }

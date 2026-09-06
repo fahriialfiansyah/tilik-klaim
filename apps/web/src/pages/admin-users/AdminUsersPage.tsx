@@ -1,5 +1,6 @@
 import { Download } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 import { PageHeader, PageShell } from '@/components/layouts/PageShell'
@@ -35,14 +36,16 @@ import type { Role, StaffUser } from '@/features/auth/types'
  * the export is a copy of the trail rather than a way to edit it.
  */
 export function AdminUsersPage() {
+  const { t, i18n } = useTranslation('admin')
   const user = useSession((state) => state.user)
   const { status, users, events, pendingUserId, refusal, undoable, reload, change, undo, dismissUndo } =
     useUsers()
   const [pending, setPending] = useState<PendingChange | null>(null)
 
   useEffect(() => {
-    document.title = 'Manajemen Pengguna · TilikKlaim'
-  }, [])
+    // Re-run on a language change: the tab title is the one label React does not re-render.
+    document.title = t('page.documentTitle')
+  }, [t, i18n.language])
 
   const nameFor = (userId: string) =>
     users.find((candidate) => candidate.user_id === userId)?.full_name ?? userId
@@ -81,11 +84,7 @@ export function AdminUsersPage() {
 
   return (
     <PageShell>
-      <PageHeader
-        eyebrow="DAFTAR PETUGAS · PERAN DAN STATUS"
-        title="Manajemen Pengguna"
-        lede="Tiga akun petugas sintetik. Peran dapat diubah dan akun dapat dinonaktifkan; tidak ada penambahan dan tidak ada penghapusan. Setiap perubahan tercatat permanen di riwayat di bawah."
-      />
+      <PageHeader eyebrow={t('page.eyebrow')} title={t('page.title')} lede={t('page.lede')} />
 
       <div className="space-y-4">
         {refusal ? (
@@ -93,7 +92,7 @@ export function AdminUsersPage() {
             role="alert"
             className="rounded-md border border-notice-line bg-notice-bg px-4 py-3 text-body text-notice text-pretty"
           >
-            <span className="font-semibold">Perubahan ditolak: </span>
+            <span className="font-semibold">{t('page.refusedPrefix')}</span>
             {refusal.message}
           </p>
         ) : null}
@@ -115,7 +114,7 @@ export function AdminUsersPage() {
             id="roster-heading"
             className="border-b border-line px-4 py-3 text-lead font-semibold text-ink"
           >
-            Daftar petugas
+            {t('page.rosterHeading')}
           </h2>
 
           {status === 'loading' ? <UsersLoading /> : null}
@@ -138,8 +137,10 @@ export function AdminUsersPage() {
         >
           <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-line px-4 py-3">
             <h2 id="user-audit-heading" className="text-lead font-semibold text-ink">
-              Riwayat manajemen pengguna
-              <span className="ml-2 font-normal text-meta text-ink-3">terbaru di atas</span>
+              {t('page.auditHeading')}
+              <span className="ml-2 font-normal text-meta text-ink-3">
+                {t('page.auditNewestFirst')}
+              </span>
             </h2>
             {/*
               The trail is a governance deliverable, and one that can only be read on screen is a
@@ -154,15 +155,13 @@ export function AdminUsersPage() {
               onClick={exportAudit}
             >
               <Download aria-hidden className="size-4" />
-              Unduh CSV
+              {t('page.downloadCsv')}
             </Button>
           </div>
           {status === 'ready' ? (
             <UserAuditPanel events={events} nameFor={nameFor} />
           ) : (
-            <p className="px-4 py-6 text-body text-ink-2">
-              Riwayat dimuat bersama daftar petugas.
-            </p>
+            <p className="px-4 py-6 text-body text-ink-2">{t('page.auditPending')}</p>
           )}
         </section>
       </div>

@@ -4,6 +4,39 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 
 ---
 
+### 2026-09-06 · Reasons and counter-evidence become locale-aware catalogs · ✅ Done
+
+**Event:** The UI went bilingual, and the most prominent text on every screen is composed here
+**Files:** `packages/domain/src/tilik_domain/{locale,notes,reasons}.py`, `apps/backend/app/service/{text,case_query,case_loader}.py`, `apps/backend/app/router/{locale,cases,bundles}.py`, `apps/backend/app/service/rules/*`
+> **Counter-evidence became a catalog.** Eleven notes were literal f-strings inside the four
+> rule modules — composed during screening and frozen into the stored case. Fine while the
+> product spoke one language; impossible the moment it spoke two, because an English reader
+> would have got Indonesian arguments beside English findings. A note is now a **code plus its
+> parameters**, exactly as a reason is a `ReasonCode`: the rule decides which argument applies
+> and supplies the facts, and the language is chosen at the edge when someone reads it.
+> `CounterEvidence.of()` builds from the catalog, which deleted ~60 lines of duplicated
+> sentences from the rules — a second copy free to drift from the one the API renders.
+> **Sentences resolve by `code`, never off the stored `sentence_id`.** The stored text was
+> frozen in Indonesian at screening time; re-resolving by code is what lets a case already in
+> the queue be read in English **without re-screening it**, which would answer a different
+> question under a newer ruleset. `note_id` is kept as the stored Indonesian, so cases screened
+> before the catalog existed stay readable and every existing assertion keeps holding.
+> **`sentence_id` was never an identifier.** The `_id` is the Indonesian locale tag and the
+> field always held the sentence — which made `sentence_en` the natural pair rather than a new
+> concept, and the docstring now says so.
+> **The locale travels on `Accept-Language` and nowhere else.** No `?lang=`: language is a
+> property of the reader, not of the case, and putting it in the URL would make two URLs for one
+> case and give the cache two answers to the same question. Indonesian is the fallback for a
+> missing, malformed, or unsupported header — including `*`.
+> **The safety constraints are asserted per-locale.** English makes "no completed procedure
+> record" and "the procedure was not performed" a short edit apart, and only the first is a claim
+> this system may make; a test forbids the second shape outright. No sentence in either language
+> states fraud, and `NO_OBSERVED_RISK` is named "clean" in neither.
+> No endpoint moved and no response field changed. `test_rules_gold.py` passes **untouched** —
+> the Indonesian is byte-identical because it now comes from the catalog the rules used to inline.
+
+---
+
 ### 2026-09-04 · Three roles, enforced on the server (Sprint 10, ADR-0006) · ✅ Done
 
 **Event:** Four disagreeing role lists became one matrix, and every ❌ in it became a refusal a test can see

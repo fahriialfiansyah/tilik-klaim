@@ -5,7 +5,8 @@ import { describe, expect, test, vi } from 'vitest'
 import { BriefingView } from '@/features/review/case-briefing/components/BriefingView'
 import { IDLE_BRIEFING, fromBriefing, type BriefingState } from '@/features/review/case-briefing/events'
 import type { CaseBriefing } from '@/features/review/case-briefing/types'
-import { ACTION_LABELS } from '@/features/review/case-detail/labels'
+import { DISPOSITION_ACTIONS } from '@/features/review/case-detail/types'
+import i18n from '@/modules/i18n/config'
 import { PHANTOM_REASON, SOURCES } from '@/features/review/case-detail/test-fixtures'
 import { renderWithRouter } from '@/test/render'
 
@@ -90,7 +91,12 @@ describe('the briefing panel is non-authoritative and on demand', () => {
 
   test('exposes no control that names a disposition action', () => {
     renderView(fromBriefing(BRIEFING, false))
-    for (const label of Object.values(ACTION_LABELS)) {
+    // Read from the catalog rather than a literal list, so an action added later is covered
+    // here the day it is added rather than the day someone remembers this test.
+    const actionLabels = DISPOSITION_ACTIONS.map((action) =>
+      i18n.t(`caseDetail:action.${action}` as 'caseDetail:action.ESCALATE'),
+    )
+    for (const label of actionLabels) {
       expect(screen.queryByRole('button', { name: new RegExp(label) })).not.toBeInTheDocument()
     }
     expect(screen.queryByRole('radio')).not.toBeInTheDocument()

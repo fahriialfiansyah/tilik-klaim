@@ -3,7 +3,12 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, test, vi } from 'vitest'
 
 import { EvidenceMatrix } from '@/features/review/case-detail/components/EvidenceMatrix'
-import { MATRIX_CELL_LABELS } from '@/features/review/case-detail/labels'
+import type { MatrixCellState } from '@/features/review/case-detail/labels'
+import i18n from '@/modules/i18n/config'
+
+/** The cell words, read the same way the component reads them. */
+const cellLabel = (state: MatrixCellState) =>
+  i18n.t(`caseDetail:matrixCell.${state}` as 'caseDetail:matrixCell.FOUND')
 import { buildEvidenceMatrix } from '@/features/review/case-detail/matrix'
 import { REPEAT_REASON, makeCaseDetail } from '@/features/review/case-detail/test-fixtures'
 import { renderWithRouter } from '@/test/render'
@@ -41,7 +46,7 @@ describe('widget 28 — the evidence matrix', () => {
   test('the phantom cell reads "tidak ditemukan" in words, not only in colour', () => {
     renderMatrix()
 
-    expect(cellFor(/Layanan 88\.71/, 'Tindakan')).toHaveTextContent(MATRIX_CELL_LABELS.MISSING)
+    expect(cellFor(/Layanan 88\.71/, 'Tindakan')).toHaveTextContent(cellLabel('MISSING'))
   })
 
   /**
@@ -53,14 +58,14 @@ describe('widget 28 — the evidence matrix', () => {
     renderMatrix()
 
     const quiet = cellFor(/Layanan 89\.7/, 'Tindakan')
-    expect(quiet).toHaveTextContent(MATRIX_CELL_LABELS.NOT_EXPECTED)
-    expect(quiet).not.toHaveTextContent(MATRIX_CELL_LABELS.MISSING)
+    expect(quiet).toHaveTextContent(cellLabel('NOT_EXPECTED'))
+    expect(quiet).not.toHaveTextContent(cellLabel('MISSING'))
   })
 
   test('an UNRESOLVED cell is the defect, worded as such', () => {
     renderMatrix(makeCaseDetail({ sources: [] }))
 
-    expect(cellFor(/Layanan 88\.71/, 'Kunjungan')).toHaveTextContent(MATRIX_CELL_LABELS.UNRESOLVED)
+    expect(cellFor(/Layanan 88\.71/, 'Kunjungan')).toHaveTextContent(cellLabel('UNRESOLVED'))
   })
 
   test('a found reference is an openable button that goes through the source index', async () => {
@@ -92,7 +97,7 @@ describe('widget 28 — the evidence matrix', () => {
     renderMatrix(makeCaseDetail({ reasons: [REPEAT_REASON] }))
 
     expect(screen.getByRole('rowheader', { name: /Tingkat klaim/ })).toBeInTheDocument()
-    expect(cellFor(/Tingkat klaim/, 'Klaim')).toHaveTextContent(MATRIX_CELL_LABELS.FOUND)
+    expect(cellFor(/Tingkat klaim/, 'Klaim')).toHaveTextContent(cellLabel('FOUND'))
   })
 
   test('with no reasons the matrix says nothing was observed, never "bersih" or "aman"', () => {

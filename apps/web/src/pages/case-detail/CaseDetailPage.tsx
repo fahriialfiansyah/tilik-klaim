@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { PageShell } from '@/components/layouts/PageShell'
@@ -47,6 +48,7 @@ type Tab = 'evidence' | 'audit'
  * any of that, so a refused save still re-renders with their input intact.
  */
 export function CaseDetailPage() {
+  const { t } = useTranslation('caseDetail')
   const { id = '' } = useParams()
   const navigate = useNavigate()
   const {
@@ -128,8 +130,8 @@ export function CaseDetailPage() {
       return
     }
     clearDraft(id)
-    // "Minta bukti tambahan" carries the case forward to Ingest; every other action returns to
-    // the queue, which still holds the filters and order the reviewer left it on.
+    // Requesting more evidence carries the case forward to Ingest; every other action returns
+    // to the queue, which still holds the filters and order the reviewer left it on.
     navigate(
       draft.action === 'REQUEST_EVIDENCE'
         ? `/ingest?case=${encodeURIComponent(id)}`
@@ -149,7 +151,7 @@ export function CaseDetailPage() {
     <PageShell width="full">
       <nav className="mb-[14px] flex items-center gap-[9px] text-meta text-ink-3">
         <Link to="/" className="text-brand underline underline-offset-2">
-          Antrean Review
+          {t('page.breadcrumb')}
         </Link>
         <span aria-hidden>/</span>
         <span data-numeric className="font-mono">
@@ -168,13 +170,13 @@ export function CaseDetailPage() {
 
       <div
         role="tablist"
-        aria-label="Bagian detail kasus"
+        aria-label={t('page.tablist')}
         className="mb-[14px] flex w-fit gap-[6px] rounded-md border border-line bg-sunk p-1"
       >
         {(
           [
-            ['evidence', 'Bukti & disposisi'],
-            ['audit', 'Riwayat audit'],
+            ['evidence', t('page.tabEvidence')],
+            ['audit', t('page.tabAudit')],
           ] as const
         ).map(([value, label]) => (
           <button
@@ -210,13 +212,14 @@ export function CaseDetailPage() {
             />
             <div className="rounded-lg border border-line bg-card p-[15px] shadow-panel">
               <p className="mb-[9px] font-mono text-micro font-semibold tracking-label text-ink-3">
-                KELENGKAPAN BUKTI
+                {t('page.completenessHeading')}
               </p>
               <EvidenceMeter completeness={detail.evidence_completeness} />
               {detail.evidence_completeness.missing_reference_count > 0 ? (
                 <p className="mt-2 text-meta text-band-conflict">
-                  {detail.evidence_completeness.missing_reference_count} rujukan tidak dapat
-                  diselesaikan: cacat integritas bukti.
+                  {t('page.unresolvedRefs', {
+                    count: detail.evidence_completeness.missing_reference_count,
+                  })}
                 </p>
               ) : null}
             </div>
@@ -230,13 +233,8 @@ export function CaseDetailPage() {
           <div className="flex min-w-0 flex-col gap-[14px]">
             {detail.reasons.length === 0 ? (
               <div className="rounded-lg border border-line bg-card p-[18px] shadow-panel">
-                <p className="text-body-lg font-medium text-pretty">
-                  Tidak ada risiko teramati pada versi mesin ini.
-                </p>
-                <p className="mt-2 text-small text-ink-2 text-pretty">
-                  Tidak ada detektor yang menyala. Ini bukan pernyataan bahwa klaimnya bersih atau
-                  aman, hanya bahwa versi mesin ini tidak mengamati apa pun.
-                </p>
+                <p className="text-body-lg font-medium text-pretty">{t('page.noRiskTitle')}</p>
+                <p className="mt-2 text-small text-ink-2 text-pretty">{t('page.noRiskBody')}</p>
               </div>
             ) : null}
 

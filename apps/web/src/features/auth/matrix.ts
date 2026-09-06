@@ -1,5 +1,6 @@
 import accessMatrix from '@/features/auth/access-matrix.json'
 import type { Role } from '@/features/auth/types'
+import { translateOr } from '@/modules/i18n/translateOr'
 
 /**
  * The access matrix as the login screen shows it.
@@ -16,28 +17,32 @@ export type CapabilityKey = (typeof accessMatrix.capabilities)[number]
 export const MATRIX_ROLES: readonly Role[] = ['reviewer', 'senior_reviewer', 'admin']
 
 /**
- * A working-language name for every capability the server knows.
+ * Every capability the server knows, by name, in the reader's language.
  *
  * All nine, not the six the login table shows: the admin page renders what a role change
- * *grants and takes away*, and a capability with no label would appear there as a blank line —
- * a change described by saying nothing about it. `matrix.test.ts` asserts this map covers
- * `ALL_CAPABILITIES`, so a capability added to `app/service/access.py` fails a test here rather
- * than rendering empty in front of an administrator.
+ * *grants and takes away*, and a capability with no name would appear there as a blank line —
+ * a change described by saying nothing about it. `matrix.test.ts` asserts every capability in
+ * `ALL_CAPABILITIES` resolves in both languages, so a capability added to
+ * `app/service/access.py` fails a test here rather than rendering empty in front of an
+ * administrator.
+ *
+ * The names live in `auth:capability.*` rather than in a constant here, because a constant is
+ * read once at module load and would keep its language after the header switch.
  */
-export const CAPABILITY_LABEL: Readonly<Record<string, string>> = {
-  READ_CASES: 'Antrean & Detail Kasus',
-  RECORD_DISPOSITION: 'Catat disposisi',
-  REOPEN_DISMISSED_CASE: 'Buka kembali kasus ditolak',
-  READ_CASE_AUDIT: 'Baca riwayat audit kasus',
-  INGEST_BUNDLE: 'Ingest / Demo',
-  READ_EVALUATION: 'Audit & Evaluasi',
-  REQUEST_BRIEFING: 'Minta Ringkasan bukti',
-  MANAGE_USERS: 'Manajemen pengguna',
-  READ_USER_AUDIT: 'Baca audit manajemen pengguna',
-}
+export const CAPABILITY_KEYS: readonly string[] = [
+  'READ_CASES',
+  'RECORD_DISPOSITION',
+  'REOPEN_DISMISSED_CASE',
+  'READ_CASE_AUDIT',
+  'INGEST_BUNDLE',
+  'READ_EVALUATION',
+  'REQUEST_BRIEFING',
+  'MANAGE_USERS',
+  'READ_USER_AUDIT',
+] as const
 
 /**
- * The six columns the login screen shows, and the words above them.
+ * The six columns the login screen shows.
  *
  * Six of the nine capabilities, chosen because each one names a page or an act a reviewer would
  * recognise. The three left out — reading a case's audit trail, reading the user-management
@@ -46,7 +51,7 @@ export const CAPABILITY_LABEL: Readonly<Record<string, string>> = {
  * and points at ADR-0006 § 2 for the full table; `matrix.test.ts` asserts every column here
  * exists in the generated file, so a column can never be invented.
  *
- * Labels come from `CAPABILITY_LABEL` rather than being repeated here — two lists of names for
+ * Names come from `capabilityLabel` rather than being repeated here — two lists of names for
  * one set of capabilities is two lists that drift.
  */
 export const MATRIX_COLUMN_KEYS = [
@@ -58,11 +63,19 @@ export const MATRIX_COLUMN_KEYS = [
   'MANAGE_USERS',
 ] as const
 
-export const MATRIX_COLUMNS: readonly { key: CapabilityKey; label: string }[] =
-  MATRIX_COLUMN_KEYS.map((key) => ({
+/**
+ * The columns, resolved at render time.
+ *
+ * A function rather than a constant array for the same reason the labels moved: a module-level
+ * array would freeze its headings in whichever language happened to be active when the bundle
+ * first evaluated.
+ */
+export function matrixColumns(): readonly { key: CapabilityKey; label: string }[] {
+  return MATRIX_COLUMN_KEYS.map((key) => ({
     key: key as CapabilityKey,
-    label: CAPABILITY_LABEL[key] ?? key,
+    label: capabilityLabel(key),
   }))
+}
 
 /** Every capability the server grants this role. Read from the generated file, never guessed. */
 export function capabilitiesFor(role: Role): readonly string[] {
@@ -104,7 +117,7 @@ export function capabilityChange(from: Role, to: Role): CapabilityChange {
   }
 }
 
-/** The capability's working-language name, or its raw key if the server grew one we have not named. */
+/** The capability's name, or its raw key if the server grew one we have not named. */
 export function capabilityLabel(capability: string): string {
-  return CAPABILITY_LABEL[capability] ?? capability
+  return translateOr(`auth:capability.${capability}`, capability)
 }

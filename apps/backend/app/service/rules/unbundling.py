@@ -11,6 +11,7 @@ from datetime import timedelta
 
 from tilik_domain.canonical import CanonicalBundle, ResourceRef, ResourceType
 from tilik_domain.edges import EdgeType
+from tilik_domain.notes import NoteCode
 from tilik_domain.reasons import ReasonCode, RiskMode
 
 from app.service.rules.registry import CounterEvidence, ReasonHit, RuleContext, make_hit
@@ -105,18 +106,13 @@ def _staged_care_notes(
 ) -> tuple[CounterEvidence, ...]:
     """Staged care is the honest alternative reading, and it must appear on the same screen."""
     notes = [
-        CounterEvidence(
-            note_id=(
-                "Layanan bertahap yang direncanakan juga tampak seperti ini: satu episode, "
-                "beberapa klaim berdekatan, dengan tindakan yang berbeda-beda."
-            ),
+        CounterEvidence.of(
+            NoteCode.STAGED_CARE_LOOKS_THE_SAME,
             refs=tuple(_claim_ref(past.claim.claim_id) for past in siblings),
         ),
-        CounterEvidence(
-            note_id=(
-                f"Klaim-klaim ini memang dikelompokkan pada episode {episode_id}, "
-                "sehingga keterkaitannya sudah tercatat dan bukan temuan tersembunyi."
-            ),
+        CounterEvidence.of(
+            NoteCode.CLAIMS_ALREADY_GROUPED_BY_EPISODE,
+            episode_id=episode_id,
         ),
     ]
     return tuple(notes)

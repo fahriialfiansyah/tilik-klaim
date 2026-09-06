@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import {
@@ -136,11 +138,15 @@ export function DialogContent({
   variant = 'modal',
   title,
   description,
-  closeLabel = 'Tutup',
+  closeLabel,
   className,
   children,
   ...props
 }: DialogContentProps) {
+  const { t } = useTranslation('common')
+  // Defaulted here rather than in the parameter list: a default evaluated at module load would
+  // freeze the close button's accessible name in whichever language loaded first.
+  const closeText = closeLabel ?? t('action.close')
   const returnFocus = useContext(ReturnFocusContext)
 
   return (
@@ -169,7 +175,7 @@ export function DialogContent({
             ) : null}
           </div>
           <DialogPrimitive.Close
-            aria-label={closeLabel}
+            aria-label={closeText}
             className="shrink-0 rounded-md border border-line bg-card p-[6px] text-ink-2 hover:border-brand hover:text-brand"
           >
             <X className="size-4" />

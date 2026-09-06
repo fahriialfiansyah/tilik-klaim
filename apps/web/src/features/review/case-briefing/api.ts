@@ -1,3 +1,5 @@
+import i18n from '@/modules/i18n/config'
+import { DEFAULT_LOCALE } from '@/modules/i18n/locales'
 import { parseSseChunk } from '@/features/review/case-briefing/events'
 import type { BriefingEvent, CaseBriefing } from '@/features/review/case-briefing/types'
 import { NetworkError, request } from '@/lib/http'
@@ -20,7 +22,12 @@ export async function streamBriefing(
   let response: Response
   try {
     response = await fetch(`${BASE}/cases/${encodeURIComponent(caseId)}/briefing`, {
-      headers: { accept: 'text/event-stream' },
+      // The stream carries catalog text as well as the model's prose, so it asks for a
+      // language like every other call. See `lib/http.ts`.
+      headers: {
+        accept: 'text/event-stream',
+        'Accept-Language': i18n.language || DEFAULT_LOCALE,
+      },
       signal,
     })
   } catch (cause) {

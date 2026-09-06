@@ -1,3 +1,4 @@
+import i18n from '@/modules/i18n/config'
 import type {
   IngestBundleResponse,
   SamplePayload,
@@ -50,7 +51,11 @@ export async function fetchSample(scenario: string): Promise<SamplePayload> {
   return fetchJson<SamplePayload>(`/samples/${encodeURIComponent(scenario)}.json`)
 }
 
-/** Static assets do not go through `/v1`, so they do not go through `request`. */
+/**
+ * Static assets do not go through `/v1`, so they do not go through `request` — and they carry
+ * no `Accept-Language`, because a file on disk has one language whatever the reader asks for.
+ * Only the *failure* message is the app's own text, so only that is translated.
+ */
 async function fetchJson<T>(path: string): Promise<T> {
   let response: Response
   try {
@@ -59,7 +64,7 @@ async function fetchJson<T>(path: string): Promise<T> {
     throw new NetworkError(cause)
   }
   if (!response.ok) {
-    throw new Error(`Berkas contoh tidak dapat dimuat (${response.status}).`)
+    throw new Error(i18n.t('ingest:samples.loadFailed', { status: response.status }))
   }
   return (await response.json()) as T
 }

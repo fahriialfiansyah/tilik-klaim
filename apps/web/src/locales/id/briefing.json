@@ -1,0 +1,51 @@
+{
+  "panelTitle": "Ringkasan bukti",
+  "panelSubtitle": "Bukan penilaian. Tidak mengubah pita, status, atau keputusan. Alasan mentah di atas tetap menjadi acuan.",
+  "start": "Susun ringkasan",
+  "restart": "Susun ulang",
+  "kind": {
+    "EVIDENCE_GAP": "Celah bukti",
+    "CORROBORATION": "Dukungan",
+    "COUNTER_EVIDENCE": "Bukti tandingan",
+    "COMPARISON": "Perbandingan",
+    "TIMELINE": "Urutan waktu",
+    "COMPLETENESS": "Kelengkapan"
+  },
+  "confidence": {
+    "STATED": "tercatat langsung",
+    "INFERRED": "disimpulkan"
+  },
+  "phase": {
+    "STARTED": "Memulai",
+    "READING": "Membaca",
+    "VALIDATING": "Memeriksa rujukan dan istilah",
+    "DONE": "Selesai"
+  },
+  "generatedBy": {
+    "TEMPLATE": "Templat deterministik, tanpa model bahasa",
+    "LLM": "Model bahasa, tervalidasi"
+  },
+  "tool": {
+    "get_case_overview": "Membaca ringkasan kasus",
+    "list_reasons": "Membaca daftar alasan",
+    "get_evidence_path": "Membaca jalur bukti",
+    "get_timeline": "Membaca linimasa episode",
+    "get_counter_evidence": "Membaca bukti tandingan",
+    "get_comparison_candidate": "Membaca pasangan pembanding",
+    "get_source_resource": "Membuka sumber daya"
+  },
+  "waiting": "Menunggu",
+  "view": {
+    "intro": "Ringkasan disusun hanya dari bukti yang sudah ada di layar ini, dengan rujukan pada setiap pengamatan. Tidak ada yang diambil dari luar kasus ini.",
+    "failed": "Ringkasan tidak dapat disusun: {{error}}. Alasan dan bukti di atas tetap lengkap tanpa ringkasan ini.",
+    "failedFallback": "layanan tidak merespons",
+    "observations": "PENGAMATAN",
+    "openQuestions": "PERTANYAAN TERBUKA",
+    "uncertainty": "KETIDAKPASTIAN",
+    "howMade": "CARA DISUSUN",
+    "ruleset": " · aturan v{{version}}",
+    "viaFallback": " · dimuat tanpa aliran",
+    "rejected": "Keluaran model ditolak validator ({{reason}}). Yang tampil adalah templat deterministik.",
+    "noReason": "tanpa alasan"
+  }
+}

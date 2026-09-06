@@ -16,7 +16,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Request, Response
 from tilik_domain.canonical import ResourceRef
-from tilik_domain.reasons import CaseState
+from tilik_domain.locale import DEFAULT_LOCALE, Locale
+from tilik_domain.reasons import CaseState, definition_for
 from tilik_domain.versioning import SCHEMA_VERSION, EngineIdentity
 
 from app.config import get_settings
@@ -29,6 +30,8 @@ from app.dto.bundles import (
 from app.dto.common import BandExplanation, EvidenceRefDto, ReasonDto, VersionStamp
 from app.errors import ErrorCode, ErrorResponse
 from app.router.guards import DEFAULT_ROLE, ActorRole, refuse_without
+from app.router.locale import RequestLocale
+from app.service import text
 from app.service.access import Capability
 from app.service.evidence_graph import build_evidence_graph
 from app.service.hashing import idempotency_key, input_hash
@@ -169,6 +172,7 @@ def screen_ingested_bundle(
     request: ScreenRequest,
     store: InjectedStore,
     cases: InjectedCases,
+    locale: RequestLocale,
     x_actor_role: ActorRole = DEFAULT_ROLE,
 ) -> ScreenResponse | Response:
     """Screen a validated bundle and return its reasons, band, and case.
@@ -259,7 +263,7 @@ def screen_ingested_bundle(
         len(result.reasons),
         elapsed_ms,
     )
-    return _to_screen_response(case, elapsed_ms)
+    return _to_screen_response(case, elapsed_ms, locale)
 
 
 def _error(code: ErrorCode, detail: str) -> Response:
@@ -271,25 +275,28 @@ def _error(code: ErrorCode, detail: str) -> Response:
     )
 
 
-def _to_screen_response(case: CaseRecord, elapsed_ms: int) -> ScreenResponse:
-    reasons = tuple(_to_reason_dto(hit) for hit in case.result.reasons)
+def _to_screen_response(
+    case: CaseRecord, elapsed_ms: int, locale: Locale = DEFAULT_LOCALE
+) -> ScreenResponse:
+    reasons = tuple(_to_reason_dto(hit, locale) for hit in case.result.reasons)
     return ScreenResponse(
         case_id=case.case_id,
         case_version=case.case_version,
         state=str(case.state),
         primary_reason=reasons[0] if reasons else None,
         reasons=reasons,
-        band=_to_band(case),
+        band=_to_band(case, locale),
         versions=VersionStamp(**case.result.identity.model_dump()),
         latency_ms=elapsed_ms,
     )
 
 
-def _to_reason_dto(hit: ReasonHit) -> ReasonDto:
+def _to_reason_dto(hit: ReasonHit, locale: Locale = DEFAULT_LOCALE) -> ReasonDto:
     return ReasonDto(
         code=hit.code,
         mode=hit.mode,
-        sentence=hit.sentence_id,
+        # Resolved by code, never read off the stored hit: see `case_query.to_reason_dto`.
+        sentence=definition_for(hit.code).sentence(locale),
         deterministic=hit.deterministic,
         evidence=tuple(_to_ref(ref) for ref in hit.evidence),
         counter_evidence=tuple(
@@ -308,27 +315,16 @@ def _to_ref(ref: ResourceRef) -> EvidenceRefDto:
     )
 
 
-def _to_band(case: CaseRecord) -> BandExplanation:
+def _to_band(case: CaseRecord, locale: Locale = DEFAULT_LOCALE) -> BandExplanation:
     """Say how the band was reached, including any cap that held it down."""
     result = case.result
     caps: list[str] = []
     if result.reasons and all(not hit.deterministic for hit in result.reasons):
-        caps.append(
-            "Kemiripan teks saja tidak pernah mencapai pita tertinggi."
-        )
+        caps.append(text.cap_similarity_only(locale))
     if result.certainty is Certainty.REDUCED_INCOMPLETE_BUNDLE:
-        caps.append(
-            "Bundel tidak lengkap menurunkan tingkat keyakinan dan mengarahkan ke "
-            "permintaan bukti tambahan."
-        )
+        caps.append(text.cap_incomplete_bundle(locale))
     if case.completeness_notes:
-        caps.append(
-            f"{len(case.completeness_notes)} catatan kelengkapan terbawa dari pemasukan berkas."
-        )
+        caps.append(text.cap_completeness_carried(len(case.completeness_notes), locale))
 
-    basis = (
-        "Tidak ada sinyal yang teramati pada versi mesin ini."
-        if not result.reasons
-        else f"{len(result.reasons)} alasan teramati; pita mengikuti alasan terkuat."
-    )
+    basis = text.band_basis(len(result.reasons), locale)
     return BandExplanation(band=result.band, basis=basis, caps_applied=tuple(caps))

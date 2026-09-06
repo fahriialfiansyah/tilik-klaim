@@ -1,0 +1,321 @@
+{
+  "page": {
+    "breadcrumb": "Antrean Review",
+    "tablist": "Bagian detail kasus",
+    "tabEvidence": "Bukti & disposisi",
+    "tabAudit": "Riwayat audit",
+    "completenessHeading": "KELENGKAPAN BUKTI",
+    "unresolvedRefs": "{{count}} rujukan tidak dapat diselesaikan: cacat integritas bukti.",
+    "noRiskTitle": "Tidak ada risiko teramati pada versi mesin ini.",
+    "noRiskBody": "Tidak ada detektor yang menyala. Ini bukan pernyataan bahwa klaimnya bersih atau aman, hanya bahwa versi mesin ini tidak mengamati apa pun."
+  },
+  "action": {
+    "REJECT_SIGNAL": "Tolak sinyal",
+    "REQUEST_EVIDENCE": "Minta bukti tambahan",
+    "CONFIRM_ANOMALY": "Konfirmasi anomali",
+    "ESCALATE": "Eskalasi"
+  },
+  "actionMeaning": {
+    "REJECT_SIGNAL": "Kasus ditutup dengan alasan. Peninjau berwenang masih dapat membukanya kembali.",
+    "REQUEST_EVIDENCE": "Kasus berpindah ke status menunggu bukti. Menunda dengan alasan yang tercatat adalah keputusan yang sah.",
+    "CONFIRM_ANOMALY": "Anda membenarkan adanya ketidaksesuaian yang perlu ditindaklanjuti. Ini bukan temuan fraud.",
+    "ESCALATE": "Kasus ditandai untuk penelusuran berwenang. Tidak ada sanksi, pembayaran, atau pemberitahuan otomatis."
+  },
+  "structuredReason": {
+    "REJECT_SIGNAL": [
+      "Bukti pendukung ditemukan di luar bundel ini",
+      "Tindak lanjut yang sah, bukan tagihan berulang",
+      "Dokumentasi berbasis templat yang sah",
+      "Layanan bertahap yang memang direncanakan",
+      "Penandaan keliru-input sudah dikoreksi"
+    ],
+    "REQUEST_EVIDENCE": [
+      "Berkas pendukung belum lengkap",
+      "Catatan tindakan belum terkirim",
+      "Perlu penjelasan tertulis dari fasilitas",
+      "Rujukan bukti tidak dapat diselesaikan"
+    ],
+    "CONFIRM_ANOMALY": [
+      "Baris tertagih tanpa bukti layanan yang selesai",
+      "Klaim tumpang tindih pada episode yang sama",
+      "Episode terpecah menjadi beberapa klaim",
+      "Dokumentasi tersalin tanpa penjelasan yang wajar"
+    ],
+    "ESCALATE": [
+      "Perlu penelusuran oleh unit berwenang",
+      "Pola berulang pada fasilitas ini",
+      "Nilai dan dampak di luar kewenangan peninjau"
+    ]
+  },
+  "support": {
+    "SUPPORTED": "Didukung",
+    "PARTIALLY_SUPPORTED": "Dukungan sebagian",
+    "UNSUPPORTED": "Tidak didukung",
+    "NOT_ASSESSABLE": "Tidak dapat dinilai"
+  },
+  "supportMeaning": {
+    "SUPPORTED": "Bukti pendukung yang diharapkan ditemukan di bundel ini.",
+    "PARTIALLY_SUPPORTED": "Sebagian bukti yang diharapkan ditemukan, sebagian belum.",
+    "UNSUPPORTED": "Bukti yang diharapkan tidak ada, sementara berkasnya dinyatakan lengkap.",
+    "NOT_ASSESSABLE": "Berkasnya belum lengkap, sehingga baris ini belum dapat dinilai, bukan berarti buktinya tidak ada."
+  },
+  "resource": {
+    "Claim": "Klaim",
+    "ClaimLine": "Baris tagihan",
+    "Encounter": "Kunjungan",
+    "Condition": "Diagnosis",
+    "Procedure": "Tindakan",
+    "Medication": "Obat",
+    "Diagnostic": "Pemeriksaan penunjang",
+    "Document": "Catatan klinis",
+    "Account": "Akun tagihan",
+    "ChargeItem": "Item biaya",
+    "Invoice": "Faktur",
+    "Episode": "Episode",
+    "Practitioner": "Tenaga kesehatan"
+  },
+  "availability": {
+    "PRESENT": "Ada di bundel ini",
+    "RELATED_BUNDLE": "Milik bundel pembanding",
+    "NOT_STORED": "Dirujuk lewat identitas",
+    "MISSING": "Tidak dapat dibuka"
+  },
+  "availabilityMeaning": {
+    "PRESENT": "Sumber daya ini dikirim bersama klaim dan ditampilkan apa adanya.",
+    "RELATED_BUNDLE": "Sumber daya ini berasal dari kiriman lain yang dibandingkan. Hanya bidang yang tidak mengungkap identitas peserta lain yang ditampilkan.",
+    "NOT_STORED": "Episode dan tenaga kesehatan dirujuk lewat identitas dan memang tidak disimpan sebagai sumber daya tersendiri. Ini bukan cacat.",
+    "MISSING": "Rujukan ini menunjuk ke sumber daya yang tidak dapat diselesaikan. Ini cacat integritas bukti, bukan tampilan kosong yang wajar."
+  },
+  "sourceField": {
+    "account_id": "Pengenal akun",
+    "authored_at": "Ditulis",
+    "author_id": "Penulis",
+    "care_type": "Jenis perawatan",
+    "class_code": "Kelas kunjungan",
+    "claim_id": "Pengenal klaim",
+    "code": "Kode",
+    "code_system": "Sistem kode",
+    "currency": "Mata uang",
+    "description": "Keterangan",
+    "document_id": "Pengenal dokumen",
+    "effective_at": "Berlaku",
+    "encounter_id": "Pengenal kunjungan",
+    "end_at": "Selesai",
+    "episode_id": "Pengenal episode",
+    "kind": "Jenis",
+    "line_amount": "Nominal baris",
+    "line_id": "Pengenal baris",
+    "occurred_at": "Waktu",
+    "onset_at": "Awal keluhan",
+    "participant_id": "Peserta (pseudonim)",
+    "performed_at": "Dilakukan",
+    "performer_id": "Pelaksana",
+    "location_id": "Lokasi",
+    "issued_at": "Diterbitkan",
+    "charge_item_id": "Pengenal item biaya",
+    "condition_id": "Pengenal diagnosis",
+    "diagnostic_id": "Pengenal penunjang",
+    "invoice_id": "Pengenal faktur",
+    "medication_id": "Pengenal obat",
+    "procedure_id": "Pengenal tindakan",
+    "provider_id": "Fasilitas",
+    "quantity": "Jumlah",
+    "recorded_at": "Dicatat",
+    "result_at": "Hasil",
+    "service_at": "Waktu layanan",
+    "start_at": "Mulai",
+    "status": "Status",
+    "submitted_at": "Dikirim",
+    "text": "Isi catatan",
+    "text_digest": "Sidik teks",
+    "text_hash": "Sidik teks",
+    "text_length": "Panjang teks",
+    "total_amount": "Total",
+    "unit_price": "Harga satuan",
+    "verification_status": "Status verifikasi"
+  },
+  "component": {
+    "candidate_floor": "Ambang kandidat",
+    "fingerprint_match": "Kecocokan sidik klaim",
+    "hours_apart": "Jarak waktu (jam)",
+    "reporting_threshold": "Ambang pelaporan",
+    "shared_code_count": "Kode layanan yang sama",
+    "supporting_refs_found": "Rujukan pendukung ditemukan",
+    "text_similarity": "Kemiripan teks"
+  },
+  "auditKind": {
+    "CREATED": "Kasus dibuat",
+    "SCREENED": "Kasus disaring",
+    "RESCREENED": "Kasus disaring ulang",
+    "OPENED": "Kasus dibuka untuk ditinjau",
+    "DISPOSITION": "Disposisi dicatat",
+    "SUPERSEDE": "Koreksi disposisi"
+  },
+  "actor": {
+    "reviewer": "Petugas peninjau",
+    "senior_reviewer": "Peninjau senior",
+    "auditor": "Auditor",
+    "system": "Sistem"
+  },
+  "strength": {
+    "1": "lemah",
+    "2": "sedang",
+    "3": "kuat"
+  },
+  "matrixCell": {
+    "FOUND": "ditemukan",
+    "MISSING": "tidak ditemukan",
+    "UNRESOLVED": "rujukan tidak terselesaikan",
+    "NOT_EXPECTED": "tidak diharapkan"
+  },
+  "matrixCellMeaning": {
+    "FOUND": "Alasan yang merujuk baris ini mengutip sumber daya jenis ini, dan sumber dayanya dapat dibuka.",
+    "MISSING": "Alasan yang merujuk baris ini mengharapkan jenis bukti ini dan tidak menemukannya di bundel.",
+    "UNRESOLVED": "Ada rujukan ke jenis ini, tetapi menunjuk ke sumber daya yang tidak dapat diselesaikan. Ini cacat integritas bukti.",
+    "NOT_EXPECTED": "Tidak ada alasan yang mengharapkan jenis bukti ini pada baris ini. Kosong bukan berarti tidak ada."
+  },
+  "lane": {
+    "encounter": "Kunjungan",
+    "procedure": "Tindakan",
+    "medication": "Obat",
+    "billing": "Penagihan",
+    "document": "Catatan klinis"
+  },
+  "conflict": {
+    "withReason": "Status kasus berpindah ke “{{state}}” dengan alasan “{{reason}}”.",
+    "stateOnly": "Status kasus berpindah ke “{{state}}”.",
+    "generic": "Kasus ini berubah sejak Anda membukanya."
+  },
+  "audit": {
+    "transition": " · {{before}} → {{after}}"
+  },
+  "lines": {
+    "sectionLabel": "Daftar baris tagihan",
+    "heading": "Baris tagihan",
+    "hint": "Pilih baris untuk memuat jejak buktinya",
+    "empty": "Bundel ini tidak memuat baris tagihan yang dapat ditampilkan."
+  },
+  "ref": {
+    "integrityDefect": "{{name}}: cacat integritas bukti",
+    "relatedBundle": " · bundel pembanding",
+    "notStored": " · dirujuk lewat identitas"
+  },
+  "matrix": {
+    "reasonCount": "{{count}} alasan",
+    "claimLevel": "Tingkat klaim"
+  },
+  "disposition": {
+    "panelLabel": "Panel disposisi",
+    "heading": "Disposisi",
+    "actionLegend": "TINDAKAN",
+    "reasonLabel": "ALASAN TERSTRUKTUR",
+    "pickReason": "Pilih alasan…",
+    "pickActionFirst": "Pilih tindakan terlebih dahulu",
+    "reasonNote": "Alasan wajib dan tersimpan permanen. Sistem hanya menawarkan pilihan, tidak pernah memilihkan.",
+    "evidenceLegend": "BUKTI YANG DIMINTA",
+    "evidenceNote": "Tercentang otomatis dari sumber daya yang kurang; boleh ditambah atau dikurangi.",
+    "noteLabel": "CATATAN BEBAS",
+    "notePlaceholder": "Penjelasan tambahan untuk jejak audit",
+    "versions": "versi kasus {{case}} · aturan v{{ruleset}} · mesin v{{engine}}",
+    "save": "Simpan disposisi",
+    "permanent": "Keputusan ini tercatat permanen beserta pelaku, waktu, alasan, dan versi mesin."
+  },
+  "banner": {
+    "conflictTitle": "Versi kasus tidak cocok: kasus ini berubah sejak Anda membukanya",
+    "conflictBody": "{{summary}} Perubahan dicatat oleh <1>{{by}}</1> pada {{at}}; versi kasus berpindah dari {{seen}} ke {{current}}. <3>Isian disposisi Anda tetap dipertahankan</3>: tidak ada yang ditimpa dan tidak ada yang tercatat.",
+    "reload": "Muat ulang",
+    "saveFailedTitle": "Disposisi gagal disimpan",
+    "saveFailedBody": "{{detail}} Tidak ada kejadian audit yang tertulis sebagian; kejadian ditulis utuh atau tidak sama sekali. <1>Isian Anda masih utuh di layar.</1>",
+    "serviceDown": "Layanan tidak merespons",
+    "templateCaveat": "Peringatan templat. "
+  },
+  "placeholder": {
+    "loading": "Memuat detail kasus…",
+    "notFoundTitle": "Kasus ini tidak ditemukan",
+    "notFoundBody": "Pengenal kasus ini tidak ada dalam sistem. Kemungkinan tautannya sudah usang, atau basis data disaring ulang sejak tautan itu dibuat.",
+    "failedTitle": "Detail kasus tidak dapat dimuat",
+    "failedBody": "{{detail}} Ini bukan berarti kasusnya tidak ada; detailnya memang tidak sampai ke layar ini.",
+    "backToQueue": "Kembali ke antrean"
+  },
+  "confirmAnomaly": {
+    "title": "Konfirmasi anomali: ini bukan temuan fraud",
+    "description": "Bacalah penegasan ini sebelum keputusan dicatat permanen.",
+    "lede": "Menekan konfirmasi berarti Anda membenarkan adanya <1>ketidaksesuaian yang perlu ditindaklanjuti</1>. Itu saja. Tindakan ini <3>bukan</3> pernyataan fraud, bukan temuan hukum, dan bukan tuduhan terhadap pihak mana pun.",
+    "point1": "· Klaim tidak ditolak.",
+    "point2": "· Pembayaran tidak dihentikan dan tidak diubah.",
+    "point3": "· Tidak ada sanksi yang dijatuhkan.",
+    "point4": "· Tidak ada kode yang diubah.",
+    "reasonRecorded": "Alasan yang akan tercatat: ",
+    "confirm": "Saya paham, catat konfirmasi"
+  },
+  "header": {
+    "sectionLabel": "Kepala kasus",
+    "caseId": "PENGENAL KASUS",
+    "amount": "NOMINAL KLAIM",
+    "encounterRange": "RENTANG KUNJUNGAN",
+    "primaryReason": "ALASAN UTAMA",
+    "noRisk": "Tidak ada risiko teramati pada versi mesin ini. Ini bukan pernyataan bahwa klaimnya bersih."
+  },
+  "auditPanel": {
+    "sectionLabel": "Riwayat audit",
+    "heading": "Riwayat audit kasus",
+    "loading": "Memuat riwayat…",
+    "empty": "Belum ada kejadian yang tercatat untuk kasus ini.",
+    "evidenceRequested": "Bukti diminta: ",
+    "versions": " · aturan v{{ruleset}} · mesin v{{engine}}",
+    "supersedes": " · menggantikan {{event}}"
+  },
+  "swimlane": {
+    "sectionLabel": "Linimasa episode",
+    "heading": "Linimasa episode",
+    "laneEmpty": "tidak ada kejadian tercatat",
+    "empty": "Bundel ini tidak memuat kejadian yang dapat diurutkan dalam waktu."
+  },
+  "matrixPanel": {
+    "sectionLabel": "Matriks bukti",
+    "heading": "Matriks bukti",
+    "empty": "Bundel ini tidak memuat baris tagihan yang dapat ditampilkan.",
+    "lineColumn": "BARIS"
+  },
+  "reasonCard": {
+    "counterHeading": "BUKTI TANDINGAN: MELEMAHKAN ALASAN INI",
+    "counterEmpty": "Tidak ditemukan bukti tandingan untuk alasan ini pada bundel yang tersedia.",
+    "expectedHeading": "BUKTI YANG DIHARAPKAN",
+    "expectedEmpty": "Aturan ini tidak menetapkan jenis bukti tertentu.",
+    "foundHeading": "BUKTI YANG DITEMUKAN",
+    "foundEmpty": "Tidak ada sumber daya pendukung yang ditemukan untuk alasan ini."
+  },
+  "map": {
+    "expectedLabel": "Bukti yang diharapkan",
+    "sectionLabel": "Peta bukti",
+    "heading": "Peta bukti",
+    "empty": "Belum ada alasan yang ditelusuri. Buka satu kartu alasan untuk melihat peta buktinya.",
+    "claimPath": "Jalur klaim",
+    "expectedHeading": "BUKTI YANG DIHARAPKAN DI BAWAH BARIS INI",
+    "counterHeading": "BUKTI TANDINGAN: CABANG TERPISAH",
+    "counterLabel": "Bukti tandingan",
+    "counterEmpty": "Tidak ada bukti tandingan untuk alasan ini."
+  },
+  "source": {
+    "raw": "Isi sumber daya apa adanya, sebagaimana diterima sistem.",
+    "screenedVersions": "VERSI MESIN SAAT KASUS DISARING"
+  },
+  "comparison": {
+    "title": "Perbandingan pasangan kandidat",
+    "description": "Kasus ini di kiri, kandidat pembanding di kanan. Hanya potongan yang relevan ditampilkan.",
+    "candidate": "KANDIDAT",
+    "openCandidate": "Buka kasus kandidat",
+    "noCandidateCase": "Belum ada kasus yang bisa dibuka untuk kandidat ini.",
+    "fieldsHeading": "BIDANG YANG DIBANDINGKAN",
+    "field": "BIDANG",
+    "thisCase": "KASUS INI",
+    "state": "KEADAAN",
+    "overlapHeading": "RENTANG TUMPANG TINDIH",
+    "noOverlap": "Tidak ada bagian waktu yang beririsan antara keduanya. Ketiadaan irisan justru melemahkan dugaan tagihan berulang.",
+    "similarityHeading": "KOMPONEN KEMIRIPAN"
+  },
+  "draft": {
+    "pickAction": "Pilih satu tindakan terlebih dahulu.",
+    "pickReason": "Pilih alasan terstruktur. Tidak ada disposisi tanpa alasan."
+  }
+}

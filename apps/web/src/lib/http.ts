@@ -1,3 +1,5 @@
+import i18n from '@/modules/i18n/config'
+import { DEFAULT_LOCALE } from '@/modules/i18n/locales'
 import { currentUser } from '@/features/auth/useSession'
 
 /**
@@ -48,7 +50,7 @@ export class ApiError extends Error {
 /** Raised when the request never reached the service at all. */
 export class NetworkError extends Error {
   constructor(cause: unknown) {
-    super('Layanan tidak merespons.')
+    super(i18n.t('common:state.serviceDown'))
     this.name = 'NetworkError'
     this.cause = cause
   }
@@ -76,6 +78,19 @@ function actorHeaders(): Record<string, string> {
 }
 
 /**
+ * The language this request wants its catalog text in.
+ *
+ * Sent on every call rather than only on the ones that obviously carry prose: the reason
+ * sentence, the counter-evidence, the band explanation and the timeline labels all come from
+ * the server, and an endpoint that grows a sentence later would otherwise answer in the wrong
+ * language until somebody noticed. The server falls back to the working language for anything
+ * it cannot honour, so sending it is never worse than omitting it.
+ */
+function languageHeader(): Record<string, string> {
+  return { 'Accept-Language': i18n.language || DEFAULT_LOCALE }
+}
+
+/**
  * Same-origin JSON request. Paths are relative, so the Rsbuild dev proxy handles them in
  * development and a reverse proxy handles them in production — no origin is baked into the bundle.
  *
@@ -88,7 +103,12 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   try {
     response = await fetch(`${BASE}${path}`, {
       ...init,
-      headers: { 'content-type': 'application/json', ...actorHeaders(), ...init?.headers },
+      headers: {
+        'content-type': 'application/json',
+        ...actorHeaders(),
+        ...languageHeader(),
+        ...init?.headers,
+      },
     })
   } catch (cause) {
     throw new NetworkError(cause)

@@ -1,7 +1,8 @@
-import { issueExplanation } from '@/features/review/ingest/labels'
 import type { FileRejection } from '@/features/review/ingest/limits'
 import type { ValidationIssue } from '@/features/review/ingest/types'
 import { ApiError } from '@/lib/http'
+import i18n from '@/modules/i18n/config'
+import { translateOr } from '@/modules/i18n/translateOr'
 
 /**
  * A bundle the system will not screen, from whichever of the three places said so.
@@ -36,7 +37,10 @@ export function isBundleRejection(cause: unknown): cause is ApiError {
 export function fromApiError(error: ApiError): BundleRejection {
   return {
     code: error.code,
-    message: issueExplanation(error.code),
+    // Not a component, so the explanation is resolved through the running instance. A code we
+    // have not explained falls back to the general sentence — never to the raw code, which
+    // tells an operator nothing they can act on.
+    message: translateOr(`ingest:issue.${error.code}`, i18n.t('ingest:issue.fallback')),
     // The envelope carries per-resource issues for some codes and none for others — a truncated
     // file has no resource to point at. The code itself is then the whole finding.
     issues:

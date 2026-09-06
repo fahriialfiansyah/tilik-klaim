@@ -1,0 +1,41 @@
+{
+  "mode": {
+    "PHANTOM_OR_NO_PROCEDURE_EVIDENCE": "Tagihan tanpa bukti",
+    "REPEAT_BILLING": "Tagihan berulang",
+    "CLONED_DOCUMENTATION": "Dokumentasi salinan",
+    "UNBUNDLING_FRAGMENTATION": "Episode terpecah"
+  },
+  "band": {
+    "DETERMINISTIC_CONFLICT": "Konflik deterministik",
+    "HIGH_PRIORITY_SIGNAL": "Sinyal prioritas tinggi",
+    "NEEDS_CONTEXT": "Perlu konteks",
+    "NO_OBSERVED_RISK": "Tidak ada risiko teramati"
+  },
+  "bandBasis": {
+    "DETERMINISTIC_CONFLICT": "Sebuah aturan integritas dilanggar secara pasti. Merah menandai konflik itu, bukan kesalahan pihak mana pun.",
+    "HIGH_PRIORITY_SIGNAL": "Perlu ditinjau. Baca sinyal pendukung dan penentangnya sebelum memutuskan.",
+    "NEEDS_CONTEXT": "Bukti belum cukup untuk menilai. Kemungkinan yang diperlukan adalah meminta kelengkapan, bukan menyimpulkan.",
+    "NO_OBSERVED_RISK": "Tidak ada detektor yang menyala pada versi mesin ini. Ini bukan pernyataan bahwa klaimnya bersih."
+  },
+  "state": {
+    "NEW": "Baru",
+    "SCREENED": "Tersaring",
+    "IN_REVIEW": "Sedang ditinjau",
+    "EVIDENCE_REQUESTED": "Menunggu bukti",
+    "DISMISSED": "Sinyal ditolak",
+    "CONFIRMED_ANOMALY": "Anomali dikonfirmasi",
+    "ESCALATED": "Dieskalasi",
+    "INVALID_INPUT": "Masukan tidak sah"
+  },
+  "evidenceMeter": {
+    "incomplete": "Berkas belum lengkap",
+    "noLines": "Tidak ada baris tertagih",
+    "supported": "{{supported}}/{{total}} baris didukung"
+  },
+  "age": {
+    "underHour": "< 1 jam",
+    "hours": "{{count}} jam",
+    "days": "{{count}} hari"
+  },
+  "unknown": "Tidak diketahui"
+}

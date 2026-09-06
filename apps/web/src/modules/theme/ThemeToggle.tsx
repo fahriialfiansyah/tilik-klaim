@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { useTheme } from '@/modules/theme/useTheme'
 
 /**
@@ -7,6 +9,8 @@ import { useTheme } from '@/modules/theme/useTheme'
  * Icon only: a sun in the light theme, a moon in the dark one. The word that used to sit beside
  * it ("Terang" / "Gelap") is gone from the surface but **not** from the accessible name — a
  * control whose meaning lives only in a picture is a control a screen reader cannot describe.
+ * That name is translated for the same reason it exists: an accessible name nobody in the room
+ * can read is no better than none.
  * `aria-pressed` carries the state, `aria-label` names the act, and `title` gives a pointer the
  * same sentence.
  *
@@ -14,6 +18,7 @@ import { useTheme } from '@/modules/theme/useTheme'
  * (`TilikKlaimMark`), which is the only other line-work in the header.
  */
 export function ThemeToggle() {
+  const { t } = useTranslation('common')
   const theme = useTheme((state) => state.theme)
   const toggle = useTheme((state) => state.toggle)
   const isDark = theme === 'dark'
@@ -23,8 +28,8 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-pressed={isDark}
-      aria-label={isDark ? 'Tema gelap aktif. Ganti ke terang.' : 'Tema terang aktif. Ganti ke gelap.'}
-      title="Ganti tema"
+      aria-label={isDark ? t('theme.dark') : t('theme.light')}
+      title={t('theme.title')}
       className="flex size-8 items-center justify-center rounded-full border border-ink-inv/12 bg-ink-inv/6 text-ink-inv transition-colors hover:bg-ink-inv/14 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-inv"
     >
       {isDark ? <MoonIcon /> : <SunIcon />}

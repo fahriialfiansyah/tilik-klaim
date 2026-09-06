@@ -1,0 +1,41 @@
+{
+  "mode": {
+    "PHANTOM_OR_NO_PROCEDURE_EVIDENCE": "Billed without evidence",
+    "REPEAT_BILLING": "Repeat billing",
+    "CLONED_DOCUMENTATION": "Cloned documentation",
+    "UNBUNDLING_FRAGMENTATION": "Split episode"
+  },
+  "band": {
+    "DETERMINISTIC_CONFLICT": "Deterministic conflict",
+    "HIGH_PRIORITY_SIGNAL": "High-priority signal",
+    "NEEDS_CONTEXT": "Needs context",
+    "NO_OBSERVED_RISK": "No risk observed"
+  },
+  "bandBasis": {
+    "DETERMINISTIC_CONFLICT": "An integrity rule was violated outright. The red marks that conflict, not fault on anyone's part.",
+    "HIGH_PRIORITY_SIGNAL": "Needs review. Read the signals for and against it before deciding.",
+    "NEEDS_CONTEXT": "There is not enough evidence to judge. What this likely needs is a request for completeness, not a conclusion.",
+    "NO_OBSERVED_RISK": "No detector fired at this engine version. This is not a statement that the claim is clean."
+  },
+  "state": {
+    "NEW": "New",
+    "SCREENED": "Screened",
+    "IN_REVIEW": "In review",
+    "EVIDENCE_REQUESTED": "Awaiting evidence",
+    "DISMISSED": "Signal rejected",
+    "CONFIRMED_ANOMALY": "Anomaly confirmed",
+    "ESCALATED": "Escalated",
+    "INVALID_INPUT": "Invalid input"
+  },
+  "evidenceMeter": {
+    "incomplete": "The file is incomplete",
+    "noLines": "No billed lines",
+    "supported": "{{supported}}/{{total}} lines supported"
+  },
+  "age": {
+    "underHour": "< 1 hour",
+    "hours": "{{count}} h",
+    "days": "{{count}} d"
+  },
+  "unknown": "Unknown"
+}

@@ -15,10 +15,18 @@ const MOTION_CLASS = /\b(tk-enter|tk-enter-fade|tk-grow-x|tk-grow-y|animate-[a-z
 /**
  * Baris JSX yang memuat teks badge, beserta baris pembuka elemennya. Cukup untuk melihat
  * `className` yang menempel padanya tanpa mengurai berkas jadi pohon sintaks.
+ *
+ * Dicari lewat kunci terjemahan `header.syntheticBadge` maupun teks harfiahnya: sejak badge
+ * ini dua bahasa, kalimatnya tidak lagi berada di berkas komponen — tetapi elemen yang
+ * merendernya, dan `className` yang menempel padanya, tetap di sini.
  */
+const BADGE_MARKER = /DATA SINTETIK|header\.syntheticBadge/
+
 function badgeMarkup(source: string): string {
   const lines = source.split('\n')
-  const at = lines.findIndex((line) => line.includes('DATA SINTETIK') && !line.trim().startsWith('*'))
+  const at = lines.findIndex(
+    (line) => BADGE_MARKER.test(line) && !line.trim().startsWith('*'),
+  )
   expect(at, 'badge DATA SINTETIK tidak ditemukan').toBeGreaterThan(-1)
   return lines.slice(Math.max(0, at - 4), at + 1).join('\n')
 }

@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next'
+
 import { PerfectScrollArea } from '@/components/wrappers/PerfectScrollArea'
-import { COLUMNS, SELF_ROW_NOTE } from '@/features/admin/users/labels'
+import { useColumns } from '@/features/admin/users/labels'
 import { formatSignedIn } from '@/features/admin/users/format'
-import { ROLE_LABEL } from '@/features/auth/labels'
+import { useActiveLabel, useRoleLabel } from '@/features/auth/labels'
 import { ROLES, type Role, type StaffUser } from '@/features/auth/types'
 import { cn } from '@/lib/utils'
 
@@ -37,15 +39,18 @@ export function UserTable({
   readonly onChangeRole: (user: StaffUser, role: Role) => void
   readonly onToggleActive: (user: StaffUser, isActive: boolean) => void
 }) {
+  const { t } = useTranslation('admin')
+  const columns = useColumns()
+  const roleLabel = useRoleLabel()
+  const activeLabel = useActiveLabel()
+
   return (
     <PerfectScrollArea className="max-h-[520px]">
       <table className="w-full border-collapse text-left">
-        <caption className="sr-only">
-          Daftar petugas sintetik, perannya, dan statusnya.
-        </caption>
+        <caption className="sr-only">{t('table.caption')}</caption>
         <thead>
           <tr className="bg-sunk">
-            {COLUMNS.map((column) => (
+            {columns.map((column) => (
               <th
                 key={column}
                 scope="col"
@@ -71,7 +76,7 @@ export function UserTable({
                     {user.full_name}
                     {isSelf ? (
                       <span className="rounded-sm bg-brand-soft px-[6px] py-[1px] text-micro font-semibold text-brand">
-                        ANDA
+                        {t('table.you')}
                       </span>
                     ) : null}
                   </span>
@@ -82,14 +87,14 @@ export function UserTable({
                   */}
                   {isSelf ? (
                     <span className="mt-[3px] block text-meta font-normal text-ink-3">
-                      {SELF_ROW_NOTE}
+                      {t('selfRowNote')}
                     </span>
                   ) : busy ? (
                     <span
                       role="status"
                       className="mt-[3px] block text-meta font-normal text-ink-3"
                     >
-                      Menyimpan…
+                      {t('table.saving')}
                     </span>
                   ) : null}
                 </th>
@@ -101,7 +106,7 @@ export function UserTable({
                 </td>
                 <td className="px-3 py-[11px]">
                   <label className="sr-only" htmlFor={`role-${user.user_id}`}>
-                    Peran untuk {user.full_name}
+                    {t('table.roleFor', { name: user.full_name })}
                   </label>
                   <select
                     id={`role-${user.user_id}`}
@@ -112,7 +117,7 @@ export function UserTable({
                   >
                     {ROLES.map((role) => (
                       <option key={role} value={role}>
-                        {ROLE_LABEL[role]}
+                        {roleLabel(role)}
                       </option>
                     ))}
                   </select>
@@ -133,7 +138,7 @@ export function UserTable({
                         user.is_active ? 'text-done' : 'text-ink-3',
                       )}
                     >
-                      {user.is_active ? 'Aktif' : 'Nonaktif'}
+                      {activeLabel(user.is_active)}
                     </span>
                   </label>
                 </td>

@@ -1,0 +1,101 @@
+{
+  "page": {
+    "eyebrow": "DAFTAR KERJA · TERURUT PITA PRIORITAS",
+    "title": "Antrean Review",
+    "lede": "Setiap baris dibuka dengan kalimat alasannya. Skor, pita, dan nominal berada di kanannya, bukan sebaliknya.",
+    "ingestAction": "Masukkan bundel baru",
+    "footnote": "Halaman ini sengaja tidak memuat grafik agregat, peringkat fasilitas, atau angka rupiah “diselamatkan”. Kasus tanpa sinyal tidak pernah dilabeli bersih, hanya “tidak ada risiko teramati”."
+  },
+  "pagination": {
+    "summary": "Halaman {{page}} dari {{total}} · {{count}} kasus",
+    "previous": "Sebelumnya",
+    "next": "Berikutnya"
+  },
+  "metric": {
+    "applyFilter": "Terapkan saringan ini",
+    "unitCase": "kasus",
+    "unitHour": "jam",
+    "awaiting": {
+      "label": "Kasus menunggu ditinjau",
+      "hint": "Sudah tersaring, belum diambil siapa pun"
+    },
+    "conflicts": {
+      "label": "Konflik deterministik prioritas tinggi",
+      "hint": "Aturan integritas dilanggar secara pasti"
+    },
+    "evidence": {
+      "label": "Kasus menunggu bukti tambahan",
+      "hint": "Kelengkapan sudah diminta ke fasilitas"
+    },
+    "median": {
+      "label": "Waktu tengah dalam antrean",
+      "hint": "Sebaran lama tunggu, bukan target kinerja"
+    },
+    "stamp": {
+      "heading": "VERSI MESIN & DATA",
+      "ruleset": "aturan v{{version}}",
+      "engine": "model v{{version}}",
+      "dataset": "data {{version}}",
+      "copy": "Salin",
+      "evaluation": "Evaluasi"
+    }
+  },
+  "filter": {
+    "stateLabel": "Saringan status",
+    "stateAll": "Status: semua",
+    "modeLabel": "Saringan mode risiko",
+    "modeAll": "Mode risiko: semua",
+    "bandLabel": "Saringan pita prioritas",
+    "bandAll": "Pita prioritas: semua",
+    "since": "Sejak",
+    "sinceLabel": "Kasus dibuat sejak",
+    "until": "Sampai",
+    "untilLabel": "Kasus dibuat sampai",
+    "search": "Cari pengenal kasus pseudonim",
+    "activeHeading": "SARINGAN AKTIF",
+    "removeChip": ", lepas saringan ini",
+    "none": "tidak ada, seluruh antrean tampil",
+    "clearAll": "Bersihkan semua",
+    "shown": "{{count}} kasus tampil",
+    "chip": {
+      "state": "Status: {{value}}",
+      "band": "Pita: {{value}}",
+      "mode": "Mode: {{value}}",
+      "created_after": "Sejak: {{value}}",
+      "created_before": "Sampai: {{value}}",
+      "search": "Cari: {{value}}"
+    },
+    "summary": {
+      "state": "status {{value}}",
+      "band": "pita {{value}}",
+      "mode": "mode {{value}}",
+      "created_after": "sejak {{value}}",
+      "created_before": "sampai {{value}}",
+      "search": "pencarian \"{{value}}\""
+    }
+  },
+  "placeholder": {
+    "loading": "Memuat antrean…",
+    "emptyTitle": "Belum ada kasus sama sekali",
+    "emptyBody": "Tidak ada bundel yang sudah disaring. Mulai dengan memasukkan satu bundel. Lima kasus contoh tersedia di layar Ingest.",
+    "emptyAction": "Masukkan bundel",
+    "filteredTitle": "Tidak ada kasus yang cocok dengan saringan ini",
+    "filteredBody": "Saringan yang sedang aktif: {{filters}}. Data tetap ada; hanya tidak ada yang lolos kombinasi ini.",
+    "filteredAction": "Bersihkan saringan",
+    "failedTitle": "Antrean tidak dapat dimuat",
+    "failedBody": "{{detail}} Ini bukan berarti tidak ada kasus; daftarnya memang tidak sampai ke layar ini.",
+    "failedFallback": "Layanan tidak merespons"
+  },
+  "table": {
+    "label": "Antrean kasus",
+    "reason": "KALIMAT ALASAN",
+    "mode": "MODE RISIKO",
+    "identifier": "PENGENAL",
+    "evidence": "BUKTI",
+    "amount": "NOMINAL",
+    "age": "UMUR",
+    "band": "PITA PRIORITAS",
+    "status": "STATUS",
+    "noMode": "-"
+  }
+}

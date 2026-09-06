@@ -2,7 +2,9 @@ import { Check, Copy, Loader2 } from 'lucide-react'
 import { useState, type CSSProperties } from 'react'
 
 import { Button } from '@/components/ui/button'
-import { COUNT_ORDER, STATUS_LABELS, countLabel } from '@/features/review/ingest/labels'
+import { useTranslation } from 'react-i18next'
+
+import { COUNT_ORDER, countLabel, useStatusLabel } from '@/features/review/ingest/labels'
 import type { BundleRejection } from '@/features/review/ingest/rejection'
 import type { IngestBundleResponse, ValidationStatus } from '@/features/review/ingest/types'
 import type { ScreenStatus } from '@/features/review/ingest/useIngest'
@@ -60,9 +62,11 @@ export function ValidationReport({
   readonly screenStatus: ScreenStatus
   readonly onScreen: () => void
 }) {
+  const { t } = useTranslation('ingest')
+  const statusLabel = useStatusLabel()
   const [copied, setCopied] = useState(false)
   // A refused bundle is invalid whichever side refused it. The status badge says so rather than
-  // leaving the panel on "belum diperiksa" while an error banner sits above it — two places
+  // leaving the panel on "not yet checked" while an error banner sits above it — two places
   // disagreeing about whether anything was checked.
   const status: ValidationStatus | null = rejection ? 'INVALID' : (report?.status ?? null)
 
@@ -83,11 +87,11 @@ export function ValidationReport({
 
   return (
     <section
-      aria-label="Laporan validasi"
+      aria-label={t('report.sectionLabel')}
       className="overflow-hidden rounded-lg border border-line bg-card shadow-panel"
     >
       <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-[14px]">
-        <p className="text-small font-semibold">Status validasi</p>
+        <p className="text-small font-semibold">{t('report.heading')}</p>
         {status ? (
           <span
             className={cn(
@@ -95,11 +99,11 @@ export function ValidationReport({
               STATUS_CLASSES[status],
             )}
           >
-            {STATUS_LABELS[status]}
+            {statusLabel(status)}
           </span>
         ) : (
           <span className="rounded-md border border-line bg-sunk px-[11px] py-[3px] text-meta text-ink-3">
-            Belum diperiksa
+            {t('report.notChecked')}
           </span>
         )}
       </div>
@@ -116,28 +120,27 @@ export function ValidationReport({
             </p>
             <p className="text-meta leading-relaxed text-ink-3 text-pretty">
               {rejection.source === 'client'
-                ? 'Berkas ditolak di peramban dan tidak dikirim ke layanan. Tidak ada kasus yang dibuat.'
-                : 'Layanan menolak berkas ini sebelum menyimpannya. Tidak ada kasus yang dibuat, dan tidak ada penyaringan sebagian.'}
+                ? t('report.refusedClient')
+                : t('report.refusedServer')}
             </p>
           </div>
           {/*
-            Disabled rather than absent. Widget 9 says the button is "nonaktif bila tidak sah
-            disertai alasan" — a control that vanishes leaves an operator looking for it, and
+            Disabled rather than absent. Widget 9 says the button is disabled-with-a-reason
+            when invalid — a control that vanishes leaves an operator looking for it, and
             keeping it in place is what makes the *reason* the thing they read.
           */}
           <ScreenAction
             isEnabled={false}
             isScreening={false}
             onScreen={onScreen}
-            hint="Berkas ini tidak dapat disaring. Perbaiki sesuai kode di atas lalu kirim ulang. Tidak ada penyaringan sebagian."
+            hint={t('report.refusedHint')}
           />
         </>
       ) : !report ? (
         <div className="px-6 py-[52px] text-center">
-          <p className="mb-[6px] text-body-lg font-semibold">Belum ada berkas</p>
+          <p className="mb-[6px] text-body-lg font-semibold">{t('report.emptyTitle')}</p>
           <p className="mx-auto max-w-[420px] text-small text-ink-2 text-pretty">
-            Pilih berkas atau salah satu kasus contoh di sebelah kiri. Laporan validasi akan
-            terisi di sini.
+            {t('report.emptyBody')}
           </p>
         </div>
       ) : (
@@ -174,7 +177,7 @@ export function ValidationReport({
           <div className="flex items-end justify-between gap-3 border-t border-line px-4 py-[14px]">
             <div className="min-w-0">
               <p className="mb-[3px] font-mono text-micro font-semibold tracking-label text-ink-3">
-                SIDIK DIGITAL BERKAS
+                {t('report.hashHeading')}
               </p>
               <p data-numeric className="font-mono text-meta break-all">
                 sha256:{report.input_hash.slice(0, HASH_PREFIX_LENGTH)}
@@ -185,7 +188,7 @@ export function ValidationReport({
             </div>
             <Button variant="outline" size="sm" className="shrink-0" onClick={() => void copyHash()}>
               {copied ? <Check /> : <Copy />}
-              {copied ? 'Tersalin' : 'Salin'}
+              {copied ? t('report.copied') : t('report.copy')}
             </Button>
           </div>
 
@@ -195,8 +198,8 @@ export function ValidationReport({
             onScreen={onScreen}
             hint={
               report.is_screenable
-                ? 'Tidak ada langkah konfigurasi. Penyaringan memakai aturan dan versi mesin yang sedang berlaku.'
-                : `Berkas berstatus "${STATUS_LABELS[report.status]}", sehingga tidak dapat disaring. Perbaiki sumber daya yang disebut di bawah lalu kirim ulang. Tidak ada penyaringan sebagian.`
+                ? t('report.screenableHint')
+                : t('report.notScreenableHint', { status: statusLabel(report.status) })
             }
           />
         </>
@@ -222,6 +225,8 @@ function ScreenAction({
   readonly onScreen: () => void
   readonly hint: string
 }) {
+  const { t } = useTranslation('ingest')
+
   return (
     <div className="border-t border-line bg-sunk px-4 py-[14px]">
       <Button
@@ -231,7 +236,7 @@ function ScreenAction({
         onClick={onScreen}
       >
         {isScreening ? <Loader2 className="animate-spin" /> : null}
-        Saring klaim
+        {t('report.screen')}
       </Button>
       <p className="mt-[9px] text-meta leading-relaxed text-ink-3 text-pretty">{hint}</p>
     </div>

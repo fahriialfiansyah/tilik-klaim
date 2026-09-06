@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import type { SampleSummary } from '@/features/review/ingest/types'
 import { cn } from '@/lib/utils'
 
@@ -35,15 +37,17 @@ export function SampleList({
   readonly onPick: (scenario: string) => void
   readonly isBusy: boolean
 }) {
+  const { t } = useTranslation('ingest')
+
   return (
     <div>
       <p className="mt-[18px] mb-2 font-mono text-micro font-semibold tracking-label text-ink-3">
-        ATAU PAKAI KASUS CONTOH
+        {t('samples.heading')}
       </p>
 
       {samples.length === 0 ? (
         <p className="rounded-md border border-line bg-sunk px-3 py-[10px] text-small text-ink-3">
-          Daftar kasus contoh tidak dapat dimuat. Unggah berkas sendiri masih bisa dilakukan.
+          {t('samples.unavailable')}
         </p>
       ) : null}
 
@@ -80,7 +84,7 @@ export function SampleList({
               <span className="shrink-0 text-end">
                 {sample.history_count > 0 ? (
                   <span className="block text-meta text-ink-3">
-                    + {sample.history_count} klaim riwayat
+                    {t('samples.history', { count: sample.history_count })}
                   </span>
                 ) : null}
                 <span data-numeric className="block font-mono text-micro text-ink-3">

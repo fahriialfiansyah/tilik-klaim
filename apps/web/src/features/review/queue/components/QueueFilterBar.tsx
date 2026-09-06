@@ -1,21 +1,12 @@
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { type QueueFilters, useQueueStore } from '@/features/review/queue/store'
-import { BAND_LABELS, MODE_LABELS, STATE_LABELS } from '@/features/review/shared/labels'
+import { useBandLabel, useModeLabel, useStateLabel } from '@/features/review/shared/labels'
 import { CASE_STATES, PRIORITY_BANDS, RISK_MODES } from '@/features/review/shared/types'
 
 const SELECT_CLASS =
   'rounded-md border border-line bg-card px-[9px] py-[7px] text-body text-ink outline-none focus-visible:border-brand'
-
-/** Human-readable text for an active filter chip. */
-function chipText(key: keyof QueueFilters, value: string): string {
-  if (key === 'state') return `Status: ${STATE_LABELS[value as keyof typeof STATE_LABELS]}`
-  if (key === 'band') return `Pita: ${BAND_LABELS[value as keyof typeof BAND_LABELS]}`
-  if (key === 'mode') return `Mode: ${MODE_LABELS[value as keyof typeof MODE_LABELS]}`
-  if (key === 'created_after') return `Sejak: ${value}`
-  if (key === 'created_before') return `Sampai: ${value}`
-  return `Cari: ${value}`
-}
 
 /**
  * Filters, search, and the removable chips for whatever is active (widgets 6–8).
@@ -25,6 +16,10 @@ function chipText(key: keyof QueueFilters, value: string): string {
  * would justify rebuilding that behaviour.
  */
 export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) {
+  const { t } = useTranslation('queue')
+  const stateLabel = useStateLabel()
+  const bandLabel = useBandLabel()
+  const modeLabel = useModeLabel()
   const filters = useQueueStore((state) => state.filters)
   const setFilter = useQueueStore((state) => state.setFilter)
   const clearFilter = useQueueStore((state) => state.clearFilter)
@@ -32,23 +27,49 @@ export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) 
 
   const active = Object.entries(filters).filter(([, value]) => value !== undefined && value !== '')
 
+  /**
+   * The words on an active-filter chip.
+   *
+   * Defined inside the component rather than beside it because it needs the same label hooks
+   * the selects use — one lookup table for the enum, so a chip can never name a status the
+   * dropdown above it spells differently.
+   */
+  function chipText(key: keyof QueueFilters, value: string): string {
+    if (key === 'state') {
+      return t('filter.chip.state', { value: stateLabel(value as never) })
+    }
+    if (key === 'band') {
+      return t('filter.chip.band', { value: bandLabel(value as never) })
+    }
+    if (key === 'mode') {
+      return t('filter.chip.mode', { value: modeLabel(value as never) })
+    }
+    if (key === 'created_after') {
+      return t('filter.chip.created_after', { value })
+    }
+    if (key === 'created_before') {
+      return t('filter.chip.created_before', { value })
+    }
+    return t('filter.chip.search', { value })
+  }
+
   return (
     <>
       <div className="flex flex-wrap items-center gap-2 border-b border-line px-[14px] py-3">
         <select
           id="queue-filter-state"
           name="state"
-          aria-label="Saringan status"
+          aria-label={t('filter.stateLabel')}
           className={SELECT_CLASS}
           value={filters.state ?? ''}
           onChange={(event) =>
             setFilter('state', (event.target.value || undefined) as QueueFilters['state'])
           }
         >
-          <option value="">Status: semua</option>
+          <option value="">{t('filter.stateAll')}</option>
           {CASE_STATES.map((state) => (
             <option key={state} value={state}>
-              {STATE_LABELS[state]}
+              {stateLabel(state)}
             </option>
           ))}
         </select>
@@ -56,17 +77,17 @@ export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) 
         <select
           id="queue-filter-mode"
           name="mode"
-          aria-label="Saringan mode risiko"
+          aria-label={t('filter.modeLabel')}
           className={SELECT_CLASS}
           value={filters.mode ?? ''}
           onChange={(event) =>
             setFilter('mode', (event.target.value || undefined) as QueueFilters['mode'])
           }
         >
-          <option value="">Mode risiko: semua</option>
+          <option value="">{t('filter.modeAll')}</option>
           {RISK_MODES.map((mode) => (
             <option key={mode} value={mode}>
-              {MODE_LABELS[mode]}
+              {modeLabel(mode)}
             </option>
           ))}
         </select>
@@ -74,28 +95,28 @@ export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) 
         <select
           id="queue-filter-band"
           name="band"
-          aria-label="Saringan pita prioritas"
+          aria-label={t('filter.bandLabel')}
           className={SELECT_CLASS}
           value={filters.band ?? ''}
           onChange={(event) =>
             setFilter('band', (event.target.value || undefined) as QueueFilters['band'])
           }
         >
-          <option value="">Pita prioritas: semua</option>
+          <option value="">{t('filter.bandAll')}</option>
           {PRIORITY_BANDS.map((band) => (
             <option key={band} value={band}>
-              {BAND_LABELS[band]}
+              {bandLabel(band)}
             </option>
           ))}
         </select>
 
         <label className="flex items-center gap-2 text-meta text-ink-3">
-          Sejak
+          {t('filter.since')}
           <input
             type="date"
             id="queue-filter-since"
             name="created_after"
-            aria-label="Kasus dibuat sejak"
+            aria-label={t('filter.sinceLabel')}
             className={SELECT_CLASS}
             value={filters.created_after?.slice(0, 10) ?? ''}
             onChange={(event) =>
@@ -108,18 +129,18 @@ export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) 
         </label>
 
         <label className="flex items-center gap-2 text-meta text-ink-3">
-          Sampai
+          {t('filter.until')}
           <input
             type="date"
             id="queue-filter-until"
             name="created_before"
-            aria-label="Kasus dibuat sampai"
+            aria-label={t('filter.untilLabel')}
             className={SELECT_CLASS}
             value={filters.created_before?.slice(0, 10) ?? ''}
             onChange={(event) =>
               setFilter(
                 'created_before',
-                // End of the chosen day, so "sampai 5 Sep" includes cases screened that day.
+                // End of the chosen day, so "until 5 Sep" includes cases screened that day.
                 event.target.value ? `${event.target.value}T23:59:59Z` : undefined,
               )
             }
@@ -134,8 +155,8 @@ export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) 
           type="search"
           id="queue-search"
           name="search"
-          aria-label="Cari pengenal kasus pseudonim"
-          placeholder="Cari pengenal kasus pseudonim"
+          aria-label={t('filter.search')}
+          placeholder={t('filter.search')}
           className={`${SELECT_CLASS} min-w-[210px] flex-1`}
           value={filters.search ?? ''}
           onChange={(event) => setFilter('search', event.target.value || undefined)}
@@ -144,7 +165,7 @@ export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) 
 
       <div className="flex flex-wrap items-center gap-2 border-b border-line bg-sunk px-[14px] py-[10px]">
         <span className="font-mono text-micro font-semibold tracking-label text-ink-3">
-          SARINGAN AKTIF
+          {t('filter.activeHeading')}
         </span>
 
         {active.map(([key, value]) => (
@@ -161,24 +182,24 @@ export function QueueFilterBar({ shownCount }: { readonly shownCount: number }) 
             >
               <X className="size-[9px]" />
             </span>
-            <span className="sr-only">, lepas saringan ini</span>
+            <span className="sr-only">{t('filter.removeChip')}</span>
           </button>
         ))}
 
         {active.length === 0 ? (
-          <span className="text-small text-ink-3">tidak ada, seluruh antrean tampil</span>
+          <span className="text-small text-ink-3">{t('filter.none')}</span>
         ) : (
           <button
             type="button"
             onClick={clearAllFilters}
             className="px-2 py-[3px] text-small text-brand underline"
           >
-            Bersihkan semua
+            {t('filter.clearAll')}
           </button>
         )}
 
         <span data-numeric className="ml-auto font-mono text-meta text-ink-2">
-          {shownCount} kasus tampil
+          {t('filter.shown', { count: shownCount })}
         </span>
       </div>
     </>

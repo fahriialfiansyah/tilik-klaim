@@ -1,4 +1,3 @@
-import { BASELINE_HINT, BASELINE_LABEL, METRIC_LABEL } from '@/features/review/evaluation/labels'
 import type { ChartRow } from '@/features/review/evaluation/components/MetricBarChart'
 import type { MetricColumn, MetricRow } from '@/features/review/evaluation/components/MetricTable'
 import {
@@ -6,7 +5,7 @@ import {
   type BaselineId,
   type EvaluationResponse,
 } from '@/features/review/evaluation/types'
-import { MODE_LABELS } from '@/features/review/shared/labels'
+import { translateOr } from '@/modules/i18n/translateOr'
 import { RISK_MODES } from '@/features/review/shared/types'
 
 /**
@@ -18,27 +17,43 @@ import { RISK_MODES } from '@/features/review/shared/types'
  *
  * **The four baselines and four modes are always listed**, in their canonical order, whether or
  * not the response carries them. A baseline the API omitted was not measured, and it appears
- * with `null` — which every widget renders as "tidak terukur". Iterating the response instead
+ * with `null` — which every widget renders as "not measured". Iterating the response instead
  * would make an unmeasured baseline silently vanish from the comparison.
+ *
+ * The column lists are functions rather than constants because their headings are words: a
+ * module-level array would freeze them in whichever language happened to be active when the
+ * bundle first evaluated, and the table would keep those headings after the header switch. The
+ * *order* still lives here, where it belongs — a translator cannot reorder a table by editing
+ * a JSON object.
  */
 
-export const BASELINE_COLUMNS: readonly MetricColumn[] = [
-  { key: 'macro_f1', label: METRIC_LABEL.macro_f1 },
-  { key: 'pr_auc', label: METRIC_LABEL.pr_auc },
-  { key: 'precision_at_k', label: METRIC_LABEL.precision_at_k },
-  { key: 'recall_at_k', label: METRIC_LABEL.recall_at_k },
-  {
-    key: 'false_positives_per_100_clean',
-    label: METRIC_LABEL.false_positives_per_100_clean,
-  },
-]
+const BASELINE_COLUMN_KEYS = [
+  'macro_f1',
+  'pr_auc',
+  'precision_at_k',
+  'recall_at_k',
+  'false_positives_per_100_clean',
+] as const
 
-export const MODE_COLUMNS: readonly MetricColumn[] = [
-  { key: 'precision', label: 'Ketepatan' },
-  { key: 'recall', label: 'Keterpanggilan' },
-  { key: 'f1', label: 'F1' },
-  { key: 'support', label: 'Jumlah kasus', format: 'count' },
-]
+export function baselineColumns(): readonly MetricColumn[] {
+  return BASELINE_COLUMN_KEYS.map((key) => ({
+    key,
+    label: translateOr(`evaluation:metric.${key}`, key),
+  }))
+}
+
+export function modeColumns(): readonly MetricColumn[] {
+  return [
+    { key: 'precision', label: translateOr('evaluation:modeColumn.precision', 'precision') },
+    { key: 'recall', label: translateOr('evaluation:modeColumn.recall', 'recall') },
+    { key: 'f1', label: translateOr('evaluation:modeColumn.f1', 'f1') },
+    {
+      key: 'support',
+      label: translateOr('evaluation:modeColumn.support', 'support'),
+      format: 'count',
+    },
+  ]
+}
 
 export function baselineRows(evaluation: EvaluationResponse): readonly MetricRow[] {
   const measured = new Map(evaluation.baselines.map((row) => [row.baseline, row]))
@@ -46,8 +61,8 @@ export function baselineRows(evaluation: EvaluationResponse): readonly MetricRow
     const row = measured.get(baseline)
     return {
       key: baseline,
-      label: BASELINE_LABEL[baseline],
-      hint: BASELINE_HINT[baseline],
+      label: translateOr(`evaluation:baseline.${baseline}`, baseline),
+      hint: translateOr(`evaluation:baselineHint.${baseline}`, ''),
       values: {
         macro_f1: row?.macro_f1 ?? null,
         pr_auc: row?.pr_auc ?? null,
@@ -65,7 +80,7 @@ export function modeRows(evaluation: EvaluationResponse): readonly MetricRow[] {
     const row = measured.get(mode)
     return {
       key: mode,
-      label: MODE_LABELS[mode],
+      label: translateOr(`review:mode.${mode}`, mode),
       values: {
         precision: row?.precision ?? null,
         recall: row?.recall ?? null,
@@ -92,7 +107,7 @@ function chartRowsFor(
 ): readonly ChartRow[] {
   return baselineRows(evaluation).map((row) => ({
     key: row.key,
-    label: BASELINE_LABEL[row.key as BaselineId],
+    label: translateOr(`evaluation:baseline.${row.key as BaselineId}`, row.key),
     value: row.values[column],
   }))
 }

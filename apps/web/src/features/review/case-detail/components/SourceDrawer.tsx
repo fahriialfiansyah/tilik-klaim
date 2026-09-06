@@ -1,10 +1,12 @@
+import { useTranslation } from 'react-i18next'
+
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { PerfectScrollArea } from '@/components/wrappers/PerfectScrollArea'
 import {
-  AVAILABILITY_LABELS,
-  AVAILABILITY_MEANINGS,
-  RESOURCE_LABELS,
   sourceFieldLabel,
+  useAvailabilityLabel,
+  useAvailabilityMeaning,
+  useResourceLabel,
 } from '@/features/review/case-detail/labels'
 import { findSource } from '@/features/review/case-detail/components/EvidenceRefButton'
 import { ExpandableText } from '@/features/review/shared/components/ExpandableText'
@@ -41,6 +43,10 @@ export function SourceDrawer({
   readonly onClose: () => void
 }) {
   // Kept for the closing frame so Radix can return focus to the reference that opened this.
+  const { t } = useTranslation('caseDetail')
+  const resourceLabel = useResourceLabel()
+  const availabilityLabel = useAvailabilityLabel()
+  const availabilityMeaning = useAvailabilityMeaning()
   const shown = useLastPresent(reference)
   const source = shown ? findSource(sources, shown) : null
 
@@ -49,8 +55,8 @@ export function SourceDrawer({
       {shown ? (
         <DialogContent
           variant="drawer"
-          title={`${RESOURCE_LABELS[shown.resource_type]} ${shown.resource_id}`}
-          description="Isi sumber daya apa adanya, sebagaimana diterima sistem."
+          title={`${resourceLabel(shown.resource_type)} ${shown.resource_id}`}
+          description="{t('source.raw')}"
         >
           <PerfectScrollArea className="flex-1 px-5 py-4">
             <p
@@ -59,10 +65,10 @@ export function SourceDrawer({
                 AVAILABILITY_CLASSES[source?.availability ?? 'MISSING'],
               )}
             >
-              {AVAILABILITY_LABELS[source?.availability ?? 'MISSING']}
+              {availabilityLabel(source?.availability ?? 'MISSING')}
             </p>
             <p className="mb-5 text-small leading-relaxed text-ink-2 text-pretty">
-              {AVAILABILITY_MEANINGS[source?.availability ?? 'MISSING']}
+              {availabilityMeaning(source?.availability ?? 'MISSING')}
             </p>
 
             {source && source.fields.length > 0 ? (
@@ -84,7 +90,7 @@ export function SourceDrawer({
             ) : null}
 
             <p className="font-mono text-micro font-semibold tracking-label text-ink-3">
-              VERSI MESIN SAAT KASUS DISARING
+              {t('source.screenedVersions')}
             </p>
             <p data-numeric className="mt-[6px] font-mono text-meta text-ink-2">
               skema v{versions.schema_version} · aturan v{versions.ruleset_version} · mesin v

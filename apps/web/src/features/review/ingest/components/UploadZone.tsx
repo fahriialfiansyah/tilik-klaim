@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { AlertTriangle } from 'lucide-react'
 import { useRef, useState } from 'react'
 
@@ -31,6 +33,7 @@ export function UploadZone({
   readonly rejection: string | null
   readonly isBusy: boolean
 }) {
+  const { t } = useTranslation('ingest')
   const [isDragging, setDragging] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -79,32 +82,32 @@ export function UploadZone({
           <span className="h-[5px] w-[18px] rounded-sm bg-line-strong" />
         </span>
         <span className="mb-1 block text-body-lg font-semibold">
-          Seret berkas bundel ke sini
+          {t('upload.drop')}
         </span>
         <span className="mb-[14px] block text-small text-ink-2">
-          Satu berkas data terstruktur per pemasukan
+          {t('upload.hint')}
         </span>
         <span className="inline-block rounded-md bg-brand px-[17px] py-[9px] text-small font-semibold text-brand-on">
-          Pilih berkas
+          {t('upload.choose')}
         </span>
       </label>
 
       {/* Widget 2 — before the upload, not after the failure. */}
       <dl className="mt-[14px] flex flex-wrap gap-x-4 gap-y-1 text-meta text-ink-3">
         <div className="flex gap-1">
-          <dt>Ukuran maksimum</dt>
+          <dt>{t('upload.maxSize')}</dt>
           <dd data-numeric className="font-semibold text-ink">
             {formatBytes(MAX_BUNDLE_BYTES)}
           </dd>
         </div>
         <div className="flex gap-1">
-          <dt>Tipe</dt>
+          <dt>{t('upload.type')}</dt>
           <dd className="font-semibold text-ink">
-            bundel klaim ({ACCEPTED_EXTENSIONS.join(', ')})
+            {t('upload.typeValue', { extensions: ACCEPTED_EXTENSIONS.join(', ') })}
           </dd>
         </div>
         <div className="flex gap-1">
-          <dt>Kedalaman maksimum</dt>
+          <dt>{t('upload.maxDepth')}</dt>
           <dd data-numeric className="font-semibold text-ink">
             {MAX_JSON_DEPTH}
           </dd>

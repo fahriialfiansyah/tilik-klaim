@@ -1,0 +1,51 @@
+{
+  "panelTitle": "Evidence summary",
+  "panelSubtitle": "Not an assessment. It changes no band, status, or decision. The raw reasons above remain the reference.",
+  "start": "Compose a summary",
+  "restart": "Compose again",
+  "kind": {
+    "EVIDENCE_GAP": "Evidence gap",
+    "CORROBORATION": "Corroboration",
+    "COUNTER_EVIDENCE": "Counter-evidence",
+    "COMPARISON": "Comparison",
+    "TIMELINE": "Sequence",
+    "COMPLETENESS": "Completeness"
+  },
+  "confidence": {
+    "STATED": "directly recorded",
+    "INFERRED": "inferred"
+  },
+  "phase": {
+    "STARTED": "Starting",
+    "READING": "Reading",
+    "VALIDATING": "Checking references and wording",
+    "DONE": "Done"
+  },
+  "generatedBy": {
+    "TEMPLATE": "Deterministic template, no language model",
+    "LLM": "Language model, validated"
+  },
+  "tool": {
+    "get_case_overview": "Reading the case overview",
+    "list_reasons": "Reading the list of reasons",
+    "get_evidence_path": "Reading the evidence path",
+    "get_timeline": "Reading the episode timeline",
+    "get_counter_evidence": "Reading the counter-evidence",
+    "get_comparison_candidate": "Reading the comparison pair",
+    "get_source_resource": "Opening a source resource"
+  },
+  "waiting": "Waiting",
+  "view": {
+    "intro": "The summary is composed only from evidence already on this screen, with a reference on every observation. Nothing is drawn from outside this case.",
+    "failed": "The summary could not be composed: {{error}}. The reasons and evidence above remain complete without it.",
+    "failedFallback": "the service did not respond",
+    "observations": "OBSERVATIONS",
+    "openQuestions": "OPEN QUESTIONS",
+    "uncertainty": "UNCERTAINTY",
+    "howMade": "HOW THIS WAS MADE",
+    "ruleset": " · rules v{{version}}",
+    "viaFallback": " · loaded without streaming",
+    "rejected": "The model's output was rejected by the validator ({{reason}}). What is shown is the deterministic template.",
+    "noReason": "no reason given"
+  }
+}

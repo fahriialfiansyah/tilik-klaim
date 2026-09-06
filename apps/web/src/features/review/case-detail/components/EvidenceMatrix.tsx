@@ -1,9 +1,11 @@
 import { PerfectScrollArea } from '@/components/wrappers/PerfectScrollArea'
 import { EvidenceRefButton } from '@/features/review/case-detail/components/EvidenceRefButton'
+import { useTranslation } from 'react-i18next'
+
 import {
-  MATRIX_CELL_LABELS,
-  MATRIX_CELL_MEANINGS,
-  RESOURCE_LABELS,
+  useMatrixCellLabel,
+  useMatrixCellMeaning,
+  useResourceLabel,
 } from '@/features/review/case-detail/labels'
 import {
   CLAIM_ROW_KEY,
@@ -42,26 +44,29 @@ function Cell({
   readonly sources: readonly SourceResource[]
   readonly onOpenSource: (reference: EvidenceRef) => void
 }) {
+  const cellLabel = useMatrixCellLabel()
+  const cellMeaning = useMatrixCellMeaning()
+
   // Quiet to the eye, explicit to assistive technology. The dash is not "absent" — the words
   // beside it say nobody expected anything here, which is the whole point of the fourth state.
   if (cell.state === 'NOT_EXPECTED') {
     return (
-      <td className="px-3 py-[9px] text-center text-meta text-ink-3" title={MATRIX_CELL_MEANINGS.NOT_EXPECTED}>
+      <td className="px-3 py-[9px] text-center text-meta text-ink-3" title={cellMeaning('NOT_EXPECTED')}>
         <span aria-hidden>-</span>
-        <span className="sr-only">{MATRIX_CELL_LABELS.NOT_EXPECTED}</span>
+        <span className="sr-only">{cellLabel('NOT_EXPECTED')}</span>
       </td>
     )
   }
   return (
     <td className="px-3 py-[9px] align-top">
       <span
-        title={MATRIX_CELL_MEANINGS[cell.state]}
+        title={cellMeaning(cell.state)}
         className={cn(
           'mb-1 inline-block rounded-sm border px-2 py-[2px] text-meta font-medium',
           CELL_CLASSES[cell.state],
         )}
       >
-        {MATRIX_CELL_LABELS[cell.state]}
+        {cellLabel(cell.state)}
       </span>
       {cell.refs.length > 0 ? (
         <span className="flex flex-col gap-[2px]">
@@ -88,11 +93,12 @@ function RowHeader({
   readonly isSelected: boolean
   readonly onSelectLine: (lineId: string) => void
 }) {
-  const reasons = `${row.reasonCodes.length} alasan`
+  const { t } = useTranslation('caseDetail')
+  const reasons = t('matrix.reasonCount', { count: row.reasonCodes.length })
   if (row.line === null) {
     return (
       <th scope="row" className="px-3 py-[9px] text-left align-top font-normal">
-        <span className="block text-small font-medium">Tingkat klaim</span>
+        <span className="block text-small font-medium">{t('matrix.claimLevel')}</span>
         <span className="block text-meta text-ink-3">
           alasan yang tidak merujuk baris tertentu · {reasons}
         </span>
@@ -142,16 +148,18 @@ export function EvidenceMatrix({
   readonly onSelectLine: (lineId: string) => void
   readonly onOpenSource: (reference: EvidenceRef) => void
 }) {
+  const { t } = useTranslation('caseDetail')
+  const resourceLabel = useResourceLabel()
   const hasReasons = matrix.columns.length > 0
   const hasLines = matrix.rows.some((row) => row.key !== CLAIM_ROW_KEY)
 
   return (
     <section
-      aria-label="Matriks bukti"
+      aria-label={t('matrixPanel.sectionLabel')}
       className="overflow-hidden rounded-lg border border-line bg-card shadow-panel"
     >
       <div className="border-b border-line px-[15px] py-[13px]">
-        <p className="text-small font-semibold">Matriks bukti</p>
+        <p className="text-small font-semibold">{t('matrixPanel.heading')}</p>
         <p className="mt-[2px] text-meta text-ink-3">
           Baris tagihan terhadap jenis bukti yang diharapkan. Sel kosong berarti tidak ada yang
           diharapkan, bukan tidak ada.
@@ -160,7 +168,7 @@ export function EvidenceMatrix({
 
       {!hasLines ? (
         <p className="px-[15px] py-6 text-small text-ink-3">
-          Bundel ini tidak memuat baris tagihan yang dapat ditampilkan.
+          {t('matrixPanel.empty')}
         </p>
       ) : !hasReasons ? (
         <p className="px-[15px] py-6 text-small text-ink-3 text-pretty">
@@ -169,16 +177,16 @@ export function EvidenceMatrix({
         </p>
       ) : (
         <PerfectScrollArea axis="both" className="max-w-full">
-          <table aria-label="Matriks bukti" className="w-full border-collapse text-small">
+          <table aria-label={t('matrixPanel.sectionLabel')} className="w-full border-collapse text-small">
             <thead>
               <tr className="bg-sunk">
                 <th scope="col" className={cn('px-3 py-2 text-left', MICRO_LABEL)}>
-                  BARIS
+                  {t('matrixPanel.lineColumn')}
                 </th>
                 {/* CSS uppercase, not a transformed string: screen readers read the words. */}
                 {matrix.columns.map((type) => (
                   <th key={type} scope="col" className={cn('px-3 py-2 text-left uppercase', MICRO_LABEL)}>
-                    {RESOURCE_LABELS[type]}
+                    {resourceLabel(type)}
                   </th>
                 ))}
               </tr>

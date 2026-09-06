@@ -2,11 +2,13 @@ import { Check, Loader2 } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { useTranslation } from 'react-i18next'
+
 import {
-  ACTION_LABELS,
-  ACTION_MEANINGS,
-  RESOURCE_LABELS,
-  STRUCTURED_REASONS,
+  useActionLabel,
+  useActionMeaning,
+  useResourceLabel,
+  useStructuredReasons,
 } from '@/features/review/case-detail/labels'
 import { missingEvidenceTypes, requestableEvidenceTypes } from '@/features/review/case-detail/selectors'
 import {
@@ -45,6 +47,11 @@ export function DispositionPanel({
   readonly onSave: () => void
   readonly panelRef: React.RefObject<HTMLDivElement>
 }) {
+  const { t } = useTranslation('caseDetail')
+  const actionLabel = useActionLabel()
+  const actionMeaning = useActionMeaning()
+  const resourceLabel = useResourceLabel()
+  const structuredReasons = useStructuredReasons()
   const caseId = detail.case_id
   const draft = useCaseDetailStore((state) => state.drafts[caseId]) ?? EMPTY_DRAFT
   const setAction = useCaseDetailStore((state) => state.setAction)
@@ -67,18 +74,18 @@ export function DispositionPanel({
 
   const savable = isSavable(draft)
   const blocking = missingFieldLabel(draft)
-  const options = draft.action ? STRUCTURED_REASONS[draft.action] : []
+  const options = draft.action ? structuredReasons(draft.action) : []
 
   return (
     <div
       ref={panelRef}
       tabIndex={-1}
-      aria-label="Panel disposisi"
+      aria-label={t('disposition.panelLabel')}
       role="region"
       className="overflow-hidden rounded-lg border border-line bg-card shadow-panel lg:sticky lg:top-4"
     >
       <div className="border-b border-line bg-sunk px-4 py-[14px]">
-        <p className="text-small font-semibold">Disposisi</p>
+        <p className="text-small font-semibold">{t('disposition.heading')}</p>
         <div className="mt-[7px] flex items-center gap-2">
           <span
             aria-hidden
@@ -96,7 +103,7 @@ export function DispositionPanel({
 
       <div className="p-4">
         <fieldset className="mb-[18px]">
-          <legend className={cn('mb-[9px]', MICRO_LABEL)}>TINDAKAN</legend>
+          <legend className={cn('mb-[9px]', MICRO_LABEL)}>{t('disposition.actionLegend')}</legend>
           <div className="flex flex-col gap-[7px]">
             {DISPOSITION_ACTIONS.map((action: DispositionAction) => {
               const isPicked = draft.action === action
@@ -132,9 +139,9 @@ export function DispositionPanel({
                     className="mt-[2px] size-[15px] shrink-0 appearance-none rounded-full border-[1.5px] border-line-strong bg-card bg-clip-content p-[3px] checked:border-brand checked:bg-brand"
                   />
                   <span className="min-w-0">
-                    {ACTION_LABELS[action]}
+                    {actionLabel(action)}
                     <span className="mt-[3px] block text-meta font-normal text-ink-2 text-pretty">
-                      {ACTION_MEANINGS[action]}
+                      {actionMeaning(action)}
                     </span>
                   </span>
                 </label>
@@ -144,7 +151,7 @@ export function DispositionPanel({
         </fieldset>
 
         <label htmlFor="alasan-terstruktur" className={cn('mb-[9px] block', MICRO_LABEL)}>
-          ALASAN TERSTRUKTUR
+          {t('disposition.reasonLabel')}
         </label>
         <select
           id="alasan-terstruktur"
@@ -154,7 +161,7 @@ export function DispositionPanel({
           className="mb-[6px] w-full rounded-md border border-line bg-card px-[10px] py-[9px] text-small text-ink disabled:opacity-50"
         >
           <option value="">
-            {draft.action ? 'Pilih alasan…' : 'Pilih tindakan terlebih dahulu'}
+            {draft.action ? t('disposition.pickReason') : t('disposition.pickActionFirst')}
           </option>
           {options.map((option) => (
             <option key={option} value={option}>
@@ -162,14 +169,11 @@ export function DispositionPanel({
             </option>
           ))}
         </select>
-        <p className="mb-4 text-meta text-ink-3 text-pretty">
-          Alasan wajib dan tersimpan permanen. Sistem hanya menawarkan pilihan, tidak pernah
-          memilihkan.
-        </p>
+        <p className="mb-4 text-meta text-ink-3 text-pretty">{t('disposition.reasonNote')}</p>
 
         {needsEvidence ? (
           <fieldset className="mb-[18px] rounded-md border border-line bg-sunk px-[13px] py-3">
-            <legend className={cn('px-1', MICRO_LABEL)}>BUKTI YANG DIMINTA</legend>
+            <legend className={cn('px-1', MICRO_LABEL)}>{t('disposition.evidenceLegend')}</legend>
             {offered.map((type) => {
               const isTicked = draft.requestedEvidence.includes(type)
               return (
@@ -192,32 +196,33 @@ export function DispositionPanel({
                       ✓
                     </span>
                   </span>
-                  {RESOURCE_LABELS[type]}
+                  {resourceLabel(type)}
                 </label>
               )
             })}
-            <p className="mt-2 text-meta text-ink-3 text-pretty">
-              Tercentang otomatis dari sumber daya yang kurang; boleh ditambah atau dikurangi.
-            </p>
+            <p className="mt-2 text-meta text-ink-3 text-pretty">{t('disposition.evidenceNote')}</p>
           </fieldset>
         ) : null}
 
         <label htmlFor="catatan-bebas" className={cn('mb-[9px] block', MICRO_LABEL)}>
-          CATATAN BEBAS
+          {t('disposition.noteLabel')}
         </label>
         <textarea
           id="catatan-bebas"
           rows={4}
           value={draft.note}
           onChange={(event) => setNote(caseId, event.target.value)}
-          placeholder="Penjelasan tambahan untuk jejak audit"
+          placeholder={t('disposition.notePlaceholder')}
           className="mb-[14px] w-full resize-y rounded-md border border-line bg-card p-[10px] text-small text-ink"
         />
 
         {/* Widget 21 — the version this decision is being made against. */}
         <p data-numeric className="mb-[14px] font-mono text-meta text-ink-3">
-          versi kasus {detail.case_version} · aturan v{detail.versions.ruleset_version} · mesin v
-          {detail.versions.engine_version}
+          {t('disposition.versions', {
+            case: detail.case_version,
+            ruleset: detail.versions.ruleset_version,
+            engine: detail.versions.engine_version,
+          })}
         </p>
 
         <Button
@@ -229,14 +234,13 @@ export function DispositionPanel({
         >
           {saveStatus === 'saving' ? <Loader2 className="animate-spin" /> : null}
           {saveStatus === 'saved' ? <Check /> : null}
-          Simpan disposisi
+          {t('disposition.save')}
         </Button>
         <p
           aria-live="polite"
           className="mt-[9px] text-meta leading-relaxed text-ink-3 text-pretty"
         >
-          {blocking ??
-            'Keputusan ini tercatat permanen beserta pelaku, waktu, alasan, dan versi mesin.'}
+          {blocking ?? t('disposition.permanent')}
         </p>
       </div>
     </div>

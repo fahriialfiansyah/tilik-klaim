@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { PageHeader, PageShell } from '@/components/layouts/PageShell'
@@ -13,24 +14,33 @@ import {
 import { QueueTable } from '@/features/review/queue/components/QueueTable'
 import { useQueueStore } from '@/features/review/queue/store'
 import { useQueue } from '@/features/review/queue/useQueue'
-import { BAND_LABELS, MODE_LABELS, STATE_LABELS } from '@/features/review/shared/labels'
+import { useBandLabel, useModeLabel, useStateLabel } from '@/features/review/shared/labels'
 
 /** Page 1 — Review queue (`/`). Widgets 1-11 per sprint/00-app-spec.md § 3. */
 export function QueuePage() {
+  const { t } = useTranslation('queue')
   const navigate = useNavigate()
+  const stateLabel = useStateLabel()
+  const bandLabel = useBandLabel()
+  const modeLabel = useModeLabel()
   const { status, data, error, reload } = useQueue()
   const filters = useQueueStore((state) => state.filters)
   const page = useQueueStore((state) => state.page)
   const setPage = useQueueStore((state) => state.setPage)
   const clearAllFilters = useQueueStore((state) => state.clearAllFilters)
 
+  // Named in the reader's language, and phrased as a list rather than assembled from a verb
+  // plus a value — "status Tersaring" and "status Screened" agree on shape by accident, and the
+  // next language would not.
   const activeFilterLabels = [
-    filters.state && `status ${STATE_LABELS[filters.state]}`,
-    filters.band && `pita ${BAND_LABELS[filters.band]}`,
-    filters.mode && `mode ${MODE_LABELS[filters.mode]}`,
-    filters.created_after && `sejak ${filters.created_after.slice(0, 10)}`,
-    filters.created_before && `sampai ${filters.created_before.slice(0, 10)}`,
-    filters.search && `pencarian "${filters.search}"`,
+    filters.state && t('filter.summary.state', { value: stateLabel(filters.state) }),
+    filters.band && t('filter.summary.band', { value: bandLabel(filters.band) }),
+    filters.mode && t('filter.summary.mode', { value: modeLabel(filters.mode) }),
+    filters.created_after &&
+      t('filter.summary.created_after', { value: filters.created_after.slice(0, 10) }),
+    filters.created_before &&
+      t('filter.summary.created_before', { value: filters.created_before.slice(0, 10) }),
+    filters.search && t('filter.summary.search', { value: filters.search }),
   ].filter((label): label is string => Boolean(label))
 
   const rows = data?.items ?? []
@@ -39,12 +49,12 @@ export function QueuePage() {
   return (
     <PageShell width="wide">
       <PageHeader
-        eyebrow="DAFTAR KERJA · TERURUT PITA PRIORITAS"
-        title="Antrean Review"
-        lede="Setiap baris dibuka dengan kalimat alasannya. Skor, pita, dan nominal berada di kanannya, bukan sebaliknya."
+        eyebrow={t('page.eyebrow')}
+        title={t('page.title')}
+        lede={t('page.lede')}
         action={
           <Button size="lg" onClick={() => navigate('/ingest')}>
-            Masukkan bundel baru
+            {t('page.ingestAction')}
           </Button>
         }
       />
@@ -60,7 +70,7 @@ export function QueuePage() {
 
         {/*
           Two different empty screens, chosen by whether a filter is responsible. Showing the
-          "belum ada kasus" invitation while a filter is quietly hiding everything would send a
+          "no cases yet" invitation while a filter is quietly hiding everything would send a
           reviewer to re-ingest data that is already there.
         */}
         {status === 'ready' && rows.length === 0 && activeFilterLabels.length > 0 ? (
@@ -77,8 +87,11 @@ export function QueuePage() {
             {pageInfo ? (
               <div className="flex items-center justify-between gap-4 bg-sunk px-[14px] py-[11px]">
                 <span data-numeric className="font-mono text-meta text-ink-3">
-                  Halaman {pageInfo.page} dari {Math.max(1, pageInfo.total_pages)} ·{' '}
-                  {pageInfo.total_items} kasus
+                  {t('pagination.summary', {
+                    page: pageInfo.page,
+                    total: Math.max(1, pageInfo.total_pages),
+                    count: pageInfo.total_items,
+                  })}
                 </span>
                 <div className="flex gap-2">
                   <Button
@@ -87,7 +100,7 @@ export function QueuePage() {
                     disabled={pageInfo.page <= 1}
                     onClick={() => setPage(page - 1)}
                   >
-                    Sebelumnya
+                    {t('pagination.previous')}
                   </Button>
                   <Button
                     variant="outline"
@@ -95,7 +108,7 @@ export function QueuePage() {
                     disabled={pageInfo.page >= pageInfo.total_pages}
                     onClick={() => setPage(page + 1)}
                   >
-                    Berikutnya
+                    {t('pagination.next')}
                   </Button>
                 </div>
               </div>
@@ -104,11 +117,7 @@ export function QueuePage() {
         ) : null}
       </div>
 
-      <p className="mt-4 max-w-[760px] text-small text-ink-3">
-        Halaman ini sengaja tidak memuat grafik agregat, peringkat fasilitas, atau angka rupiah
-        &ldquo;diselamatkan&rdquo;. Kasus tanpa sinyal tidak pernah dilabeli bersih, hanya
-        &ldquo;tidak ada risiko teramati&rdquo;.
-      </p>
+      <p className="mt-4 max-w-[760px] text-small text-ink-3">{t('page.footnote')}</p>
     </PageShell>
   )
 }

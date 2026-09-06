@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
 
 import {
-  AUDIT_CSV_HEADER,
   auditCsvFilename,
+  auditCsvHeader,
   buildAuditCsv,
   downloadCsv,
   EXCEL_SEPARATOR_HINT,
@@ -35,7 +35,7 @@ function rows(csv: string): string[] {
 describe('the audit export', () => {
   test('leads with a header a person can read without the schema', () => {
     expect(rows(buildAuditCsv([EVENT], nameFor))[0]).toBe(
-      AUDIT_CSV_HEADER.map((column) => `"${column}"`).join(','),
+      auditCsvHeader().map((column) => `"${column}"`).join(','),
     )
   })
 

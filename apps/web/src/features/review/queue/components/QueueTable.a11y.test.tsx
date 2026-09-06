@@ -3,7 +3,18 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, test } from 'vitest'
 
 import { QueueTable } from '@/features/review/queue/components/QueueTable'
-import { BAND_LABELS, MODE_LABELS, STATE_LABELS } from '@/features/review/shared/labels'
+import i18n from '@/modules/i18n/config'
+
+/**
+ * The enum labels, read the way the component reads them.
+ *
+ * Asserting against the same catalog the component renders from — rather than against literal
+ * Indonesian in the test — is what keeps this suite about *accessibility* rather than about
+ * copy, and lets the same assertions hold whichever language is active.
+ */
+const bandLabel = (band: string) => i18n.t(`review:band.${band}` as 'review:band.NEEDS_CONTEXT')
+const modeLabel = (mode: string) => i18n.t(`review:mode.${mode}` as 'review:mode.REPEAT_BILLING')
+const stateLabel = (state: string) => i18n.t(`review:state.${state}` as 'review:state.SCREENED')
 import { PRIORITY_BANDS, type CaseSummary } from '@/features/review/shared/types'
 import { renderWithRouter } from '@/test/render'
 
@@ -64,7 +75,7 @@ describe('queue table accessibility', () => {
     // `design/DESIGN.md` forbids conveying status by colour alone. Reading the labels back is
     // the only check that would fail if someone replaced a badge with a coloured dot.
     for (const band of PRIORITY_BANDS) {
-      expect(screen.getAllByText(BAND_LABELS[band]).length).toBeGreaterThan(0)
+      expect(screen.getAllByText(bandLabel(band)).length).toBeGreaterThan(0)
     }
   })
 
@@ -90,7 +101,7 @@ describe('queue table accessibility', () => {
   test('the band badge explains why this band, for the hover the spec requires', () => {
     renderWithRouter(<QueueTable rows={[row({ band: 'NEEDS_CONTEXT' })]} />)
 
-    const badge = screen.getByText(BAND_LABELS.NEEDS_CONTEXT)
+    const badge = screen.getByText(bandLabel('NEEDS_CONTEXT'))
     expect(badge).toHaveAttribute('title', expect.stringContaining('Bukti belum cukup'))
   })
 
@@ -98,8 +109,10 @@ describe('queue table accessibility', () => {
     renderWithRouter(<QueueTable rows={[row()]} />)
 
     const table = screen.getByRole('table', { name: 'Antrean kasus' })
-    expect(within(table).getByText(MODE_LABELS.PHANTOM_OR_NO_PROCEDURE_EVIDENCE)).toBeInTheDocument()
-    expect(within(table).getByText(STATE_LABELS.SCREENED)).toBeInTheDocument()
+    expect(
+      within(table).getByText(modeLabel('PHANTOM_OR_NO_PROCEDURE_EVIDENCE')),
+    ).toBeInTheDocument()
+    expect(within(table).getByText(stateLabel('SCREENED'))).toBeInTheDocument()
     expect(within(table).queryByText('PHANTOM_OR_NO_PROCEDURE_EVIDENCE')).not.toBeInTheDocument()
   })
 })

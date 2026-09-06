@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { AlertTriangle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -32,6 +34,7 @@ export function ComparisonDrawer({
   readonly onClose: () => void
 }) {
   // Kept for the closing frame so Radix can return focus to the button that opened this.
+  const { t } = useTranslation('caseDetail')
   const shown = useLastPresent(candidate)
 
   return (
@@ -39,8 +42,8 @@ export function ComparisonDrawer({
       {shown ? (
         <DialogContent
           variant="drawer"
-          title="Perbandingan pasangan kandidat"
-          description="Kasus ini di kiri, kandidat pembanding di kanan. Hanya potongan yang relevan ditampilkan."
+          title={t('comparison.title')}
+          description={t('comparison.description')}
         >
           <PerfectScrollArea className="flex-1 px-5 py-4">
             {/*
@@ -55,7 +58,7 @@ export function ComparisonDrawer({
               >
                 <AlertTriangle aria-hidden className="mt-[2px] size-4 shrink-0 text-notice" />
                 <p className="text-small leading-relaxed text-pretty">
-                  <span className="font-semibold text-notice">Peringatan templat. </span>
+                  <span className="font-semibold text-notice">{t('banner.templateCaveat')}</span>
                   {shown.template_caveat}
                 </p>
               </div>
@@ -71,7 +74,7 @@ export function ComparisonDrawer({
             */}
             <p className="mb-[10px] flex flex-wrap items-baseline gap-x-2 gap-y-1 text-small">
               <span className="font-mono text-micro font-semibold tracking-label text-ink-3">
-                KANDIDAT
+                {t('comparison.candidate')}
               </span>
               <span className="font-mono text-ink">{shown.candidate_claim_id}</span>
               {shown.candidate_case_id ? (
@@ -80,30 +83,30 @@ export function ComparisonDrawer({
                   onClick={onClose}
                   className="text-brand underline underline-offset-2"
                 >
-                  Buka kasus kandidat
+                  {t('comparison.openCandidate')}
                 </Link>
               ) : (
-                <span className="text-ink-2">Belum ada kasus yang bisa dibuka untuk kandidat ini.</span>
+                <span className="text-ink-2">{t('comparison.noCandidateCase')}</span>
               )}
             </p>
 
             <p className="mb-[10px] font-mono text-micro font-semibold tracking-label text-ink-3">
-              BIDANG YANG DIBANDINGKAN
+              {t('comparison.fieldsHeading')}
             </p>
             <table className="mb-6 w-full border-collapse text-small">
               <thead>
                 <tr>
                   <th scope="col" className="w-[132px] border-b border-line py-2 text-left text-ink-3 font-mono text-micro tracking-label">
-                    BIDANG
+                    {t('comparison.field')}
                   </th>
                   <th scope="col" className="border-b border-line py-2 text-left text-ink-3 font-mono text-micro tracking-label">
-                    KASUS INI
+                    {t('comparison.thisCase')}
                   </th>
                   <th scope="col" className="border-b border-line py-2 text-left text-ink-3 font-mono text-micro tracking-label">
-                    KANDIDAT
+                    {t('comparison.candidate')}
                   </th>
                   <th scope="col" className="w-[80px] border-b border-line py-2 text-left text-ink-3 font-mono text-micro tracking-label">
-                    KEADAAN
+                    {t('comparison.state')}
                   </th>
                 </tr>
               </thead>
@@ -140,16 +143,16 @@ export function ComparisonDrawer({
             </table>
 
             <p className="mb-[10px] font-mono text-micro font-semibold tracking-label text-ink-3">
-              RENTANG TUMPANG TINDIH
+              {t('comparison.overlapHeading')}
             </p>
             <p className="mb-6 text-small text-ink-2">
               {shown.overlap_start
                 ? formatDateRange(shown.overlap_start, shown.overlap_end)
-                : 'Tidak ada bagian waktu yang beririsan antara keduanya. Ketiadaan irisan justru melemahkan dugaan tagihan berulang.'}
+                : t('comparison.noOverlap')}
             </p>
 
             <p className="mb-[10px] font-mono text-micro font-semibold tracking-label text-ink-3">
-              KOMPONEN KEMIRIPAN
+              {t('comparison.similarityHeading')}
             </p>
             <dl className="mb-2">
               {Object.entries(shown.similarity_components).map(([name, value]) => (

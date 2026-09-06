@@ -1,8 +1,10 @@
+import { Trans, useTranslation } from 'react-i18next'
+
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog'
 
 /**
- * Widget 26 — the confirmation that stands between "konfirmasi anomali" and a permanent record.
+ * Widget 26 — the confirmation that stands between confirming an anomaly and a permanent record.
  *
  * It exists to say one thing plainly: **this is not a fraud finding.** The action means a
  * reviewer agrees an inconsistency exists and should be followed up. It rejects no claim, stops
@@ -23,34 +25,38 @@ export function ConfirmAnomalyDialog({
   readonly onConfirm: () => void
   readonly structuredReason: string
 }) {
+  const { t } = useTranslation(['caseDetail', 'common'])
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        title="Konfirmasi anomali: ini bukan temuan fraud"
-        description="Bacalah penegasan ini sebelum keputusan dicatat permanen."
+        title={t('caseDetail:confirmAnomaly.title')}
+        description={t('caseDetail:confirmAnomaly.description')}
       >
         <div className="px-5 py-4">
           <p className="mb-3 text-small leading-relaxed text-pretty">
-            Menekan konfirmasi berarti Anda membenarkan adanya{' '}
-            <strong>ketidaksesuaian yang perlu ditindaklanjuti</strong>. Itu saja. Tindakan ini{' '}
-            <strong>bukan</strong> pernyataan fraud, bukan temuan hukum, dan bukan tuduhan
-            terhadap pihak mana pun.
+            <Trans
+              i18nKey="confirmAnomaly.lede"
+              ns="caseDetail"
+              components={[<span key="0" />, <strong key="1" />, <span key="2" />, <strong key="3" />]}
+            />
           </p>
           <ul className="mb-4 space-y-1 rounded-md border border-line bg-sunk px-4 py-3 text-small text-ink-2">
-            <li>· Klaim tidak ditolak.</li>
-            <li>· Pembayaran tidak dihentikan dan tidak diubah.</li>
-            <li>· Tidak ada sanksi yang dijatuhkan.</li>
-            <li>· Tidak ada kode yang diubah.</li>
+            <li>{t('caseDetail:confirmAnomaly.point1')}</li>
+            <li>{t('caseDetail:confirmAnomaly.point2')}</li>
+            <li>{t('caseDetail:confirmAnomaly.point3')}</li>
+            <li>{t('caseDetail:confirmAnomaly.point4')}</li>
           </ul>
           <p className="mb-5 text-small text-ink-2 text-pretty">
-            Alasan yang akan tercatat: <strong className="text-ink">{structuredReason}</strong>
+            {t('caseDetail:confirmAnomaly.reasonRecorded')}
+            <strong className="text-ink">{structuredReason}</strong>
           </p>
 
           <div className="flex justify-end gap-2">
             <DialogClose asChild>
-              <Button variant="outline">Batal</Button>
+              <Button variant="outline">{t('common:action.cancel')}</Button>
             </DialogClose>
-            <Button onClick={onConfirm}>Saya paham, catat konfirmasi</Button>
+            <Button onClick={onConfirm}>{t('caseDetail:confirmAnomaly.confirm')}</Button>
           </div>
         </div>
       </DialogContent>

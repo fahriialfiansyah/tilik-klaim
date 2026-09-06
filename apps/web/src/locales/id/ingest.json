@@ -1,0 +1,107 @@
+{
+  "status": {
+    "VALID": "Sah",
+    "VALID_WITH_NOTES": "Sah dengan catatan",
+    "INVALID": "Tidak sah"
+  },
+  "statusMeaning": {
+    "VALID": "Bentuk berkas lolos pemeriksaan dan seluruh rujukan antar-sumber daya terselesaikan.",
+    "VALID_WITH_NOTES": "Bentuk berkas sah. Sebagian sumber daya pendukung memang tidak dikirim: bukan rusak, memang tidak ada. Catatan ini ikut tersimpan bersama kasus dan menurunkan tingkat keyakinan; ia tidak pernah menaikkan sinyal risiko.",
+    "INVALID": "Berkas tidak dapat disaring. Perbaiki sumber daya yang disebut di bawah lalu kirim ulang. Tidak ada penyaringan sebagian."
+  },
+  "issue": {
+    "BUNDLE_TOO_LARGE": "Berkas melampaui batas ukuran yang diterima.",
+    "BUNDLE_UNSUPPORTED_CONTENT_TYPE": "Tipe berkas tidak diterima; kirim satu berkas JSON.",
+    "BUNDLE_DEPTH_EXCEEDED": "Struktur berkas bersarang terlalu dalam.",
+    "BUNDLE_MALFORMED_JSON": "Isi berkas bukan JSON yang sah dan tidak dapat dibaca sama sekali.",
+    "BUNDLE_SCHEMA_INVALID": "Sebuah bidang tidak sesuai bentuk yang diharapkan: jenis datanya salah, atau bidang wajib tidak ada.",
+    "BUNDLE_UNKNOWN_RESOURCE_TYPE": "Jenis sumber daya ini di luar bagian skema yang didokumentasikan sistem.",
+    "BUNDLE_DANGLING_REFERENCE": "Sebuah rujukan menunjuk ke sumber daya yang tidak ikut terkirim. Rujukan yang tidak dapat diselesaikan adalah cacat integritas bukti, bukan sekadar bidang kosong.",
+    "BUNDLE_CIRCULAR_REFERENCE": "Sumber daya saling merujuk membentuk lingkaran, sehingga rantai buktinya tidak dapat ditelusuri.",
+    "BUNDLE_DUPLICATE_RESOURCE_ID": "Satu pengenal sumber daya dipakai lebih dari sekali, sehingga rujukan ke pengenal itu ambigu.",
+    "BUNDLE_TOTAL_MISMATCH": "Total klaim tidak sama dengan jumlah baris tagihannya.",
+    "fallback": "Berkas ditolak oleh pemeriksaan bentuk."
+  },
+  "count": {
+    "Claim": "Klaim",
+    "ClaimLine": "Baris tagihan",
+    "Encounter": "Kunjungan",
+    "Condition": "Diagnosis",
+    "Procedure": "Tindakan",
+    "Medication": "Obat",
+    "Diagnostic": "Penunjang",
+    "Document": "Catatan klinis",
+    "Account": "Akun tagihan",
+    "ChargeItem": "Item biaya",
+    "Invoice": "Faktur"
+  },
+  "page": {
+    "eyebrow": "SATU BUNDEL · SATU LAPORAN VALIDASI",
+    "title": "Ingest / Demo",
+    "lede": "Tidak ada wisaya konfigurasi. Setelah validasi berhasil, tersedia satu tombol: saring klaim.",
+    "backToQueue": "Kembali ke antrean",
+    "checkFailed": "Bundel tidak dapat diperiksa",
+    "screenFailed": "Penyaringan gagal dijalankan",
+    "inspected": "Berkas yang diperiksa:",
+    "footnote": "Seluruh data di layar ini sintetik dan dibangkitkan oleh kode proyek ini. Tidak ada rekam medis nyata yang pernah masuk ke sistem."
+  },
+  "issues": {
+    "sectionLabel": "Galat dan peringatan",
+    "heading": "Galat dan peringatan",
+    "wholeFile": "Seluruh berkas",
+    "code": "KODE",
+    "resourceType": "JENIS SUMBER DAYA",
+    "identifier": "PENGENAL",
+    "explanation": "PENJELASAN",
+    "none": "-"
+  },
+  "report": {
+    "sectionLabel": "Laporan validasi",
+    "heading": "Status validasi",
+    "notChecked": "Belum diperiksa",
+    "refusedClient": "Berkas ditolak di peramban dan tidak dikirim ke layanan. Tidak ada kasus yang dibuat.",
+    "refusedServer": "Layanan menolak berkas ini sebelum menyimpannya. Tidak ada kasus yang dibuat, dan tidak ada penyaringan sebagian.",
+    "refusedHint": "Berkas ini tidak dapat disaring. Perbaiki sesuai kode di atas lalu kirim ulang. Tidak ada penyaringan sebagian.",
+    "emptyTitle": "Belum ada berkas",
+    "emptyBody": "Pilih berkas atau salah satu kasus contoh di sebelah kiri. Laporan validasi akan terisi di sini.",
+    "hashHeading": "SIDIK DIGITAL BERKAS",
+    "copied": "Tersalin",
+    "copy": "Salin",
+    "screen": "Saring klaim",
+    "screenableHint": "Tidak ada langkah konfigurasi. Penyaringan memakai aturan dan versi mesin yang sedang berlaku.",
+    "notScreenableHint": "Berkas berstatus “{{status}}”, sehingga tidak dapat disaring. Perbaiki sumber daya yang disebut di bawah lalu kirim ulang. Tidak ada penyaringan sebagian."
+  },
+  "samples": {
+    "heading": "ATAU PAKAI KASUS CONTOH",
+    "unavailable": "Daftar kasus contoh tidak dapat dimuat. Unggah berkas sendiri masih bisa dilakukan.",
+    "history": "+ {{count}} klaim riwayat",
+    "fallbackDetail": "Kasus contoh",
+    "loadFailed": "Berkas contoh tidak dapat dimuat ({{status}})."
+  },
+  "upload": {
+    "drop": "Seret berkas bundel ke sini",
+    "hint": "Satu berkas data terstruktur per pemasukan",
+    "choose": "Pilih berkas",
+    "maxSize": "Ukuran maksimum",
+    "type": "Tipe",
+    "typeValue": "bundel klaim ({{extensions}})",
+    "maxDepth": "Kedalaman maksimum",
+    "yourFile": "Berkas yang Anda unggah"
+  },
+  "limit": {
+    "empty": "Berkas ini kosong. Tidak ada isi untuk diperiksa.",
+    "tooLarge": "Berkas berukuran {{size}}, melampaui batas {{limit}}. Berkas tidak dikirim.",
+    "wrongType": "Tipe berkas tidak diterima. Kirim satu berkas {{extensions}}.",
+    "extensionJoin": " atau "
+  },
+  "banner": {
+    "duplicateTitle": "Bundel dengan sidik digital identik pernah disaring",
+    "openCase": "Buka kasus",
+    "serviceBody": "{{detail}} Tidak ada kasus yang dibuat.",
+    "serviceDown": "Layanan tidak merespons",
+    "completenessTitle": "Catatan kelengkapan berkas. ",
+    "completenessBody": "Bentuk berkas sah; sebagian sumber daya pendukung memang tidak dikirim. Ketiadaannya menurunkan tingkat keyakinan dan mengarah ke “minta bukti tambahan”, <1>bukan</1> menaikkan sinyal risiko.",
+    "evidenceRequestTitle": "Melanjutkan permintaan bukti tambahan",
+    "evidenceRequestBody": "Anda datang dari sebuah kasus yang menunggu bukti. Masukkan berkas versi baru di bawah; setelah disaring ulang, kasus itu kembali ke status tersaring dengan riwayat alasannya tetap tersimpan."
+  }
+}

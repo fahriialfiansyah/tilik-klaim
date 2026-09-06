@@ -1,4 +1,6 @@
-import { SUPPORT_LABELS, SUPPORT_MEANINGS } from '@/features/review/case-detail/labels'
+import { useTranslation } from 'react-i18next'
+
+import { useSupportLabel, useSupportMeaning } from '@/features/review/case-detail/labels'
 import type { ClaimLineView, SupportState } from '@/features/review/case-detail/types'
 import { formatAmount, formatTime } from '@/features/review/shared/format'
 import { cn } from '@/lib/utils'
@@ -49,20 +51,22 @@ export function ClaimLineList({
   readonly selectedLineId: string | null
   readonly onSelect: (lineId: string) => void
 }) {
+  const { t } = useTranslation('caseDetail')
+  const supportLabel = useSupportLabel()
+  const supportMeaning = useSupportMeaning()
+
   return (
     <section
-      aria-label="Daftar baris tagihan"
+      aria-label={t('lines.sectionLabel')}
       className="overflow-hidden rounded-lg border border-line bg-card shadow-panel"
     >
       <div className="border-b border-line px-[15px] py-[13px]">
-        <p className="text-small font-semibold">Baris tagihan</p>
-        <p className="mt-[2px] text-meta text-ink-3">Pilih baris untuk memuat jejak buktinya</p>
+        <p className="text-small font-semibold">{t('lines.heading')}</p>
+        <p className="mt-[2px] text-meta text-ink-3">{t('lines.hint')}</p>
       </div>
 
       {lines.length === 0 ? (
-        <p className="px-[15px] py-6 text-small text-ink-3">
-          Bundel ini tidak memuat baris tagihan yang dapat ditampilkan.
-        </p>
+        <p className="px-[15px] py-6 text-small text-ink-3">{t('lines.empty')}</p>
       ) : null}
 
       <ul>
@@ -101,15 +105,15 @@ export function ClaimLineList({
                   </span>
                 </span>
                 <span
-                  title={SUPPORT_MEANINGS[line.support_state]}
+                  title={supportMeaning(line.support_state)}
                   className={cn(
                     'inline-block rounded-sm border px-2 py-[2px] text-meta font-medium',
                     SUPPORT_CLASSES[line.support_state],
                   )}
                 >
-                  {SUPPORT_LABELS[line.support_state]}
+                  {supportLabel(line.support_state)}
                 </span>
-                <span className="sr-only">: {SUPPORT_MEANINGS[line.support_state]}</span>
+                <span className="sr-only">: {supportMeaning(line.support_state)}</span>
               </button>
             </li>
           )

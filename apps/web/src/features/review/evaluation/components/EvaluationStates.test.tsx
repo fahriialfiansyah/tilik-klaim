@@ -9,7 +9,7 @@ import {
 } from '@/features/review/evaluation/components/EvaluationPlaceholders'
 import { MetricBarChart } from '@/features/review/evaluation/components/MetricBarChart'
 import { MetricTable } from '@/features/review/evaluation/components/MetricTable'
-import { baselineRows, BASELINE_COLUMNS } from '@/features/review/evaluation/selectors'
+import { baselineColumns, baselineRows } from '@/features/review/evaluation/selectors'
 import { EVALUATION_FIXTURE } from '@/features/review/evaluation/test-fixtures'
 import { renderWithRouter } from '@/test/render'
 
@@ -43,10 +43,10 @@ describe('no run yet is distinguishable from a measured zero', () => {
     ]
 
     renderWithRouter(
-      <MetricTable caption="c" columns={BASELINE_COLUMNS} rows={zeroed} />,
+      <MetricTable caption="c" columns={baselineColumns()} rows={zeroed} />,
     )
 
-    expect(screen.getAllByText('0.0000').length).toBe(BASELINE_COLUMNS.length)
+    expect(screen.getAllByText('0.0000').length).toBe(baselineColumns().length)
     expect(screen.queryByText('Tidak terukur')).not.toBeInTheDocument()
   })
 
@@ -54,13 +54,13 @@ describe('no run yet is distinguishable from a measured zero', () => {
     renderWithRouter(
       <MetricTable
         caption="c"
-        columns={BASELINE_COLUMNS}
+        columns={baselineColumns()}
         rows={baselineRows(EVALUATION_FIXTURE)}
       />,
     )
 
     // B0_RANDOM is absent from the fixture, so its whole row is unmeasured.
-    expect(screen.getAllByText('Tidak terukur').length).toBe(BASELINE_COLUMNS.length)
+    expect(screen.getAllByText('Tidak terukur').length).toBe(baselineColumns().length)
   })
 
   test('a service failure offers a retry and never claims there is no run', () => {

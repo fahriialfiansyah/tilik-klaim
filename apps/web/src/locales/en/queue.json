@@ -1,0 +1,101 @@
+{
+  "page": {
+    "eyebrow": "WORK LIST · ORDERED BY PRIORITY BAND",
+    "title": "Review Queue",
+    "lede": "Every row opens with its reason sentence. The score, band, and amount sit to its right, not the other way round.",
+    "ingestAction": "Ingest a new bundle",
+    "footnote": "This page deliberately carries no aggregate charts, no facility league tables, and no rupiah “recovered” figure. A case with no signal is never labelled clean, only “no risk observed”."
+  },
+  "pagination": {
+    "summary": "Page {{page}} of {{total}} · {{count}} cases",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "metric": {
+    "applyFilter": "Apply this filter",
+    "unitCase": "cases",
+    "unitHour": "hours",
+    "awaiting": {
+      "label": "Cases awaiting review",
+      "hint": "Screened already, not yet picked up by anyone"
+    },
+    "conflicts": {
+      "label": "High-priority deterministic conflicts",
+      "hint": "An integrity rule was violated outright"
+    },
+    "evidence": {
+      "label": "Cases awaiting further evidence",
+      "hint": "Completeness has been requested from the facility"
+    },
+    "median": {
+      "label": "Median time in queue",
+      "hint": "The spread of waiting time, not a performance target"
+    },
+    "stamp": {
+      "heading": "ENGINE & DATA VERSION",
+      "ruleset": "rules v{{version}}",
+      "engine": "model v{{version}}",
+      "dataset": "data {{version}}",
+      "copy": "Copy",
+      "evaluation": "Evaluation"
+    }
+  },
+  "filter": {
+    "stateLabel": "Status filter",
+    "stateAll": "Status: all",
+    "modeLabel": "Risk mode filter",
+    "modeAll": "Risk mode: all",
+    "bandLabel": "Priority band filter",
+    "bandAll": "Priority band: all",
+    "since": "From",
+    "sinceLabel": "Cases created from",
+    "until": "Until",
+    "untilLabel": "Cases created until",
+    "search": "Search a pseudonymous case identifier",
+    "activeHeading": "ACTIVE FILTERS",
+    "removeChip": ", remove this filter",
+    "none": "none — the whole queue is shown",
+    "clearAll": "Clear all",
+    "shown": "{{count}} cases shown",
+    "chip": {
+      "state": "Status: {{value}}",
+      "band": "Band: {{value}}",
+      "mode": "Mode: {{value}}",
+      "created_after": "From: {{value}}",
+      "created_before": "Until: {{value}}",
+      "search": "Search: {{value}}"
+    },
+    "summary": {
+      "state": "status {{value}}",
+      "band": "band {{value}}",
+      "mode": "mode {{value}}",
+      "created_after": "from {{value}}",
+      "created_before": "until {{value}}",
+      "search": "search \"{{value}}\""
+    }
+  },
+  "placeholder": {
+    "loading": "Loading the queue…",
+    "emptyTitle": "No cases at all yet",
+    "emptyBody": "No bundle has been screened. Start by ingesting one. Five sample cases are available on the Ingest screen.",
+    "emptyAction": "Ingest a bundle",
+    "filteredTitle": "No case matches these filters",
+    "filteredBody": "Filters currently active: {{filters}}. The data is still there; nothing passes this combination.",
+    "filteredAction": "Clear the filters",
+    "failedTitle": "The queue could not be loaded",
+    "failedBody": "{{detail}} This does not mean there are no cases; the list simply did not reach this screen.",
+    "failedFallback": "The service did not respond"
+  },
+  "table": {
+    "label": "Case queue",
+    "reason": "REASON SENTENCE",
+    "mode": "RISK MODE",
+    "identifier": "IDENTIFIER",
+    "evidence": "EVIDENCE",
+    "amount": "AMOUNT",
+    "age": "AGE",
+    "band": "PRIORITY BAND",
+    "status": "STATUS",
+    "noMode": "-"
+  }
+}

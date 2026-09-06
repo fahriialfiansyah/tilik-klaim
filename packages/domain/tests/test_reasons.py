@@ -4,6 +4,7 @@ from __future__ import annotations
 import pytest
 
 from tilik_domain.canonical import ResourceType
+from tilik_domain.locale import Locale
 from tilik_domain.reasons import (
     ALLOWED_TRANSITIONS,
     REASON_CATALOG,
@@ -22,23 +23,72 @@ def test_every_reason_code_is_catalogued() -> None:
     assert set(REASON_CATALOG) == set(ReasonCode)
 
 
-def test_every_reason_has_a_working_language_sentence() -> None:
+@pytest.mark.parametrize("locale", list(Locale))
+def test_every_reason_has_a_sentence_in_every_language(locale: Locale) -> None:
+    """A language we offer but cannot speak for some reason is a half-translated screen."""
     for definition in REASON_CATALOG.values():
-        assert definition.sentence_id.strip(), f"{definition.code} has no sentence"
-        assert definition.sentence_id.endswith("."), f"{definition.code} sentence is not a sentence"
+        sentence = definition.sentence(locale)
+        assert sentence.strip(), f"{definition.code} has no {locale} sentence"
+        assert sentence.endswith("."), f"{definition.code} {locale} sentence is not a sentence"
 
 
-def test_no_reason_sentence_accuses_anyone() -> None:
+def test_the_two_languages_are_renderings_of_one_catalog() -> None:
+    """Same codes, same count, and never the same string twice.
+
+    An English sentence left equal to its Indonesian original is an untranslated entry that
+    would otherwise ship silently — the screen would render, just in the wrong language.
+    """
+    for definition in REASON_CATALOG.values():
+        assert definition.sentence_id != definition.sentence_en, (
+            f"{definition.code} was never translated"
+        )
+
+
+@pytest.mark.parametrize("locale", list(Locale))
+def test_no_reason_sentence_accuses_anyone(locale: Locale) -> None:
     """The system reports risk requiring review; it never states fraud.
 
     A wording slip here turns a work aid into an accusation tool, which is why this is a test
-    and not a style note.
+    and not a style note. English gets its own forbidden terms rather than a translation of the
+    Indonesian list: the accusation reads differently in each language.
     """
-    forbidden = ("fraud", "penipuan", "kecurangan", "melanggar hukum", "terbukti")
+    forbidden = (
+        "fraud",
+        "penipuan",
+        "kecurangan",
+        "melanggar hukum",
+        "terbukti",
+        "fraudulent",
+        "proven",
+        "illegal",
+    )
     for definition in REASON_CATALOG.values():
-        lowered = definition.sentence_id.lower()
+        lowered = definition.sentence(locale).lower()
         for term in forbidden:
             assert term not in lowered, f"{definition.code} uses accusatory wording: {term!r}"
+
+
+def test_english_sentences_describe_the_record_not_the_act() -> None:
+    """Absence of a record is not evidence a service was not delivered.
+
+    English makes this failure easy in a way Indonesian does not: "no completed procedure
+    record" and "the procedure was not performed" are a short edit apart, and only the first is
+    a claim this system is entitled to make.
+    """
+    forbidden = (
+        "was not performed",
+        "were not performed",
+        "did not happen",
+        "never delivered",
+        "was not delivered",
+        "did not occur",
+    )
+    for definition in REASON_CATALOG.values():
+        lowered = definition.sentence_en.lower()
+        for phrase in forbidden:
+            assert phrase not in lowered, (
+                f"{definition.code} states what someone did, not what the record shows: {phrase!r}"
+            )
 
 
 def test_every_reason_requires_at_least_one_evidence_type() -> None:

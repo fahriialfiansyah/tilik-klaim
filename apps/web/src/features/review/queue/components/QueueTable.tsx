@@ -1,12 +1,13 @@
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import { motion } from 'motion/react'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { type SortKey, useQueueStore } from '@/features/review/queue/store'
 import { BAND_RAIL, BandBadge } from '@/features/review/shared/components/BandBadge'
 import { EvidenceMeter } from '@/features/review/shared/components/EvidenceMeter'
 import { formatAge, formatAmount } from '@/features/review/shared/format'
-import { MODE_LABELS, STATE_LABELS } from '@/features/review/shared/labels'
+import { useModeLabel, useStateLabel } from '@/features/review/shared/labels'
 import type { CaseSummary } from '@/features/review/shared/types'
 import { EASE_OUT, MOTION, seconds } from '@/modules/motion/timing'
 import { cn } from '@/lib/utils'
@@ -88,35 +89,37 @@ function SortHead({
 /**
  * The work list (widget 9).
  *
- * The first column is the **reason sentence in working language**, before any score, band, or
- * amount. `brief/03_ANTREAN_REVIEW.md` § 2.2 and § 10.3 make that a success criterion for the
+ * The first column is the **reason sentence**, before any score, band, or amount. `brief/03_ANTREAN_REVIEW.md` § 2.2 and § 10.3 make that a success criterion for the
  * page, not a layout preference: a reader who sees a score first is looking at a different
  * product.
  */
 export function QueueTable({ rows }: { readonly rows: readonly CaseSummary[] }) {
+  const { t } = useTranslation('queue')
   const navigate = useNavigate()
+  const modeLabel = useModeLabel()
+  const stateLabel = useStateLabel()
 
   return (
     <div className="overflow-x-auto">
       <table
-        aria-label="Antrean kasus"
+        aria-label={t('table.label')}
         className="w-full min-w-[1240px] table-fixed border-collapse"
       >
         <thead>
           <tr className="bg-sunk">
-            <th scope="col" className={cn(HEAD_CLASS, 'pl-4')}>KALIMAT ALASAN</th>
+            <th scope="col" className={cn(HEAD_CLASS, 'pl-4')}>{t('table.reason')}</th>
             <th scope="col" style={{ width: '168px' }} className={HEAD_CLASS}>
-              MODE RISIKO
+              {t('table.mode')}
             </th>
             <th scope="col" style={{ width: '150px' }} className={HEAD_CLASS}>
-              PENGENAL
+              {t('table.identifier')}
             </th>
-            <SortHead label="BUKTI" sortKey="evidence" width="170px" />
-            <SortHead label="NOMINAL" sortKey="amount" align="right" width="140px" />
-            <SortHead label="UMUR" sortKey="age" align="right" width="92px" />
-            <SortHead label="PITA PRIORITAS" sortKey="band" width="200px" />
+            <SortHead label={t('table.evidence')} sortKey="evidence" width="170px" />
+            <SortHead label={t('table.amount')} sortKey="amount" align="right" width="140px" />
+            <SortHead label={t('table.age')} sortKey="age" align="right" width="92px" />
+            <SortHead label={t('table.band')} sortKey="band" width="200px" />
             <th scope="col" style={{ width: '150px' }} className={HEAD_CLASS}>
-              STATUS
+              {t('table.status')}
             </th>
           </tr>
         </thead>
@@ -172,7 +175,7 @@ export function QueueTable({ rows }: { readonly rows: readonly CaseSummary[] }) 
 
                 <td className="px-3 py-[13px] align-top">
                   {row.modes.length === 0 ? (
-                    <span className="text-small text-ink-3">-</span>
+                    <span className="text-small text-ink-3">{t('table.noMode')}</span>
                   ) : (
                     <span className="flex flex-wrap gap-1">
                       {row.modes.map((mode) => (
@@ -180,7 +183,7 @@ export function QueueTable({ rows }: { readonly rows: readonly CaseSummary[] }) 
                           key={mode}
                           className="inline-block rounded-full border border-band-quiet-line bg-band-quiet-bg px-[9px] py-[2px] text-meta text-band-quiet"
                         >
-                          {MODE_LABELS[mode]}
+                          {modeLabel(mode)}
                         </span>
                       ))}
                     </span>
@@ -214,7 +217,7 @@ export function QueueTable({ rows }: { readonly rows: readonly CaseSummary[] }) 
                 </td>
 
                 <td className="px-3 py-[13px] align-top text-body text-ink-2">
-                  {STATE_LABELS[row.state]}
+                  {stateLabel(row.state)}
                 </td>
               </motion.tr>
           ))}

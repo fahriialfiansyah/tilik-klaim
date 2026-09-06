@@ -1,3 +1,4 @@
+import i18n from '@/modules/i18n/config'
 import { useCallback, useEffect, useState } from 'react'
 
 import {
@@ -122,7 +123,7 @@ export function useIngest(): IngestResult {
         const summary = samples.find((entry) => entry.scenario === scenario)
         const next: Submission = {
           label: summary?.label ?? scenario,
-          detail: summary?.description ?? 'Kasus contoh',
+          detail: summary?.description ?? i18n.t('ingest:samples.fallbackDetail'),
         }
         setStatus('submitting')
         setSubmission(next)
@@ -155,14 +156,14 @@ export function useIngest(): IngestResult {
         setStatus('ready')
         setReport(null)
         setError(null)
-        setSubmission({ label: file.name, detail: 'Berkas yang Anda unggah' })
+        setSubmission({ label: file.name, detail: i18n.t('ingest:upload.yourFile') })
         return
       }
       const attempt = async () => {
         const text = await file.text()
         await submit(text, {
           label: file.name,
-          detail: 'Berkas yang Anda unggah',
+          detail: i18n.t('ingest:upload.yourFile'),
         })
       }
       setLastAttempt(() => attempt)

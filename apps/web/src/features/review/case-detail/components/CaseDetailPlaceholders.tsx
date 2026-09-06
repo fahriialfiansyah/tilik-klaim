@@ -1,4 +1,5 @@
 import { AlertTriangle, FileQuestion, RotateCw } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
@@ -14,9 +15,11 @@ import { ApiError } from '@/lib/http'
  */
 
 export function CaseDetailLoading() {
+  const { t } = useTranslation('caseDetail')
+
   return (
     <div className="px-[30px] py-[26px]" aria-busy="true" aria-live="polite">
-      <span className="sr-only">Memuat detail kasus…</span>
+      <span className="sr-only">{t('placeholder.loading')}</span>
       <div className="mb-[14px] h-[168px] animate-pulse rounded-lg border border-line bg-card" />
       <div className="grid gap-[14px] lg:grid-cols-[296px_minmax(0,1fr)_348px]">
         <div className="h-[280px] animate-pulse rounded-lg border border-line bg-card" />
@@ -34,6 +37,7 @@ export function CaseDetailFailed({
   readonly error: Error | null
   readonly onRetry: () => void
 }) {
+  const { t } = useTranslation(['caseDetail', 'common'])
   const notFound = error instanceof ApiError && error.code === 'CASE_NOT_FOUND'
   const navigate = useNavigate()
 
@@ -47,19 +51,23 @@ export function CaseDetailFailed({
         )}
       </div>
       <p className="mb-2 text-lead font-semibold">
-        {notFound ? 'Kasus ini tidak ditemukan' : 'Detail kasus tidak dapat dimuat'}
+        {notFound
+          ? t('caseDetail:placeholder.notFoundTitle')
+          : t('caseDetail:placeholder.failedTitle')}
       </p>
       <p className="mx-auto mb-5 max-w-[560px] text-body-lg text-ink-2 text-pretty">
         {notFound
-          ? 'Pengenal kasus ini tidak ada dalam sistem. Kemungkinan tautannya sudah usang, atau basis data disaring ulang sejak tautan itu dibuat.'
-          : `${withStop(error?.message ?? 'Layanan tidak merespons')} Ini bukan berarti kasusnya tidak ada; detailnya memang tidak sampai ke layar ini.`}
+          ? t('caseDetail:placeholder.notFoundBody')
+          : t('caseDetail:placeholder.failedBody', {
+              detail: withStop(error?.message ?? t('caseDetail:banner.serviceDown')),
+            })}
       </p>
       {notFound ? (
-        <Button onClick={() => navigate('/')}>Kembali ke antrean</Button>
+        <Button onClick={() => navigate('/')}>{t('caseDetail:placeholder.backToQueue')}</Button>
       ) : (
         <Button onClick={onRetry}>
           <RotateCw />
-          Coba lagi
+          {t('common:action.retry')}
         </Button>
       )}
     </div>

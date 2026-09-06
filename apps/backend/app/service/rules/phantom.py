@@ -11,6 +11,7 @@ instead of letting it climb toward "confirm anomaly".
 from __future__ import annotations
 
 from tilik_domain.canonical import ClaimLine, ResourceRef, ResourceType
+from tilik_domain.notes import NoteCode
 from tilik_domain.reasons import ReasonCode, RiskMode
 
 from app.service.evidence_graph import GapReason
@@ -86,11 +87,8 @@ class PhantomRule:
             rule_id=self.rule_id,
             evidence=tuple(evidence),
             counter_evidence=(
-                CounterEvidence(
-                    note_id=(
-                        "Penandaan keliru-input bisa berarti koreksi administratif, "
-                        "bukan layanan yang tidak diberikan."
-                    ),
+                CounterEvidence.of(
+                    NoteCode.ENTERED_IN_ERROR_MAY_BE_CORRECTION,
                     refs=(target,) if target is not None else (),
                 ),
             ),
@@ -116,12 +114,8 @@ def _incompleteness_notes(context: RuleContext) -> tuple[CounterEvidence, ...]:
     search properly".
     """
     notes: list[CounterEvidence] = [
-        CounterEvidence(
-            note_id=(
-                "Bundel ini hanya memuat bukti yang ikut terkirim. Tidak ditemukannya "
-                "catatan di sini bukan bukti bahwa layanan tidak diberikan — catatan "
-                "bisa berada di berkas fisik atau sistem lain."
-            ),
+        CounterEvidence.of(
+            NoteCode.BUNDLE_HOLDS_ONLY_WHAT_WAS_SENT,
             refs=(
                 ResourceRef(
                     resource_type=ResourceType.ENCOUNTER,
@@ -138,21 +132,13 @@ def _incompleteness_notes(context: RuleContext) -> tuple[CounterEvidence, ...]:
     )
     if dangling:
         notes.append(
-            CounterEvidence(
-                note_id=(
-                    "Bundel ini memuat rujukan yang tidak dapat diselesaikan, "
-                    "sehingga bukti pendukung mungkin ada tetapi tidak ikut terkirim."
-                ),
+            CounterEvidence.of(
+                NoteCode.UNRESOLVABLE_REFERENCES_PRESENT,
                 refs=dangling,
             )
         )
     if not context.bundle.encounters:
         notes.append(
-            CounterEvidence(
-                note_id=(
-                    "Bundel tidak memuat data kunjungan, sehingga bukti klinis "
-                    "tidak dapat ditelusuri sama sekali."
-                )
-            )
+            CounterEvidence.of(NoteCode.NO_ENCOUNTER_DATA_AT_ALL)
         )
     return tuple(notes)

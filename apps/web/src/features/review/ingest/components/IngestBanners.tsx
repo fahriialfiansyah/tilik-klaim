@@ -1,3 +1,5 @@
+import { Trans, useTranslation } from 'react-i18next'
+
 import { AlertTriangle, ArrowRight, Info, RotateCw } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
@@ -14,6 +16,8 @@ import { withStop } from '@/features/review/shared/format'
  * because the amber alone would read as "something is wrong with this claim".
  */
 export function CompletenessBanner({ notes }: { readonly notes: readonly string[] }) {
+  const { t } = useTranslation('ingest')
+
   return (
     <div
       role="note"
@@ -22,10 +26,12 @@ export function CompletenessBanner({ notes }: { readonly notes: readonly string[
       <p className="mb-2 flex items-start gap-3 text-small leading-relaxed text-pretty">
         <AlertTriangle aria-hidden className="mt-[2px] size-4 shrink-0 text-notice" />
         <span>
-          <span className="font-semibold text-notice">Catatan kelengkapan berkas. </span>
-          Bentuk berkas sah; sebagian sumber daya pendukung memang tidak dikirim. Ketiadaannya
-          menurunkan tingkat keyakinan dan mengarah ke &ldquo;minta bukti tambahan&rdquo;,{' '}
-          <strong>bukan</strong> menaikkan sinyal risiko.
+          <span className="font-semibold text-notice">{t('banner.completenessTitle')}</span>
+          <Trans
+            i18nKey="banner.completenessBody"
+            ns="ingest"
+            components={[<span key="0" />, <strong key="1" />]}
+          />
         </span>
       </p>
       <ul className="ms-[28px] space-y-1">
@@ -54,6 +60,7 @@ export function DuplicateBanner({
   readonly caseId: string
   readonly inputHash: string
 }) {
+  const { t } = useTranslation('ingest')
   const navigate = useNavigate()
   return (
     <div
@@ -63,7 +70,7 @@ export function DuplicateBanner({
       <Info aria-hidden className="mt-[2px] size-[18px] shrink-0 text-brand" />
       <div className="min-w-0 flex-1">
         <p className="mb-[3px] font-semibold">
-          Bundel dengan sidik digital identik pernah disaring
+          {t('banner.duplicateTitle')}
         </p>
         <p className="text-small leading-relaxed text-ink-2 text-pretty">
           Sidik{' '}
@@ -80,7 +87,7 @@ export function DuplicateBanner({
         className="shrink-0"
         onClick={() => navigate(`/cases/${encodeURIComponent(caseId)}`)}
       >
-        Buka kasus
+        {t('banner.openCase')}
         <ArrowRight />
       </Button>
     </div>
@@ -103,6 +110,7 @@ export function ServiceErrorBanner({
   readonly error: Error | null
   readonly onRetry: () => void
 }) {
+  const { t } = useTranslation('ingest')
   return (
     <div
       role="alert"
@@ -112,7 +120,9 @@ export function ServiceErrorBanner({
       <div className="min-w-0 flex-1">
         <p className="mb-[3px] font-semibold text-band-conflict">{title}</p>
         <p className="text-small leading-relaxed text-ink-2 text-pretty">
-          {withStop(error?.message ?? 'Layanan tidak merespons')} Tidak ada kasus yang dibuat.
+          {t('banner.serviceBody', {
+            detail: withStop(error?.message ?? t('banner.serviceDown')),
+          })}
         </p>
       </div>
       <Button variant="outline" size="sm" className="shrink-0" onClick={onRetry}>
@@ -131,6 +141,7 @@ export function ServiceErrorBanner({
  * see that the screen knows it, and a way back if they navigated here by accident.
  */
 export function EvidenceRequestBanner({ caseId }: { readonly caseId: string }) {
+  const { t } = useTranslation('ingest')
   const navigate = useNavigate()
   return (
     <div
@@ -139,11 +150,9 @@ export function EvidenceRequestBanner({ caseId }: { readonly caseId: string }) {
     >
       <Info aria-hidden className="mt-[2px] size-[18px] shrink-0 text-brand" />
       <div className="min-w-0 flex-1">
-        <p className="mb-[3px] font-semibold">Melanjutkan permintaan bukti tambahan</p>
+        <p className="mb-[3px] font-semibold">{t('banner.evidenceRequestTitle')}</p>
         <p className="text-small leading-relaxed text-ink-2 text-pretty">
-          Anda datang dari sebuah kasus yang menunggu bukti. Masukkan berkas versi baru di
-          bawah; setelah disaring ulang, kasus itu kembali ke status tersaring dengan riwayat
-          alasannya tetap tersimpan.
+          {t('banner.evidenceRequestBody')}
         </p>
       </div>
       <Button
@@ -152,7 +161,7 @@ export function EvidenceRequestBanner({ caseId }: { readonly caseId: string }) {
         className="shrink-0"
         onClick={() => navigate(`/cases/${encodeURIComponent(caseId)}`)}
       >
-        Buka kasus
+        {t('banner.openCase')}
         <ArrowRight />
       </Button>
     </div>

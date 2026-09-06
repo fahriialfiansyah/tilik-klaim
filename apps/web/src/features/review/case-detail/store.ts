@@ -1,3 +1,4 @@
+import i18n from '@/modules/i18n/config'
 import { create } from 'zustand'
 
 import type {
@@ -209,10 +210,10 @@ export function isSavable(draft: DispositionDraft): boolean {
 /** Which field is still missing, so the disabled button says why rather than just sitting there. */
 export function missingFieldLabel(draft: DispositionDraft): string | null {
   if (draft.action === null) {
-    return 'Pilih satu tindakan terlebih dahulu.'
+    return i18n.t('caseDetail:draft.pickAction')
   }
   if (draft.structuredReason.trim().length === 0) {
-    return 'Pilih alasan terstruktur. Tidak ada disposisi tanpa alasan.'
+    return i18n.t('caseDetail:draft.pickReason')
   }
   return null
 }

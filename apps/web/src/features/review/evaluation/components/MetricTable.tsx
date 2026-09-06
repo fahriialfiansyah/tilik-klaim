@@ -1,4 +1,5 @@
-import { NOT_MEASURED } from '@/features/review/evaluation/labels'
+import { useTranslation } from 'react-i18next'
+
 import { formatCount, formatMetric } from '@/features/review/evaluation/format'
 
 export type MetricColumn = {
@@ -35,6 +36,7 @@ export function MetricTable({
   readonly columns: readonly MetricColumn[]
   readonly rows: readonly MetricRow[]
 }) {
+  const { t } = useTranslation('evaluation')
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-small">
@@ -67,7 +69,7 @@ export function MetricTable({
                 return (
                   <td key={column.key} className="py-2 pr-3 font-mono tabular-nums text-ink">
                     {rendered ?? (
-                      <span className="font-sans text-ink-2 italic">{NOT_MEASURED}</span>
+                      <span className="font-sans text-ink-2 italic">{t('notMeasured')}</span>
                     )}
                   </td>
                 )

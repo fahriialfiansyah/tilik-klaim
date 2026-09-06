@@ -16,6 +16,7 @@ from enum import StrEnum
 from statistics import median
 
 from tilik_domain.canonical import CanonicalBundle, DocumentRef, ResourceRef
+from tilik_domain.locale import DEFAULT_LOCALE, Locale
 from tilik_domain.reasons import CaseState, PriorityBand, ReasonCode, RiskMode, definition_for
 from tilik_domain.versioning import EngineIdentity
 
@@ -35,6 +36,7 @@ from app.dto.common import (
     ReasonDto,
     VersionStamp,
 )
+from app.service import text
 from app.service.case_sources import build_comparisons, build_source_index
 from app.service.rules.registry import ReasonHit
 from app.store.bundles import IngestionRecord
@@ -240,14 +242,20 @@ def order_by_strength(hits: tuple[ReasonHit, ...]) -> tuple[ReasonHit, ...]:
     )
 
 
-def to_summary(case: CaseRecord) -> CaseSummary:
-    """One queue row. Reason sentence first, and no narrative text anywhere."""
+def to_summary(case: CaseRecord, locale: Locale = DEFAULT_LOCALE) -> CaseSummary:
+    """One queue row. Reason sentence first, and no narrative text anywhere.
+
+    The sentence is resolved from the catalog by the hit's `code`, not read off the hit's own
+    stored `sentence_id`. Both say the same thing in Indonesian; only the catalog can also say
+    it in English, and re-screening a case to change its language would answer a different
+    question than the reviewer asked.
+    """
     reasons = order_by_strength(case.result.reasons)
     return CaseSummary(
         reason_sentence=(
-            reasons[0].sentence_id
+            definition_for(reasons[0].code).sentence(locale)
             if reasons
-            else "Tidak ada risiko teramati pada versi mesin ini."
+            else text.no_observed_risk(locale)
         ),
         modes=tuple(dict.fromkeys(hit.mode for hit in reasons)),
         case_id=case.case_id,
@@ -291,13 +299,14 @@ def queue_metrics(records: tuple[CaseRecord, ...], identity: EngineIdentity) -> 
 # --------------------------------------------------------------------------------------
 
 
-def to_reason_dto(hit: ReasonHit) -> ReasonDto:
+def to_reason_dto(hit: ReasonHit, locale: Locale = DEFAULT_LOCALE) -> ReasonDto:
+    definition = definition_for(hit.code)
     return ReasonDto(
         code=hit.code,
         mode=hit.mode,
-        sentence=hit.sentence_id,
+        sentence=definition.sentence(locale),
         deterministic=hit.deterministic,
-        expected_support=definition_for(hit.code).expected_support,
+        expected_support=definition.expected_support,
         evidence=tuple(_ref_dto(ref) for ref in hit.evidence),
         counter_evidence=tuple(
             _ref_dto(ref) for note in hit.counter_evidence for ref in note.refs
@@ -305,7 +314,7 @@ def to_reason_dto(hit: ReasonHit) -> ReasonDto:
         # The sentence is the argument; the refs alone are only a place to look. Both ship.
         counter_evidence_notes=tuple(
             CounterEvidenceDto(
-                note=note.note_id, refs=tuple(_ref_dto(ref) for ref in note.refs)
+                note=note.render(locale), refs=tuple(_ref_dto(ref) for ref in note.refs)
             )
             for note in hit.counter_evidence
         ),
@@ -328,6 +337,7 @@ def to_detail(
     history: tuple[CanonicalBundle, ...] = (),
     peer_documents: tuple[DocumentRef, ...] = (),
     case_id_for_bundle: Callable[[str], str | None] | None = None,
+    locale: Locale = DEFAULT_LOCALE,
 ) -> CaseDetailResponse:
     """Everything needed to understand and disposition one case.
 
@@ -338,13 +348,13 @@ def to_detail(
     """
     result = case.result
     hits = order_by_strength(result.reasons)
-    reasons = tuple(to_reason_dto(hit) for hit in hits)
+    reasons = tuple(to_reason_dto(hit, locale) for hit in hits)
     bundle = ingestion.bundle if ingestion else None
 
     lines = _line_views(case, bundle)
     line_count = len(lines) if lines else None
     encounter_start, encounter_end = _encounter_window(bundle, case)
-    timeline = _timeline(bundle, case)
+    timeline = _timeline(bundle, case, locale)
     timeline_refs = tuple(
         ResourceRef(
             resource_type=event.resource.resource_type, resource_id=event.resource.resource_id
@@ -365,7 +375,7 @@ def to_detail(
         encounter_end=encounter_end,
         primary_reason=reasons[0] if reasons else None,
         reasons=reasons,
-        band=_band_explanation(case),
+        band=_band_explanation(case, locale),
         lines=lines,
         timeline=timeline,
         comparisons=build_comparisons(
@@ -415,7 +425,7 @@ def _encounter_window(bundle, case: CaseRecord) -> tuple[datetime, datetime | No
     return case.screened_at, None
 
 
-def _timeline(bundle, case: CaseRecord) -> tuple[TimelineEvent, ...]:
+def _timeline(bundle, case: CaseRecord, locale: Locale = DEFAULT_LOCALE) -> tuple[TimelineEvent, ...]:
     """The episode in time order, so a reviewer can see what happened when."""
     if bundle is None:
         return ()
@@ -425,7 +435,7 @@ def _timeline(bundle, case: CaseRecord) -> tuple[TimelineEvent, ...]:
             TimelineEvent(
                 occurred_at=encounter.start_at,
                 kind="encounter",
-                label=f"Kunjungan {encounter.encounter_id}",
+                label=text.encounter_event(encounter.encounter_id, locale),
                 resource=_ref_dto(
                     ResourceRef(resource_type="Encounter", resource_id=encounter.encounter_id)
                 ),
@@ -436,7 +446,7 @@ def _timeline(bundle, case: CaseRecord) -> tuple[TimelineEvent, ...]:
             TimelineEvent(
                 occurred_at=procedure.performed_at,
                 kind="procedure",
-                label=f"Tindakan {procedure.code} ({procedure.status})",
+                label=text.procedure_event(procedure.code, str(procedure.status), locale),
                 resource=_ref_dto(
                     ResourceRef(resource_type="Procedure", resource_id=procedure.procedure_id)
                 ),
@@ -447,7 +457,7 @@ def _timeline(bundle, case: CaseRecord) -> tuple[TimelineEvent, ...]:
             TimelineEvent(
                 occurred_at=medication.occurred_at,
                 kind="medication",
-                label=f"Obat {medication.code}",
+                label=text.medication_event(medication.code, locale),
                 resource=_ref_dto(
                     ResourceRef(resource_type="Medication", resource_id=medication.medication_id)
                 ),
@@ -456,18 +466,12 @@ def _timeline(bundle, case: CaseRecord) -> tuple[TimelineEvent, ...]:
     return tuple(sorted(events, key=lambda event: event.occurred_at))
 
 
-def _band_explanation(case: CaseRecord) -> BandExplanation:
+def _band_explanation(case: CaseRecord, locale: Locale = DEFAULT_LOCALE) -> BandExplanation:
     result = case.result
     caps: list[str] = []
     if result.reasons and all(not hit.deterministic for hit in result.reasons):
-        caps.append("Kemiripan teks saja tidak pernah mencapai pita tertinggi.")
+        caps.append(text.cap_similarity_only(locale))
     if case.completeness_notes:
-        caps.append(
-            f"{len(case.completeness_notes)} catatan kelengkapan menurunkan tingkat keyakinan."
-        )
-    basis = (
-        "Tidak ada sinyal yang teramati pada versi mesin ini."
-        if not result.reasons
-        else f"{len(result.reasons)} alasan teramati; pita mengikuti alasan terkuat."
-    )
+        caps.append(text.cap_completeness_notes(len(case.completeness_notes), locale))
+    basis = text.band_basis(len(result.reasons), locale)
     return BandExplanation(band=result.band, basis=basis, caps_applied=tuple(caps))

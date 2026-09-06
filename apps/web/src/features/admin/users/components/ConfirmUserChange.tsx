@@ -1,16 +1,18 @@
 import { ArrowRight, Minus, Plus } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
-import { ROLE_LABEL } from '@/features/auth/labels'
+import { useRoleLabel } from '@/features/auth/labels'
 import { capabilityChange, capabilityLabel } from '@/features/auth/matrix'
 import type { Role, StaffUser } from '@/features/auth/types'
 import { useLastPresent } from '@/lib/useLastPresent'
+import i18n from '@/modules/i18n/config'
 
 /**
  * What the administrator is about to do, before they do it.
  *
- * A dropdown that says "Peninjau Senior" tells you the name of a role. It does not tell you that
+ * A dropdown that says "Senior Reviewer" tells you the name of a role. It does not tell you that
  * choosing it hands someone the authority to reopen a case another reviewer dismissed — that is
  * in ADR-0006 § 2, which the person clicking is not reading. This dialog says it in the same
  * words the login screen uses, read off the same generated matrix, so the sentence cannot
@@ -35,6 +37,7 @@ export function ConfirmUserChange({
   readonly onCancel: () => void
   readonly onConfirm: (change: PendingChange) => void
 }) {
+  const { t } = useTranslation('admin')
   // Kept alive for the closing frame so Radix can return focus to the control that opened this.
   // See `lib/useLastPresent.ts` — the alternative loses focus to `<body>` on every close.
   const shown = useLastPresent(change)
@@ -54,10 +57,10 @@ export function ConfirmUserChange({
         </div>
         <div className="flex items-center justify-end gap-[10px] border-t border-line px-5 py-4">
           <Button type="button" variant="outline" onClick={onCancel}>
-            Batal
+            {i18n.t('common:action.cancel')}
           </Button>
           <Button type="button" onClick={() => shown && onConfirm(shown)}>
-            {shown?.kind === 'role' ? 'Ubah peran' : 'Nonaktifkan'}
+            {shown?.kind === 'role' ? t('confirm.confirmRole') : t('confirm.confirmDeactivate')}
           </Button>
         </div>
       </DialogContent>
@@ -66,45 +69,50 @@ export function ConfirmUserChange({
 }
 
 function RoleChangeBody({ user, role }: { readonly user: StaffUser; readonly role: Role }) {
+  const { t } = useTranslation('admin')
+  const roleLabel = useRoleLabel()
   const { granted, revoked } = capabilityChange(user.role, role)
 
   return (
     <>
       <p className="flex flex-wrap items-center gap-2 text-body text-ink">
-        <RoleChip>{ROLE_LABEL[user.role]}</RoleChip>
+        <RoleChip>{roleLabel(user.role)}</RoleChip>
         <ArrowRight aria-hidden className="size-4 text-ink-3" />
-        <RoleChip>{ROLE_LABEL[role]}</RoleChip>
+        <RoleChip>{roleLabel(role)}</RoleChip>
       </p>
 
       <dl className="mt-4 space-y-3">
         <CapabilityList
-          heading="Kemampuan yang diberikan"
+          heading={t('confirm.granted')}
           capabilities={granted}
           tone="grant"
-          empty="Tidak ada kemampuan baru."
+          empty={t('confirm.grantedEmpty')}
         />
         <CapabilityList
-          heading="Kemampuan yang dicabut"
+          heading={t('confirm.revoked')}
           capabilities={revoked}
           tone="revoke"
-          empty="Tidak ada kemampuan yang dicabut."
+          empty={t('confirm.revokedEmpty')}
         />
       </dl>
 
-      <p className="mt-4 text-meta text-ink-3 text-pretty">
-        Daftar ini dibaca dari matriks akses yang dihasilkan dari server, bukan ditulis tangan,
-        sama dengan yang ditampilkan halaman masuk.
-      </p>
+      <p className="mt-4 text-meta text-ink-3 text-pretty">{t('confirm.generatedNote')}</p>
     </>
   )
 }
 
 function DeactivateBody({ user }: { readonly user: StaffUser }) {
+  const { t } = useTranslation('admin')
+
   return (
     <>
       <p className="text-body text-ink text-pretty">
-        <strong className="font-semibold">{user.full_name}</strong> tidak akan dapat masuk lagi.
-        Percobaan masuk berikutnya ditolak dengan alasan yang menyebut akun ini dinonaktifkan.
+        <Trans
+          i18nKey="confirm.deactivateLede"
+          ns="admin"
+          values={{ name: user.full_name }}
+          components={[<span key="0" />, <strong key="1" className="font-semibold" />]}
+        />
       </p>
       <ul className="mt-3 space-y-[6px] text-meta text-ink-2">
         {/*
@@ -112,9 +120,9 @@ function DeactivateBody({ user }: { readonly user: StaffUser }) {
           access to a single case, by design (ADR-0006 § 2). Leaving them to guess what happens
           to in-flight work is how a reversible act gets treated as an irreversible one.
         */}
-        <li>Disposisi yang sudah dicatat tetap tercatat atas namanya dan tidak berubah.</li>
-        <li>Tidak ada kasus yang dialihkan atau ditutup oleh tindakan ini.</li>
-        <li>Anda dapat mengaktifkannya kembali kapan saja; keduanya tercatat di riwayat.</li>
+        <li>{t('confirm.deactivatePoint1')}</li>
+        <li>{t('confirm.deactivatePoint2')}</li>
+        <li>{t('confirm.deactivatePoint3')}</li>
       </ul>
     </>
   )
@@ -170,14 +178,17 @@ function RoleChip({ children }: { readonly children: React.ReactNode }) {
   )
 }
 
+/**
+ * The dialog's own title and description, which `DialogContent` takes as plain strings rather
+ * than nodes — so they are resolved through the i18next instance instead of a hook.
+ */
 function titleFor(change: PendingChange): string {
-  return change.kind === 'role'
-    ? `Ubah peran ${change.user.full_name}?`
-    : `Nonaktifkan akun ${change.user.full_name}?`
+  const key = change.kind === 'role' ? 'admin:confirm.roleTitle' : 'admin:confirm.deactivateTitle'
+  return i18n.t(key as 'admin:confirm.roleTitle', { name: change.user.full_name })
 }
 
 function descriptionFor(change: PendingChange): string {
   return change.kind === 'role'
-    ? 'Perubahan ini mengubah apa yang boleh dilakukan orang ini, dan tercatat permanen di riwayat.'
-    : 'Akun tetap ada beserta riwayatnya; yang berubah hanya kemampuannya untuk masuk.'
+    ? i18n.t('admin:confirm.roleDescription')
+    : i18n.t('admin:confirm.deactivateDescription')
 }

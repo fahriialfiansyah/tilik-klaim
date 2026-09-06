@@ -19,6 +19,9 @@ from typing import Protocol
 
 from pydantic import BaseModel, ConfigDict
 from tilik_domain.canonical import CanonicalBundle, ResourceRef
+from tilik_domain.locale import DEFAULT_LOCALE, Locale
+from tilik_domain.notes import NoteCode
+from tilik_domain.notes import render as render_note
 from tilik_domain.reasons import ReasonCode, RiskMode, definition_for
 from tilik_domain.versioning import RULESET_VERSION
 
@@ -31,8 +34,56 @@ class CounterEvidence(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     note_id: str
-    """Stable identifier so the UI renders working language, never model jargon."""
+    """The argument in Indonesian, composed when the rule fired.
+
+    Kept as the stored, canonical text so every case already screened stays readable and every
+    existing assertion keeps holding. It is no longer what the API renders when a reader asks
+    for English — `note_code` is.
+    """
+    note_code: NoteCode | None = None
+    """Which catalogued argument this is, so it can be rendered in either language.
+
+    Optional only for records screened before the catalog existed. Rules raised from here on
+    always set it; `test_rules_gold` asserts every note a rule emits carries one.
+    """
+    note_params: tuple[tuple[str, str], ...] = ()
+    """Facts the note's template needs, as ordered pairs.
+
+    Ordered rather than a dict for the same reason `component_scores` is: the hit is frozen and
+    stored, and two screenings of one bundle must serialise identically.
+    """
     refs: tuple[ResourceRef, ...] = ()
+
+    def render(self, locale: Locale = DEFAULT_LOCALE) -> str:
+        """This argument in one language, falling back to the stored Indonesian sentence."""
+        return render_note(self.note_code, self.note_id, locale, **dict(self.note_params))
+
+    @classmethod
+    def of(
+        cls,
+        code: NoteCode,
+        *,
+        refs: tuple[ResourceRef, ...] = (),
+        **params: object,
+    ) -> CounterEvidence:
+        """Build a counter-evidence note from the catalog.
+
+        Rules name the argument and supply its facts; the wording comes from `notes.py`. This
+        is the only way a rule should construct one — writing the sentence at the call site
+        again would put a second copy of the catalog in the rules, free to drift from the copy
+        the API renders, and the reviewer would have no way to tell which one they were reading.
+
+        `note_id` is filled with the Indonesian rendering because that is the canonical stored
+        text: the hit is persisted, and a case must stay readable even if the catalog is later
+        reworded. Re-rendering by code is what serves any *other* language.
+        """
+        stringified = tuple(sorted((key, str(value)) for key, value in params.items()))
+        return cls(
+            note_id=render_note(code, "", DEFAULT_LOCALE, **params),
+            note_code=code,
+            note_params=stringified,
+            refs=refs,
+        )
 
 
 class ReasonHit(BaseModel):

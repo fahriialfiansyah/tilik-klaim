@@ -1,14 +1,15 @@
 import {
-  ACTION_LABELS,
-  RESOURCE_LABELS,
   actorLabel,
   auditKindLabel,
+  useActionLabel,
+  useResourceLabel,
 } from '@/features/review/case-detail/labels'
 import type { AuditEvent } from '@/features/review/case-detail/types'
 import type { LoadStatus } from '@/features/review/case-detail/useCaseDetail'
 import { ExpandableText } from '@/features/review/shared/components/ExpandableText'
 import { formatDateTime } from '@/features/review/shared/format'
-import { STATE_LABELS } from '@/features/review/shared/labels'
+import { useStateLabel } from '@/features/review/shared/labels'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 
 /**
@@ -28,13 +29,17 @@ export function AuditTimeline({
   readonly events: readonly AuditEvent[]
   readonly status: LoadStatus
 }) {
+  const { t } = useTranslation('caseDetail')
+  const stateLabel = useStateLabel()
+  const actionLabel = useActionLabel()
+  const resourceLabel = useResourceLabel()
   return (
     <section
-      aria-label="Riwayat audit"
+      aria-label={t('auditPanel.sectionLabel')}
       className="max-w-[900px] rounded-lg border border-line bg-card p-[22px] shadow-panel"
     >
       <p className="mb-1 text-lead font-semibold">
-        Riwayat audit kasus{' '}
+        {t('auditPanel.heading')}{' '}
         <span data-numeric className="font-mono">
           {caseId.replace(/^case_/, '').slice(0, 14)}
         </span>
@@ -46,7 +51,7 @@ export function AuditTimeline({
 
       {status === 'loading' ? (
         <p aria-busy="true" className="text-small text-ink-3">
-          Memuat riwayat…
+          {t('auditPanel.loading')}
         </p>
       ) : null}
 
@@ -59,7 +64,7 @@ export function AuditTimeline({
 
       {status === 'ready' && events.length === 0 ? (
         <p className="text-small text-ink-3">
-          Belum ada kejadian yang tercatat untuk kasus ini.
+          {t('auditPanel.empty')}
         </p>
       ) : null}
 
@@ -83,13 +88,16 @@ export function AuditTimeline({
             </span>
             <span className="min-w-0 flex-1 pb-[22px]">
               <span className="block text-body font-semibold">
-                {event.action ? ACTION_LABELS[event.action] : auditKindLabel(event.event_kind)}
+                {event.action ? actionLabel(event.action) : auditKindLabel(event.event_kind)}
               </span>
               <span className="mt-[3px] block text-small leading-relaxed text-ink-2 text-pretty">
                 {actorLabel(event.actor_role)}
                 {event.structured_reason ? ` · ${event.structured_reason}` : ''}
                 {event.state_before && event.state_after
-                  ? ` · ${STATE_LABELS[event.state_before]} → ${STATE_LABELS[event.state_after]}`
+                  ? t('audit.transition', {
+                      before: stateLabel(event.state_before),
+                      after: stateLabel(event.state_after),
+                    })
                   : ''}
               </span>
               {event.note ? (
@@ -99,17 +107,22 @@ export function AuditTimeline({
               ) : null}
               {event.evidence.length > 0 ? (
                 <span className="mt-[6px] block text-meta text-ink-3">
-                  Bukti diminta:{' '}
+                  {t('auditPanel.evidenceRequested')}
                   {event.evidence
-                    .map((ref) => RESOURCE_LABELS[ref.resource_type] ?? ref.resource_type)
+                    .map((ref) => resourceLabel(ref.resource_type))
                     .join(', ')}
                 </span>
               ) : null}
               <span data-numeric className="mt-[5px] block font-mono text-micro text-ink-3">
-                {auditKindLabel(event.event_kind)} · aturan v
-                {event.versions.ruleset_version} · mesin v{event.versions.engine_version}
+                {auditKindLabel(event.event_kind)}
+                {t('auditPanel.versions', {
+                  ruleset: event.versions.ruleset_version,
+                  engine: event.versions.engine_version,
+                })}
                 {event.supersedes_event_id
-                  ? ` · menggantikan ${event.supersedes_event_id.slice(0, 8)}`
+                  ? t('auditPanel.supersedes', {
+                      event: event.supersedes_event_id.slice(0, 8),
+                    })
                   : ''}
               </span>
             </span>

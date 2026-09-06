@@ -1,11 +1,13 @@
+import { useTranslation } from 'react-i18next'
+
 import { useState } from 'react'
 
-import { ACTION_LABELS, componentLabel } from '@/features/review/case-detail/labels'
+import { componentLabel, useActionLabel } from '@/features/review/case-detail/labels'
 import type { CaseDetail, DispositionAction } from '@/features/review/case-detail/types'
 import { DISPOSITION_ACTIONS } from '@/features/review/case-detail/types'
 import { BAND_RAIL, BandBadge } from '@/features/review/shared/components/BandBadge'
 import { formatAmount, formatDateRange } from '@/features/review/shared/format'
-import { STATE_LABELS } from '@/features/review/shared/labels'
+import { useStateLabel } from '@/features/review/shared/labels'
 import { cn } from '@/lib/utils'
 
 const MICRO_LABEL = 'font-mono text-micro font-semibold tracking-label text-ink-3'
@@ -37,13 +39,16 @@ export function CaseHeader({
   readonly detail: CaseDetail
   readonly onPickAction: (action: DispositionAction) => void
 }) {
+  const { t } = useTranslation('caseDetail')
+  const stateLabel = useStateLabel()
+  const actionLabel = useActionLabel()
   const [basisOpen, setBasisOpen] = useState(false)
   const primary = detail.primary_reason
   const components = Object.entries(primary?.component_scores ?? {})
 
   return (
     <section
-      aria-label="Kepala kasus"
+      aria-label={t('header.sectionLabel')}
       className="relative mb-[14px] overflow-hidden rounded-lg border border-line bg-card px-[22px] py-5 shadow-panel"
     >
       <span
@@ -67,15 +72,15 @@ export function CaseHeader({
       */}
       <div className="mb-4 flex flex-wrap items-start justify-between gap-x-6 gap-y-4 border-b border-line pb-4">
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-[26px] gap-y-4">
-        <Fact label="PENGENAL KASUS">
+        <Fact label={t('header.caseId')}>
           <span data-numeric className="font-mono text-body-lg">
             {detail.case_id.replace(/^case_/, '').slice(0, 14)}
           </span>
         </Fact>
-        <Fact label="NOMINAL KLAIM">
+        <Fact label={t('header.amount')}>
           <span data-numeric>{formatAmount(detail.total_amount)}</span>
         </Fact>
-        <Fact label="RENTANG KUNJUNGAN">
+        <Fact label={t('header.encounterRange')}>
           <span data-numeric className="text-body">
             {formatDateRange(detail.encounter_start, detail.encounter_end)}
           </span>
@@ -88,7 +93,7 @@ export function CaseHeader({
         <div>
           <p className={cn('mb-[2px]', MICRO_LABEL)}>STATUS</p>
           <span className="inline-block rounded-md border border-line bg-sunk px-[10px] py-[3px] text-small font-semibold">
-            {STATE_LABELS[detail.state]}
+            {stateLabel(detail.state)}
           </span>
         </div>
         <span className="rounded-md border border-notice-line bg-notice-bg px-[10px] py-[3px] text-small font-semibold text-notice">
@@ -104,18 +109,18 @@ export function CaseHeader({
               onClick={() => onPickAction(action)}
               className="rounded-md border border-line bg-card px-[15px] py-[9px] text-small font-semibold transition-colors duration-[var(--motion-fast)] hover:border-brand hover:text-brand"
             >
-              {ACTION_LABELS[action]}
+              {actionLabel(action)}
             </button>
           ))}
         </div>
       </div>
 
       {/* Widget 5 — the reason, first. */}
-      <p className={cn('mb-[6px]', MICRO_LABEL)}>ALASAN UTAMA</p>
+      <p className={cn('mb-[6px]', MICRO_LABEL)}>{t('header.primaryReason')}</p>
       <h1 className="mb-[14px] max-w-[1000px] text-title font-semibold tracking-title text-pretty">
         {primary
           ? primary.sentence
-          : 'Tidak ada risiko teramati pada versi mesin ini. Ini bukan pernyataan bahwa klaimnya bersih.'}
+          : t('header.noRisk')}
       </h1>
 
       {/* Widget 6 — the band and its components, below the sentence and collapsed by default. */}

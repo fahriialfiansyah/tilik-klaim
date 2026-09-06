@@ -1,6 +1,7 @@
 import { Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
-import { PHASE_LABELS, toolLabel } from '@/features/review/case-briefing/labels'
+import { toolLabel, usePhaseLabel } from '@/features/review/case-briefing/labels'
 import type { BriefingState } from '@/features/review/case-briefing/events'
 
 /**
@@ -9,12 +10,14 @@ import type { BriefingState } from '@/features/review/case-briefing/events'
  * reader hears progress without losing its place.
  */
 export function BriefingProgress({ state }: { readonly state: BriefingState }) {
+  const { t } = useTranslation('briefing')
+  const phaseLabel = usePhaseLabel()
   const isStreaming = state.status === 'streaming'
   return (
     <div role="status" aria-live="polite" className="rounded-md border border-line bg-sunk px-[13px] py-[10px]">
       <p className="flex items-center gap-2 text-meta text-ink-2">
         {isStreaming ? <Loader2 aria-hidden className="size-3 animate-spin" /> : null}
-        {state.phase ? PHASE_LABELS[state.phase] : 'Menunggu'}
+        {state.phase ? phaseLabel(state.phase) : t('waiting')}
         {state.phaseDetail && state.phase !== 'DONE' ? (
           <span className="text-ink-3">· {toolLabel(state.phaseDetail)}</span>
         ) : null}

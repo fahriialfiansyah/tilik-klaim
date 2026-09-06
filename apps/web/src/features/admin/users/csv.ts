@@ -1,6 +1,7 @@
-import { EVENT_LABEL } from '@/features/admin/users/labels'
 import type { UserAuditEvent } from '@/features/admin/users/types'
-import { ROLE_LABEL } from '@/features/auth/labels'
+import { roleLabel } from '@/features/auth/labels'
+import i18n from '@/modules/i18n/config'
+import { translateOr } from '@/modules/i18n/translateOr'
 import { isRole } from '@/features/auth/types'
 import { formatDateTime } from '@/lib/datetime'
 
@@ -11,33 +12,40 @@ import { formatDateTime } from '@/lib/datetime'
  * A panel that can only be read on screen satisfies that in the room and nowhere else — an
  * auditor asking for the trail six months from now wants a file, not a screenshot.
  *
- * Built in working language, not raw storage values: `USER_ROLE_CHANGED` / `senior_reviewer` is
+ * Built in readable words, not raw storage values: `USER_ROLE_CHANGED` / `senior_reviewer` is
  * the shape the database keeps, and a governance artefact that has to be decoded before it can
  * be read is one nobody checks. The raw `event_id` rides along as the last column so a row can
  * still be traced back to the one it came from.
+ *
+ * The whole file follows the language of the screen it was exported from, headings included — a
+ * sheet with Indonesian headings over English values is worse than either language alone.
  */
-export const AUDIT_CSV_HEADER = [
-  'Waktu',
-  'Kejadian',
-  'Petugas',
-  'Bidang',
-  'Sebelum',
-  'Sesudah',
-  'Pelaku',
-  'Peran pelaku',
-  'ID kejadian',
+const HEADER_KEYS = [
+  'occurredAt',
+  'event',
+  'target',
+  'field',
+  'before',
+  'after',
+  'actor',
+  'actorRole',
+  'eventId',
 ] as const
 
+/** The header row, resolved when the export is built rather than when the module is loaded. */
+export function auditCsvHeader(): readonly string[] {
+  return HEADER_KEYS.map((key) => translateOr(`admin:csv.header.${key}`, key))
+}
+
 /**
- * The stored field names, in working language.
+ * The stored field names, in words.
  *
- * `role` and `is_active` are column names in Postgres. Leaving them raw put two English
- * identifiers in the middle of an otherwise Indonesian sheet, and asked the reader of a
- * governance record to know the schema before they could read it.
+ * `role` and `is_active` are column names in Postgres. Leaving them raw put two schema
+ * identifiers in the middle of a governance record, and asked its reader to know the schema
+ * before they could read it.
  */
-const FIELD_LABEL: Readonly<Record<string, string>> = {
-  role: 'Peran',
-  is_active: 'Status aktif',
+function fieldLabel(field: string): string {
+  return translateOr(`admin:csv.field.${field}`, field)
 }
 
 /** Formulae in a spreadsheet start with one of these. */
@@ -49,9 +57,9 @@ export function buildAuditCsv(
 ): string {
   const rows = events.map((event) => [
     formatDateTime(event.occurred_at),
-    EVENT_LABEL[event.event_kind] ?? event.event_kind,
+    eventLabel(event.event_kind),
     nameFor(event.target_user_id),
-    FIELD_LABEL[event.field] ?? event.field,
+    fieldLabel(event.field),
     readable(event.value_before),
     readable(event.value_after),
     nameFor(event.actor_user_id),
@@ -60,7 +68,12 @@ export function buildAuditCsv(
   ])
 
   // CRLF, because a CSV opened in Excel on Windows is the realistic destination for this file.
-  return [AUDIT_CSV_HEADER, ...rows].map((row) => row.map(cell).join(',')).join('\r\n')
+  return [auditCsvHeader(), ...rows].map((row) => row.map(cell).join(',')).join('\r\n')
+}
+
+/** The event kind in words, falling back to the raw kind if the server grew one we have not named. */
+function eventLabel(kind: string): string {
+  return translateOr(`admin:event.${kind}`, kind)
 }
 
 /**
@@ -82,22 +95,26 @@ function cell(value: string): string {
   return `"${guarded.replaceAll('"', '""')}"`
 }
 
-/** Raw stored values become working language, the same way the on-screen panel reads them. */
+/**
+ * Raw stored values become readable text, the same way the on-screen panel reads them — and in
+ * the same language, so an export taken from an English screen is an English file rather than a
+ * bilingual one nobody can hand on.
+ */
 function readable(value: string | null): string {
   if (value === null) {
     return ''
   }
   if (value === 'true') {
-    return 'Aktif'
+    return i18n.t('auth:active.true')
   }
   if (value === 'false') {
-    return 'Nonaktif'
+    return i18n.t('auth:active.false')
   }
-  return isRole(value) ? ROLE_LABEL[value] : value
+  return isRole(value) ? roleLabel(value) : value
 }
 
 function readableRole(role: string): string {
-  return isRole(role) ? ROLE_LABEL[role] : role
+  return isRole(role) ? roleLabel(role) : role
 }
 
 /** `riwayat-pengguna-2026-09-05.csv` — sortable, and says what it is without being opened. */

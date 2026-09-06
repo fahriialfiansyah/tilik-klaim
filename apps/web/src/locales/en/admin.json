@@ -1,0 +1,94 @@
+{
+  "column": {
+    "name": "Name",
+    "staffCode": "Staff ID",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "lastSignIn": "Last signed in"
+  },
+  "event": {
+    "USER_ROLE_CHANGED": "Role changed",
+    "USER_DEACTIVATED": "Account deactivated",
+    "USER_REACTIVATED": "Account reactivated"
+  },
+  "neverSignedIn": "Never",
+  "selfRowNote": "You cannot change your own account",
+  "undo": {
+    "savedPrefix": "Saved: ",
+    "appendNote": "Undoing records a reversing change; the original entry stays.",
+    "action": "Undo",
+    "dismiss": "Dismiss this notice",
+    "roleBecame": "role back to {{role}}",
+    "reactivated": "account reactivated",
+    "deactivated": "account deactivated",
+    "summary": "{{name}}: {{changes}}."
+  },
+  "refusal": {
+    "withCause": "The change was not saved: {{cause}}",
+    "plain": "The change was not saved."
+  },
+  "table": {
+    "caption": "The synthetic staff roster, their roles, and their status.",
+    "you": "YOU",
+    "saving": "Saving…",
+    "roleFor": "Role for {{name}}"
+  },
+  "audit": {
+    "empty": "No change has been made to the user list yet. This history is append-only: once recorded, a change cannot be edited or deleted.",
+    "by": " · by {{name}} ({{role}})"
+  },
+  "confirm": {
+    "roleTitle": "Change {{name}}'s role?",
+    "deactivateTitle": "Deactivate {{name}}'s account?",
+    "roleDescription": "This changes what this person is allowed to do, and is recorded permanently in the history.",
+    "deactivateDescription": "The account and its history remain; only the ability to sign in changes.",
+    "confirmRole": "Change the role",
+    "confirmDeactivate": "Deactivate",
+    "granted": "Capabilities granted",
+    "grantedEmpty": "No new capabilities.",
+    "revoked": "Capabilities revoked",
+    "revokedEmpty": "No capabilities revoked.",
+    "generatedNote": "This list is read from the access matrix generated from the server rather than written by hand — the same one the sign-in page shows.",
+    "deactivateLede": "<1>{{name}}</1> will no longer be able to sign in. The next attempt is refused with a reason naming this account as deactivated.",
+    "deactivatePoint1": "Dispositions already recorded stay recorded in their name and do not change.",
+    "deactivatePoint2": "No case is reassigned or closed by this action.",
+    "deactivatePoint3": "You can reactivate them at any time; both acts are recorded in the history."
+  },
+  "csv": {
+    "header": {
+      "occurredAt": "Time",
+      "event": "Event",
+      "target": "Staff member",
+      "field": "Field",
+      "before": "Before",
+      "after": "After",
+      "actor": "Actor",
+      "actorRole": "Actor role",
+      "eventId": "Event ID"
+    },
+    "field": {
+      "role": "Role",
+      "is_active": "Active status"
+    }
+  },
+  "page": {
+    "documentTitle": "User Management · TilikKlaim",
+    "eyebrow": "STAFF ROSTER · ROLE AND STATUS",
+    "title": "User Management",
+    "lede": "Three synthetic staff accounts. Roles can be changed and accounts deactivated; there is no adding and no deleting. Every change is recorded permanently in the history below.",
+    "refusedPrefix": "Change refused: ",
+    "rosterHeading": "Staff roster",
+    "auditHeading": "User-management history",
+    "auditNewestFirst": "newest first",
+    "downloadCsv": "Download CSV",
+    "auditPending": "The history loads with the staff roster."
+  },
+  "placeholder": {
+    "loading": "Loading the user list…",
+    "emptyTitle": "No staff accounts yet",
+    "emptyBody": "The database answered but is empty. The three synthetic accounts are written by <1>{{script}}</1>. Run it, then reload this page.",
+    "failedTitle": "The user list could not be loaded",
+    "failedBody": "This does not mean there are no users. The service did not answer, or refused this request."
+  }
+}

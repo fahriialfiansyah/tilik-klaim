@@ -1,5 +1,8 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import { ProfileMenu } from '@/features/auth/components/ProfileMenu'
+import { LanguageSwitcher } from '@/modules/i18n'
 import { copyStamp, shortStamp, useEngineVersion } from '@/modules/engine-version/useEngineVersion'
 import { ThemeToggle } from '@/modules/theme/ThemeToggle'
 
@@ -12,12 +15,13 @@ import { ThemeToggle } from '@/modules/theme/ThemeToggle'
 const COPY_FEEDBACK_MS = 1600
 
 export function AppHeader() {
+  const { t } = useTranslation('common')
   const versions = useEngineVersion((state) => state.versions)
   const [copied, setCopied] = useState(false)
   const stamp = shortStamp(versions)
 
   async function onCopy() {
-    // Never show "tersalin" for a copy that did not happen: the stamp is what an operator
+    // Never show "copied" for a copy that did not happen: the stamp is what an operator
     // quotes when reporting a result. It stays on screen and selectable either way.
     if (await copyStamp(versions)) {
       setCopied(true)
@@ -37,13 +41,20 @@ export function AppHeader() {
         <button
           type="button"
           onClick={onCopy}
-          title="Salin penanda versi"
+          title={t('header.copyStamp')}
           data-numeric
           className="flex items-center gap-2 rounded-md border border-ink-inv/12 bg-ink-inv/6 px-[10px] py-[6px] font-mono text-meta text-ink-inv transition-colors hover:bg-ink-inv/14"
         >
           {stamp}
-          <span className="opacity-60">{copied ? 'tersalin' : 'salin'}</span>
+          <span className="opacity-60">{copied ? t('header.copied') : t('header.copy')}</span>
         </button>
+
+        {/*
+          Language, then theme. Both change how the app is presented and neither touches a case,
+          so they sit together and ahead of the governance badge — which is a statement about the
+          data rather than a control, and must not be pushed to the edge where scanning stops.
+        */}
+        <LanguageSwitcher />
 
         <ThemeToggle />
 
@@ -53,7 +64,7 @@ export function AppHeader() {
           no conditional rendering: there is no code path that hides it.
         */}
         <span className="rounded-sm border border-notice-line bg-notice-bg px-[10px] py-[6px] text-meta font-bold tracking-[.07em] text-notice">
-          DATA SINTETIK
+          {t('header.syntheticBadge')}
         </span>
 
         {/*

@@ -12,11 +12,14 @@ import type { Role } from '@/features/auth/types'
  * from that. The declaration lives beside the route for the same reason the route does: a
  * permission kept somewhere else is a permission that drifts from the page it guards.
  *
- * Identifiers are English; user-facing `label` stays Indonesian.
+ * Identifiers are English, and each one **is** the entry's translation key: `id` looks up
+ * `menu:<id>` in `src/locales/<locale>/menu.json`. There is no `label` field, because a label written
+ * here would be a second name for a page that only ever exists in one language — the entry that
+ * had one would go untranslated while every other entry followed the header switch.
+ * `app-menu.test.ts` asserts every id resolves in both languages.
  */
 export type MenuEntry = {
   readonly id: string
-  readonly label: string
   readonly route: string
   /** Shown in the sidebar. Detail routes are reachable but not navigable directly. */
   readonly navigable: boolean
@@ -25,25 +28,22 @@ export type MenuEntry = {
 }
 
 export const APP_MENU: readonly MenuEntry[] = [
-  { id: 'queue', label: 'Antrean Review', route: '/', navigable: true, roles: CASE_ROLES },
-  { id: 'ingest', label: 'Ingest / Demo', route: '/ingest', navigable: true, roles: CASE_ROLES },
+  { id: 'queue', route: '/', navigable: true, roles: CASE_ROLES },
+  { id: 'ingest', route: '/ingest', navigable: true, roles: CASE_ROLES },
   {
     id: 'evaluation',
-    label: 'Audit & Evaluasi',
     route: '/evaluation',
     navigable: true,
     roles: CASE_ROLES,
   },
   {
     id: 'admin-users',
-    label: 'Manajemen Pengguna',
     route: '/admin/users',
     navigable: true,
     roles: ['admin'],
   },
   {
     id: 'case-detail',
-    label: 'Detail Kasus',
     route: '/cases/:id',
     navigable: false,
     roles: CASE_ROLES,

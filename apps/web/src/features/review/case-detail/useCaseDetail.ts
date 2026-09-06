@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { fetchAudit, fetchCaseDetail, saveDisposition } from '@/features/review/case-detail/api'
-import { ACTOR_LABELS } from '@/features/review/case-detail/labels'
+import { actorLabel } from '@/features/review/case-detail/labels'
 import type {
   AuditEvent,
   CaseDetail,
@@ -9,7 +9,7 @@ import type {
   DispositionResponse,
 } from '@/features/review/case-detail/types'
 import { formatDateTime } from '@/features/review/shared/format'
-import { STATE_LABELS } from '@/features/review/shared/labels'
+import i18n from '@/modules/i18n/config'
 import { ApiError } from '@/lib/http'
 import { useEngineVersion } from '@/modules/engine-version/useEngineVersion'
 
@@ -182,9 +182,9 @@ async function describeConflict(
   const fallback: VersionConflict = {
     seenVersion,
     currentVersion: seenVersion + 1,
-    changedBy: 'Tidak diketahui',
+    changedBy: i18n.t('review:unknown'),
     changedAt: '-',
-    summary: 'Kasus ini berubah sejak Anda membukanya.',
+    summary: i18n.t('caseDetail:conflict.generic'),
   }
 
   try {
@@ -196,7 +196,7 @@ async function describeConflict(
     return {
       seenVersion,
       currentVersion: detail.case_version,
-      changedBy: ACTOR_LABELS[latest.actor_role] ?? latest.actor_role,
+      changedBy: actorLabel(latest.actor_role),
       changedAt: formatDateTime(latest.occurred_at),
       summary: describeEvent(latest),
     }
@@ -207,13 +207,25 @@ async function describeConflict(
   }
 }
 
+/**
+ * The sentence a version conflict is explained with.
+ *
+ * Not a component, so it reads the running i18next instance rather than a hook — the conflict is
+ * raised from a save handler, and the reviewer reads the answer in whichever language the screen
+ * they were looking at is in.
+ */
 function describeEvent(event: AuditEvent): string {
-  const after = event.state_after ? STATE_LABELS[event.state_after] : null
+  const after = event.state_after
+    ? i18n.t(`caseDetail:state.${event.state_after}` as 'caseDetail:page.breadcrumb')
+    : null
   if (event.structured_reason && after) {
-    return `Status kasus berpindah ke "${after}" dengan alasan "${event.structured_reason}".`
+    return i18n.t('caseDetail:conflict.withReason', {
+      state: after,
+      reason: event.structured_reason,
+    })
   }
   if (after) {
-    return `Status kasus berpindah ke "${after}".`
+    return i18n.t('caseDetail:conflict.stateOnly', { state: after })
   }
-  return 'Kasus ini berubah sejak Anda membukanya.'
+  return i18n.t('caseDetail:conflict.generic')
 }

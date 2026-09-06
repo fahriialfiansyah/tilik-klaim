@@ -1,6 +1,10 @@
 import { AlertTriangle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
-import { AVAILABILITY_MEANINGS, RESOURCE_LABELS } from '@/features/review/case-detail/labels'
+import {
+  useAvailabilityMeaning,
+  useResourceLabel,
+} from '@/features/review/case-detail/labels'
 import type { EvidenceRef, SourceResource } from '@/features/review/case-detail/types'
 import { cn } from '@/lib/utils'
 
@@ -41,20 +45,23 @@ export function EvidenceRefButton({
   readonly sources: readonly SourceResource[]
   readonly onOpen: (reference: EvidenceRef) => void
 }) {
+  const { t } = useTranslation('caseDetail')
+  const resourceLabel = useResourceLabel()
+  const availabilityMeaning = useAvailabilityMeaning()
   const source = findSource(sources, reference)
   const isBroken = source === null || source.availability === 'MISSING'
-  const name = `${RESOURCE_LABELS[reference.resource_type]} ${reference.resource_id}`
+  const name = `${resourceLabel(reference.resource_type)} ${reference.resource_id}`
 
   if (isBroken) {
     return (
       <span
         data-testid="evidence-ref-broken"
-        title={AVAILABILITY_MEANINGS.MISSING}
+        title={availabilityMeaning('MISSING')}
         className="inline-flex items-center gap-[6px] rounded-sm border border-band-conflict-line bg-band-conflict-bg px-2 py-[2px] text-meta text-band-conflict"
       >
         <AlertTriangle aria-hidden className="size-3" />
-        {name}: cacat integritas bukti
-        <span className="sr-only">. {AVAILABILITY_MEANINGS.MISSING}</span>
+        {t('ref.integrityDefect', { name })}
+        <span className="sr-only">. {availabilityMeaning('MISSING')}</span>
       </span>
     )
   }
@@ -69,10 +76,10 @@ export function EvidenceRefButton({
     >
       {name}
       {source.availability === 'RELATED_BUNDLE' ? (
-        <span className="text-ink-3"> · bundel pembanding</span>
+        <span className="text-ink-3">{t('ref.relatedBundle')}</span>
       ) : null}
       {source.availability === 'NOT_STORED' ? (
-        <span className="text-ink-3"> · dirujuk lewat identitas</span>
+        <span className="text-ink-3">{t('ref.notStored')}</span>
       ) : null}
     </button>
   )

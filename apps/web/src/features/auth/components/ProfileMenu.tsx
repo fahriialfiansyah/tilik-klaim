@@ -1,5 +1,6 @@
 import { LogOut, User } from 'lucide-react'
 import { useState } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
@@ -12,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { ROLE_LABEL } from '@/features/auth/labels'
+import { useRoleLabel } from '@/features/auth/labels'
 import { useSession } from '@/features/auth/useSession'
 import { hasUnsavedDraft, useCaseDetailStore } from '@/features/review/case-detail/store'
 
@@ -32,6 +33,8 @@ import { hasUnsavedDraft, useCaseDetailStore } from '@/features/review/case-deta
  * names what is about to be lost rather than repeating the generic question.
  */
 export function ProfileMenu() {
+  const { t } = useTranslation(['auth', 'common'])
+  const roleLabel = useRoleLabel()
   const navigate = useNavigate()
   const user = useSession((state) => state.user)
   const signOut = useSession((state) => state.signOut)
@@ -63,11 +66,11 @@ export function ProfileMenu() {
         </span>
         <span className="hidden min-w-0 flex-col leading-tight sm:flex">
           <span className="truncate text-meta font-medium text-ink-inv">{user.full_name}</span>
-          <span className="truncate text-micro text-ink-inv-2">{ROLE_LABEL[user.role]}</span>
+          <span className="truncate text-micro text-ink-inv-2">{roleLabel(user.role)}</span>
         </span>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent aria-label="Menu akun">
+      <DropdownMenuContent aria-label={t('auth:profile.menu')}>
         <DropdownMenuLabel>
           <span className="flex items-center gap-2 text-body font-semibold text-ink">
             <User aria-hidden className="size-4 text-ink-3" />
@@ -77,7 +80,7 @@ export function ProfileMenu() {
             {user.email}
           </span>
           <span className="mt-[6px] flex items-center gap-2 text-meta text-ink-3">
-            {ROLE_LABEL[user.role]}
+            {roleLabel(user.role)}
             <span aria-hidden className="h-3 w-px bg-line" />
             <span data-numeric className="font-mono">
               {user.staff_code}
@@ -92,7 +95,7 @@ export function ProfileMenu() {
           className="text-ink"
         >
           <LogOut aria-hidden className="size-4 text-ink-3" />
-          Keluar
+          {t('auth:profile.signOut')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -107,29 +110,35 @@ export function ProfileMenu() {
     */}
     <Dialog open={confirming} onOpenChange={setConfirming}>
       {/*
-        The corner X keeps its default name "Tutup" while the footer button is "Batal": two
-        controls sharing one accessible name are two controls a screen reader cannot tell apart.
+        The corner X keeps its default name ("Tutup" / "Close") while the footer button is
+        "Batal" / "Cancel": two controls sharing one accessible name are two controls a screen
+        reader cannot tell apart, and that stays true in both languages.
       */}
       <DialogContent
-        title="Keluar dari sesi ini?"
+        title={t('auth:profile.confirmTitle')}
         description={
-          unsaved
-            ? 'Ada disposisi yang belum tersimpan. Keluar sekarang akan membuangnya, dan itu tidak dapat dibatalkan.'
-            : 'Anda akan kembali ke halaman masuk dan perlu memilih peran lagi.'
+          unsaved ? t('auth:profile.confirmDraft') : t('auth:profile.confirmPlain')
         }
       >
         <div className="px-5 py-4">
           <p className="text-body text-ink-2 text-pretty">
-            Masuk sebagai <strong className="font-semibold text-ink">{user.full_name}</strong> (
-            {ROLE_LABEL[user.role]}).
+            <Trans
+              i18nKey="profile.signedInAs"
+              ns="auth"
+              values={{ name: user.full_name, role: roleLabel(user.role) }}
+              components={[
+                <span key="0" />,
+                <strong key="1" className="font-semibold text-ink" />,
+              ]}
+            />
           </p>
         </div>
         <div className="flex items-center justify-end gap-[10px] border-t border-line px-5 py-4">
           <Button type="button" variant="outline" onClick={() => setConfirming(false)}>
-            Batal
+            {t('common:action.cancel')}
           </Button>
           <Button type="button" onClick={leave}>
-            {unsaved ? 'Keluar dan buang draf' : 'Keluar'}
+            {unsaved ? t('auth:profile.signOutAndDiscard') : t('auth:profile.signOut')}
           </Button>
         </div>
       </DialogContent>

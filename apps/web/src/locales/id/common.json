@@ -1,0 +1,43 @@
+{
+  "language": {
+    "heading": "Bahasa",
+    "menu": "Pilih bahasa",
+    "title": "Ganti bahasa",
+    "switch": "Bahasa aktif: {{language}}. Ganti bahasa."
+  },
+  "theme": {
+    "title": "Ganti tema",
+    "dark": "Tema gelap aktif. Ganti ke terang.",
+    "light": "Tema terang aktif. Ganti ke gelap."
+  },
+  "header": {
+    "copyStamp": "Salin penanda versi",
+    "copy": "salin",
+    "copied": "tersalin",
+    "syntheticBadge": "DATA SINTETIK"
+  },
+  "nav": {
+    "primary": "Navigasi utama",
+    "expand": "Bentangkan sidebar",
+    "collapse": "Ciutkan sidebar",
+    "menuHeading": "MENU",
+    "signedInAs": "Masuk sebagai <1>{{role}}</1>. Peran disimulasikan, bukan autentikasi.",
+    "signedInAsPlain": "Masuk sebagai {{role}}. Peran disimulasikan, bukan autentikasi.",
+    "simulatedRole": "Peran disimulasikan untuk demo, bukan autentikasi."
+  },
+  "action": {
+    "cancel": "Batal",
+    "close": "Tutup",
+    "save": "Simpan",
+    "copy": "Salin",
+    "retry": "Coba lagi",
+    "back": "Kembali",
+    "undo": "Batalkan"
+  },
+  "state": {
+    "loading": "Memuat…",
+    "empty": "Tidak ada data",
+    "error": "Terjadi kesalahan",
+    "serviceDown": "Layanan tidak merespons."
+  }
+}

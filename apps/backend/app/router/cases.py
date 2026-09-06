@@ -18,6 +18,7 @@ from tilik_domain.versioning import EngineIdentity
 from app.dto.cases import CaseDetailResponse, CaseQueueResponse
 from app.errors import ErrorCode, ErrorResponse
 from app.router.guards import DEFAULT_ROLE, ActorRole, refuse_without
+from app.router.locale import RequestLocale
 from app.service.access import Capability
 from app.service.case_loader import load_case_detail
 from app.service.case_query import (
@@ -69,6 +70,7 @@ InjectedBundles = Annotated[BundleStore, Depends(bundle_store)]
 )
 def list_cases(
     cases: InjectedCases,
+    locale: RequestLocale,
     state: CaseState | None = None,
     band: PriorityBand | None = None,
     reason: ReasonCode | None = None,
@@ -108,7 +110,7 @@ def list_cases(
         # Metrics describe the whole queue, not the current page — a reviewer needs to know how
         # much work exists, not how much fits on one screen.
         metrics=queue_metrics(everything, EngineIdentity()),
-        items=tuple(to_summary(case) for case in window),
+        items=tuple(to_summary(case, locale) for case in window),
         page=page_info,
     )
 
@@ -123,6 +125,7 @@ def get_case(
     case_id: str,
     cases: InjectedCases,
     bundles: InjectedBundles,
+    locale: RequestLocale,
     x_actor_role: ActorRole = DEFAULT_ROLE,
 ) -> CaseDetailResponse | Response:
     """Claim lines, reasons with evidence and counter-evidence, timeline, and comparisons."""
@@ -130,7 +133,7 @@ def get_case(
     if refused is not None:
         return refused
 
-    detail = load_case_detail(case_id, cases, bundles)
+    detail = load_case_detail(case_id, cases, bundles, locale)
     if detail is None:
         envelope = ErrorResponse(code=ErrorCode.CASE_NOT_FOUND, detail=f"No case {case_id}")
         return Response(
