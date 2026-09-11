@@ -1,5 +1,6 @@
 {
   "page": {
+    "documentTitle": "Kasus {{id}}",
     "breadcrumb": "Antrean Review",
     "tablist": "Bagian detail kasus",
     "tabEvidence": "Bukti & disposisi",

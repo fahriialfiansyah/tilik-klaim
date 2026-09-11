@@ -30,6 +30,7 @@ import type { DispositionAction } from '@/features/review/case-detail/types'
 import { useCaseDetail } from '@/features/review/case-detail/useCaseDetail'
 import { EvidenceMeter } from '@/features/review/shared/components/EvidenceMeter'
 import { cn } from '@/lib/utils'
+import { useDocumentTitle } from '@/modules/document-title/useDocumentTitle'
 
 type Tab = 'evidence' | 'audit'
 
@@ -50,6 +51,8 @@ type Tab = 'evidence' | 'audit'
 export function CaseDetailPage() {
   const { t } = useTranslation('caseDetail')
   const { id = '' } = useParams()
+
+  useDocumentTitle(t('page.documentTitle', { id }))
   const navigate = useNavigate()
   const {
     status,

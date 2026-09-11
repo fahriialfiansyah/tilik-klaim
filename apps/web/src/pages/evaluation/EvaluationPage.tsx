@@ -18,6 +18,7 @@ import {
   precisionAtBudgetChartRows,
 } from '@/features/review/evaluation/selectors'
 import { useEvaluation } from '@/features/review/evaluation/useEvaluation'
+import { useDocumentTitle } from '@/modules/document-title/useDocumentTitle'
 import { useTranslation } from 'react-i18next'
 import { PageHeader, PageShell } from '@/components/layouts/PageShell'
 
@@ -34,6 +35,8 @@ import { PageHeader, PageShell } from '@/components/layouts/PageShell'
  */
 export function EvaluationPage() {
   const { t } = useTranslation('evaluation')
+
+  useDocumentTitle(t('page.title'))
   const { status, data, reload } = useEvaluation()
 
   return (

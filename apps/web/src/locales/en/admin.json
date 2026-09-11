@@ -73,7 +73,6 @@
     }
   },
   "page": {
-    "documentTitle": "User Management · TilikKlaim",
     "eyebrow": "STAFF ROSTER · ROLE AND STATUS",
     "title": "User Management",
     "lede": "Three synthetic staff accounts. Roles can be changed and accounts deactivated; there is no adding and no deleting. Every change is recorded permanently in the history below.",

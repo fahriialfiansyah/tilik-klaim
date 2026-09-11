@@ -1,5 +1,5 @@
 import { Download } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
@@ -19,6 +19,7 @@ import {
 import { auditCsvFilename, buildAuditCsv, downloadCsv } from '@/features/admin/users/csv'
 import { useUsers } from '@/features/admin/users/useUsers'
 import { useSession } from '@/features/auth/useSession'
+import { useDocumentTitle } from '@/modules/document-title/useDocumentTitle'
 import type { Role, StaffUser } from '@/features/auth/types'
 
 /**
@@ -36,16 +37,13 @@ import type { Role, StaffUser } from '@/features/auth/types'
  * the export is a copy of the trail rather than a way to edit it.
  */
 export function AdminUsersPage() {
-  const { t, i18n } = useTranslation('admin')
+  const { t } = useTranslation('admin')
   const user = useSession((state) => state.user)
   const { status, users, events, pendingUserId, refusal, undoable, reload, change, undo, dismissUndo } =
     useUsers()
   const [pending, setPending] = useState<PendingChange | null>(null)
 
-  useEffect(() => {
-    // Re-run on a language change: the tab title is the one label React does not re-render.
-    document.title = t('page.documentTitle')
-  }, [t, i18n.language])
+  useDocumentTitle(t('page.title'))
 
   const nameFor = (userId: string) =>
     users.find((candidate) => candidate.user_id === userId)?.full_name ?? userId

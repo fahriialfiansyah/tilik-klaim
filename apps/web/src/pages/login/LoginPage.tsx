@@ -7,6 +7,7 @@ import { ClaimTexture } from '@/features/auth/components/ClaimTexture'
 import { SignInForm } from '@/features/auth/components/SignInForm'
 import { LANDING_ROUTE } from '@/features/auth/permissions'
 import { useSession } from '@/features/auth/useSession'
+import { useDocumentTitle } from '@/modules/document-title/useDocumentTitle'
 import { LanguageSwitcher } from '@/modules/i18n'
 import { ThemeToggle } from '@/modules/theme/ThemeToggle'
 
@@ -34,16 +35,12 @@ const MARK_DRAW_MS = 700
  * first thing a judge sees not fitting on screen.
  */
 export function LoginPage() {
-  const { t, i18n } = useTranslation(['auth', 'common'])
+  const { t } = useTranslation(['auth', 'common'])
   const navigate = useNavigate()
   const user = useSession((state) => state.user)
   const [drawn, setDrawn] = useState(false)
 
-  useEffect(() => {
-    // Re-run on a language change: the tab title is the one label that is not re-rendered by
-    // React, so without the dependency it would keep the language the page first loaded in.
-    document.title = t('auth:login.documentTitle')
-  }, [t, i18n.language])
+  useDocumentTitle(t('auth:login.documentTitle'))
 
   useEffect(() => {
     // The mark strokes itself in once: an evidence chain closing into a loop, which is what the

@@ -1,5 +1,6 @@
 {
   "page": {
+    "documentTitle": "Case {{id}}",
     "breadcrumb": "Review Queue",
     "tablist": "Case detail sections",
     "tabEvidence": "Evidence & disposition",

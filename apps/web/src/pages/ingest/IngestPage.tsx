@@ -15,10 +15,13 @@ import { SampleList } from '@/features/review/ingest/components/SampleList'
 import { UploadZone } from '@/features/review/ingest/components/UploadZone'
 import { ValidationReport } from '@/features/review/ingest/components/ValidationReport'
 import { useIngest } from '@/features/review/ingest/useIngest'
+import { useDocumentTitle } from '@/modules/document-title/useDocumentTitle'
 
 /** Page 3 — Ingest / Demo (`/ingest`). Widgets 1–11 per `sprint/00-app-spec.md` § 5. */
 export function IngestPage() {
   const { t } = useTranslation('ingest')
+
+  useDocumentTitle(t('page.title'))
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const fromCase = params.get('case')

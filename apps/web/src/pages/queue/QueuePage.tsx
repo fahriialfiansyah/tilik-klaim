@@ -15,10 +15,13 @@ import { QueueTable } from '@/features/review/queue/components/QueueTable'
 import { useQueueStore } from '@/features/review/queue/store'
 import { useQueue } from '@/features/review/queue/useQueue'
 import { useBandLabel, useModeLabel, useStateLabel } from '@/features/review/shared/labels'
+import { useDocumentTitle } from '@/modules/document-title/useDocumentTitle'
 
 /** Page 1 — Review queue (`/`). Widgets 1-11 per sprint/00-app-spec.md § 3. */
 export function QueuePage() {
   const { t } = useTranslation('queue')
+
+  useDocumentTitle(t('page.title'))
   const navigate = useNavigate()
   const stateLabel = useStateLabel()
   const bandLabel = useBandLabel()
