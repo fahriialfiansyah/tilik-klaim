@@ -37,7 +37,10 @@ export function AppHeader() {
   return (
     <header className="flex h-[var(--header-h)] shrink-0 items-center justify-end gap-4 bg-head px-4">
       <div className="flex items-center gap-[10px]">
-        {/* G3 — engine and dataset stamp: copyable, and the way through to /evaluation. */}
+        {/*
+          G3 — engine and dataset stamp, copyable. The only place it is shown outside a case:
+          the queue no longer repeats it as a card, and /evaluation is reached from the menu.
+        */}
         <button
           type="button"
           onClick={onCopy}

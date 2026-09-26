@@ -4,7 +4,14 @@ export type Theme = 'light' | 'dark'
 
 const STORAGE_KEY = 'tilik-theme'
 
-/** Reads the operator's saved choice; falls back to the OS preference. */
+/**
+ * Light unless the operator chose dark themselves. The OS preference is deliberately not
+ * consulted: reviewers read white claim documents in lit offices, and the demo runs on a
+ * projector, where a dark screen washes out. Dark stays one click away in the header.
+ */
+const DEFAULT_THEME: Theme = 'light'
+
+/** Reads the operator's saved choice; falls back to the light default. */
 function initialTheme(): Theme {
   try {
     const saved = window.localStorage.getItem(STORAGE_KEY)
@@ -12,16 +19,15 @@ function initialTheme(): Theme {
       return saved
     }
   } catch {
-    // Private browsing and blocked site data both throw here. The OS preference
-    // below is a complete answer, so this is a fallback, not a swallowed failure.
+    // Private browsing and blocked site data both throw here. The default below is a
+    // complete answer, so this is a fallback, not a swallowed failure.
   }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  return DEFAULT_THEME
 }
 
 /**
- * `data-theme` on the document element is what `tokens.css` keys on. Setting it explicitly
- * — rather than leaving the media query to decide — is what lets the operator override the
- * OS preference, which matters in a reading-heavy tool used all day.
+ * `data-theme` on the document element is what `tokens.css` keys on. It is always set
+ * explicitly, so the theme on screen is the one this store holds and never the OS's.
  */
 function applyTheme(theme: Theme): void {
   document.documentElement.dataset.theme = theme

@@ -159,10 +159,15 @@
     border-color: var(--b-1);
   }
 
+  /* Kontrol bawaan peramban (scrollbar, date picker, select) mengikuti tema yang dipilih,
+   * bukan preferensi OS — `light dark` akan menggelapkannya di laptop bermode gelap
+   * sementara halamannya terang. */
   html {
-    /* Memberi tahu peramban kedua tema tersedia, sehingga kontrol bawaan
-     * (scrollbar, date picker) ikut berganti. */
-    color-scheme: light dark;
+    color-scheme: light;
+  }
+
+  html[data-theme='dark'] {
+    color-scheme: dark;
   }
 
   body {

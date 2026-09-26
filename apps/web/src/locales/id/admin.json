@@ -35,7 +35,7 @@
     "roleFor": "Peran untuk {{name}}"
   },
   "audit": {
-    "empty": "Belum ada perubahan pada daftar pengguna. Riwayat ini bersifat tambah-saja: sekali tercatat, sebuah perubahan tidak dapat disunting atau dihapus.",
+    "empty": "Belum ada perubahan pada daftar pengguna. Riwayat ini bersifat tambah-saja: sekali tercatat, sebuah perubahan tidak dapat diedit atau dihapus.",
     "by": " · oleh {{name}} ({{role}})"
   },
   "confirm": {

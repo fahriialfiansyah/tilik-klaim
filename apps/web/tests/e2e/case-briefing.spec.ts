@@ -84,7 +84,7 @@ test('asking for a briefing streams the template, with provenance and openable r
   // Every observation is source-bound, so at least one openable reference is on screen.
   expect(await panel.getByRole('button', { name: /ENC-|LN-|CLM-|DOC-|PROC-/ }).count()).toBeGreaterThan(0)
   // Not the fallback path: the stream itself delivered it through the dev proxy.
-  await expect(panel).not.toContainText('dimuat tanpa aliran')
+  await expect(panel).not.toContainText('dimuat tanpa streaming')
 
   // A cited reference opens the same drawer as everywhere else, and Escape returns focus.
   const ref = panel.getByRole('button', { name: /Kunjungan ENC-/ }).first()

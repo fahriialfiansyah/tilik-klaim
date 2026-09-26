@@ -110,7 +110,7 @@ export function makeCaseDetail(overrides: Partial<CaseDetail> = {}): CaseDetail 
     reasons: [PHANTOM_REASON],
     band: {
       band: 'DETERMINISTIC_CONFLICT',
-      basis: '1 alasan teramati; pita mengikuti alasan terkuat.',
+      basis: '1 alasan teramati; prioritas mengikuti alasan terkuat.',
       caps_applied: [],
     },
     lines: [

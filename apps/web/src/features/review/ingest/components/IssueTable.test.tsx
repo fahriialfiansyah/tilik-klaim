@@ -25,7 +25,7 @@ describe('the issue table', () => {
     render(<IssueTable issues={ISSUES} />)
 
     expect(screen.getByText('PROC-TIDAK-ADA')).toBeVisible()
-    expect(screen.getByText(/rujukan menunjuk ke sumber daya yang tidak ikut terkirim/i))
+    expect(screen.getByText(/rujukan menunjuk ke resource yang tidak ikut terkirim/i))
       .toBeVisible()
   })
 

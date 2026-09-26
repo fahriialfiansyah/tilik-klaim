@@ -44,13 +44,13 @@ Setiap baris di antrean dibuka dengan **kalimat alasan dalam bahasa kerja**, buk
 | Konflik deterministik prioritas tinggi | Kartu ringkasan | Cacah kasus dengan pelanggaran aturan integritas yang pasti | Saat halaman dimuat |
 | Kasus menunggu bukti tambahan | Kartu ringkasan | Cacah kasus yang sudah diminta kelengkapannya | Saat halaman dimuat |
 | Waktu tengah dalam antrean | Kartu ringkasan | Ukuran berapa lama kasus rata-rata menunggu | Saat halaman dimuat |
-| Versi mesin dan data aktif | Teks penanda versi | Versi aturan/model dan versi kumpulan data yang sedang berlaku | Statis per sesi |
+| Versi mesin dan data aktif | Chip penanda versi di header (bukan kartu) | Versi aturan/model dan versi kumpulan data yang sedang berlaku | Statis per sesi |
 
 **Interaksi**:
 
-- Petugas membaca lima angka ini dalam sekali pandang, lalu turun ke tabel.
+- Petugas membaca empat kartu ini dalam sekali pandang, lalu turun ke tabel.
 - Menekan salah satu kartu menerapkan saringan yang sesuai ke tabel di bawahnya.
-- Penanda versi bisa disalin — dipakai saat melaporkan hasil atau membandingkan sesi.
+- Penanda versi bisa disalin — dipakai saat melaporkan hasil atau membandingkan sesi. Sejak 26 Sep 2026 penanda ini hanya tampil sebagai chip di header (ada di setiap halaman), tidak lagi diulang sebagai kartu di Antrean.
 
 > **Dilarang ditampilkan di sini**: jumlah "fraud yang dicegah", nilai rupiah yang "diselamatkan", peringkat fasilitas, proyeksi nasional, atau grafik tren yang tidak bisa ditindaklanjuti.
 
@@ -110,7 +110,7 @@ Setiap baris di antrean dibuka dengan **kalimat alasan dalam bahasa kerja**, buk
 | Antrean — baris kasus | Menekan baris | Detail Kasus (modul `04`) dengan alasan terkuat terbuka | Pengenal kasus, kode alasan terkuat |
 | Antrean — kartu metrik | Menekan kartu | Tetap di Antrean, saringan diterapkan | Saringan yang sesuai kartu |
 | Antrean — tombol "Masukkan bundel baru" | Menekan tombol | Layar Ingest (modul `01`), kosong | Tanpa konteks |
-| Antrean — penanda versi | Menekan penanda | Layar Audit & Evaluasi (modul `05`), bagian versi | Versi mesin dan data aktif |
+| Header — penanda versi | Menekan penanda | Tetap di halaman, penanda tersalin ke clipboard. Audit & Evaluasi (modul `05`) dibuka dari menu sidebar | Versi mesin dan data aktif |
 | Antrean — keping saringan | Menekan tanda silang | Tetap di Antrean, saringan itu dilepas | Sisa saringan tetap aktif |
 
 ### 3.2 Decision Branch

@@ -4,6 +4,28 @@ Append-only. Newest entry at the top.
 
 ---
 
+### 2026-09-26 · Light by default, one version stamp, and plain words in the Indonesian copy · ✅ Done
+
+**Event:** Owner review of the queue screen: dark default read wrong for a claims tool, the version card duplicated the header, and "saringan" was a word nobody says
+**Files:** `src/modules/theme/useTheme.{ts,test.ts}`, `src/styles/{tokens,app}.css`, `design/tokens.css`, `src/features/review/queue/components/QueueMetricCards.tsx`, `src/components/layouts/AppHeader.tsx`, `src/locales/{id,en}/*.json`, affected unit and e2e specs
+> **Light is the default and the OS preference is no longer consulted.** Reviewers read white
+> claim documents in lit offices and the demo runs on a projector. Dark is still one click away
+> and remembered. The `prefers-color-scheme` block left `tokens.css` (source and copy), and
+> `color-scheme` now follows `data-theme`, otherwise date pickers and selects rendered dark on a
+> dark-mode laptop while the page was light.
+> **The queue's "VERSI MESIN & DATA" card is gone.** The header chip already shows the same stamp
+> on every page and copies it; the card's "Evaluasi" button duplicated the menu entry. The
+> canonical metric list and brief 03 now say the version lives in the header.
+> **Indonesian copy uses the English word where that is what people actually say.** Filter
+> (saringan), ID (pengenal), prioritas (pita prioritas), median (waktu/nilai tengah), resource
+> (sumber daya), hash (sidik digital), valid/tidak valid (sah), input, error, browser, offline,
+> streaming, wizard, diedit, dataset, precision/recall/PR-AUC/false positive. Claim-domain words
+> stay Indonesian (klaim, disposisi, bukti, fasilitas), and so do "bundel", "sidik klaim" and
+> "templat", which the versioned domain catalogs in `packages/domain` also use. A side benefit:
+> "saring" now means only what the engine does to a claim, not what a reviewer does to a table.
+
+---
+
 ### 2026-09-06 · A language switch, and every label that had to stop being a constant · ✅ Done
 
 **Event:** Owner asked for an ID/EN switch in the topbar; the interesting half was what the app had to stop doing to make it work

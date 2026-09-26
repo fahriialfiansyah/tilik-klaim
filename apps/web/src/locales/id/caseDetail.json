@@ -82,30 +82,30 @@
     "MISSING": "Tidak dapat dibuka"
   },
   "availabilityMeaning": {
-    "PRESENT": "Sumber daya ini dikirim bersama klaim dan ditampilkan apa adanya.",
-    "RELATED_BUNDLE": "Sumber daya ini berasal dari kiriman lain yang dibandingkan. Hanya bidang yang tidak mengungkap identitas peserta lain yang ditampilkan.",
-    "NOT_STORED": "Episode dan tenaga kesehatan dirujuk lewat identitas dan memang tidak disimpan sebagai sumber daya tersendiri. Ini bukan cacat.",
-    "MISSING": "Rujukan ini menunjuk ke sumber daya yang tidak dapat diselesaikan. Ini cacat integritas bukti, bukan tampilan kosong yang wajar."
+    "PRESENT": "Resource ini dikirim bersama klaim dan ditampilkan apa adanya.",
+    "RELATED_BUNDLE": "Resource ini berasal dari kiriman lain yang dibandingkan. Hanya bidang yang tidak mengungkap identitas peserta lain yang ditampilkan.",
+    "NOT_STORED": "Episode dan tenaga kesehatan dirujuk lewat identitas dan memang tidak disimpan sebagai resource tersendiri. Ini bukan cacat.",
+    "MISSING": "Rujukan ini menunjuk ke resource yang tidak dapat diselesaikan. Ini cacat integritas bukti, bukan tampilan kosong yang wajar."
   },
   "sourceField": {
-    "account_id": "Pengenal akun",
+    "account_id": "ID akun",
     "authored_at": "Ditulis",
     "author_id": "Penulis",
     "care_type": "Jenis perawatan",
     "class_code": "Kelas kunjungan",
-    "claim_id": "Pengenal klaim",
+    "claim_id": "ID klaim",
     "code": "Kode",
     "code_system": "Sistem kode",
     "currency": "Mata uang",
     "description": "Keterangan",
-    "document_id": "Pengenal dokumen",
+    "document_id": "ID dokumen",
     "effective_at": "Berlaku",
-    "encounter_id": "Pengenal kunjungan",
+    "encounter_id": "ID kunjungan",
     "end_at": "Selesai",
-    "episode_id": "Pengenal episode",
+    "episode_id": "ID episode",
     "kind": "Jenis",
     "line_amount": "Nominal baris",
-    "line_id": "Pengenal baris",
+    "line_id": "ID baris",
     "occurred_at": "Waktu",
     "onset_at": "Awal keluhan",
     "participant_id": "Peserta (pseudonim)",
@@ -113,12 +113,12 @@
     "performer_id": "Pelaksana",
     "location_id": "Lokasi",
     "issued_at": "Diterbitkan",
-    "charge_item_id": "Pengenal item biaya",
-    "condition_id": "Pengenal diagnosis",
-    "diagnostic_id": "Pengenal penunjang",
-    "invoice_id": "Pengenal faktur",
-    "medication_id": "Pengenal obat",
-    "procedure_id": "Pengenal tindakan",
+    "charge_item_id": "ID item biaya",
+    "condition_id": "ID diagnosis",
+    "diagnostic_id": "ID penunjang",
+    "invoice_id": "ID faktur",
+    "medication_id": "ID obat",
+    "procedure_id": "ID tindakan",
     "provider_id": "Fasilitas",
     "quantity": "Jumlah",
     "recorded_at": "Dicatat",
@@ -128,8 +128,8 @@
     "status": "Status",
     "submitted_at": "Dikirim",
     "text": "Isi catatan",
-    "text_digest": "Sidik teks",
-    "text_hash": "Sidik teks",
+    "text_digest": "Hash teks",
+    "text_hash": "Hash teks",
     "text_length": "Panjang teks",
     "total_amount": "Total",
     "unit_price": "Harga satuan",
@@ -170,9 +170,9 @@
     "NOT_EXPECTED": "tidak diharapkan"
   },
   "matrixCellMeaning": {
-    "FOUND": "Alasan yang merujuk baris ini mengutip sumber daya jenis ini, dan sumber dayanya dapat dibuka.",
+    "FOUND": "Alasan yang merujuk baris ini mengutip resource jenis ini, dan resource-nya dapat dibuka.",
     "MISSING": "Alasan yang merujuk baris ini mengharapkan jenis bukti ini dan tidak menemukannya di bundel.",
-    "UNRESOLVED": "Ada rujukan ke jenis ini, tetapi menunjuk ke sumber daya yang tidak dapat diselesaikan. Ini cacat integritas bukti.",
+    "UNRESOLVED": "Ada rujukan ke jenis ini, tetapi menunjuk ke resource yang tidak dapat diselesaikan. Ini cacat integritas bukti.",
     "NOT_EXPECTED": "Tidak ada alasan yang mengharapkan jenis bukti ini pada baris ini. Kosong bukan berarti tidak ada."
   },
   "lane": {
@@ -214,7 +214,7 @@
     "pickActionFirst": "Pilih tindakan terlebih dahulu",
     "reasonNote": "Alasan wajib dan tersimpan permanen. Sistem hanya menawarkan pilihan, tidak pernah memilihkan.",
     "evidenceLegend": "BUKTI YANG DIMINTA",
-    "evidenceNote": "Tercentang otomatis dari sumber daya yang kurang; boleh ditambah atau dikurangi.",
+    "evidenceNote": "Tercentang otomatis dari resource yang kurang; boleh ditambah atau dikurangi.",
     "noteLabel": "CATATAN BEBAS",
     "notePlaceholder": "Penjelasan tambahan untuk jejak audit",
     "versions": "versi kasus {{case}} · aturan v{{ruleset}} · mesin v{{engine}}",
@@ -233,7 +233,7 @@
   "placeholder": {
     "loading": "Memuat detail kasus…",
     "notFoundTitle": "Kasus ini tidak ditemukan",
-    "notFoundBody": "Pengenal kasus ini tidak ada dalam sistem. Kemungkinan tautannya sudah usang, atau basis data disaring ulang sejak tautan itu dibuat.",
+    "notFoundBody": "ID kasus ini tidak ada dalam sistem. Kemungkinan tautannya sudah usang, atau basis data disaring ulang sejak tautan itu dibuat.",
     "failedTitle": "Detail kasus tidak dapat dimuat",
     "failedBody": "{{detail}} Ini bukan berarti kasusnya tidak ada; detailnya memang tidak sampai ke layar ini.",
     "backToQueue": "Kembali ke antrean"
@@ -251,12 +251,12 @@
   },
   "header": {
     "sectionLabel": "Kepala kasus",
-    "caseId": "PENGENAL KASUS",
+    "caseId": "ID KASUS",
     "amount": "NOMINAL KLAIM",
     "encounterRange": "RENTANG KUNJUNGAN",
     "primaryReason": "ALASAN UTAMA",
     "noRisk": "Tidak ada risiko teramati pada versi mesin ini. Ini bukan pernyataan bahwa klaimnya bersih.",
-    "bandCaveat": "{{basis}} Pita ini menaikkan prioritas tinjauan, bukan menolak klaim dan bukan menyatakan fraud.",
+    "bandCaveat": "{{basis}} Prioritas ini menaikkan urutan tinjauan, bukan menolak klaim dan bukan menyatakan fraud.",
     "status": "STATUS",
     "participantProvider": "PESERTA · FASILITAS",
     "basisToggle": "Dasar keyakinan"
@@ -293,7 +293,7 @@
     "expectedHeading": "BUKTI YANG DIHARAPKAN",
     "expectedEmpty": "Aturan ini tidak menetapkan jenis bukti tertentu.",
     "foundHeading": "BUKTI YANG DITEMUKAN",
-    "foundEmpty": "Tidak ada sumber daya pendukung yang ditemukan untuk alasan ini.",
+    "foundEmpty": "Tidak ada resource pendukung yang ditemukan untuk alasan ini.",
     "strength": "kekuatan",
     "compare": "Bandingkan pasangan kandidat"
   },
@@ -307,10 +307,10 @@
     "counterHeading": "BUKTI TANDINGAN: CABANG TERPISAH",
     "counterLabel": "Bukti tandingan",
     "counterEmpty": "Tidak ada bukti tandingan untuk alasan ini.",
-    "footnote": "Satu jalur, bukan jaring hubungan. Simpul ujung tidak saling terhubung; yang tidak punya sumber daya pendukung berhenti di sana."
+    "footnote": "Satu jalur, bukan jaring hubungan. Simpul ujung tidak saling terhubung; yang tidak punya resource pendukung berhenti di sana."
   },
   "source": {
-    "raw": "Isi sumber daya apa adanya, sebagaimana diterima sistem.",
+    "raw": "Isi resource apa adanya, sebagaimana diterima sistem.",
     "screenedVersions": "VERSI MESIN SAAT KASUS DISARING"
   },
   "comparison": {

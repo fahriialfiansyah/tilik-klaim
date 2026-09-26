@@ -37,7 +37,7 @@ test('a seeded scenario screens through to its case detail', async ({ page }) =>
 
   await page.getByRole('button', { name: /Tagihan tanpa bukti tindakan/ }).click()
 
-  await expect(report(page)).toContainText('Sah')
+  await expect(report(page)).toContainText('Valid')
   await expect(report(page)).toContainText('Baris tagihan')
   await expect(report(page)).toContainText('sha256:')
 
@@ -63,7 +63,7 @@ test('a scenario that needs a prior claim says so, and its cross-claim reason fi
   await expect(repeat).toContainText('1 klaim riwayat')
   await repeat.click()
 
-  await expect(report(page)).toContainText('Sah')
+  await expect(report(page)).toContainText('Valid')
   await page.getByRole('button', { name: 'Saring klaim' }).click()
 
   await expect(page).toHaveURL(/\/cases\/case_/)
@@ -75,7 +75,7 @@ test('resubmitting an identical bundle points at the existing case instead of ma
 }) => {
   await page.goto('/ingest')
   await page.getByRole('button', { name: /Episode terpecah/ }).click()
-  await expect(report(page)).toContainText('Sah')
+  await expect(report(page)).toContainText('Valid')
   await page.getByRole('button', { name: 'Saring klaim' }).click()
   await expect(page).toHaveURL(/\/cases\/case_/)
   const caseUrl = page.url()
@@ -83,7 +83,7 @@ test('resubmitting an identical bundle points at the existing case instead of ma
   await page.goto('/ingest')
   await page.getByRole('button', { name: /Episode terpecah/ }).click()
 
-  const notice = page.getByText('Bundel dengan sidik digital identik pernah disaring')
+  const notice = page.getByText('Bundel dengan hash identik pernah disaring')
   await expect(notice).toBeVisible()
   await page.getByRole('button', { name: 'Buka kasus' }).click()
   await expect(page).toHaveURL(caseUrl)
@@ -117,7 +117,7 @@ test('an invalid bundle disables the screen button and names the resource at fau
     input.dispatchEvent(new Event('change', { bubbles: true }))
   })
 
-  await expect(report(page)).toContainText('Tidak sah')
+  await expect(report(page)).toContainText('Tidak valid')
   await expect(page.getByRole('button', { name: 'Saring klaim' })).toBeDisabled()
   await expect(report(page)).toContainText('tidak ada penyaringan sebagian')
 
@@ -179,7 +179,7 @@ test('an incomplete but well-formed bundle screens, and says why its notes matte
     input.dispatchEvent(new Event('change', { bubbles: true }))
   })
 
-  await expect(report(page)).toContainText('Sah dengan catatan')
+  await expect(report(page)).toContainText('Valid dengan catatan')
 
   // The distinction the whole module exists to protect: a thin record lowers certainty and
   // points at requesting documents. It never raises a risk signal.

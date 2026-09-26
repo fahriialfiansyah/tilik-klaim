@@ -121,5 +121,5 @@ The queue is the dashboard. Limit top metrics to what changes a reviewer’s act
 - high-priority deterministic conflicts;
 - evidence-requested cases;
 - median time in queue;
-- current engine/dataset version.
+- current engine/dataset version — shown as the copyable header chip on every page, not as a queue card (decided 26 Sep 2026).
 Do not show “fraud saved,” provider league tables, or national projections.

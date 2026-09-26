@@ -328,7 +328,7 @@ def _document_comparison(
         _field("Waktu penulisan", mine.authored_at.isoformat(), theirs.authored_at.isoformat()),
         _field("Panjang teks", str(len(mine.text or "")), str(len(theirs.text or ""))),
         _field(
-            "Sidik teks",
+            "Hash teks",
             mine.text_hash[:TEXT_DIGEST_LENGTH],
             theirs.text_hash[:TEXT_DIGEST_LENGTH],
         ),

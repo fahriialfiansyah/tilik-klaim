@@ -43,7 +43,7 @@ def band_basis(reason_count: int, locale: Locale = DEFAULT_LOCALE) -> str:
         )
     return _pick(
         locale,
-        f"{reason_count} alasan teramati; pita mengikuti alasan terkuat.",
+        f"{reason_count} alasan teramati; prioritas mengikuti alasan terkuat.",
         f"{reason_count} {_plural(reason_count, 'reason')} observed; "
         "the band follows the strongest one.",
     )
@@ -53,7 +53,7 @@ def cap_similarity_only(locale: Locale = DEFAULT_LOCALE) -> str:
     """Text similarity alone is capped below the top band, by design and by rule."""
     return _pick(
         locale,
-        "Kemiripan teks saja tidak pernah mencapai pita tertinggi.",
+        "Kemiripan teks saja tidak pernah mencapai prioritas tertinggi.",
         "Text similarity alone never reaches the top band.",
     )
 
@@ -78,7 +78,7 @@ def cap_completeness_notes(count: int, locale: Locale = DEFAULT_LOCALE) -> str:
 def cap_completeness_carried(count: int, locale: Locale = DEFAULT_LOCALE) -> str:
     return _pick(
         locale,
-        f"{count} catatan kelengkapan terbawa dari pemasukan berkas.",
+        f"{count} catatan kelengkapan terbawa dari ingest berkas.",
         f"{count} completeness {_plural(count, 'note')} carried over from ingest.",
     )
 

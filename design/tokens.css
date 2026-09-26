@@ -78,7 +78,8 @@
   --shadow: 0 1px 2px rgba(11,37,48,.05);
 }
 
-/* Tema gelap: dipilih eksplisit lewat [data-theme="dark"] ... */
+/* Tema gelap: hanya lewat pilihan eksplisit [data-theme="dark"]. Preferensi OS sengaja
+ * tidak diikuti — terang adalah bawaan (lihat apps/web/src/modules/theme/useTheme.ts). */
 [data-theme='dark'] {
   /* Permukaan */
   --s-page: #0b1618;
@@ -134,66 +135,6 @@
   --logo-amb: #f0b45c;
   --scrim: rgba(2,10,12,.6);
   --shadow: 0 1px 2px rgba(0,0,0,.3);
-}
-
-/* ... dan mengikuti preferensi sistem selama pengguna belum memilih tema terang. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    /* Permukaan */
-    --s-page: #0b1618;
-    --s-card: #122126;
-    --s-sunk: #0e1d21;
-    --s-head: #081114;
-    --s-rail: #0f1d21;
-  
-    /* Garis tepi */
-    --b-1: #24373c;
-    --b-2: #375056;
-  
-    /* Teks */
-    --t-1: #e7efef;
-    --t-2: #a9bcbd;
-    --t-3: #85999b;
-    --t-inv: #e7efef;
-    --t-inv-2: #8fa8ac;
-  
-    /* Aksen (navy/teal) */
-    --a-1: #4fb3c0;
-    --a-1h: #6ec8d3;
-    --a-1-soft: #10333a;
-    --a-1-bd: #20606c;
-    --a-1-on: #04191d;
-  
-    /* Merah — HANYA konflik deterministik */
-    --red-f: #f09b93;
-    --red-b: #2c1a18;
-    --red-d: #5a302b;
-  
-    /* Amber — perlu ditinjau */
-    --amb-f: #e9b769;
-    --amb-b: #2a2115;
-    --amb-d: #5a4629;
-  
-    /* Soft/olive — perlu konteks */
-    --sof-f: #d5cd9c;
-    --sof-b: #23231a;
-    --sof-d: #494533;
-  
-    /* Netral — tanpa risiko teramati */
-    --neu-f: #a9bcbd;
-    --neu-b: #1a2a2e;
-    --neu-d: #2f4348;
-  
-    /* Hijau — HANYA aksi selesai & tervalidasi */
-    --grn-f: #7fd0a5;
-    --grn-b: #122a20;
-    --grn-d: #2b5641;
-  
-    /* Lain-lain */
-    --logo-amb: #f0b45c;
-    --scrim: rgba(2,10,12,.6);
-    --shadow: 0 1px 2px rgba(0,0,0,.3);
-  }
 }
 
 /* ---------------------------------------------------------------------------

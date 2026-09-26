@@ -1,8 +1,8 @@
 {
   "page": {
-    "eyebrow": "DAFTAR KERJA · TERURUT PITA PRIORITAS",
+    "eyebrow": "DAFTAR KERJA · TERURUT PRIORITAS",
     "title": "Antrean Review",
-    "lede": "Setiap baris dibuka dengan kalimat alasannya. Skor, pita, dan nominal berada di kanannya, bukan sebaliknya.",
+    "lede": "Setiap baris dibuka dengan kalimat alasannya. Skor, prioritas, dan nominal berada di kanannya, bukan sebaliknya.",
     "ingestAction": "Masukkan bundel baru",
     "footnote": "Halaman ini sengaja tidak memuat grafik agregat, peringkat fasilitas, atau angka rupiah “diselamatkan”. Kasus tanpa sinyal tidak pernah dilabeli bersih, hanya “tidak ada risiko teramati”."
   },
@@ -12,7 +12,7 @@
     "next": "Berikutnya"
   },
   "metric": {
-    "applyFilter": "Terapkan saringan ini",
+    "applyFilter": "Terapkan filter ini",
     "unitCase": "kasus",
     "unitHour": "jam",
     "awaiting": {
@@ -28,38 +28,30 @@
       "hint": "Kelengkapan sudah diminta ke fasilitas"
     },
     "median": {
-      "label": "Waktu tengah dalam antrean",
+      "label": "Median waktu dalam antrean",
       "hint": "Sebaran lama tunggu, bukan target kinerja"
-    },
-    "stamp": {
-      "heading": "VERSI MESIN & DATA",
-      "ruleset": "aturan v{{version}}",
-      "engine": "model v{{version}}",
-      "dataset": "data {{version}}",
-      "copy": "Salin",
-      "evaluation": "Evaluasi"
     }
   },
   "filter": {
-    "stateLabel": "Saringan status",
+    "stateLabel": "Filter status",
     "stateAll": "Status: semua",
-    "modeLabel": "Saringan mode risiko",
+    "modeLabel": "Filter mode risiko",
     "modeAll": "Mode risiko: semua",
-    "bandLabel": "Saringan pita prioritas",
-    "bandAll": "Pita prioritas: semua",
+    "bandLabel": "Filter prioritas",
+    "bandAll": "Prioritas: semua",
     "since": "Sejak",
     "sinceLabel": "Kasus dibuat sejak",
     "until": "Sampai",
     "untilLabel": "Kasus dibuat sampai",
-    "search": "Cari pengenal kasus pseudonim",
-    "activeHeading": "SARINGAN AKTIF",
-    "removeChip": ", lepas saringan ini",
+    "search": "Cari ID kasus pseudonim",
+    "activeHeading": "FILTER AKTIF",
+    "removeChip": ", hapus filter ini",
     "none": "tidak ada, seluruh antrean tampil",
-    "clearAll": "Bersihkan semua",
+    "clearAll": "Hapus semua",
     "shown": "{{count}} kasus tampil",
     "chip": {
       "state": "Status: {{value}}",
-      "band": "Pita: {{value}}",
+      "band": "Prioritas: {{value}}",
       "mode": "Mode: {{value}}",
       "created_after": "Sejak: {{value}}",
       "created_before": "Sampai: {{value}}",
@@ -67,7 +59,7 @@
     },
     "summary": {
       "state": "status {{value}}",
-      "band": "pita {{value}}",
+      "band": "prioritas {{value}}",
       "mode": "mode {{value}}",
       "created_after": "sejak {{value}}",
       "created_before": "sampai {{value}}",
@@ -79,9 +71,9 @@
     "emptyTitle": "Belum ada kasus sama sekali",
     "emptyBody": "Tidak ada bundel yang sudah disaring. Mulai dengan memasukkan satu bundel. Lima kasus contoh tersedia di layar Ingest.",
     "emptyAction": "Masukkan bundel",
-    "filteredTitle": "Tidak ada kasus yang cocok dengan saringan ini",
-    "filteredBody": "Saringan yang sedang aktif: {{filters}}. Data tetap ada; hanya tidak ada yang lolos kombinasi ini.",
-    "filteredAction": "Bersihkan saringan",
+    "filteredTitle": "Tidak ada kasus yang cocok dengan filter ini",
+    "filteredBody": "Filter yang sedang aktif: {{filters}}. Data tetap ada; hanya tidak ada yang lolos kombinasi ini.",
+    "filteredAction": "Hapus filter",
     "failedTitle": "Antrean tidak dapat dimuat",
     "failedBody": "{{detail}} Ini bukan berarti tidak ada kasus; daftarnya memang tidak sampai ke layar ini.",
     "failedFallback": "Layanan tidak merespons"
@@ -90,11 +82,11 @@
     "label": "Antrean kasus",
     "reason": "KALIMAT ALASAN",
     "mode": "MODE RISIKO",
-    "identifier": "PENGENAL",
+    "identifier": "ID",
     "evidence": "BUKTI",
     "amount": "NOMINAL",
     "age": "UMUR",
-    "band": "PITA PRIORITAS",
+    "band": "PRIORITAS",
     "status": "STATUS",
     "noMode": "-"
   }

@@ -90,7 +90,7 @@ describe('the case header', () => {
     await waitFor(() => expect(screen.getByText(/does not allege fraud/)).toBeInTheDocument())
     // The basis itself comes from the service already localised; the caveat is spliced onto it
     // rather than replacing it.
-    expect(screen.getByText(/pita mengikuti alasan terkuat/)).toBeInTheDocument()
+    expect(screen.getByText(/prioritas mengikuti alasan terkuat/)).toBeInTheDocument()
   })
 
   test('its fixed labels follow the interface language too', async () => {

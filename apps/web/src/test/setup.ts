@@ -8,7 +8,7 @@ import i18n from '@/modules/i18n/config'
 
 afterEach(cleanup)
 
-// jsdom implements neither of these, and the theme store reads both at module load.
+// jsdom does not implement matchMedia, and the reduced-motion checks read it.
 vi.stubGlobal(
   'matchMedia',
   vi.fn().mockImplementation((query: string) => ({

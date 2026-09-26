@@ -1,12 +1,9 @@
 import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 
-import { Button } from '@/components/ui/button'
 import { useQueueStore } from '@/features/review/queue/store'
 import { formatHours } from '@/features/review/shared/format'
 import type { QueueMetrics } from '@/features/review/shared/types'
-import { copyStamp } from '@/modules/engine-version/useEngineVersion'
 import { useCountUp } from '@/modules/motion/useCountUp'
 import { cn } from '@/lib/utils'
 
@@ -89,8 +86,9 @@ function MetricCard({ card, index }: { readonly card: MetricCardModel; readonly 
 }
 
 /**
- * The five operational metrics (widgets 1–5). Exactly five, and every one of them changes what
- * a reviewer does next.
+ * The four operational metrics (widgets 1–4), and every one of them changes what a reviewer does
+ * next. The fifth metric the canonical list names — the current engine/dataset version (G3) —
+ * lives in the header chip instead, where it is on every page rather than repeated here.
  *
  * `docs/canonical/01_product_decision.md` § Main dashboard principles rules out the alternatives
  * explicitly: no "fraud saved", no rupiah "recovered", no provider league tables, no national
@@ -98,7 +96,6 @@ function MetricCard({ card, index }: { readonly card: MetricCardModel; readonly 
  */
 export function QueueMetricCards({ metrics }: { readonly metrics: QueueMetrics }) {
   const { t } = useTranslation('queue')
-  const navigate = useNavigate()
   const setFilter = useQueueStore((state) => state.setFilter)
   const clearAllFilters = useQueueStore((state) => state.clearAllFilters)
 
@@ -163,41 +160,6 @@ export function QueueMetricCards({ metrics }: { readonly metrics: QueueMetrics }
       {cards.map((card, index) => (
         <MetricCard key={card.key} card={card} index={index} />
       ))}
-
-      {/* Widget 5 — engine and dataset stamp (G3). The way through to /evaluation. */}
-      <div
-        style={{ '--tk-index': cards.length } as CSSProperties}
-        className="tk-enter flex flex-col gap-2 rounded-lg border border-line bg-sunk px-4 py-[15px]"
-      >
-        <span className="font-mono text-micro font-semibold tracking-label text-ink-3">
-          {t('metric.stamp.heading')}
-        </span>
-        <span data-numeric className="font-mono text-small leading-[1.55]">
-          {t('metric.stamp.ruleset', { version: metrics.versions.ruleset_version })}
-          <br />
-          {t('metric.stamp.engine', { version: metrics.versions.engine_version })}
-          <br />
-          {t('metric.stamp.dataset', { version: metrics.versions.dataset_version })}
-        </span>
-        <div className="mt-auto flex gap-[6px]">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1 px-0"
-            onClick={() => void copyStamp(metrics.versions)}
-          >
-            {t('metric.stamp.copy')}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1 px-0"
-            onClick={() => navigate('/evaluation')}
-          >
-            {t('metric.stamp.evaluation')}
-          </Button>
-        </div>
-      </div>
     </div>
   )
 }

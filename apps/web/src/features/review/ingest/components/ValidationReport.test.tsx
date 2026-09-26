@@ -51,9 +51,9 @@ afterEach(() => {
 
 describe('the three validation states are drawn distinctly', () => {
   const cases: readonly [ValidationStatus, string][] = [
-    ['VALID', 'Sah'],
-    ['VALID_WITH_NOTES', 'Sah dengan catatan'],
-    ['INVALID', 'Tidak sah'],
+    ['VALID', 'Valid'],
+    ['VALID_WITH_NOTES', 'Valid dengan catatan'],
+    ['INVALID', 'Tidak valid'],
   ]
 
   test.each(cases)('%s reads as "%s"', (status, label) => {
@@ -106,7 +106,7 @@ describe('a refused bundle', () => {
   test('is reported as invalid, in a sentence rather than a code', () => {
     render(null, refusal)
 
-    expect(screen.getByText('Tidak sah')).toBeVisible()
+    expect(screen.getByText('Tidak valid')).toBeVisible()
     expect(screen.getByText(refusal.message)).toBeVisible()
   })
 
@@ -126,7 +126,7 @@ describe('a refused bundle', () => {
 
   test('says whether the browser or the service refused it', () => {
     render(null, { ...refusal, source: 'client', code: 'TOO_LARGE' })
-    expect(screen.getByText(/ditolak di peramban dan tidak dikirim/)).toBeVisible()
+    expect(screen.getByText(/ditolak di browser dan tidak dikirim/)).toBeVisible()
   })
 })
 

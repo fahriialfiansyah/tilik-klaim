@@ -4,6 +4,17 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 
 ---
 
+### 2026-09-26 · Connective Indonesian text follows the UI glossary · ✅ Done
+
+**Event:** The web copy moved to "prioritas", "hash" and "ingest"; the sentences this service composes around a finding had to match
+**Files:** `apps/backend/app/service/{text,case_sources}.py`, `apps/backend/app/service/briefing/template.py`, `apps/backend/tests/fixtures/{build_api.py,api/get_case_detail_clone.json}`
+> Band basis and the similarity cap say "prioritas" instead of "pita", the carried-notes line
+> says "ingest berkas" instead of "pemasukan berkas", the comparison field reads "Hash teks", and
+> the briefing template's uncertainty note no longer mentions "pita". Domain catalogs in
+> `packages/domain` are untouched: their sentences are versioned with the ruleset.
+
+---
+
 ### 2026-09-06 · Reasons and counter-evidence become locale-aware catalogs · ✅ Done
 
 **Event:** The UI went bilingual, and the most prominent text on every screen is composed here

@@ -38,15 +38,15 @@ describe('the four empty and error states are distinguishable', () => {
 
     renderWithRouter(
       <QueueFilteredEmpty
-        activeFilters={['pita Konflik deterministik', 'mode Dokumentasi salinan']}
+        activeFilters={['prioritas Konflik deterministik', 'mode Dokumentasi salinan']}
         onClear={onClear}
       />,
     )
 
-    expect(screen.getByText(/pita Konflik deterministik \+ mode Dokumentasi salinan/)).toBeInTheDocument()
+    expect(screen.getByText(/prioritas Konflik deterministik \+ mode Dokumentasi salinan/)).toBeInTheDocument()
     // The reassurance matters as much as the list: the data is still there.
     expect(screen.getByText(/Data tetap ada/)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Bersihkan saringan' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Hapus filter' })).toBeInTheDocument()
   })
 
   test('a service failure says so plainly and never poses as an empty queue', () => {

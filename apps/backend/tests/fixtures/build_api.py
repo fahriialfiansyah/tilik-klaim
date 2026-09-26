@@ -322,7 +322,7 @@ def main() -> None:
                 band=PriorityBand.NEEDS_CONTEXT,
                 basis="Kemiripan dokumentasi tinggi, tanpa penguat dari keluarga bukti lain.",
                 caps_applied=(
-                    "Kemiripan teks saja tidak pernah cukup untuk mencapai pita tertinggi.",
+                    "Kemiripan teks saja tidak pernah cukup untuk mencapai prioritas tertinggi.",
                 ),
             ),
             lines=(

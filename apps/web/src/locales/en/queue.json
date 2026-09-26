@@ -30,14 +30,6 @@
     "median": {
       "label": "Median time in queue",
       "hint": "The spread of waiting time, not a performance target"
-    },
-    "stamp": {
-      "heading": "ENGINE & DATA VERSION",
-      "ruleset": "rules v{{version}}",
-      "engine": "model v{{version}}",
-      "dataset": "data {{version}}",
-      "copy": "Copy",
-      "evaluation": "Evaluation"
     }
   },
   "filter": {

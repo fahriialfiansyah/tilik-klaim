@@ -77,7 +77,7 @@ describe('the briefing panel is non-authoritative and on demand', () => {
     renderView(IDLE_BRIEFING, false)
 
     expect(screen.getByRole('button', { name: /Ringkasan bukti/ })).toHaveAttribute('aria-expanded', 'false')
-    expect(screen.getByText(/Tidak mengubah pita, status, atau keputusan/)).toBeInTheDocument()
+    expect(screen.getByText(/Tidak mengubah prioritas, status, atau keputusan/)).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Susun ringkasan' })).not.toBeInTheDocument()
     expect(fetchSpy).not.toHaveBeenCalled()
     fetchSpy.mockRestore()

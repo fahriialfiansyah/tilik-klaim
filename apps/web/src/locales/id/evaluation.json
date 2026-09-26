@@ -12,21 +12,21 @@
     "HYBRID": "Aturan yang mempertahankan alasan, ditambah skor terkalibrasi"
   },
   "metric": {
-    "macro_f1": "F1 makro",
-    "pr_auc": "Luas kurva ketepatan-keterpanggilan",
-    "precision_at_k": "Ketepatan pada kapasitas review",
-    "recall_at_k": "Keterpanggilan pada kapasitas review",
-    "false_positives_per_100_clean": "Positif palsu per 100 klaim bersih"
+    "macro_f1": "Macro F1",
+    "pr_auc": "PR-AUC",
+    "precision_at_k": "Precision pada kapasitas review",
+    "recall_at_k": "Recall pada kapasitas review",
+    "false_positives_per_100_clean": "False positive per 100 klaim bersih"
   },
   "notMeasured": "Tidak terukur",
   "notMeasuredHint": "Nilai ini tidak terdefinisi pada run tersebut, jadi tidak ditampilkan sebagai angka.",
-  "mandatoryStatement": "Kumpulan data ini bersifat sintetik dan tidak menggambarkan prevalensi JKN maupun perilaku fasilitas kesehatan yang sebenarnya.",
+  "mandatoryStatement": "Dataset ini bersifat sintetik dan tidak menggambarkan prevalensi JKN maupun perilaku fasilitas kesehatan yang sebenarnya.",
   "limitation": {
     "Software correctly parses the chosen schema subset": "Perangkat lunak membaca subset skema yang dipilih dengan benar",
     "Detectors recover known injected patterns": "Detektor menemukan kembali pola yang sengaja disuntikkan",
     "Hybrid ranking may beat baselines on controlled cases": "Peringkat hibrida dapat mengungguli baseline pada kasus terkendali",
     "Evidence references and audit events are reproducible": "Rujukan bukti dan jejak audit dapat direproduksi",
-    "Prototype latency and workflow can be measured": "Waktu proses dan alur kerja purwarupa dapat diukur",
+    "Prototype latency and workflow can be measured": "Waktu proses dan alur kerja prototipe dapat diukur",
     "Production compatibility with BPJS/E-Klaim/SATUSEHAT": "Kesesuaian produksi dengan BPJS / E-Klaim / SATUSEHAT",
     "Real-world JKN fraud accuracy or prevalence": "Akurasi atau prevalensi kecurangan JKN di dunia nyata",
     "National savings or causal impact": "Penghematan nasional atau dampak kausal",
@@ -42,10 +42,10 @@
     "baselinesCaption": "Perbandingan empat baseline",
     "perModeHeading": "Metrik per mode risiko",
     "perModeBody": "Angka pendekatan hibrida untuk keempat mode. Mode tanpa contoh pada partisi uji ditandai tidak terukur, bukan nol.",
-    "perModeCaption": "Ketepatan, keterpanggilan, dan F1 per mode risiko",
-    "falsePositiveTitle": "Positif palsu per 100 klaim bersih",
+    "perModeCaption": "Precision, recall, dan F1 per mode risiko",
+    "falsePositiveTitle": "False positive per 100 klaim bersih",
     "falsePositiveSubtitle": "Semakin rendah, semakin sedikit beban tinjauan yang terbuang",
-    "precisionTitle": "Ketepatan pada kapasitas review",
+    "precisionTitle": "Precision pada kapasitas review",
     "precisionSubtitle": "Bagian kasus yang ditinjau yang benar-benar memuat pola yang disuntikkan"
   },
   "limitations": {
@@ -58,22 +58,22 @@
     "doesNotColon": "Yang tidak ditunjukkan:"
   },
   "modeColumn": {
-    "precision": "Ketepatan",
-    "recall": "Keterpanggilan",
+    "precision": "Precision",
+    "recall": "Recall",
     "f1": "F1",
     "support": "Jumlah kasus"
   },
   "placeholder": {
     "loading": "Memuat hasil evaluasi…",
     "noRunTitle": "Belum ada evaluasi yang dijalankan",
-    "noRunBody": "Halaman ini hanya menampilkan artefak yang sudah dihasilkan. Evaluasi dijalankan luring oleh seorang teknisi terhadap partisi uji yang dibekukan, bukan dari halaman ini dan bukan dari sebuah tombol.",
+    "noRunBody": "Halaman ini hanya menampilkan artefak yang sudah dihasilkan. Evaluasi dijalankan offline oleh seorang teknisi terhadap partisi uji yang dibekukan, bukan dari halaman ini dan bukan dari sebuah tombol.",
     "failedTitle": "Hasil evaluasi tidak dapat dimuat",
     "failedBody": "Layanan tidak menjawab. Ini berbeda dari “belum ada evaluasi”: artefaknya mungkin ada, tetapi tidak terbaca dari sini."
   },
   "latency": {
     "heading": "Waktu pemrosesan",
     "body": "Waktu penyaringan satu berkas klaim pada mesin pengembangan. Bukan angka produksi dan tidak menyatakan apa pun tentang beban skala nasional. Nilai dibulatkan ke milidetik penuh, sehingga p50 dan p95 dapat tampak sama pada penyaringan yang sangat cepat; angka penuhnya ada di <1>{{file}}</1> milik run ini.",
-    "median": "Nilai tengah (p50)",
+    "median": "Median (p50)",
     "p95": "Persentil 95 (p95)"
   },
   "synthetic": {
@@ -85,15 +85,15 @@
     "heading": "Penanda versi",
     "run": "Run",
     "completed": "Selesai",
-    "datasetHash": "Sidik kumpulan data",
+    "datasetHash": "Hash dataset",
     "generator": "Versi generator",
     "ruleset": "Versi aturan",
     "engine": "Versi mesin",
     "feature": "Versi fitur",
     "model": "Versi model",
     "commit": "Commit kode",
-    "environment": "Sidik lingkungan",
-    "thresholds": "Ambang batas pita ditetapkan dari kuantil distribusi skor pada partisi validasi saja, tidak pernah dari partisi latih maupun uji. Rumusan teknisnya tercatat pada <1>{{file}}</1> milik run ini."
+    "environment": "Hash lingkungan",
+    "thresholds": "Ambang batas prioritas ditetapkan dari kuantil distribusi skor pada partisi validasi saja, tidak pernah dari partisi latih maupun uji. Rumusan teknisnya tercatat pada <1>{{file}}</1> milik run ini."
   },
   "approachColumn": "Pendekatan"
 }

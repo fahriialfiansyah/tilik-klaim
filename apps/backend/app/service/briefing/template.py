@@ -27,7 +27,7 @@ PROMPT_VERSION = "template-1"
 
 UNCERTAINTY_NOTE = (
     "Ringkasan ini disusun hanya dari bukti yang ikut terkirim dalam bundel. Ketiadaan catatan "
-    "di sini bukan bukti bahwa layanan tidak diberikan. Ringkasan tidak mengubah pita, status, "
+    "di sini bukan bukti bahwa layanan tidak diberikan. Ringkasan tidak mengubah prioritas, status, "
     "maupun keputusan peninjau."
 )
 
