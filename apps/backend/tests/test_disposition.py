@@ -381,6 +381,89 @@ def test_reopening_a_dismissed_case_needs_an_authorised_role(api) -> None:
     assert any(e.state_after is CaseState.DISMISSED for e in events), "dismissal still visible"
 
 
+# --------------------------------------------------------------------------------------
+# Re-screening must not undo a decision
+# --------------------------------------------------------------------------------------
+
+
+def rescreen(api, scenario: str = "phantom") -> dict:
+    """Submit the same bundle again and screen it, as the ingest screen's button does."""
+    fixture = load(scenario)
+    ingested = api.post("/v1/bundles", json=fixture.bundle.model_dump(mode="json")).json()
+    return api.post(f"/v1/bundles/{ingested['ingestion_id']}/screen", json={}).json()
+
+
+def decide(api, case: dict, action: str) -> dict:
+    response = api.post(
+        f"/v1/cases/{case['case_id']}/dispositions",
+        json=disposition(action, case["case_version"]),
+        headers=REVIEWER,
+    )
+    assert response.status_code == 200, response.text
+    return response.json()
+
+
+def audit_kinds(api, case_id: str) -> list[str]:
+    events = api.get(f"/v1/cases/{case_id}/audit", headers=REVIEWER).json()["events"]
+    return [event["event_kind"] for event in events]
+
+
+@pytest.mark.parametrize(
+    ("action", "closed_state"),
+    [
+        ("REJECT_SIGNAL", "DISMISSED"),
+        ("CONFIRM_ANOMALY", "CONFIRMED_ANOMALY"),
+        ("ESCALATE", "ESCALATED"),
+    ],
+)
+def test_rescreening_never_undoes_a_human_decision(api, action: str, closed_state: str) -> None:
+    """The same bundle, screened again, used to send a closed case back to the queue.
+
+    Found by hand: a reviewer dismissed a case, re-screened its bundle, and had a fresh case to
+    decide again — while the role matrix says only a senior reviewer may reopen a dismissed one.
+    """
+    case = screened_case(api)
+    decided = decide(api, case, action)
+    assert decided["new_state"] == closed_state
+    events_before = audit_kinds(api, case["case_id"])
+
+    again = rescreen(api)
+
+    assert again["case_id"] == case["case_id"]
+    assert again["state"] == closed_state
+    assert again["case_version"] == decided["new_case_version"]
+    shown = api.get(f"/v1/cases/{case['case_id']}", headers=REVIEWER).json()
+    assert shown["state"] == closed_state
+    assert audit_kinds(api, case["case_id"]) == events_before, "nothing new is written"
+
+
+def test_a_reviewer_cannot_reopen_a_dismissed_case_by_screening_it_again(api) -> None:
+    case = screened_case(api)
+    decided = decide(api, case, "REJECT_SIGNAL")
+    rescreen(api)
+
+    retry = api.post(
+        f"/v1/cases/{case['case_id']}/dispositions",
+        json=disposition("REQUEST_EVIDENCE", decided["new_case_version"]),
+        headers=REVIEWER,
+    )
+
+    assert retry.status_code == 409
+    assert retry.json()["code"] == "DISPOSITION_INVALID_TRANSITION"
+
+
+def test_rescreening_after_evidence_was_requested_returns_the_case_to_screened(api) -> None:
+    """The one loop the state machine does allow: a new look at a case awaiting evidence."""
+    case = screened_case(api)
+    decided = decide(api, case, "REQUEST_EVIDENCE")
+
+    again = rescreen(api)
+
+    assert again["state"] == "SCREENED"
+    assert again["case_version"] == decided["new_case_version"] + 1
+    assert audit_kinds(api, case["case_id"])[-1] == "RESCREENED"
+
+
 def test_no_action_triggers_payment_rejection_or_sanction() -> None:
     """Out of scope by decision, and asserted so it stays that way.
 

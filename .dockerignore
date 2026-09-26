@@ -28,6 +28,11 @@ design
 brief
 sprint
 changelog
-evaluation/artifacts
 data/generated
+
+# Artefak evaluasi: run lokal tidak ikut, tetapi run terbekukan yang dikutip proposal HARUS ikut —
+# image tidak punya runner, jadi tanpa ini halaman Audit & Evaluasi kosong selamanya di produksi.
+evaluation/artifacts/*
+!evaluation/artifacts/.gitkeep
+!evaluation/artifacts/run-20260901T110000Z
 .DS_Store

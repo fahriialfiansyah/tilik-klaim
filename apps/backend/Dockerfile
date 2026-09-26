@@ -18,11 +18,18 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /srv
 RUN uv venv "$VIRTUAL_ENV"
 
-# `tilik-domain` belum tercatat sebagai dependensi di apps/backend/pyproject.toml, jadi
-# keduanya dipasang eksplisit di sini. Urutannya penting: domain lebih dulu, API menyusul.
+# `tilik-domain` kini tercatat sebagai dependensi di apps/backend/pyproject.toml (path source),
+# tetapi tetap dipasang eksplisit lebih dulu agar hasil build tidak bergantung pada urutan resolver.
 COPY packages/domain packages/domain
 COPY apps/backend apps/backend
 RUN uv pip install --no-cache ./packages/domain ./apps/backend
+
+# Bukti evaluasi untuk halaman Audit & Evaluasi. Image tidak bisa membuatnya ulang (tidak ada
+# runner), jadi hanya run terbekukan yang dikutip proposal yang dibawa; lihat .dockerignore.
+# Path absolut wajib: API terpasang di site-packages, sehingga "akar repo" yang dihitung dari
+# lokasi berkas bukan /srv dan path relatif akan menunjuk ke tempat yang salah.
+COPY evaluation/artifacts evaluation/artifacts
+ENV EVALUATION_ARTIFACTS_DIR=/srv/evaluation/artifacts
 
 WORKDIR /srv/apps/backend
 

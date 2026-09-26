@@ -34,7 +34,7 @@ def test_liveness_never_depends_on_the_database(monkeypatch) -> None:
     The restart loop would happen precisely when the database is already struggling, which is
     the worst possible moment to take the API down as well.
     """
-    monkeypatch.setattr(demo_state, "is_database_available", lambda: False)
+    monkeypatch.setattr(demo_state, "database_availability", lambda: False)
     response = client.get("/healthz")
 
     assert response.status_code == 200
@@ -45,7 +45,7 @@ def test_an_unreachable_database_is_reported_loudly_rather_than_as_a_false_ok(
     monkeypatch,
 ) -> None:
     """The status stays `ok`; readiness must not."""
-    monkeypatch.setattr(demo_state, "is_database_available", lambda: False)
+    monkeypatch.setattr(demo_state, "database_availability", lambda: False)
     readiness = client.get("/healthz").json()["readiness"]
 
     assert readiness["ready"] is False
@@ -128,7 +128,7 @@ def test_a_process_on_memory_while_the_database_is_up_is_reported(monkeypatch) -
     plausibly wrong. Re-seeding does not help; only a restart does, and the check must say so.
     """
     monkeypatch.setattr(demo_state, "use_database", lambda: False)
-    monkeypatch.setattr(demo_state, "is_database_available", lambda: True)
+    monkeypatch.setattr(demo_state, "database_availability", lambda: True)
 
     readiness = check_readiness()
 

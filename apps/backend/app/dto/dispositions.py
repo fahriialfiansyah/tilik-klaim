@@ -9,6 +9,12 @@ from tilik_domain.reasons import CaseState, DispositionAction
 
 from app.dto.common import Dto, EvidenceRefDto, VersionStamp
 
+NOTE_MAX_CHARS = 2000
+"""Free-text elaboration. Mirrored by the note field's `maxLength` in the web app."""
+
+REASON_MAX_CHARS = 200
+"""The longest standard reason is about sixty characters; this is headroom, not a target."""
+
 
 class DispositionRequest(Dto):
     """A human decision. Never accepted without a reason.
@@ -19,11 +25,18 @@ class DispositionRequest(Dto):
     """
 
     action: DispositionAction
-    structured_reason: str = Field(min_length=1, description="Chosen from the action's reason list.")
-    note: str | None = Field(default=None, description="Optional free-text elaboration.")
+    structured_reason: str = Field(
+        min_length=1,
+        max_length=REASON_MAX_CHARS,
+        description="Chosen from the action's reason list.",
+    )
+    note: str | None = Field(
+        default=None, max_length=NOTE_MAX_CHARS, description="Optional free-text elaboration."
+    )
     expected_case_version: int = Field(ge=1)
     requested_evidence: tuple[ResourceType, ...] = Field(
         default=(),
+        max_length=len(ResourceType),
         description="For REQUEST_EVIDENCE: resource types being asked for. Editable by the reviewer.",
     )
 

@@ -19,4 +19,5 @@ else
 fi
 
 echo "[start] uvicorn mendengarkan di 0.0.0.0:${PORT:-8000}"
-exec uvicorn app.main:app --host 0.0.0.0 --port "${PORT:-8000}"
+# `--no-server-header`: the banner names the server software and version to anyone who asks.
+exec uvicorn app.main:app --host 0.0.0.0 --port "${PORT:-8000}" --no-server-header

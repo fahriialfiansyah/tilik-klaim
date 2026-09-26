@@ -1,0 +1,145 @@
+{
+  "accounts": [
+    {
+      "account_id": "ACC-RP-0022",
+      "participant_id": "PSN-4022",
+      "provider_id": "PRV-03",
+      "status": "active"
+    }
+  ],
+  "bundle_id": "BND-RP-22-B",
+  "charge_items": [
+    {
+      "account_id": "ACC-RP-0022",
+      "charge_item_id": "CI-RP-22-B",
+      "code": "89.52",
+      "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+      "encounter_id": "ENC-RP-22-B",
+      "occurred_at": "2026-01-23T09:00:00Z",
+      "quantity": "1",
+      "total_amount": "120000",
+      "unit_price": "120000"
+    }
+  ],
+  "claim": {
+    "care_type": "outpatient",
+    "claim_id": "CLM-RP-22-B",
+    "currency": "IDR",
+    "encounter_id": "ENC-RP-22-B",
+    "episode_id": "EPS-RP-22",
+    "participant_id": "PSN-4022",
+    "provider_id": "PRV-03",
+    "status": "active",
+    "submitted_at": "2026-01-24T08:00:00Z",
+    "total_amount": "120000"
+  },
+  "conditions": [
+    {
+      "code": "Z00.0",
+      "code_system": "http://hl7.org/fhir/sid/icd-10",
+      "condition_id": "COND-RP-22-B",
+      "encounter_id": "ENC-RP-22-B",
+      "onset_at": null,
+      "recorded_at": "2026-01-23T09:00:00Z",
+      "verification_status": "confirmed"
+    }
+  ],
+  "diagnostics": [],
+  "documents": [],
+  "encounters": [
+    {
+      "class_code": "AMB",
+      "encounter_id": "ENC-RP-22-B",
+      "end_at": "2026-01-23T11:00:00Z",
+      "location_id": "LOC-04",
+      "participant_id": "PSN-4022",
+      "provider_id": "PRV-03",
+      "start_at": "2026-01-23T09:00:00Z",
+      "status": "finished"
+    }
+  ],
+  "invoices": [
+    {
+      "account_id": "ACC-RP-0022",
+      "charge_item_refs": [
+        {
+          "resource_id": "CI-RP-22-B",
+          "resource_type": "ChargeItem"
+        }
+      ],
+      "invoice_id": "INV-RP-22-B",
+      "issued_at": "2026-01-24T08:00:00Z",
+      "total_amount": "120000"
+    }
+  ],
+  "lines": [
+    {
+      "charge_item_ref": {
+        "resource_id": "CI-RP-22-B",
+        "resource_type": "ChargeItem"
+      },
+      "claim_id": "CLM-RP-22-B",
+      "code": "89.52",
+      "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+      "description": "Layanan 89.52",
+      "line_amount": "120000",
+      "line_id": "LN-RP-22-B",
+      "quantity": "1",
+      "service_at": "2026-01-23T09:00:00Z",
+      "supporting_refs": [
+        {
+          "resource_id": "PROC-RP-22-B",
+          "resource_type": "Procedure"
+        }
+      ],
+      "unit_price": "120000"
+    }
+  ],
+  "medications": [],
+  "procedures": [
+    {
+      "code": "89.52",
+      "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+      "encounter_id": "ENC-RP-22-B",
+      "location_id": "LOC-04",
+      "performed_at": "2026-01-23T09:00:00Z",
+      "performer_id": "PRACT-01",
+      "procedure_id": "PROC-RP-22-B",
+      "status": "completed"
+    }
+  ],
+  "provenance": [
+    {
+      "bundle_hash": null,
+      "last_updated_at": "2026-01-23T00:00:00Z",
+      "resource_id": "CLM-RP-22-B",
+      "resource_type": "Claim",
+      "schema_version": "0.1.0",
+      "source_type": "synthetic_generator"
+    },
+    {
+      "bundle_hash": null,
+      "last_updated_at": "2026-01-23T00:00:00Z",
+      "resource_id": "ENC-RP-22-B",
+      "resource_type": "Encounter",
+      "schema_version": "0.1.0",
+      "source_type": "synthetic_generator"
+    },
+    {
+      "bundle_hash": null,
+      "last_updated_at": "2026-01-23T00:00:00Z",
+      "resource_id": "LN-RP-22-B",
+      "resource_type": "ClaimLine",
+      "schema_version": "0.1.0",
+      "source_type": "synthetic_generator"
+    },
+    {
+      "bundle_hash": null,
+      "last_updated_at": "2026-01-23T00:00:00Z",
+      "resource_id": "PROC-RP-22-B",
+      "resource_type": "Procedure",
+      "schema_version": "0.1.0",
+      "source_type": "synthetic_generator"
+    }
+  ]
+}

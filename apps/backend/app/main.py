@@ -12,6 +12,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
+from app.middleware import BodyLimitMiddleware, SecurityHeadersMiddleware
 from app.router import briefing, bundles, cases, dispositions, evaluations, health, users
 
 settings = get_settings()
@@ -21,6 +22,11 @@ app = FastAPI(
     version=settings.engine_version,
     description="Claim evidence integrity screening. Synthetic data only.",
 )
+
+# Urutan pemasangan menentukan lapisan: yang dipasang terakhir menjadi yang terluar. Batas ukuran
+# di dalam CORS, supaya galat 413 tetap membawa header CORS dan terbaca peramban lintas-origin;
+# header keamanan di paling luar, supaya menutupi setiap jawaban, termasuk yang dibuat CORS.
+app.add_middleware(BodyLimitMiddleware, max_bytes=settings.max_request_bytes)
 
 # Web dan API berjalan di host berbeda saat di-deploy (Vercel dan Railway), jadi setiap
 # panggilan dari peramban bersifat lintas-origin. Origin yang diizinkan datang dari
@@ -38,6 +44,8 @@ if settings.cors_origins or settings.cors_allow_origin_regex:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+app.add_middleware(SecurityHeadersMiddleware)
 
 app.include_router(health.router)
 app.include_router(evaluations.router)

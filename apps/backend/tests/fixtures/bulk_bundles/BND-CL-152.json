@@ -1,0 +1,207 @@
+{
+  "accounts": [
+    {
+      "account_id": "ACC-0152",
+      "participant_id": "PSN-2152",
+      "provider_id": "PRV-01",
+      "status": "active"
+    }
+  ],
+  "bundle_id": "BND-CL-152",
+  "charge_items": [
+    {
+      "account_id": "ACC-0152",
+      "charge_item_id": "CI-CL-152-1",
+      "code": "96.04",
+      "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+      "encounter_id": "ENC-CL-152",
+      "occurred_at": "2026-06-02T09:00:00Z",
+      "quantity": "1",
+      "total_amount": "100000",
+      "unit_price": "100000"
+    },
+    {
+      "account_id": "ACC-0152",
+      "charge_item_id": "CI-CL-152-2",
+      "code": "93.97",
+      "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+      "encounter_id": "ENC-CL-152",
+      "occurred_at": "2026-06-02T10:00:00Z",
+      "quantity": "1",
+      "total_amount": "115000",
+      "unit_price": "115000"
+    }
+  ],
+  "claim": {
+    "care_type": "inpatient",
+    "claim_id": "CLM-CL-152",
+    "currency": "IDR",
+    "encounter_id": "ENC-CL-152",
+    "episode_id": "EPS-CL-152",
+    "participant_id": "PSN-2152",
+    "provider_id": "PRV-01",
+    "status": "active",
+    "submitted_at": "2026-06-03T08:00:00Z",
+    "total_amount": "215000"
+  },
+  "conditions": [
+    {
+      "code": "J06.9",
+      "code_system": "http://hl7.org/fhir/sid/icd-10",
+      "condition_id": "COND-CL-152",
+      "encounter_id": "ENC-CL-152",
+      "onset_at": null,
+      "recorded_at": "2026-06-02T08:00:00Z",
+      "verification_status": "confirmed"
+    }
+  ],
+  "diagnostics": [],
+  "documents": [],
+  "encounters": [
+    {
+      "class_code": "AMB",
+      "encounter_id": "ENC-CL-152",
+      "end_at": "2026-06-02T11:00:00Z",
+      "location_id": "LOC-01",
+      "participant_id": "PSN-2152",
+      "provider_id": "PRV-01",
+      "start_at": "2026-06-02T08:00:00Z",
+      "status": "finished"
+    }
+  ],
+  "invoices": [
+    {
+      "account_id": "ACC-0152",
+      "charge_item_refs": [
+        {
+          "resource_id": "CI-CL-152-1",
+          "resource_type": "ChargeItem"
+        },
+        {
+          "resource_id": "CI-CL-152-2",
+          "resource_type": "ChargeItem"
+        }
+      ],
+      "invoice_id": "INV-CL-152",
+      "issued_at": "2026-06-03T08:00:00Z",
+      "total_amount": "215000"
+    }
+  ],
+  "lines": [
+    {
+      "charge_item_ref": {
+        "resource_id": "CI-CL-152-1",
+        "resource_type": "ChargeItem"
+      },
+      "claim_id": "CLM-CL-152",
+      "code": "96.04",
+      "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+      "description": "Layanan 96.04",
+      "line_amount": "100000",
+      "line_id": "LN-CL-152-1",
+      "quantity": "1",
+      "service_at": "2026-06-02T09:00:00Z",
+      "supporting_refs": [
+        {
+          "resource_id": "PROC-CL-152-1",
+          "resource_type": "Procedure"
+        }
+      ],
+      "unit_price": "100000"
+    },
+    {
+      "charge_item_ref": {
+        "resource_id": "CI-CL-152-2",
+        "resource_type": "ChargeItem"
+      },
+      "claim_id": "CLM-CL-152",
+      "code": "93.97",
+      "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+      "description": "Layanan 93.97",
+      "line_amount": "115000",
+      "line_id": "LN-CL-152-2",
+      "quantity": "1",
+      "service_at": "2026-06-02T10:00:00Z",
+      "supporting_refs": [
+        {
+          "resource_id": "PROC-CL-152-2",
+          "resource_type": "Procedure"
+        }
+      ],
+      "unit_price": "115000"
+    }
+  ],
+  "medications": [],
+  "procedures": [
+    {
+      "code": "96.04",
+      "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+      "encounter_id": "ENC-CL-152",
+      "location_id": "LOC-01",
+      "performed_at": "2026-06-02T09:00:00Z",
+      "performer_id": "PRACT-01",
+      "procedure_id": "PROC-CL-152-1",
+      "status": "completed"
+    },
+    {
+      "code": "93.97",
+      "code_system": "http://terminology.kemkes.go.id/CodeSystem/icd9cm",
+      "encounter_id": "ENC-CL-152",
+      "location_id": "LOC-01",
+      "performed_at": "2026-06-02T10:00:00Z",
+      "performer_id": "PRACT-01",
+      "procedure_id": "PROC-CL-152-2",
+      "status": "completed"
+    }
+  ],
+  "provenance": [
+    {
+      "bundle_hash": null,
+      "last_updated_at": "2026-06-02T00:00:00Z",
+      "resource_id": "CLM-CL-152",
+      "resource_type": "Claim",
+      "schema_version": "0.1.0",
+      "source_type": "synthetic_generator"
+    },
+    {
+      "bundle_hash": null,
+      "last_updated_at": "2026-06-02T00:00:00Z",
+      "resource_id": "ENC-CL-152",
+      "resource_type": "Encounter",
+      "schema_version": "0.1.0",
+      "source_type": "synthetic_generator"
+    },
+    {
+      "bundle_hash": null,
+      "last_updated_at": "2026-06-02T00:00:00Z",
+      "resource_id": "LN-CL-152-1",
+      "resource_type": "ClaimLine",
+      "schema_version": "0.1.0",
+      "source_type": "synthetic_generator"
+    },
+    {
+      "bundle_hash": null,
+      "last_updated_at": "2026-06-02T00:00:00Z",
+      "resource_id": "PROC-CL-152-1",
+      "resource_type": "Procedure",
+      "schema_version": "0.1.0",
+      "source_type": "synthetic_generator"
+    },
+    {
+      "bundle_hash": null,
+      "last_updated_at": "2026-06-02T00:00:00Z",
+      "resource_id": "LN-CL-152-2",
+      "resource_type": "ClaimLine",
+      "schema_version": "0.1.0",
+      "source_type": "synthetic_generator"
+    },
+    {
+      "bundle_hash": null,
+      "last_updated_at": "2026-06-02T00:00:00Z",
+      "resource_id": "PROC-CL-152-2",
+      "resource_type": "Procedure",
+      "schema_version": "0.1.0",
+      "source_type": "synthetic_generator"
+    }
+  ]
+}

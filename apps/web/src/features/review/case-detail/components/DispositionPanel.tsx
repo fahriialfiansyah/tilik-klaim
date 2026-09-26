@@ -18,7 +18,7 @@ import {
   useCaseDetailStore,
 } from '@/features/review/case-detail/store'
 import type { CaseDetail, DispositionAction } from '@/features/review/case-detail/types'
-import { DISPOSITION_ACTIONS } from '@/features/review/case-detail/types'
+import { DISPOSITION_ACTIONS, MAX_NOTE_CHARS } from '@/features/review/case-detail/types'
 import type { SaveStatus } from '@/features/review/case-detail/useCaseDetail'
 import { cn } from '@/lib/utils'
 
@@ -210,6 +210,7 @@ export function DispositionPanel({
         <textarea
           id="catatan-bebas"
           rows={4}
+          maxLength={MAX_NOTE_CHARS}
           value={draft.note}
           onChange={(event) => setNote(caseId, event.target.value)}
           placeholder={t('disposition.notePlaceholder')}

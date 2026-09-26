@@ -98,7 +98,7 @@
   },
   "banner": {
     "duplicateTitle": "A bundle with an identical fingerprint has been screened before",
-    "duplicateBody": "Fingerprint <0>{{hash}}</0> has already produced a case. Screening it again does not create a second case; it updates the one that already exists.",
+    "duplicateBody": "Fingerprint <0>{{hash}}</0> has already produced a case. Screening it again does not create a second case; it updates the one that already exists, unless a person has already decided it, in which case it is left exactly as it is.",
     "openCase": "Open the case",
     "serviceBody": "{{detail}} No case was created.",
     "serviceDown": "The service did not respond",

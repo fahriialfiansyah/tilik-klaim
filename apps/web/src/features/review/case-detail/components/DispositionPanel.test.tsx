@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { DispositionPanel } from '@/features/review/case-detail/components/DispositionPanel'
 import { useCaseDetailStore } from '@/features/review/case-detail/store'
+import { MAX_NOTE_CHARS } from '@/features/review/case-detail/types'
 import { makeCaseDetail } from '@/features/review/case-detail/test-fixtures'
 import { renderWithRouter } from '@/test/render'
 
@@ -124,5 +125,16 @@ describe('what the panel tells the reviewer', () => {
     first.focus()
     await userEvent.keyboard('{ }')
     expect(first).toBeChecked()
+  })
+})
+
+describe('the free-text note', () => {
+  test('stops at the length the server accepts, so saving never fails on it', () => {
+    renderPanel()
+
+    expect(screen.getByLabelText('CATATAN BEBAS')).toHaveAttribute(
+      'maxLength',
+      String(MAX_NOTE_CHARS),
+    )
   })
 })

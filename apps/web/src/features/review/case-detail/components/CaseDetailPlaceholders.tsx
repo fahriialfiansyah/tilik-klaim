@@ -18,10 +18,10 @@ export function CaseDetailLoading() {
   const { t } = useTranslation('caseDetail')
 
   return (
-    <div className="px-[30px] py-[26px]" aria-busy="true" aria-live="polite">
+    <div className="@container px-[30px] py-[26px]" aria-busy="true" aria-live="polite">
       <span className="sr-only">{t('placeholder.loading')}</span>
       <div className="mb-[14px] h-[168px] animate-pulse rounded-lg border border-line bg-card" />
-      <div className="grid gap-[14px] lg:grid-cols-[296px_minmax(0,1fr)_348px]">
+      <div className="grid gap-[14px] @min-[1060px]:grid-cols-[296px_minmax(0,1fr)_348px]">
         <div className="h-[280px] animate-pulse rounded-lg border border-line bg-card" />
         <div className="h-[420px] animate-pulse rounded-lg border border-line bg-card" />
         <div className="h-[520px] animate-pulse rounded-lg border border-line bg-card" />

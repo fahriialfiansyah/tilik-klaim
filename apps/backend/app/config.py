@@ -37,6 +37,10 @@ class Settings(BaseSettings):
     # Ingestion limits (docs/canonical/03_architecture.md § Security and observability).
     max_bundle_bytes: int = 8 * 1024 * 1024
     max_json_depth: int = 32
+    # Every other request body. A disposition note is at most a couple of thousand characters, so
+    # 256 KiB is generous; the point is that no route can be made to read tens of megabytes into
+    # memory before validation gets a chance to refuse it. Ingestion has its own limit above.
+    max_request_bytes: int = 256 * 1024
 
     # Where the offline evaluation runner writes its artifacts. The API only ever reads them —
     # a metric is produced by `evaluation/runner`, deliberately by an engineer, never by a

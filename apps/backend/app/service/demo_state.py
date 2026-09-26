@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from tilik_domain.reasons import CaseState, ReasonCode
 
 from app.config import get_settings
-from app.store.engine import is_database_available
+from app.store.engine import database_availability
 from app.store.registry import get_case_store, get_user_store, use_database
 
 EXPECTED_CASE_COUNT = 5
@@ -78,8 +78,11 @@ class Readiness:
 def check_readiness() -> Readiness:
     """Assess the current state. Reads; changes nothing."""
     settings = get_settings()
-    reachable = is_database_available()
+    # `use_database()` first: it is cached for the life of the process and its one real probe
+    # also primes the availability reading, so the second line is answered without another
+    # round trip. Swapped, a cold first request paid for two probes back to back.
     persistence = "postgres" if use_database() else "in-memory"
+    reachable = database_availability()
 
     problems: list[str] = []
     if not reachable:

@@ -151,7 +151,10 @@ export function CaseDetailPage() {
   }
 
   return (
-    <PageShell width="full">
+    // The shell is the query container. The three columns need ~1060px of *content* width
+    // (296 + 348 + gaps, leaving the reason card ~390px). A viewport breakpoint ignored the 220px
+    // sidebar and squeezed the reason card to 72px at a 1024px viewport.
+    <PageShell width="full" className="@container">
       <nav className="mb-[14px] flex items-center gap-[9px] text-meta text-ink-3">
         <Link to="/" className="text-brand underline underline-offset-2">
           {t('page.breadcrumb')}
@@ -205,7 +208,7 @@ export function CaseDetailPage() {
           role="tabpanel"
           id="panel-evidence"
           aria-labelledby="tab-evidence"
-          className="grid items-start gap-[14px] lg:grid-cols-[296px_minmax(0,1fr)_348px]"
+          className="grid items-start gap-[14px] @min-[1060px]:grid-cols-[296px_minmax(0,1fr)_348px]"
         >
           <div className="flex flex-col gap-[14px]">
             <ClaimLineList

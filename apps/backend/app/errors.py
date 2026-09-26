@@ -19,6 +19,9 @@ from pydantic import BaseModel, ConfigDict, Field
 class ErrorCode(StrEnum):
     """Stable identifiers. Append new members; never repurpose an existing one."""
 
+    # Any non-ingestion request whose body is larger than `Settings.max_request_bytes`
+    REQUEST_TOO_LARGE = "REQUEST_TOO_LARGE"
+
     # Ingestion — rejected before parsing
     BUNDLE_TOO_LARGE = "BUNDLE_TOO_LARGE"
     BUNDLE_UNSUPPORTED_CONTENT_TYPE = "BUNDLE_UNSUPPORTED_CONTENT_TYPE"
@@ -66,6 +69,7 @@ class ErrorCode(StrEnum):
 
 
 STATUS_FOR_CODE: dict[ErrorCode, HTTPStatus] = {
+    ErrorCode.REQUEST_TOO_LARGE: HTTPStatus.REQUEST_ENTITY_TOO_LARGE,
     ErrorCode.BUNDLE_TOO_LARGE: HTTPStatus.REQUEST_ENTITY_TOO_LARGE,
     ErrorCode.BUNDLE_UNSUPPORTED_CONTENT_TYPE: HTTPStatus.UNSUPPORTED_MEDIA_TYPE,
     ErrorCode.BUNDLE_DEPTH_EXCEEDED: HTTPStatus.REQUEST_ENTITY_TOO_LARGE,

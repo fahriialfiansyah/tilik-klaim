@@ -98,7 +98,7 @@
   },
   "banner": {
     "duplicateTitle": "Bundel dengan sidik digital identik pernah disaring",
-    "duplicateBody": "Sidik <0>{{hash}}</0> sudah menghasilkan sebuah kasus. Menyaring ulang tidak membuat kasus kedua; ia memperbarui kasus yang sudah ada.",
+    "duplicateBody": "Sidik <0>{{hash}}</0> sudah menghasilkan sebuah kasus. Menyaring ulang tidak membuat kasus kedua; ia memperbarui kasus yang sudah ada, kecuali kasus itu sudah diputuskan seseorang. Kasus seperti itu dibiarkan apa adanya.",
     "openCase": "Buka kasus",
     "serviceBody": "{{detail}} Tidak ada kasus yang dibuat.",
     "serviceDown": "Layanan tidak merespons",

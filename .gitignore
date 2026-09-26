@@ -27,6 +27,9 @@ apps/web/blob-report/
 data/generated/
 evaluation/artifacts/*/
 !evaluation/artifacts/.gitkeep
+# ...except the one frozen run the proposal cites. The deployed image cannot regenerate it, so it
+# is the only evaluation evidence the Audit & Evaluasi page can ever show there.
+!evaluation/artifacts/run-20260901T110000Z/
 
 # OS
 .DS_Store

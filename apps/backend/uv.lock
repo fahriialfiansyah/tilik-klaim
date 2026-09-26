@@ -1499,6 +1499,21 @@ wheels = [
 ]
 
 [[package]]
+name = "tilik-domain"
+version = "0.1.0"
+source = { editable = "../../packages/domain" }
+dependencies = [
+    { name = "pydantic" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "pydantic", specifier = ">=2.9" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3" },
+]
+provides-extras = ["dev"]
+
+[[package]]
 name = "tilik-klaim-api"
 version = "0.1.0"
 source = { editable = "." }
@@ -1513,6 +1528,7 @@ dependencies = [
     { name = "pydantic-settings" },
     { name = "scikit-learn" },
     { name = "sqlalchemy" },
+    { name = "tilik-domain" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
@@ -1540,6 +1556,7 @@ requires-dist = [
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8" },
     { name = "scikit-learn", specifier = ">=1.5" },
     { name = "sqlalchemy", specifier = ">=2.0" },
+    { name = "tilik-domain", editable = "../../packages/domain" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.32" },
 ]
 provides-extras = ["dev"]

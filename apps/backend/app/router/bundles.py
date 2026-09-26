@@ -17,7 +17,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Request, Response
 from tilik_domain.canonical import ResourceRef
 from tilik_domain.locale import DEFAULT_LOCALE, Locale
-from tilik_domain.reasons import CaseState, definition_for
+from tilik_domain.reasons import ALLOWED_TRANSITIONS, CaseState, definition_for
 from tilik_domain.versioning import SCHEMA_VERSION, EngineIdentity
 
 from app.config import get_settings
@@ -160,6 +160,17 @@ def case_store() -> CaseStore:
 
 InjectedCases = Annotated[CaseStore, Depends(case_store)]
 
+RESCREENABLE_STATES: frozenset[CaseState] = frozenset(
+    state for state, targets in ALLOWED_TRANSITIONS.items() if CaseState.SCREENED in targets
+) | {CaseState.SCREENED}
+"""States a case may be sent back to `SCREENED` from.
+
+Read off the domain's own state machine, so this cannot drift from it. A closed case
+(`DISMISSED`, `CONFIRMED_ANOMALY`, `ESCALATED`) is deliberately absent: reopening a dismissed case
+needs `REOPEN_DISMISSED_CASE`, which the reviewer role does not hold, and screening is open to
+that role. Without this guard, re-screening was a way around that control.
+"""
+
 
 @router.post(
     "/bundles/{ingestion_id}/screen",
@@ -179,6 +190,9 @@ def screen_ingested_bundle(
 
     Idempotent for the same input hash and engine version: re-screening returns the existing
     case with its version bumped, rather than creating a second case for one claim.
+
+    A case a person has already decided or escalated is returned exactly as it stands — same
+    state, same version, no new audit event. Re-screening must never undo a human decision.
     """
     refused = refuse_without(x_actor_role, Capability.INGEST_BUNDLE)
     if refused is not None:
@@ -195,6 +209,16 @@ def screen_ingested_bundle(
         )
 
     started = perf_counter()
+    existing = cases.find_by_ingestion(ingestion_id)
+    if existing is not None and existing.state not in RESCREENABLE_STATES:
+        logger.info(
+            "re-screen skipped, case is %s: case_id=%s version=%d",
+            existing.state,
+            existing.case_id,
+            existing.case_version,
+        )
+        return _to_screen_response(existing, int((perf_counter() - started) * 1000), locale)
+
     history = store.history_for(
         record.bundle.claim.participant_id,
         record.bundle.claim.provider_id,
@@ -220,7 +244,6 @@ def screen_ingested_bundle(
     )
     get_edge_store().replace(record.bundle.bundle_id, record.ruleset_version, graph.edges)
 
-    existing = cases.find_by_ingestion(ingestion_id)
     case = CaseRecord(
         case_id=existing.case_id if existing else new_case_id(),
         case_version=existing.case_version + 1 if existing else 1,

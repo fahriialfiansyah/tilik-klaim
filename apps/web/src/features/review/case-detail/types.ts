@@ -66,6 +66,14 @@ export const DISPOSITION_ACTIONS = [
 ] as const
 export type DispositionAction = (typeof DISPOSITION_ACTIONS)[number]
 
+/**
+ * Longest free-text note the server accepts — `NOTE_MAX_CHARS` in `app/dto/dispositions.py`.
+ *
+ * Above it the API answers 422, which reads to a reviewer as "my decision failed to save".
+ * Stopping the field at the limit keeps that from ever being the message.
+ */
+export const MAX_NOTE_CHARS = 2000
+
 export type EvidenceRef = {
   readonly resource_type: ResourceType
   readonly resource_id: string
