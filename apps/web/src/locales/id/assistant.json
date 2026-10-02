@@ -1,0 +1,146 @@
+{
+  "page": {
+    "eyebrow": "ASISTEN · TERIKAT BUKTI",
+    "title": "Asisten Bukti",
+    "lede": "Tanyakan tentang antrean atau satu kasus. Setiap jawaban menunjuk sumbernya, dan keputusan tetap pada Anda.",
+    "newConversation": "Percakapan baru"
+  },
+  "empty": {
+    "heading": "Apa yang ingin Anda telusuri?",
+    "body": "Jawaban disusun hanya dari antrean dan kasus yang tampil untuk peran Anda, dengan rujukan pada setiap kalimat.",
+    "queueHeading": "TENTANG ANTREAN",
+    "caseHeading": "TENTANG KASUS {{id}}"
+  },
+  "suggestions": {
+    "queue": {
+      "QUEUE_OVERVIEW": "Ringkas kondisi antrean",
+      "WHERE_TO_START": "Kasus mana yang perlu dibuka dulu?",
+      "CASES_MATCHING": "Kasus apa saja dengan tagihan berulang?",
+      "CONFLICTS": "Berapa kasus berprioritas konflik deterministik?"
+    },
+    "case": {
+      "WHY_RAISED": "Mengapa kasus ini muncul?",
+      "MISSING_EVIDENCE": "Bukti apa yang belum ditemukan?",
+      "COUNTER_EVIDENCE": "Apa yang melemahkan alasan ini?",
+      "TIMELINE": "Bagaimana urutan kejadiannya?",
+      "COMPARISON": "Dengan apa kasus ini dibandingkan?"
+    }
+  },
+  "scope": {
+    "label": "Cakupan",
+    "queue": "Seluruh antrean",
+    "case": "Kasus {{id}}",
+    "change": "Ubah cakupan: {{current}}",
+    "menuLabel": "Pilih apa yang dibaca asisten",
+    "queueOption": "Seluruh antrean",
+    "queueOptionHint": "Metrik, baris antrean, dan alasan kasus",
+    "casesHeading": "SATU KASUS",
+    "loading": "Memuat antrean…",
+    "failed": "Antrean tidak dapat dimuat.",
+    "empty": "Antrean kosong.",
+    "clear": "Kembali ke seluruh antrean",
+    "position": "#{{n}}"
+  },
+  "composer": {
+    "label": "Pertanyaan untuk Asisten Bukti",
+    "placeholderQueue": "Tanyakan tentang antrean…",
+    "placeholderCase": "Tanyakan tentang kasus ini…",
+    "send": "Kirim pertanyaan",
+    "stop": "Hentikan",
+    "hint": "Enter untuk mengirim · Shift+Enter untuk baris baru",
+    "count": "{{count}} dari {{max}} karakter",
+    "tooLong": "Pertanyaan terlalu panjang. Persingkat menjadi {{max}} karakter.",
+    "footnote": "Data sintetik. Asisten tidak menilai klaim dan tidak mengubah prioritas, status, atau keputusan."
+  },
+  "turn": {
+    "you": "Anda",
+    "assistant": "Asisten Bukti",
+    "scopeQueue": "Antrean",
+    "scopeCase": "Kasus {{id}}",
+    "reading": "Menyiapkan jawaban…",
+    "stepsHeading": "Langkah membaca",
+    "steps": "{{count}} langkah membaca",
+    "noSteps": "Dijawab dari templat deterministik, tanpa langkah membaca.",
+    "stopped": "Dihentikan sebelum jawaban selesai disusun.",
+    "ready": "Jawaban siap.",
+    "conversation": "Percakapan dengan Asisten Bukti"
+  },
+  "phase": {
+    "STARTED": "Memahami pertanyaan",
+    "READING": "Membaca",
+    "VALIDATING": "Memeriksa rujukan dan istilah",
+    "DONE": "Selesai"
+  },
+  "tool": {
+    "get_queue_overview": "Membaca ringkasan antrean",
+    "find_cases": "Mencari kasus di antrean",
+    "get_case_reasons": "Membaca alasan sebuah kasus",
+    "generic": "Membaca data"
+  },
+  "answer": {
+    "sources": "SUMBER",
+    "sourcesPlain": "Sumber",
+    "cases": "KASUS TERKAIT",
+    "uncertainty": "KETIDAKPASTIAN",
+    "uncertaintyPlain": "Ketidakpastian",
+    "howMade": "CARA DISUSUN",
+    "citation": "Sumber {{n}}: {{label}}",
+    "openCase": "Buka kasus",
+    "focusCase": "Telusuri di sini",
+    "focusCaseLabel": "Persempit cakupan ke kasus {{id}}",
+    "position": "Urutan ke-{{n}}",
+    "copy": {
+      "idle": "Salin",
+      "copied": "Tersalin",
+      "failed": "Gagal menyalin"
+    },
+    "copyLabel": "Salin jawaban beserta sumbernya",
+    "retry": "Tanya ulang",
+    "followUps": "LANJUTKAN DENGAN",
+    "refusalHeading": "Di luar cakupan asisten",
+    "helpHeading": "Pertanyaan belum dikenali",
+    "viaFallback": " · dimuat tanpa streaming",
+    "rejected": "Model bahasa tidak dipakai untuk jawaban ini — jawabannya tidak lolos pemeriksaan rujukan dan istilah, atau layanan model sedang tidak tersedia — jadi yang tampil adalah templat deterministik.",
+    "ruleset": " · aturan v{{version}}",
+    "openingSource": "Membuka sumber…",
+    "sourceFailed": "Sumber tidak dapat dibuka. Coba buka kasusnya langsung."
+  },
+  "generatedBy": {
+    "TEMPLATE": "Templat deterministik, tanpa model bahasa",
+    "LLM": "Model bahasa, tervalidasi"
+  },
+  "failure": {
+    "heading": "Jawaban tidak dapat disusun",
+    "CASE_NOT_FOUND": "Kasus ini tidak lagi ada di antrean. Pilih cakupan lain lalu tanyakan lagi.",
+    "CASE_ACCESS_FORBIDDEN": "Peran Anda tidak dapat memakai Asisten Bukti.",
+    "ASSISTANT_UNAVAILABLE": "Layanan asisten sedang bermasalah. Coba lagi sebentar lagi.",
+    "network": "Layanan tidak merespons. Periksa koneksi, lalu coba lagi.",
+    "generic": "Terjadi masalah saat menyusun jawaban.",
+    "retry": "Coba lagi"
+  },
+  "context": {
+    "label": "Konteks Asisten Bukti",
+    "scope": "CAKUPAN",
+    "queueScope": "Seluruh antrean yang tampil untuk peran Anda.",
+    "reads": "YANG BISA DIBACA",
+    "readsQueue": [
+      "Lima metrik antrean",
+      "Baris antrean: alasan, prioritas, status",
+      "Alasan dan bukti, paling banyak tiga kasus per jawaban"
+    ],
+    "readsCase": [
+      "Ringkasan kasus dan alasannya",
+      "Jalur bukti dan bukti tandingan",
+      "Linimasa episode dan pasangan pembanding",
+      "Isi resource yang dirujuk"
+    ],
+    "limits": "BATASAN",
+    "limitCites": "Setiap kalimat merujuk sumber yang bisa dibuka",
+    "limitVerdict": "Tidak menilai niat atau kesalahan siapa pun",
+    "limitDecision": "Tidak memutuskan pembayaran, penolakan, atau sanksi",
+    "limitWrite": "Tidak mengubah prioritas, status, atau keputusan",
+    "memory": "Percakapan hanya tersimpan di tab ini dan hilang saat halaman dimuat ulang.",
+    "lastAnswer": "JAWABAN TERAKHIR",
+    "noAnswerYet": "Belum ada jawaban."
+  }
+}

@@ -29,6 +29,8 @@ export type MenuEntry = {
 
 export const APP_MENU: readonly MenuEntry[] = [
   { id: 'queue', route: '/', navigable: true, roles: CASE_ROLES },
+  // ADR-0007. Reads only what the queue and case detail already show these roles.
+  { id: 'assistant', route: '/assistant', navigable: true, roles: CASE_ROLES },
   { id: 'ingest', route: '/ingest', navigable: true, roles: CASE_ROLES },
   {
     id: 'evaluation',

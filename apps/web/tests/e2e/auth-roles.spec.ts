@@ -144,12 +144,14 @@ test.describe('signing in', () => {
 })
 
 test.describe('what each role sees', () => {
-  test('a reviewer sees three menu entries and no user management', async ({ page }) => {
+  test('a reviewer sees four menu entries and no user management', async ({ page }) => {
     await signInAs(page, 'reviewer')
     await page.goto('/')
 
     const nav = page.getByRole('navigation', { name: 'Navigasi utama' })
-    await expect(nav.getByRole('link')).toHaveCount(3)
+    await expect(nav.getByRole('link')).toHaveCount(4)
+    // ADR-0007: the assistant reads cases, so it sits on the reviewing side of the line.
+    await expect(nav.getByRole('link', { name: 'Asisten Bukti' })).toHaveCount(1)
     await expect(nav.getByRole('link', { name: 'Manajemen Pengguna' })).toHaveCount(0)
   })
 

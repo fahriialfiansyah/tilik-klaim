@@ -27,21 +27,22 @@ beforeEach(() => {
 })
 
 describe('the sidebar renders only what the role may reach', () => {
-  test('reviewer sees the three review screens', () => {
+  test('reviewer sees the three review screens and the assistant', () => {
     useSession.setState({ user: signedInAs('reviewer') })
     renderWithRouter(<AppSidebar />)
 
     expect(screen.getByRole('link', { name: 'Antrean Review' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Asisten Bukti' })).toHaveAttribute('href', '/assistant')
     expect(screen.getByRole('link', { name: 'Ingest / Demo' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Audit & Evaluasi' })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Manajemen Pengguna' })).not.toBeInTheDocument()
   })
 
-  test('senior reviewer sees the same three', () => {
+  test('senior reviewer sees the same four', () => {
     useSession.setState({ user: signedInAs('senior_reviewer') })
     renderWithRouter(<AppSidebar />)
 
-    expect(screen.getAllByRole('link')).toHaveLength(3)
+    expect(screen.getAllByRole('link')).toHaveLength(4)
     expect(screen.queryByRole('link', { name: 'Manajemen Pengguna' })).not.toBeInTheDocument()
   })
 
@@ -76,7 +77,7 @@ describe('the rail can be collapsed to icons and remembers the choice', () => {
 
     // The labels are hidden from sight, never from the accessible tree: an icon-only link
     // with no name is a link a screen reader announces as its URL.
-    expect(screen.getAllByRole('link')).toHaveLength(3)
+    expect(screen.getAllByRole('link')).toHaveLength(4)
     expect(screen.getByRole('link', { name: 'Antrean Review' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Antrean Review' })).toHaveAttribute(
       'title',
@@ -121,6 +122,6 @@ describe('the rail can be collapsed to icons and remembers the choice', () => {
     renderWithRouter(<AppSidebar />)
 
     expect(screen.getByRole('img', { name: 'TilikKlaim' })).toBeInTheDocument()
-    expect(screen.getAllByRole('link')).toHaveLength(3)
+    expect(screen.getAllByRole('link')).toHaveLength(4)
   })
 })

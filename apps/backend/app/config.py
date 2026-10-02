@@ -88,6 +88,24 @@ class Settings(BaseSettings):
     # timeout above; without this, eight reads plus a submission are not bounded by anything.
     briefing_deadline_seconds: float = 120.0
 
+    # Asisten Bukti (ADR-0007). **A separate switch from the briefing**, so either can be killed
+    # without the other, and **off by default** for the same reasons. It reuses the gateway
+    # values above; switched on, they are checked at start-up exactly as for the briefing.
+    assistant_enabled: bool = False
+    # One model call per turn — the reads are planned, not chosen by tool call (see
+    # `app/service/assistant/runner.py`) — so this bounds the whole wait. Shorter than the
+    # briefing's 90 s: the reviewer is waiting in a conversation, and the template is the answer
+    # when the gateway does not reply in time.
+    assistant_timeout_seconds: float = 45.0
+    # Measured 2 Oct 2026: the gateway generated ~24 tokens/s, so output length *is* latency.
+    # The largest legal answer (five statements of 240 characters, their citations, the note) is
+    # about 800 tokens; this leaves headroom without letting a runaway answer eat the timeout.
+    assistant_max_output_tokens: int = 1200
+    # Model calls in flight at once, across every reviewer. The gateway is shared and slow (above);
+    # a turn that finds no free slot is answered by the template at once, saying why, rather
+    # than queueing behind others for a minute.
+    assistant_max_concurrent: int = 2
+
     @field_validator("vllm_base_url")
     @classmethod
     def end_at_v1(cls, value: str) -> str:
@@ -104,9 +122,14 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def gateway_is_complete_when_enabled(self) -> "Settings":
-        """Everything the gateway needs, checked once, at start-up — and only when it is on."""
-        if not self.briefing_enabled:
+        """Everything the gateway needs, checked once, at start-up — and only when it is on.
+
+        "On" means either feature that calls it: the briefing (ADR-0005) or the assistant
+        (ADR-0007). Each has its own switch; they share one gateway.
+        """
+        if not (self.briefing_enabled or self.assistant_enabled):
             return self
+        switch = "BRIEFING_ENABLED" if self.briefing_enabled else "ASSISTANT_ENABLED"
 
         missing = [
             name
@@ -119,8 +142,8 @@ class Settings(BaseSettings):
         ]
         if missing:
             raise ValueError(
-                f"BRIEFING_ENABLED is true but {', '.join(missing)} is empty. "
-                "Set them in apps/backend/.env, or set BRIEFING_ENABLED=false to run on the "
+                f"{switch} is true but {', '.join(missing)} is empty. "
+                f"Set them in apps/backend/.env, or set {switch}=false to run on the "
                 "deterministic template."
             )
         # Never interpolate the key into the message: this text reaches logs and tracebacks.

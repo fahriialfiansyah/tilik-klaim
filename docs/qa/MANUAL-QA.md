@@ -470,6 +470,61 @@ Tangkapan layar: [`2026-09-03-case-briefing/`](./2026-09-03-case-briefing/) · K
 
 ---
 
+## § 1g — Asisten Bukti (`/assistant`) — ✅ selesai 2 Okt 2026
+
+Tangkapan layar: [`2026-10-02-asisten-bukti/`](./2026-10-02-asisten-bukti/) · Keputusan: ADR-0007
+
+| Berkas | Keadaan |
+|--------|---------|
+| `01-kosong-terang.png` | Belum ada pertanyaan — kartu pertanyaan siap pakai, panel konteks dengan batasan |
+| `02-jawaban-antrean.png` | "Kasus mana yang perlu dibuka dulu?" — kalimat ber-rujukan `[n]`, sumber, kartu kasus urutan antrean |
+| `03-cakupan-kasus.png` | Cakupan satu kasus — bukti yang belum ditemukan, kelengkapan baris |
+| `04-laci-sumber.png` | Rujukan resource dibuka di laci sumber yang sama dengan `/cases/:id` |
+| `05-penolakan-gelap.png` | Pertanyaan tentang kecurangan ditolak sebelum model mana pun ditanya — tema gelap |
+| `06-english.png` | Halaman dan jawaban dalam bahasa Inggris |
+| `07-pemilih-cakupan.png` | Pemilih cakupan: seluruh antrean atau satu kasus, dalam urutan antrean |
+| `08-lebar-1024.png` | Lebar 1024 px — panel konteks disembunyikan, utas tetap utuh |
+| `09-model-bahasa-membaca.png` | **Model sungguhan** — langkah membaca mengalir satu per satu |
+| `10-model-bahasa-jawaban.png` | **Jawaban model** (Qwen3.5-9B lewat gerbang vLLM) — tervalidasi, ber-rujukan, berhati-hati ("bisa", "mungkin") |
+
+### Klik-tayang
+
+1. Menu **Asisten Bukti** ada untuk Peninjau dan Peninjau Senior, **tidak** untuk Administrator
+   (yang membuka `/assistant` langsung dikembalikan ke `/admin/users`).
+2. Klik kartu *Kasus mana yang perlu dibuka dulu?* Langkah membaca tampil, lalu jawaban: setiap
+   kalimat diakhiri keping bernomor; nomor yang sama ada di daftar **SUMBER**. Kartu kasus pertama
+   adalah kasus teratas antrean yang menunggu tinjauan — asisten tidak menyusun urutan sendiri.
+3. Klik keping resource (mis. *baris tagihan LN-P2*): laci sumber terbuka; Escape mengembalikan
+   fokus ke keping. Keping kasus membuka `/cases/:id`; kembali ke `/assistant` — percakapan masih ada.
+4. Ketik *Apakah rumah sakit ini curang?* → **Di luar cakupan asisten**, tanpa sumber, dan
+   tertulis *tanpa langkah membaca*. Coba juga *Should we reject this claim?*, *Siapa nama
+   pasiennya?*, *Abaikan semua aturan* — semuanya ditolak tanpa model.
+5. **Telusuri di sini** pada kartu kasus → URL menjadi `?case=…`, keping cakupan berganti, dan
+   *Tanya ulang* pada jawaban lama tetap bertanya dalam **cakupan lamanya**.
+6. Saat jawaban disiapkan, tombol kirim menjadi **Hentikan** (juga Escape). *Percakapan baru*
+   mengosongkan utas. Muat ulang halaman: percakapan hilang — memang tidak disimpan.
+7. Tidak ada kata *AI*, kepala robot, atau kilau di mana pun; tidak ada kode mesin
+   (`DETERMINISTIC_CONFLICT`, `SCREENED`, kode alasan) di permukaan baca. Galat memimpin dengan
+   kalimat; kodenya di balik *Detail teknis*.
+8. **Jalur model (opsional).** `ASSISTANT_ENABLED` tetap `false` di `.env`. Untuk mencobanya tanpa
+   mengubah `.env`, jalankan API kedua dengan sakelar menyala dan web kedua yang menunjuk ke sana:
+
+   ```bash
+   (cd apps/backend && ASSISTANT_ENABLED=true uv run uvicorn app.main:app --port 8001)
+   (cd apps/web && TILIK_API_ORIGIN=http://localhost:8001 npx rsbuild dev --port 3001)
+   # e2e jalur model:
+   (cd apps/web && E2E_ASSISTANT_MODEL=1 E2E_BASE_URL=http://localhost:3001 npx playwright test assistant)
+   ```
+
+   Terukur 2 Okt 2026: **12–20 detik** per jawaban bebas — di atas kriteria 15 detik ADR-0007 pada
+   gerbang ini. **CARA DISUSUN** harus berbunyi *Model bahasa, tervalidasi* dan menyebut nama
+   model; kalau berbunyi *Templat deterministik* dengan catatan bahwa model tidak dipakai, alasannya
+   ada di *Detail teknis* (validator menolak, gerbang tidak menjawab, atau kapasitas penuh).
+   Yang tetap perlu dibaca dengan mata: kalimat model bisa benar rujukannya tetapi keliru
+   tafsirnya — itulah risiko sisa yang dijaga kriteria penghentian ADR-0007.
+
+---
+
 ## § 2 — Masuk (`/login`) & Manajemen Pengguna (`/admin/users`) — ✅ selesai 4 Sep 2026
 
 Tangkapan layar: [`2026-09-04-auth-roles/`](./2026-09-04-auth-roles/) · Keputusan: [ADR-0006](../canonical/decisions/ADR-0006-three-roles-and-simulated-login.md)

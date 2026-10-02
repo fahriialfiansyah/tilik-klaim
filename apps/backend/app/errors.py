@@ -64,6 +64,9 @@ class ErrorCode(StrEnum):
     # Briefing — a genuinely broken service, never "disabled" (disabled is the template, a 200)
     BRIEFING_UNAVAILABLE = "BRIEFING_UNAVAILABLE"
 
+    # Assistant — same rule: switched off is the template and a 200, never this code
+    ASSISTANT_UNAVAILABLE = "ASSISTANT_UNAVAILABLE"
+
 
 STATUS_FOR_CODE: dict[ErrorCode, HTTPStatus] = {
     ErrorCode.BUNDLE_TOO_LARGE: HTTPStatus.REQUEST_ENTITY_TOO_LARGE,
@@ -93,6 +96,7 @@ STATUS_FOR_CODE: dict[ErrorCode, HTTPStatus] = {
     ErrorCode.USER_SELF_MODIFICATION_REFUSED: HTTPStatus.CONFLICT,
     ErrorCode.USER_NO_CHANGE_REQUESTED: HTTPStatus.UNPROCESSABLE_ENTITY,
     ErrorCode.BRIEFING_UNAVAILABLE: HTTPStatus.SERVICE_UNAVAILABLE,
+    ErrorCode.ASSISTANT_UNAVAILABLE: HTTPStatus.SERVICE_UNAVAILABLE,
 }
 
 

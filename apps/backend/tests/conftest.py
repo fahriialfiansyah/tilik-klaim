@@ -45,8 +45,10 @@ def pytest_configure(config: pytest.Config) -> None:
 
 
 def disable_briefing() -> None:
-    """Pin the briefing off, whatever `.env` says, before any settings object is built."""
+    """Pin the briefing and the assistant off, whatever `.env` says, before any settings object
+    is built. Both call the same gateway; tests that exercise either enabled path monkeypatch it."""
     os.environ["BRIEFING_ENABLED"] = "false"
+    os.environ["ASSISTANT_ENABLED"] = "false"
     for name in ("VLLM_BASE_URL", "VLLM_API_KEY", "LLM_MODEL_VLLM"):
         os.environ.pop(name, None)
 

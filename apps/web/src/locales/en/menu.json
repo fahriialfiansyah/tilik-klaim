@@ -1,5 +1,6 @@
 {
   "queue": "Review Queue",
+  "assistant": "Evidence Assistant",
   "ingest": "Ingest / Demo",
   "evaluation": "Audit & Evaluation",
   "admin-users": "User Management",

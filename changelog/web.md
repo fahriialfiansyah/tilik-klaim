@@ -4,6 +4,21 @@ Append-only. Newest entry at the top.
 
 ---
 
+### 2026-10-02 · Asisten Bukti page — cited answers, no chatbot effects · ✅ Done
+
+**Event:** A fourth sidebar entry for reviewers, with interaction patterns drawn from three AI-product UI kits and held to `design/DESIGN.md`
+**Files:** `src/features/review/assistant/*`, `src/pages/assistant/AssistantPage.tsx`, `src/config/menu/app-menu.ts`, `src/components/layouts/{MenuIcons,PageShell}.tsx`, `src/components/wrappers/PerfectScrollArea.tsx`, `src/lib/{sse,http}.ts`, `src/locales/{id,en}/{assistant,menu,auth}.json`, `tests/e2e/assistant{,-model}.spec.ts`
+> From the kits: streamed reading steps, inline numbered citations with a source list, case cards,
+> a scope chip on the input, suggestion chips, stop/retry/copy, and a context panel stating what it
+> reads and what it will not do. Not from the kits: no "AI", no robot, no sparkle, no typewriter
+> effect — statements arrive validated and rise in with the motion system's stagger.
+> `PageShell` gains `height="fill"` (the one page whose content owns a bounded scroller);
+> `PerfectScrollArea` gains `containerRef`; the briefing's SSE parser moved to `lib/sse.ts` and now
+> tolerates CRLF. **Fixed on the way:** the shared source drawer rendered the literal
+> `{t('source.raw')}` as its subtitle on every screen.
+
+---
+
 ### 2026-09-26 · Light by default, one version stamp, and plain words in the Indonesian copy · ✅ Done
 
 **Event:** Owner review of the queue screen: dark default read wrong for a claims tool, the version card duplicated the header, and "saringan" was a word nobody says

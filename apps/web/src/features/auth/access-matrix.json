@@ -8,11 +8,13 @@
     "INGEST_BUNDLE",
     "READ_EVALUATION",
     "REQUEST_BRIEFING",
+    "ASK_ASSISTANT",
     "MANAGE_USERS",
     "READ_USER_AUDIT"
   ],
   "roles": {
     "reviewer": [
+      "ASK_ASSISTANT",
       "INGEST_BUNDLE",
       "READ_CASES",
       "READ_CASE_AUDIT",
@@ -21,6 +23,7 @@
       "REQUEST_BRIEFING"
     ],
     "senior_reviewer": [
+      "ASK_ASSISTANT",
       "INGEST_BUNDLE",
       "READ_CASES",
       "READ_CASE_AUDIT",

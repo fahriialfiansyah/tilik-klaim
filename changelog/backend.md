@@ -4,6 +4,25 @@ Append-only. Newest entry at the top. Agent and MCP tasks would also land here; 
 
 ---
 
+### 2026-10-02 · Asisten Bukti — a bounded, evidence-cited assistant endpoint (ADR-0007) · ✅ Done
+
+**Event:** Owner asked for an assistant menu; chose the evidence-bound option over a guided-only one and over a generic chat
+**Files:** `app/dto/assistant.py`, `app/service/assistant/*`, `app/router/assistant.py`, `app/{config,errors,main}.py`, `app/service/access.py`, `tests/test_assistant_*.py`, `docs/api/openapi.json`, `.env.example`
+> **`POST /v1/assistant/answers`**, template-first and off by default (`ASSISTANT_ENABLED=false`,
+> separate from the briefing's switch). A deterministic guard refuses fraud, payment, sanction,
+> diagnosis, identity and set-the-limits-aside questions **before any model is called**, in both
+> languages. Every statement carries at least one citation that opens; the gate rejects unsupported
+> numbers, accusations and directives (ID + EN), raw enum codes, and empty uncertainty — the whole
+> answer falls back to the template on any failure.
+> **Reads are planned, the model writes once.** Choosing reads by tool call took over a minute a turn
+> on the gateway; one guided-decoding call brought it to 12–20 s — still above the 15 s criterion,
+> which is why it stays off. Reading real answers found four leaks (ids in prose, enum codes, a
+> similarity score, counter-evidence stated as a cause); each is closed in what the model sees and
+> in what the gate accepts. Three reviews (Python, React, security) — all HIGH/MEDIUM fixed: history
+> is quoted as untrusted context, model calls are capped, numbers match whole, ids are masked.
+
+---
+
 ### 2026-09-26 · Connective Indonesian text follows the UI glossary · ✅ Done
 
 **Event:** The web copy moved to "prioritas", "hash" and "ingest"; the sentences this service composes around a finding had to match

@@ -4,7 +4,7 @@ import type { ComponentType } from 'react'
  * One drawn mark per navigable page.
  *
  * Each says what its page *holds*, not what its page is called, so the pair reads faster than
- * either alone: a sorted work list, a bundle arriving, measured bars, a roster. They are the
+ * either alone: a sorted work list, a cited answer, a bundle arriving, measured bars, a roster. They are the
  * icon vocabulary `design/DESIGN.md` allows — evidence, time, links, documents, human review —
  * and none of them is a robot head or a sparkle, which that file forbids by name.
  *
@@ -12,7 +12,7 @@ import type { ComponentType } from 'react'
  * "chart" would describe any dashboard; these describe *these* pages. And the stroke weight,
  * cap and radius match `TilikKlaimMark`, which is the only other line-work in the shell.
  *
- * All four are `aria-hidden`: the menu label beside them carries the meaning, and an icon that
+ * All five are `aria-hidden`: the menu label beside them carries the meaning, and an icon that
  * repeated it would make every entry announce itself twice.
  */
 export type MenuIcon = ComponentType<{ readonly className?: string }>
@@ -37,6 +37,25 @@ export function QueueIcon({ className }: { readonly className?: string }) {
     <svg aria-hidden className={className} {...SVG_PROPS}>
       <path d="M3.75 5.5v13" strokeWidth="2.5" />
       <path d="M8.5 7h11.75M8.5 12h8.25M8.5 17h10" />
+    </svg>
+  )
+}
+
+/**
+ * Asisten Bukti — a question answered, with its source bracketed beside the words.
+ *
+ * A speech balloon because the page is a conversation, and a closing bracket inside it because
+ * every answer on it carries a citation — `[1]` is the device the page actually renders. That
+ * bracket is what separates this mark from a generic chat icon, and it is the reason the page
+ * may exist at all (ADR-0007): no robot head, no sparkle, and nothing that implies the answer
+ * came from anywhere but the sources it names.
+ */
+export function AssistantIcon({ className }: { readonly className?: string }) {
+  return (
+    <svg aria-hidden className={className} {...SVG_PROPS}>
+      <path d="M5.25 4.75h13.5a1.5 1.5 0 0 1 1.5 1.5v8.5a1.5 1.5 0 0 1-1.5 1.5H10.5l-4.25 3.5v-3.5h-1a1.5 1.5 0 0 1-1.5-1.5v-8.5a1.5 1.5 0 0 1 1.5-1.5z" />
+      <path d="M7.75 9h5.5M7.75 12h3.5" />
+      <path d="M15.5 8.25h1.25v4.5H15.5" />
     </svg>
   )
 }
@@ -91,6 +110,7 @@ export function StaffIcon({ className }: { readonly className?: string }) {
 /** Which mark belongs to which menu entry, keyed by `MenuEntry.id`. */
 export const MENU_ICONS: Readonly<Record<string, MenuIcon>> = {
   queue: QueueIcon,
+  assistant: AssistantIcon,
   ingest: IngestIcon,
   evaluation: EvaluationIcon,
   'admin-users': StaffIcon,

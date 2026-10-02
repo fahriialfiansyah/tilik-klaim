@@ -1,3 +1,4 @@
+import { parseSseFrames } from '@/lib/sse'
 import type { BriefingEvent, BriefingObservation, BriefingPhase, CaseBriefing, ToolCallRecord } from '@/features/review/case-briefing/types'
 
 /**
@@ -32,7 +33,7 @@ export const IDLE_BRIEFING: BriefingState = {
   viaFallback: false,
 }
 
-const EVENT_NAMES = new Set(['status', 'tool', 'observation', 'done', 'error'])
+const EVENT_NAMES: ReadonlySet<string> = new Set(['status', 'tool', 'observation', 'done', 'error'])
 
 /**
  * Split a text buffer into complete SSE frames. A frame is `event: x\ndata: {...}\n\n`; whatever
@@ -42,37 +43,8 @@ export function parseSseChunk(buffer: string): {
   readonly events: readonly BriefingEvent[]
   readonly rest: string
 } {
-  const frames = buffer.split('\n\n')
-  const rest = frames.pop() ?? ''
-  const events: BriefingEvent[] = []
-  for (const frame of frames) {
-    const parsed = parseFrame(frame)
-    if (parsed) {
-      events.push(parsed)
-    }
-  }
-  return { events, rest }
-}
-
-function parseFrame(frame: string): BriefingEvent | null {
-  let name: string | null = null
-  const dataLines: string[] = []
-  for (const line of frame.split('\n')) {
-    if (line.startsWith('event: ')) {
-      name = line.slice('event: '.length).trim()
-    } else if (line.startsWith('data: ')) {
-      dataLines.push(line.slice('data: '.length))
-    }
-  }
-  if (!name || !EVENT_NAMES.has(name) || dataLines.length === 0) {
-    return null
-  }
-  try {
-    return { name, data: JSON.parse(dataLines.join('\n')) } as BriefingEvent
-  } catch {
-    // A frame the server did not finish writing is not an event; the next chunk completes it.
-    return null
-  }
+  const { frames, rest } = parseSseFrames(buffer, EVENT_NAMES)
+  return { events: frames as readonly BriefingEvent[], rest }
 }
 
 /** Apply one event. Always returns a new object; never mutates `state`. */

@@ -61,6 +61,27 @@ def test_enabling_the_briefing_without_all_three_values_refuses_to_start(field: 
     assert "BRIEFING_ENABLED" in str(refused.value)
 
 
+def test_the_assistant_is_off_by_default_and_separate_from_the_briefing() -> None:
+    """ADR-0007 § 5: its own switch, off, so either feature can be killed without the other."""
+    settings = Settings(_env_file=None)
+    assert settings.assistant_enabled is False
+    briefing_only = _settings()
+    assert briefing_only.briefing_enabled is True
+    assert briefing_only.assistant_enabled is False
+
+
+@pytest.mark.parametrize("field", ["llm_model_vllm", "vllm_base_url", "vllm_api_key"])
+def test_enabling_the_assistant_without_all_three_values_refuses_to_start(field: str) -> None:
+    with pytest.raises(ValidationError) as refused:
+        _settings(briefing_enabled="false", assistant_enabled="true", **{field: ""})
+    assert "ASSISTANT_ENABLED" in str(refused.value)
+
+
+def test_the_assistant_alone_starts_with_a_complete_gateway() -> None:
+    settings = _settings(briefing_enabled="false", assistant_enabled="true")
+    assert settings.assistant_enabled is True
+
+
 # ---- the base URL -------------------------------------------------------------------------
 
 

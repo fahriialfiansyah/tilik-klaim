@@ -91,6 +91,15 @@ function languageHeader(): Record<string, string> {
 }
 
 /**
+ * The persona and language headers, for callers that cannot go through `request` — a streamed
+ * body has to be read with `fetch` directly, and must still say who is asking and in which
+ * language, or the server answers a role and a locale nobody chose.
+ */
+export function requestHeaders(): Record<string, string> {
+  return { ...actorHeaders(), ...languageHeader() }
+}
+
+/**
  * Same-origin JSON request. Paths are relative, so the Rsbuild dev proxy handles them in
  * development and a reverse proxy handles them in production — no origin is baked into the bundle.
  *

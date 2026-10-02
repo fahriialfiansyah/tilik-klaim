@@ -165,6 +165,15 @@ def test_admin_may_not_request_a_briefing(api) -> None:
     assert response.json()["code"] == "CASE_ACCESS_FORBIDDEN"
 
 
+def test_admin_may_not_ask_the_assistant(api) -> None:
+    """ADR-0007 § 1: the assistant reads cases, and the administrator reads none."""
+    response = api.post(
+        "/v1/assistant/answers?stream=false", json={"question": "Ringkas antrean"}, headers=ADMIN
+    )
+    assert response.status_code == 403
+    assert response.json()["code"] == "CASE_ACCESS_FORBIDDEN"
+
+
 # --------------------------------------------------------------------------------------
 # Both reviewing roles are permitted everything on their side
 # --------------------------------------------------------------------------------------
@@ -178,6 +187,14 @@ def test_both_reviewing_roles_reach_every_review_surface(api, headers) -> None:
     assert api.get(f"/v1/cases/{case['case_id']}/audit", headers=headers).status_code == 200
     assert (
         api.get(f"/v1/cases/{case['case_id']}/briefing?stream=false", headers=headers).status_code
+        == 200
+    )
+    assert (
+        api.post(
+            "/v1/assistant/answers?stream=false",
+            json={"question": "Ringkas antrean"},
+            headers=headers,
+        ).status_code
         == 200
     )
 

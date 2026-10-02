@@ -7,12 +7,23 @@ Scope guard — this service must never:
 See docs/canonical/01_product_decision.md and decisions/ADR-0002-no-llm-in-risk-score.md.
 The one LLM call that exists (`/v1/cases/{id}/briefing`, ADR-0005) is read-only, off by default,
 and imported by nothing in the risk path — `tests/test_briefing_isolation.py` asserts it.
+Asisten Bukti (`/v1/assistant/answers`, ADR-0007) reuses that gateway under its own switch, with
+the same guarantees, asserted by `tests/test_assistant_isolation.py`.
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.router import briefing, bundles, cases, dispositions, evaluations, health, users
+from app.router import (
+    assistant,
+    briefing,
+    bundles,
+    cases,
+    dispositions,
+    evaluations,
+    health,
+    users,
+)
 
 settings = get_settings()
 
@@ -45,4 +56,5 @@ app.include_router(bundles.router)
 app.include_router(cases.router)
 app.include_router(dispositions.router)
 app.include_router(briefing.router)
+app.include_router(assistant.router)
 app.include_router(users.router)

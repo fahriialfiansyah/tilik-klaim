@@ -18,13 +18,14 @@ Dokumen ini **page-centric**: daftar halaman, rutenya, widget di dalamnya, dan p
 | 4 | Audit & Evaluasi | `/evaluation` | Detail page (shell) | Peninjau senior + tim proposal | `05_AUDIT_EVALUASI` |
 | 5 | Masuk | `/login` | Split page (**di luar shell**) | Ketiga peran | Spec ini · [ADR-0006](../docs/canonical/decisions/ADR-0006-three-roles-and-simulated-login.md) |
 | 6 | Manajemen Pengguna | `/admin/users` | Detail page (shell) | Administrator saja | Spec ini · [ADR-0006](../docs/canonical/decisions/ADR-0006-three-roles-and-simulated-login.md) |
+| 7 | Asisten Bukti | `/assistant` | Percakapan, tinggi penuh (shell) | Peninjau · Peninjau Senior | Spec ini · [ADR-0007](../docs/canonical/decisions/ADR-0007-evidence-assistant.md) |
 
 **Enam halaman — naik dari empat pada 4 Sep 2026 lewat [ADR-0006](../docs/canonical/decisions/ADR-0006-three-roles-and-simulated-login.md).** Baris OUT OF SCOPE yang dijaga kalimat lama ("Empat halaman. Tidak lebih") berbunyi *many dashboards or dummy menus*, dan ujinya adalah apakah ada isi di baliknya:
 
 - `/login` **bukan entri menu sama sekali** — ia di luar `AppShell` dan merupakan satu-satunya jalan masuk ke lima halaman lain. Apa yang dipilih di sana mengubah apa yang dirender dan apa yang diterima API pada setiap halaman berikutnya.
 - `/admin/users` adalah satu-satunya halaman yang dapat dijangkau salah satu dari tiga peran, menulis peristiwa audit tambah-saja seperti disposisi kasus (ADR-0001), dan merupakan wujud konkret *Role/access matrix* yang sudah tercatat sebagai kewajiban tata kelola di `docs/canonical/07_privacy_threat_model.md` § Governance deliverables. Ia bukan dasbor: tidak ada satu pun agregat atau metrik di dalamnya.
 
-**Tidak ada halaman kelima untuk peninjau.** Aplikasi seorang peninjau tetap empat halaman yang sama.
+**Tujuh halaman sejak 2 Okt 2026 lewat [ADR-0007](../docs/canonical/decisions/ADR-0007-evidence-assistant.md).** Peninjau kini punya empat entri menu: Asisten Bukti hanya membaca apa yang sudah ditampilkan antrean dan detail kasus untuk perannya, setiap kalimatnya merujuk sumber yang bisa dibuka, dan tidak satu pun kontrolnya bertindak atas kasus. Administrator tidak melihatnya.
 
 **Catatan layout:**
 - Riwayat audit per kasus adalah **tab di dalam** `/cases/:id`, bukan route tersendiri.
@@ -309,6 +310,45 @@ yang tidak menyentuh kasus — sebelum masuk. Itulah pemisahan tugas yang disebu
 
 ---
 
+## 6d. Page 7 — Asisten Bukti (`/assistant`)
+
+**Persona:** Peninjau · Peninjau Senior (bukan Administrator)
+**Layout:** Percakapan setinggi bingkai (`PageShell height="fill"`): utas bergulir di dalam `PerfectScrollArea`, input menempel di tepi bawah, panel konteks di kanan pada layar ≥ 1280 px
+**Sumber:** [ADR-0007](../docs/canonical/decisions/ADR-0007-evidence-assistant.md)
+
+### Widget
+
+| # | Widget | Tipe | Data dari | Sumber Fitur |
+|---|--------|------|-----------|--------------|
+| 1 | Keadaan kosong | Judul + kartu pertanyaan siap pakai per cakupan | `assistant:suggestions.*` — setiap kalimat dikenali templat (diuji backend) | ADR-0007 § 5 |
+| 2 | Utas percakapan | `role="log"`; pertanyaan kanan, jawaban kiri | Memori tab saja, hilang saat dimuat ulang | ADR-0007 § 3 |
+| 3 | Langkah membaca | Daftar terurut, terbuka saat menyiapkan, terlipat sesudahnya | Event SSE `status` · `tool` | ADR-0005 § 6 · ADR-0007 § 6 |
+| 4 | Kalimat jawaban + keping rujukan `[n]` | Teks + tautan/tombol bernomor | `AssistantAnswer.statements` | ADR-0007 § 4 |
+| 5 | Daftar sumber | Daftar bernomor; resource → laci sumber, kasus → detail, antrean → `/` | `citations` | ADR-0007 § 7 |
+| 6 | Kartu kasus terkait | Baris antrean apa adanya + "Telusuri di sini" + "Buka kasus" | `AssistantAnswer.cases` | ADR-0007 § 2 |
+| 7 | Ketidakpastian · Cara disusun | Teks; penolakan validator dalam kata, alasannya di balik *Detail teknis* | `uncertainty_note` · `generated_by` · `rejection_reason` | ADR-0007 § 6 |
+| 8 | Penolakan / belum dikenali | Kotak pemberitahuan + pertanyaan pengganti | `kind = REFUSAL / HELP` | ADR-0007 § 4.1 |
+| 9 | Input pertanyaan | `<textarea>` + pemilih cakupan + kirim/hentikan | `POST /v1/assistant/answers` | ADR-0007 § 3 |
+| 10 | Panel konteks | Cakupan · yang bisa dibaca · batasan · jawaban terakhir | Statis + jawaban terakhir | ADR-0007 § 2 |
+| 11 | Laci sumber | Laci yang sama dengan `/cases/:id` | `GET /v1/cases/{id}` (sekali per kasus) | Widget 16 |
+
+### Aturan tampil (mengikat)
+
+1. **Tidak ada kata "AI" di kedua bahasa, tanpa kepala robot dan tanpa kilau.** Ikon menu adalah balon berkurung rujukan.
+2. **Setiap kalimat jawaban membawa minimal satu rujukan yang bisa dibuka.** Server tidak bisa membangun kalimat tanpa rujukan.
+3. **Cara disusun selalu sesudah isi**, tidak pernah sebagai lencana di atasnya.
+4. **Tidak ada kode mesin di permukaan baca** — kode pita/status/pola/alasan, kode galat, dan argumen langkah membaca tidak ditampilkan; galat memimpin dengan kalimat, kodenya di balik *Detail teknis*.
+5. **Tidak ada kontrol yang bertindak atas kasus.** Hanya navigasi, salin, dan tanya ulang; fitur ini tidak mengimpor apa pun dari store disposisi (diuji).
+6. **Kartu kasus selalu dalam urutan antrean**, apa pun urutan yang disebut model.
+7. **Percakapan tidak disimpan** dan dikosongkan saat persona berganti.
+
+### Navigasi
+
+- **Masuk dari:** entri menu **Asisten Bukti** · tautan `/assistant?case=<id>` (cakupan satu kasus)
+- **Keluar ke:** `/cases/:id` lewat rujukan kasus atau "Buka kasus" · `/` lewat rujukan antrean. Kembali ke halaman ini mempertahankan percakapan.
+
+---
+
 ## 7. Matriks Navigasi Konsolidasi
 
 | Dari | Aksi | Ke | Context |
@@ -333,6 +373,10 @@ yang tidak menyentuh kasus — sebelum masuk. Itulah pemisahan tugas yang disebu
 | `/ingest` | klik tautan pada pemberitahuan berkas identik | `/cases/:id` | pengenal kasus yang sudah ada |
 | `/evaluation` | klik baris metrik per mode | `/evaluation` | rincian mode terbuka |
 | `/evaluation` | klik entri riwayat | `/cases/:id` | pengenal kasus |
+| `/assistant` | klik rujukan kasus / "Buka kasus" | `/cases/:id` | pengenal kasus |
+| `/assistant` | klik rujukan antrean | `/` | tanpa konteks |
+| `/assistant` | klik rujukan resource | `/assistant` | laci sumber terbuka |
+| `/assistant` | klik "Telusuri di sini" / pilih kasus di cakupan | `/assistant?case=<id>` | cakupan satu kasus |
 
 ### Cek konsistensi
 

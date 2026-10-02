@@ -4,9 +4,9 @@ import { APP_MENU, mayReach, menuForRole } from '@/config/menu/app-menu'
 import { ROLES } from '@/features/auth/types'
 
 describe('menu is the source of truth for what each role reaches', () => {
-  test('a reviewer sees the three review screens and not the admin page', () => {
+  test('a reviewer sees the three review screens and the assistant, and not the admin page', () => {
     const routes = menuForRole('reviewer').map((entry) => entry.route)
-    expect(routes).toEqual(['/', '/ingest', '/evaluation'])
+    expect(routes).toEqual(['/', '/assistant', '/ingest', '/evaluation'])
   })
 
   test('a senior reviewer sees exactly what a reviewer sees', () => {
@@ -26,7 +26,8 @@ describe('menu is the source of truth for what each role reaches', () => {
   })
 
   test('an administrator may not reach any review route', () => {
-    for (const path of ['/', '/ingest', '/evaluation', '/cases/case_1']) {
+    // ADR-0007 § 1: the assistant reads cases, so it is on the reviewing side of the line.
+    for (const path of ['/', '/assistant', '/ingest', '/evaluation', '/cases/case_1']) {
       expect(mayReach('admin', path), path).toBe(false)
     }
     expect(mayReach('admin', '/admin/users')).toBe(true)

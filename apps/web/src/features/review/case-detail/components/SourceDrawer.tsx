@@ -56,7 +56,7 @@ export function SourceDrawer({
         <DialogContent
           variant="drawer"
           title={`${resourceLabel(shown.resource_type)} ${shown.resource_id}`}
-          description="{t('source.raw')}"
+          description={t('source.raw')}
         >
           <PerfectScrollArea className="flex-1 px-5 py-4">
             <p

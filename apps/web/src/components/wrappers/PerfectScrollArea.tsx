@@ -8,6 +8,12 @@ type PerfectScrollAreaProps = {
   readonly className?: string
   /** Set when the region scrolls sideways too, e.g. the wide queue table. */
   readonly axis?: 'y' | 'both'
+  /**
+   * The scrolling element, for a region that must move its own scroll position — a conversation
+   * that keeps its newest turn in view. Setting `scrollTop` on it is enough: the library listens
+   * for the resulting scroll event and redraws its rails.
+   */
+  readonly containerRef?: (element: HTMLElement | null) => void
 }
 
 /**
@@ -27,10 +33,16 @@ type PerfectScrollAreaProps = {
  * the shell can see it. The page then cannot be scrolled at all. Use it for regions that own a
  * real height: drawers, panels, fixed-height lists.
  */
-export function PerfectScrollArea({ children, className, axis = 'y' }: PerfectScrollAreaProps) {
+export function PerfectScrollArea({
+  children,
+  className,
+  axis = 'y',
+  containerRef,
+}: PerfectScrollAreaProps) {
   return (
     <PerfectScrollbar
       className={cn('min-h-0', className)}
+      containerRef={containerRef}
       options={{
         // Vertical-only regions must not swallow horizontal wheel gestures.
         suppressScrollX: axis === 'y',

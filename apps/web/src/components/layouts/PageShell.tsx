@@ -15,9 +15,25 @@ const COLUMN_WIDTHS = {
   full: '',
 } as const
 
+/**
+ * How tall the frame is.
+ *
+ * `auto` is every ordinary page: as tall as its content, scrolled by the shell. `fill` is for the
+ * one kind of page whose content owns a bounded scroll region of its own — a conversation, whose
+ * thread scrolls while the input stays put. It is exactly the viewport under the header, so the
+ * shell's scroller has nothing to scroll and the inner region gets the real height
+ * `PerfectScrollArea` needs. The bottom runway shrinks to the gutter: the input sits on the
+ * frame's edge on purpose, and 72px under it would read as a layout fault.
+ */
+const FRAME_HEIGHTS = {
+  auto: 'pb-[72px]',
+  fill: 'flex h-[calc(100svh-var(--header-h))] min-h-[520px] flex-col pb-[24px]',
+} as const
+
 type PageShellProps = {
   readonly children: ReactNode
   readonly width?: keyof typeof COLUMN_WIDTHS
+  readonly height?: keyof typeof FRAME_HEIGHTS
   readonly className?: string
 }
 
@@ -31,7 +47,12 @@ type PageShellProps = {
  * bound — which it always is, because a page body has no bounded height to scroll within — so
  * the wheel gesture never reaches the shell and the page freezes.
  */
-export function PageShell({ children, width = 'default', className }: PageShellProps) {
+export function PageShell({
+  children,
+  width = 'default',
+  height = 'auto',
+  className,
+}: PageShellProps) {
   return (
     /*
       `tk-enter` di sini memberi setiap halaman satu isyarat kedatangan, sekali, tanpa
@@ -40,7 +61,12 @@ export function PageShell({ children, width = 'default', className }: PageShellP
       lolos lewat Portal ke <body>, jadi tidak ada yang bisa terperangkap di dalamnya.
     */
     <section
-      className={cn('tk-enter px-[30px] pt-[26px] pb-[72px]', COLUMN_WIDTHS[width], className)}
+      className={cn(
+        'tk-enter px-[30px] pt-[26px]',
+        FRAME_HEIGHTS[height],
+        COLUMN_WIDTHS[width],
+        className,
+      )}
     >
       {children}
     </section>

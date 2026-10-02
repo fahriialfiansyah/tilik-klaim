@@ -230,7 +230,7 @@ Balasan yang diharapkan:
 
 | Alamat | Isi |
 |--------|-----|
-| http://localhost:3000 | Antarmuka web — Antrean Review, Ingest/Demo, Audit & Evaluasi |
+| http://localhost:3000 | Antarmuka web — Antrean Review, Asisten Bukti, Ingest/Demo, Audit & Evaluasi |
 | http://localhost:8000/docs | OpenAPI (Swagger UI) |
 | http://localhost:8000/healthz | Probe kesehatan + identitas engine/ruleset |
 

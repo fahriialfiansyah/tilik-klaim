@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import { AppShell } from '@/components/layouts/AppShell'
 import { RequireSession } from '@/features/auth/components/RequireSession'
 import { AdminUsersPage } from '@/pages/admin-users/AdminUsersPage'
+import { AssistantPage } from '@/pages/assistant/AssistantPage'
 import { CaseDetailPage } from '@/pages/case-detail/CaseDetailPage'
 import { EvaluationPage } from '@/pages/evaluation/EvaluationPage'
 import { IngestPage } from '@/pages/ingest/IngestPage'
@@ -24,6 +25,7 @@ export function App() {
         <Route element={<AppShell />}>
           <Route index element={<QueuePage />} />
           <Route path="cases/:id" element={<CaseDetailPage />} />
+          <Route path="assistant" element={<AssistantPage />} />
           <Route path="ingest" element={<IngestPage />} />
           <Route path="evaluation" element={<EvaluationPage />} />
           <Route path="admin/users" element={<AdminUsersPage />} />

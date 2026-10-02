@@ -41,6 +41,8 @@ class Capability(StrEnum):
     INGEST_BUNDLE = "INGEST_BUNDLE"
     READ_EVALUATION = "READ_EVALUATION"
     REQUEST_BRIEFING = "REQUEST_BRIEFING"
+    ASK_ASSISTANT = "ASK_ASSISTANT"
+    """ADR-0007. Follows READ_CASES exactly: the assistant reads nothing the role cannot read."""
     MANAGE_USERS = "MANAGE_USERS"
     READ_USER_AUDIT = "READ_USER_AUDIT"
 
@@ -54,6 +56,7 @@ CAPABILITIES: dict[Role, frozenset[Capability]] = {
             Capability.INGEST_BUNDLE,
             Capability.READ_EVALUATION,
             Capability.REQUEST_BRIEFING,
+            Capability.ASK_ASSISTANT,
         }
     ),
     Role.SENIOR_REVIEWER: frozenset(
@@ -65,6 +68,7 @@ CAPABILITIES: dict[Role, frozenset[Capability]] = {
             Capability.INGEST_BUNDLE,
             Capability.READ_EVALUATION,
             Capability.REQUEST_BRIEFING,
+            Capability.ASK_ASSISTANT,
         }
     ),
     # Deliberately disjoint from the reviewer set. An administrator who could also open a case
@@ -101,6 +105,7 @@ CODE_FOR_CAPABILITY: dict[Capability, ErrorCode] = {
     Capability.INGEST_BUNDLE: ErrorCode.CASE_ACCESS_FORBIDDEN,
     Capability.READ_EVALUATION: ErrorCode.CASE_ACCESS_FORBIDDEN,
     Capability.REQUEST_BRIEFING: ErrorCode.CASE_ACCESS_FORBIDDEN,
+    Capability.ASK_ASSISTANT: ErrorCode.CASE_ACCESS_FORBIDDEN,
     Capability.MANAGE_USERS: ErrorCode.USER_MANAGEMENT_FORBIDDEN,
     Capability.READ_USER_AUDIT: ErrorCode.USER_MANAGEMENT_FORBIDDEN,
 }

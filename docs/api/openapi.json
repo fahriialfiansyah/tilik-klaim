@@ -1,6 +1,232 @@
 {
   "components": {
     "schemas": {
+      "AnswerIntent": {
+        "description": "What the deterministic classifier read the question as. Shapes follow-up suggestions.",
+        "enum": [
+          "QUEUE_OVERVIEW",
+          "WHERE_TO_START",
+          "CASES_MATCHING",
+          "CASE_OVERVIEW",
+          "WHY_RAISED",
+          "MISSING_EVIDENCE",
+          "COUNTER_EVIDENCE",
+          "TIMELINE",
+          "COMPARISON",
+          "OPEN_QUESTION",
+          "OUT_OF_SCOPE",
+          "UNRECOGNISED"
+        ],
+        "title": "AnswerIntent",
+        "type": "string"
+      },
+      "AnswerKind": {
+        "enum": [
+          "ANSWER",
+          "REFUSAL",
+          "HELP"
+        ],
+        "title": "AnswerKind",
+        "type": "string"
+      },
+      "AssistantAnswer": {
+        "additionalProperties": false,
+        "properties": {
+          "cases": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/CaseCard"
+            },
+            "maxItems": 5,
+            "title": "Cases",
+            "type": "array"
+          },
+          "generated_by": {
+            "$ref": "#/components/schemas/GeneratedBy"
+          },
+          "intent": {
+            "$ref": "#/components/schemas/AnswerIntent"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/AnswerKind"
+          },
+          "model_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Id"
+          },
+          "notice": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Plain text for a REFUSAL or HELP answer. Template-authored, never generated.",
+            "title": "Notice"
+          },
+          "prompt_version": {
+            "title": "Prompt Version",
+            "type": "string"
+          },
+          "question": {
+            "title": "Question",
+            "type": "string"
+          },
+          "refusal_topic": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RefusalTopic"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rejection_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rejection Reason"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/AssistantScope"
+          },
+          "statements": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/AssistantStatement"
+            },
+            "maxItems": 5,
+            "title": "Statements",
+            "type": "array"
+          },
+          "tool_calls": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ToolCallRecord"
+            },
+            "title": "Tool Calls",
+            "type": "array"
+          },
+          "uncertainty_note": {
+            "minLength": 1,
+            "title": "Uncertainty Note",
+            "type": "string"
+          },
+          "validation_rejected": {
+            "default": false,
+            "title": "Validation Rejected",
+            "type": "boolean"
+          },
+          "versions": {
+            "$ref": "#/components/schemas/VersionStamp"
+          }
+        },
+        "required": [
+          "question",
+          "scope",
+          "kind",
+          "intent",
+          "uncertainty_note",
+          "generated_by",
+          "prompt_version",
+          "versions"
+        ],
+        "title": "AssistantAnswer",
+        "type": "object"
+      },
+      "AssistantQuestion": {
+        "additionalProperties": false,
+        "properties": {
+          "history": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/HistoryTurn"
+            },
+            "maxItems": 3,
+            "title": "History",
+            "type": "array"
+          },
+          "question": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Question",
+            "type": "string"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/AssistantScope"
+          }
+        },
+        "required": [
+          "question"
+        ],
+        "title": "AssistantQuestion",
+        "type": "object"
+      },
+      "AssistantScope": {
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Case Id"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/ScopeKind",
+            "default": "QUEUE"
+          }
+        },
+        "title": "AssistantScope",
+        "type": "object"
+      },
+      "AssistantStatement": {
+        "additionalProperties": false,
+        "description": "One sentence about the data. **No citation, no statement** \u2014 ADR-0007 \u00a7 4.",
+        "properties": {
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "maxItems": 6,
+            "minItems": 1,
+            "title": "Citations",
+            "type": "array"
+          },
+          "text": {
+            "maxLength": 280,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "citations"
+        ],
+        "title": "AssistantStatement",
+        "type": "object"
+      },
       "AuditEvent": {
         "additionalProperties": false,
         "description": "One entry in the case history. Append-only; never edited in place.",
@@ -374,6 +600,26 @@
         "title": "CaseBriefing",
         "type": "object"
       },
+      "CaseCard": {
+        "additionalProperties": false,
+        "description": "A queue row, copied verbatim, with the position the queue itself gave it.\n\nThe position is the queue's order \u2014 band, then oldest first \u2014 and never one the assistant\ncomputed. \"Which case first\" is answered by pointing at it.",
+        "properties": {
+          "case": {
+            "$ref": "#/components/schemas/CaseSummary"
+          },
+          "queue_position": {
+            "minimum": 1.0,
+            "title": "Queue Position",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "queue_position",
+          "case"
+        ],
+        "title": "CaseCard",
+        "type": "object"
+      },
       "CaseDetailResponse": {
         "additionalProperties": false,
         "description": "Everything needed to understand and disposition one case.",
@@ -628,6 +874,65 @@
         ],
         "title": "CaseSummary",
         "type": "object"
+      },
+      "Citation": {
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Case Id"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/CitationKind"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "resource_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resource Id"
+          },
+          "resource_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "label"
+        ],
+        "title": "Citation",
+        "type": "object"
+      },
+      "CitationKind": {
+        "enum": [
+          "QUEUE",
+          "CASE",
+          "RESOURCE"
+        ],
+        "title": "CitationKind",
+        "type": "string"
       },
       "ClaimLineView": {
         "additionalProperties": false,
@@ -941,7 +1246,8 @@
           "USER_NOT_FOUND",
           "USER_SELF_MODIFICATION_REFUSED",
           "USER_NO_CHANGE_REQUESTED",
-          "BRIEFING_UNAVAILABLE"
+          "BRIEFING_UNAVAILABLE",
+          "ASSISTANT_UNAVAILABLE"
         ],
         "title": "ErrorCode",
         "type": "string"
@@ -1117,6 +1423,29 @@
           }
         },
         "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HistoryTurn": {
+        "additionalProperties": false,
+        "description": "One earlier turn, held by the browser tab \u2014 the server keeps no session (ADR-0007 \u00a7 3).",
+        "properties": {
+          "answer": {
+            "default": "",
+            "maxLength": 1500,
+            "title": "Answer",
+            "type": "string"
+          },
+          "question": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Question",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question"
+        ],
+        "title": "HistoryTurn",
         "type": "object"
       },
       "IngestBundleResponse": {
@@ -1441,6 +1770,18 @@
         "title": "ReasonDto",
         "type": "object"
       },
+      "RefusalTopic": {
+        "description": "Why a question was refused before any model saw it. One sentence of copy each.",
+        "enum": [
+          "VERDICT",
+          "DECISION",
+          "CLINICAL",
+          "IDENTITY",
+          "INSTRUCTIONS"
+        ],
+        "title": "RefusalTopic",
+        "type": "string"
+      },
       "ResourceCount": {
         "additionalProperties": false,
         "properties": {
@@ -1563,6 +1904,15 @@
         ],
         "title": "RunManifest",
         "type": "object"
+      },
+      "ScopeKind": {
+        "description": "What one turn may read. Chosen by the reviewer and always shown on screen.",
+        "enum": [
+          "QUEUE",
+          "CASE"
+        ],
+        "title": "ScopeKind",
+        "type": "string"
       },
       "ScreenRequest": {
         "additionalProperties": false,
@@ -1942,8 +2292,8 @@
           "role": {
             "$ref": "#/components/schemas/Role"
           },
-          "staff_token": {
-            "title": "Staff Token",
+          "staff_code": {
+            "title": "Staff Code",
             "type": "string"
           },
           "user_id": {
@@ -1953,7 +2303,7 @@
         },
         "required": [
           "user_id",
-          "staff_token",
+          "staff_code",
           "full_name",
           "email",
           "role",
@@ -2208,6 +2558,106 @@
         ]
       }
     },
+    "/v1/assistant/answers": {
+      "post": {
+        "description": "Statements about the queue or one case, each citing what it was read from.\n\nNever a score, a band of its own, a decision, or a state transition. Questions about fraud,\npayment, sanctions, diagnosis or identities are refused before any model is called. Off by\ndefault; the deterministic template answers when no model is configured.",
+        "operationId": "ask_assistant_v1_assistant_answers_post",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "stream",
+            "required": false,
+            "schema": {
+              "default": true,
+              "title": "Stream",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Actor-Role",
+            "required": false,
+            "schema": {
+              "default": "reviewer",
+              "title": "X-Actor-Role",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssistantQuestion"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantAnswer"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "summary": "Ask the evidence assistant (non-authoritative, cited)",
+        "tags": [
+          "assistant"
+        ]
+      }
+    },
     "/v1/auth/session": {
       "post": {
         "description": "Check the demo credentials and return the account, or refuse and say which way it failed.\n\nNothing is issued: no token, no cookie, no server-side session. The client keeps the returned\naccount and sends the two actor headers from it. See ADR-0006 \u00a7 3.",
@@ -2406,6 +2856,22 @@
               "default": "reviewer",
               "title": "X-Actor-Role",
               "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
             }
           }
         ],
@@ -2667,6 +3133,22 @@
               "title": "X-Actor-Role",
               "type": "string"
             }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
           }
         ],
         "responses": {
@@ -2759,6 +3241,22 @@
               "default": "reviewer",
               "title": "X-Actor-Role",
               "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
             }
           }
         ],

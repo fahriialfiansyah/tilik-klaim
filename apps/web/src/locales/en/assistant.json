@@ -1,0 +1,146 @@
+{
+  "page": {
+    "eyebrow": "ASSISTANT · EVIDENCE-BOUND",
+    "title": "Evidence Assistant",
+    "lede": "Ask about the queue or one case. Every answer points at its sources, and the decision stays with you.",
+    "newConversation": "New conversation"
+  },
+  "empty": {
+    "heading": "What would you like to look into?",
+    "body": "Answers are composed only from the queue and cases shown to your role, with a reference on every sentence.",
+    "queueHeading": "ABOUT THE QUEUE",
+    "caseHeading": "ABOUT CASE {{id}}"
+  },
+  "suggestions": {
+    "queue": {
+      "QUEUE_OVERVIEW": "Give me an overview of the queue",
+      "WHERE_TO_START": "Which case should I open first?",
+      "CASES_MATCHING": "Which cases show repeat billing?",
+      "CONFLICTS": "How many cases are in the deterministic conflict band?"
+    },
+    "case": {
+      "WHY_RAISED": "Why was this case raised?",
+      "MISSING_EVIDENCE": "What evidence is missing?",
+      "COUNTER_EVIDENCE": "What argues against this reason?",
+      "TIMELINE": "What is the sequence of events?",
+      "COMPARISON": "What is this case compared with?"
+    }
+  },
+  "scope": {
+    "label": "Scope",
+    "queue": "Whole queue",
+    "case": "Case {{id}}",
+    "change": "Change scope: {{current}}",
+    "menuLabel": "Choose what the assistant reads",
+    "queueOption": "Whole queue",
+    "queueOptionHint": "Metrics, queue rows, and case reasons",
+    "casesHeading": "ONE CASE",
+    "loading": "Loading the queue…",
+    "failed": "The queue could not be loaded.",
+    "empty": "The queue is empty.",
+    "clear": "Back to the whole queue",
+    "position": "#{{n}}"
+  },
+  "composer": {
+    "label": "Question for the Evidence Assistant",
+    "placeholderQueue": "Ask about the queue…",
+    "placeholderCase": "Ask about this case…",
+    "send": "Send question",
+    "stop": "Stop",
+    "hint": "Enter to send · Shift+Enter for a new line",
+    "count": "{{count}} of {{max}} characters",
+    "tooLong": "The question is too long. Shorten it to {{max}} characters.",
+    "footnote": "Synthetic data. The assistant does not judge claims and changes no band, status, or decision."
+  },
+  "turn": {
+    "you": "You",
+    "assistant": "Evidence Assistant",
+    "scopeQueue": "Queue",
+    "scopeCase": "Case {{id}}",
+    "reading": "Preparing the answer…",
+    "stepsHeading": "Reading steps",
+    "steps": "{{count}} reading steps",
+    "noSteps": "Answered from the deterministic template, with no reading steps.",
+    "stopped": "Stopped before the answer was composed.",
+    "ready": "Answer ready.",
+    "conversation": "Conversation with the Evidence Assistant"
+  },
+  "phase": {
+    "STARTED": "Understanding the question",
+    "READING": "Reading",
+    "VALIDATING": "Checking references and wording",
+    "DONE": "Done"
+  },
+  "tool": {
+    "get_queue_overview": "Reading the queue overview",
+    "find_cases": "Finding cases in the queue",
+    "get_case_reasons": "Reading one case's reasons",
+    "generic": "Reading data"
+  },
+  "answer": {
+    "sources": "SOURCES",
+    "sourcesPlain": "Sources",
+    "cases": "RELATED CASES",
+    "uncertainty": "UNCERTAINTY",
+    "uncertaintyPlain": "Uncertainty",
+    "howMade": "HOW THIS WAS MADE",
+    "citation": "Source {{n}}: {{label}}",
+    "openCase": "Open case",
+    "focusCase": "Look into it here",
+    "focusCaseLabel": "Narrow the scope to case {{id}}",
+    "position": "Position {{n}}",
+    "copy": {
+      "idle": "Copy",
+      "copied": "Copied",
+      "failed": "Copy failed"
+    },
+    "copyLabel": "Copy the answer with its sources",
+    "retry": "Ask again",
+    "followUps": "CONTINUE WITH",
+    "refusalHeading": "Outside the assistant's scope",
+    "helpHeading": "Question not recognised yet",
+    "viaFallback": " · loaded without streaming",
+    "rejected": "The language model was not used for this answer — its answer did not pass the reference and wording checks, or the model service was unavailable — so what is shown is the deterministic template.",
+    "ruleset": " · rules v{{version}}",
+    "openingSource": "Opening the source…",
+    "sourceFailed": "The source could not be opened. Try opening the case directly."
+  },
+  "generatedBy": {
+    "TEMPLATE": "Deterministic template, no language model",
+    "LLM": "Language model, validated"
+  },
+  "failure": {
+    "heading": "The answer could not be composed",
+    "CASE_NOT_FOUND": "This case is no longer in the queue. Choose another scope and ask again.",
+    "CASE_ACCESS_FORBIDDEN": "Your role cannot use the Evidence Assistant.",
+    "ASSISTANT_UNAVAILABLE": "The assistant service is having trouble. Try again shortly.",
+    "network": "The service did not respond. Check the connection, then try again.",
+    "generic": "Something went wrong while composing the answer.",
+    "retry": "Try again"
+  },
+  "context": {
+    "label": "Evidence Assistant context",
+    "scope": "SCOPE",
+    "queueScope": "The whole queue shown to your role.",
+    "reads": "WHAT IT CAN READ",
+    "readsQueue": [
+      "The five queue metrics",
+      "Queue rows: reason, band, status",
+      "Reasons and evidence, at most three cases per answer"
+    ],
+    "readsCase": [
+      "The case overview and its reasons",
+      "The evidence path and counter-evidence",
+      "The episode timeline and the comparison pair",
+      "The content of cited resources"
+    ],
+    "limits": "LIMITS",
+    "limitCites": "Every sentence cites a source that opens",
+    "limitVerdict": "Does not judge anyone's intent or fault",
+    "limitDecision": "Does not decide payment, rejection, or sanctions",
+    "limitWrite": "Changes no band, status, or decision",
+    "memory": "The conversation is kept in this tab only and is gone when the page reloads.",
+    "lastAnswer": "LAST ANSWER",
+    "noAnswerYet": "No answer yet."
+  }
+}

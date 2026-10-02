@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 
 import { STORAGE_KEY, initialLocale } from '@/modules/i18n/config'
 import { DEFAULT_LOCALE } from '@/modules/i18n/locales'

@@ -19,7 +19,7 @@ export const MATRIX_ROLES: readonly Role[] = ['reviewer', 'senior_reviewer', 'ad
 /**
  * Every capability the server knows, by name, in the reader's language.
  *
- * All nine, not the six the login table shows: the admin page renders what a role change
+ * All ten, not the six the login table shows: the admin page renders what a role change
  * *grants and takes away*, and a capability with no name would appear there as a blank line —
  * a change described by saying nothing about it. `matrix.test.ts` asserts every capability in
  * `ALL_CAPABILITIES` resolves in both languages, so a capability added to
@@ -37,6 +37,7 @@ export const CAPABILITY_KEYS: readonly string[] = [
   'INGEST_BUNDLE',
   'READ_EVALUATION',
   'REQUEST_BRIEFING',
+  'ASK_ASSISTANT',
   'MANAGE_USERS',
   'READ_USER_AUDIT',
 ] as const
@@ -44,10 +45,11 @@ export const CAPABILITY_KEYS: readonly string[] = [
 /**
  * The six columns the login screen shows.
  *
- * Six of the nine capabilities, chosen because each one names a page or an act a reviewer would
- * recognise. The three left out — reading a case's audit trail, reading the user-management
- * trail, and asking for an evidence summary — follow their surrounding capability exactly and
- * would add three columns that never disagree with a neighbour. The screen says so in a footnote
+ * Six of the ten capabilities, chosen because each one names a page or an act a reviewer would
+ * recognise. The four left out — reading a case's audit trail, reading the user-management
+ * trail, asking for an evidence summary, and asking the Evidence Assistant — follow their
+ * surrounding capability exactly and would add four columns that never disagree with a
+ * neighbour. The screen says so in a footnote
  * and points at ADR-0006 § 2 for the full table; `matrix.test.ts` asserts every column here
  * exists in the generated file, so a column can never be invented.
  *

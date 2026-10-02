@@ -138,13 +138,14 @@ ADDITIVE_PATHS: frozenset[str] = frozenset(
         "/v1/users",
         "/v1/users/audit",
         "/v1/users/{user_id}",
+        "/v1/assistant/answers",  # ADR-0007
     }
 )
 """Everything added since, each named by the ADR that authorised it."""
 
 
 def test_the_seven_frozen_paths_are_untouched_and_every_addition_is_named(api) -> None:
-    """The count moved from 8 to 12; what matters is *which* paths, not how many.
+    """The count moved from 8 to 13; what matters is *which* paths, not how many.
 
     Naming them makes an accidental route as loud as a missing one — an assertion on a number
     would have passed if a frozen path had been renamed while a new one appeared beside it.

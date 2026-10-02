@@ -1,4 +1,5 @@
 import admin from '@/locales/id/admin.json'
+import assistant from '@/locales/id/assistant.json'
 import auth from '@/locales/id/auth.json'
 import briefing from '@/locales/id/briefing.json'
 import caseDetail from '@/locales/id/caseDetail.json'
@@ -14,4 +15,4 @@ import review from '@/locales/id/review.json'
  * read. `common` is first because it is the default namespace an untyped `useTranslation()`
  * resolves against.
  */
-export default { common, menu, auth, review, queue, caseDetail, ingest, evaluation, admin, briefing }
+export default { common, menu, auth, review, queue, caseDetail, ingest, evaluation, admin, briefing, assistant }
